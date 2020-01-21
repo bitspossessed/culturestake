@@ -1,6 +1,10 @@
 # CultureStake
 
-CultureStake is a web-based voting system for cultural decision making and investment.
+CultureStake is a web-based voting and connection system for decentralised cultural decision making and investment.
+
+Using quadratic voting on the blockchain, CultureStake’s playful front-end interface allows everyone to vote on the types of cultural activity they would like to see in their locality.
+
+CultureStake democratises arts commissioning by providing communities and artists with a way to make cultural decisions together. It does this by giving communities a bigger say in the activities provided in their area, and by connecting artists and cultural organisations to better information about what is meaningful in different localities.
 
 ## Requirements
 
