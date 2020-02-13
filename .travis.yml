@@ -49,6 +49,8 @@ before_install:
 
 install:
   - npm install
+  - npm run db:migrate
+  - npm run db:seed
 
 script:
   - npm run test

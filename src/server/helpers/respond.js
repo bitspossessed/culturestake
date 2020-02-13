@@ -18,3 +18,21 @@ export function respondWithError(
 ) {
   respond(res, 'error', data, code);
 }
+
+export function filterResponse(response, schema) {
+  const data = response.toJSON();
+
+  return Object.keys(data).reduce((acc, key) => {
+    if (schema.includes(key)) {
+      acc[key] = data[key];
+    }
+
+    return acc;
+  }, {});
+}
+
+export function filterResponseAll(arr, schema) {
+  return arr.map(data => {
+    return filterResponse(data, schema);
+  });
+}
