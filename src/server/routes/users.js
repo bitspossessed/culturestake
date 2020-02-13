@@ -16,7 +16,7 @@ const getUserResource = resourcesMiddleware({
 
 router.put('/', validate(usersValidation.create), usersController.create);
 
-router.get('/', usersController.readAll);
+router.get('/', validate(usersValidation.readAll), usersController.readAll);
 
 router.get(
   '/:username',

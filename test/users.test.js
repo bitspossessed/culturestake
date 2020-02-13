@@ -79,10 +79,10 @@ describe('Users', () => {
         .get('/api/users')
         .expect(httpStatus.OK)
         .expect(response => {
+          const { results } = response.body.data;
+
           createdUsers.forEach(user => {
-            const foundUser = response.body.data.find(
-              item => item.id === user.id,
-            );
+            const foundUser = results.find(item => item.id === user.id);
 
             if (!foundUser) {
               throw new Error('Missing user in response');
@@ -93,7 +93,7 @@ describe('Users', () => {
             }
           });
 
-          if (response.body.data.length !== Object.keys(users).length) {
+          if (results.length !== Object.keys(users).length) {
             throw new Error('Invalid number of users');
           }
         });

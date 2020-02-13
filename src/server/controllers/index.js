@@ -9,6 +9,10 @@ import {
   respondWithSuccess,
 } from '../helpers/respond';
 
+const DEFAULT_LIMIT = 20;
+const DEFAULT_ORDER_DIRECTION = 'ASC';
+const DEFAULT_ORDER_KEY = 'id';
+
 function create(options) {
   return async (req, res, next) => {
     try {
@@ -31,9 +35,30 @@ function create(options) {
 
 function readAll(options) {
   return async (req, res, next) => {
+    const {
+      limit = DEFAULT_LIMIT,
+      offset = 0,
+      orderDirection = DEFAULT_ORDER_DIRECTION,
+      orderKey = DEFAULT_ORDER_KEY,
+    } = req.query;
+
     try {
-      const response = await options.model.findAndCountAll();
-      respondWithSuccess(res, filterResponseAll(response.rows, options.fields));
+      const response = await options.model.findAndCountAll({
+        limit,
+        offset,
+        order: [[orderKey, orderDirection.toUpperCase()]],
+      });
+
+      respondWithSuccess(res, {
+        results: filterResponseAll(response.rows, options.fields),
+        pagination: {
+          limit: parseInt(limit, 10),
+          offset: parseInt(offset, 10),
+          orderDirection,
+          orderKey,
+          total: response.count,
+        },
+      });
     } catch (error) {
       next(error);
     }

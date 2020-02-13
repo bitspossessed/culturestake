@@ -1,5 +1,7 @@
 import { Joi, Segments } from 'celebrate';
 
+import { paginationValidation } from './';
+
 const usernameValidation = {
   username: Joi.string()
     .alphanum()
@@ -23,6 +25,18 @@ export default {
   create: {
     [Segments.BODY]: {
       ...defaultValidation,
+    },
+  },
+  readAll: {
+    [Segments.PARAMS]: {
+      ...paginationValidation,
+      orderKey: Joi.string().valid(
+        'id',
+        'createdAt',
+        'updatedAt',
+        'email',
+        'username',
+      ),
     },
   },
   read: {
