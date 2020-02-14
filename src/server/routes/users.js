@@ -10,8 +10,6 @@ const router = express.Router();
 
 const getUserResource = resourcesMiddleware({
   model: User,
-  modelKey: 'username',
-  paramsKey: 'username',
 });
 
 router.put('/', validate(usersValidation.create), usersController.create);
@@ -19,21 +17,21 @@ router.put('/', validate(usersValidation.create), usersController.create);
 router.get('/', validate(usersValidation.readAll), usersController.readAll);
 
 router.get(
-  '/:username',
+  '/:slug',
   validate(usersValidation.read),
   getUserResource,
   usersController.read,
 );
 
 router.post(
-  '/:username',
+  '/:slug',
   validate(usersValidation.update),
   getUserResource,
   usersController.update,
 );
 
 router.delete(
-  '/:username',
+  '/:slug',
   validate(usersValidation.destroy),
   getUserResource,
   usersController.destroy,

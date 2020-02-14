@@ -10,3 +10,7 @@ export const paginationValidation = {
     .valid('asc', 'desc'),
   orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt'),
 };
+
+export const slugValidation = {
+  slug: Joi.string().required(),
+};

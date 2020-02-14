@@ -3,7 +3,7 @@ import baseController from './';
 
 const options = {
   model: User,
-  fields: ['id', 'username', 'email'],
+  fields: ['id', 'slug', 'username', 'email'],
 };
 
 function create(req, res, next) {

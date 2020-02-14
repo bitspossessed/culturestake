@@ -3,7 +3,7 @@ import { EmptyResultError } from 'sequelize';
 
 import APIError from '../helpers/errors';
 
-const DEFAULT_KEY = 'id';
+const DEFAULT_KEY = 'slug';
 
 export default function resourcesMiddleware(customOptions) {
   const { modelKey, paramsKey, model } = Object.assign(

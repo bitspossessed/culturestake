@@ -1,3 +1,4 @@
+import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
 
 import db from '../database';
@@ -8,8 +9,13 @@ const BCRYPT_HASH_LENGTH = 60;
 const User = db.define('user', {
   id: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     primaryKey: true,
     autoIncrement: true,
+  },
+  slug: {
+    type: DataTypes.STRING,
+    unique: true,
   },
   username: {
     type: DataTypes.STRING,
@@ -29,13 +35,14 @@ const User = db.define('user', {
   },
   password: {
     type: DataTypes.STRING(BCRYPT_HASH_LENGTH),
+    allowNull: false,
     validate: {
       len: BCRYPT_HASH_LENGTH,
     },
   },
 });
 
-User.beforeValidate(async user => {
+User.addHook('beforeValidate', async user => {
   if (user.password) {
     user.password = await hashPassword(user.password);
   }
@@ -44,5 +51,9 @@ User.beforeValidate(async user => {
 User.prototype.comparePasswords = async function(password) {
   return await comparePasswords(password, this.password);
 };
+
+SequelizeSlugify.slugifyModel(User, {
+  source: ['username'],
+});
 
 export default User;

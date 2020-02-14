@@ -85,6 +85,7 @@ function update(options) {
         where: {
           id: req.locals.resource.id,
         },
+        individualHooks: true,
       });
 
       respondWithSuccess(res, null, httpStatus.NO_CONTENT);

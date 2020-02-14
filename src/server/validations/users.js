@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { paginationValidation } from './';
+import { slugValidation, paginationValidation } from './';
 
 const usernameValidation = {
   username: Joi.string()
@@ -41,12 +41,12 @@ export default {
   },
   read: {
     [Segments.PARAMS]: {
-      ...usernameValidation,
+      ...slugValidation,
     },
   },
   update: {
     [Segments.PARAMS]: {
-      ...usernameValidation,
+      ...slugValidation,
     },
     [Segments.BODY]: {
       username: Joi.string()
@@ -58,7 +58,7 @@ export default {
   },
   destroy: {
     [Segments.PARAMS]: {
-      ...usernameValidation,
+      ...slugValidation,
     },
   },
 };
