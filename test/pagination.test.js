@@ -4,7 +4,7 @@ import createSupertest from './helpers/supertest';
 import users from './data/users';
 import { initializeDatabase } from './helpers/database';
 
-describe('Pagination', () => {
+describe('GET /<resource> readAll with pagination', () => {
   let authRequest;
   let createdUsers = [];
 
@@ -47,17 +47,11 @@ describe('Pagination', () => {
       .expect(response => {
         const { results, pagination } = response.body.data;
 
-        if (results[0].username !== users.default.username) {
-          throw new Error('Wrong pagination results');
-        }
-
-        if (pagination.orderKey !== 'username' || pagination.limit !== 1) {
-          throw new Error('Wrong pagination info data');
-        }
-
-        if (results.length !== 1) {
-          throw new Error('Wrong number of resources in response');
-        }
+        expect(results.length).toBe(1);
+        expect(results[0].username).toBe(users.default.username);
+        expect(pagination.orderKey).toBe('username');
+        expect(pagination.orderDirection).toBe('asc');
+        expect(pagination.limit).toBe(1);
       });
 
     await authRequest
@@ -72,24 +66,13 @@ describe('Pagination', () => {
       .expect(response => {
         const { results, pagination } = response.body.data;
 
-        if (
-          results[0].username !== users.lisa.username ||
-          results[1].username !== users.hanna.username
-        ) {
-          throw new Error('Wrong pagination results');
-        }
-
-        if (
-          pagination.orderDirection !== 'desc' ||
-          pagination.limit !== 2 ||
-          pagination.offset !== 1
-        ) {
-          throw new Error('Wrong pagination info data');
-        }
-
-        if (results.length !== 2) {
-          throw new Error('Wrong number of resources in response');
-        }
+        expect(results.length).toBe(2);
+        expect(results[0].username).toBe(users.lisa.username);
+        expect(results[1].email).toBe(users.hanna.email);
+        expect(pagination.orderKey).toBe('username');
+        expect(pagination.orderDirection).toBe('desc');
+        expect(pagination.limit).toBe(2);
+        expect(pagination.offset).toBe(1);
       });
   });
 });

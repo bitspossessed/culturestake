@@ -66,12 +66,9 @@ describe('Authentication', () => {
         .expect(httpStatus.OK)
         .expect(response => {
           const { data } = response.body;
-
-          if (!('token' in data)) {
-            throw new Error('Token is missing');
-          }
-
           token = data.token;
+
+          expect(token).toBeDefined();
         });
 
       await request(app)

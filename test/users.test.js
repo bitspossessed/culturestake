@@ -86,18 +86,11 @@ describe('Users', () => {
           createdUsers.forEach(user => {
             const foundUser = results.find(item => item.id === user.id);
 
-            if (!foundUser) {
-              throw new Error('Missing user in response');
-            }
-
-            if (foundUser.email !== user.email) {
-              throw new Error('Invalid response');
-            }
+            expect(foundUser).toBeDefined();
+            expect(foundUser.email).toBe(user.email);
           });
 
-          if (results.length !== Object.keys(users).length) {
-            throw new Error('Invalid number of users');
-          }
+          expect(results.length).toBe(Object.keys(users).length);
         });
     });
   });
@@ -131,9 +124,8 @@ describe('Users', () => {
         .expect(response => {
           const { username, email } = response.body.data;
 
-          if (username !== 'peter' || email !== 'peter@test.com') {
-            throw new Error('Invalid response');
-          }
+          expect(username).toBe('peter');
+          expect(email).toBe('peter@test.com');
         });
 
       await authRequest.del('/api/users/peter').expect(httpStatus.NO_CONTENT);
