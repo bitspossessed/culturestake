@@ -53,7 +53,7 @@ export default () => {
   return {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
-      app: ['@babel/polyfill', getPath(`${PATH_SRC}/index.js`)],
+      app: getPath(`${PATH_SRC}/index.js`),
     },
     output: {
       filename: `${filename}.js`,
