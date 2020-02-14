@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -24,10 +23,6 @@ const App = () => {
       <Routes />
     </Router>
   );
-};
-
-App.contextTypes = {
-  t: PropTypes.func.isRequired,
 };
 
 export default App;
