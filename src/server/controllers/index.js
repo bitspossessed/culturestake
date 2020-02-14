@@ -10,7 +10,7 @@ import {
 } from '../helpers/respond';
 
 const DEFAULT_LIMIT = 20;
-const DEFAULT_ORDER_DIRECTION = 'ASC';
+const DEFAULT_ORDER_DIRECTION = 'asc';
 const DEFAULT_ORDER_KEY = 'id';
 
 function create(options) {
