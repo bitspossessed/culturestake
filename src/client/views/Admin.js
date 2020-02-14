@@ -1,7 +1,9 @@
 import React, { Fragment } from 'react';
 
-import Header from '~/components/Header';
+import translate from '%/services/i18n';
+
 import Footer from '~/components/Footer';
+import Header from '~/components/Header';
 import View from '~/components/View';
 
 const Admin = () => {
@@ -10,7 +12,7 @@ const Admin = () => {
       <Header />
 
       <View>
-        <h1>Admin</h1>
+        <h1>{translate('admin')}</h1>
       </View>
 
       <Footer />

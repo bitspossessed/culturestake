@@ -18,6 +18,7 @@ const CONFIG_KEYS = [
 const CONFIG_KEYS_OPTIONAL = [];
 
 const NODE_MODULES = 'node_modules';
+const PATH_COMMON = './src/common';
 const PATH_DIST = './build/static';
 const PATH_SRC = './src/client';
 
@@ -65,6 +66,7 @@ export default () => {
       modules: [NODE_MODULES],
       alias: {
         '~': getPath(PATH_SRC),
+        '%': getPath(PATH_COMMON),
       },
     },
     module: {

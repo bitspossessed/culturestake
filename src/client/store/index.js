@@ -1,13 +1,11 @@
 import { combineReducers } from 'redux';
-import { i18nState } from 'redux-i18n';
 
-import apiReducer from '~/store/api/reducers';
-import appReducer from '~/store/app/reducers';
+import api from '~/store/api/reducers';
+import app from '~/store/app/reducers';
 
 const rootReducer = combineReducers({
-  i18nState,
-  api: apiReducer,
-  app: appReducer,
+  api,
+  app,
 });
 
 export default rootReducer;
