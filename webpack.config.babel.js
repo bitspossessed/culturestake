@@ -7,6 +7,7 @@ import webpack from 'webpack';
 dotenv.config();
 
 const CONFIG_KEYS = [
+  'API_ENDPOINT',
   'BASE_PATH',
   'ETHEREUM_NODE_ENDPOINT_WS',
   'GRAPH_NODE_ENDPOINT',
@@ -52,7 +53,7 @@ export default () => {
   return {
     mode: isDevelopment ? 'development' : 'production',
     entry: {
-      app: getPath(`${PATH_SRC}/index.js`),
+      app: ['@babel/polyfill', getPath(`${PATH_SRC}/index.js`)],
     },
     output: {
       filename: `${filename}.js`,
