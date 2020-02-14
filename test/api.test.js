@@ -1,9 +1,15 @@
 import httpStatus from 'http-status';
 import request from 'supertest';
 
+import { initializeDatabase } from './helpers/database';
+
 import app from '~/server';
 
 describe('API', () => {
+  beforeAll(async () => {
+    await initializeDatabase();
+  });
+
   describe('GET /api', () => {
     it('should respond with a successful message', async () => {
       await request(app)

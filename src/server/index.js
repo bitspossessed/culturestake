@@ -12,9 +12,10 @@ import morgan from 'morgan';
 
 dotenv.config();
 
+import db from './database';
 import errorsMiddleware from './middlewares/errors';
 import logger from './helpers/logger';
-import db from './database';
+import passport from './services/passport';
 
 const ASSETS_FOLDER_NAME = 'static';
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json';
@@ -66,6 +67,9 @@ app.use(bodyParser.json());
 // Use CORS and security middlewares
 app.use(cors());
 app.use(helmet());
+
+// Passport authentication middleware
+app.use(passport.initialize());
 
 // Log HTTP requests and route them to winston
 app.use(

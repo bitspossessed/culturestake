@@ -1,0 +1,22 @@
+ {
+  "default": {
+    "username": "admin",
+    "email": "admin@domain.com",
+    "password": "adminadmin"
+  },
+  "lisa": {
+    "username": "lisa",
+    "email": "lisa@test.com",
+    "password": "verystrongpassword123"
+  },
+  "hanna": {
+    "username": "hanna",
+    "email": "hanna@test.com",
+    "password": "hanna123456789"
+  },
+  "petra": {
+    "username": "petra",
+    "email": "petra@test.com",
+    "password": "passwOrd123"
+  }
+}

@@ -11,6 +11,8 @@ export default function errorsMiddleware(err, req, res, next) {
   if (isValidationError(err)) {
     const { joi } = err;
 
+    logger.debug(joi);
+
     // Show validation errors to user
     err = new APIError(httpStatus.BAD_REQUEST);
 
