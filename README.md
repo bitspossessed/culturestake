@@ -17,7 +17,7 @@ CultureStake democratises arts commissioning by providing communities and artist
 // Install dependencies
 npm install
 
-// Copy .env file for local development
+// Copy .env file for local development and testing
 cp .env.example .env
 
 // Seed and migrate database

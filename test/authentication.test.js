@@ -3,6 +3,7 @@ import request from 'supertest';
 
 import createSupertest from './helpers/supertest';
 import users from './data/users';
+import { initializeDatabase } from './helpers/database';
 
 import app from '~/server';
 
@@ -10,6 +11,7 @@ describe('Authentication', () => {
   let authRequest;
 
   beforeAll(async () => {
+    await initializeDatabase();
     authRequest = await createSupertest();
   });
 

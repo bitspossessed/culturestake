@@ -2,12 +2,14 @@ import httpStatus from 'http-status';
 
 import createSupertest from './helpers/supertest';
 import users from './data/users';
+import { initializeDatabase } from './helpers/database';
 
 describe('Pagination', () => {
   let authRequest;
   let createdUsers = [];
 
   beforeAll(async () => {
+    await initializeDatabase();
     authRequest = await createSupertest();
   });
 
