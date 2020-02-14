@@ -1,27 +1,53 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Dashboard from '~/views/Dashboard';
+import Admin from '~/views/Admin';
+import AdminLogin from '~/views/AdminLogin';
+import Booth from '~/views/Booth';
+import Homepage from '~/views/Homepage';
 import NotFound from '~/views/NotFound';
+import Vote from '~/views/Vote';
 
-const SessionContainer = ({ component: Component }) => {
-  const { app } = useSelector(state => {
-    return {
-      app: state.app,
-    };
-  });
+const SessionContainer = ({ component: Component, isTokenRequired = null }) => {
+  const app = useSelector(state => state.app);
 
-  // Do not do anything yet when we are not ready
+  // Do not do anything yet when not ready
   if (!app.isReady) {
     return null;
+  }
+
+  // Redirect us when token authentication is required
+  if (isTokenRequired !== null && isTokenRequired && !app.isAuthenticated) {
+    return <Redirect to="/" />;
+  }
+
+  // Redirect us when we are not allowed to be logged in
+  if (isTokenRequired !== null && !isTokenRequired && app.isAuthenticated) {
+    return <Redirect to="/admin" />;
   }
 
   return <Component />;
 };
 
-const SessionRoute = ({ component, path }) => {
+const AuthenticatedRoute = ({ component, path }) => {
+  return (
+    <Route path={path}>
+      <SessionContainer component={component} isTokenRequired={true} />
+    </Route>
+  );
+};
+
+const UnauthenticatedRoute = ({ component, path }) => {
+  return (
+    <Route path={path}>
+      <SessionContainer component={component} isTokenRequired={false} />
+    </Route>
+  );
+};
+
+const PublicRoute = ({ component, path }) => {
   return (
     <Route path={path}>
       <SessionContainer component={component} />
@@ -31,16 +57,31 @@ const SessionRoute = ({ component, path }) => {
 
 const Routes = () => (
   <Switch>
-    <SessionRoute component={Dashboard} exact path="/" />
+    <PublicRoute component={Homepage} exact path="/" />
+    <AuthenticatedRoute component={Admin} path="/admin" />
+    <UnauthenticatedRoute component={AdminLogin} path="/login" />
+    <PublicRoute component={Booth} path="/booth" />
+    <PublicRoute component={Vote} path="/vote" />
     <Route component={NotFound} />
   </Switch>
 );
 
 SessionContainer.propTypes = {
   component: PropTypes.elementType.isRequired,
+  isTokenRequired: PropTypes.bool,
 };
 
-SessionRoute.propTypes = {
+AuthenticatedRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  path: PropTypes.string.isRequired,
+};
+
+UnauthenticatedRoute.propTypes = {
+  component: PropTypes.elementType.isRequired,
+  path: PropTypes.string.isRequired,
+};
+
+PublicRoute.propTypes = {
   component: PropTypes.elementType.isRequired,
   path: PropTypes.string.isRequired,
 };
