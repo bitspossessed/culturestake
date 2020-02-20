@@ -3,12 +3,12 @@ import React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Admin from '~/views/Admin';
-import AdminLogin from '~/views/AdminLogin';
-import Booth from '~/views/Booth';
-import Homepage from '~/views/Homepage';
-import NotFound from '~/views/NotFound';
-import Vote from '~/views/Vote';
+import Admin from '~/client/views/Admin';
+import AdminLogin from '~/client/views/AdminLogin';
+import Booth from '~/client/views/Booth';
+import Homepage from '~/client/views/Homepage';
+import NotFound from '~/client/views/NotFound';
+import Vote from '~/client/views/Vote';
 
 const SessionContainer = ({ component: Component, isTokenRequired = null }) => {
   const app = useSelector(state => state.app);

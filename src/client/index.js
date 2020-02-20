@@ -3,8 +3,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 
-import App from '~/App';
-import store from '~/configureStore';
+import App from '~/client/App';
+import store from '~/client/configureStore';
 
 const Root = props => (
   <Provider store={props.store}>

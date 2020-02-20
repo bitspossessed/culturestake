@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 
-import View from '~/components/View';
+import View from '~/client/components/View';
 
 const NotFound = () => {
   return (

@@ -1,6 +1,6 @@
 import update from 'immutability-helper';
 
-import ActionTypes from '~/store/api/types';
+import ActionTypes from '~/client/store/api/types';
 
 const initialState = {
   pendingRequests: 0,

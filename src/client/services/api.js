@@ -1,5 +1,5 @@
-import request from '~/utils/request';
-import { APIError, RequestError } from '~/utils/errors';
+import request from '~/client/utils/request';
+import { APIError, RequestError } from '~/client/utils/errors';
 
 export default async function apiRequest({
   path,

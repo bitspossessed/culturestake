@@ -1,4 +1,4 @@
-import parameterize from '~/utils/parameterize';
+import parameterize from '~/client/utils/parameterize';
 
 const DEFAULT_METHOD = 'GET';
 

@@ -1,5 +1,5 @@
-import { signJWTToken } from '../services/passport';
-import { respondWithSuccess } from '../helpers/respond';
+import { signJWTToken } from '~/server/services/passport';
+import { respondWithSuccess } from '~/server/helpers/respond';
 
 async function requestToken(req, res, next) {
   try {

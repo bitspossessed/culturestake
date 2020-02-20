@@ -1,6 +1,6 @@
-import ActionTypes from '~/store/api/types';
-import apiRequest from '~/services/api';
-import { API_REQUEST } from '~/store/api/actions';
+import ActionTypes from '~/client/store/api/types';
+import apiRequest from '~/client/services/api';
+import { API_REQUEST } from '~/client/store/api/actions';
 
 const apiMiddleware = store => next => async action => {
   if (!(API_REQUEST in action)) {

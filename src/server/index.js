@@ -12,10 +12,10 @@ import morgan from 'morgan';
 
 dotenv.config();
 
-import db from './database';
-import errorsMiddleware from './middlewares/errors';
-import logger from './helpers/logger';
-import passport from './services/passport';
+import db from '~/server/database';
+import errorsMiddleware from '~/server/middlewares/errors';
+import logger from '~/server/helpers/logger';
+import passport from '~/server/services/passport';
 
 const ASSETS_FOLDER_NAME = 'static';
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json';
@@ -91,7 +91,7 @@ app.use(
 );
 
 // Mount all API routes
-app.use('/api', require('./routes'));
+app.use('/api', require('~/server/routes'));
 
 // Handle every other route with index.html
 app.get('*', (req, res) => {

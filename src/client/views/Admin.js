@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 
-import translate from '%/services/i18n';
+import translate from '~/common/services/i18n';
 
-import Footer from '~/components/Footer';
-import Header from '~/components/Header';
-import View from '~/components/View';
+import Footer from '~/client/components/Footer';
+import Header from '~/client/components/Header';
+import View from '~/client/components/View';
 
 const Admin = () => {
   return (

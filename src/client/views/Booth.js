@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 
-import Header from '~/components/Header';
-import Footer from '~/components/Footer';
-import View from '~/components/View';
+import Header from '~/client/components/Header';
+import Footer from '~/client/components/Footer';
+import View from '~/client/components/View';
 
 const Booth = () => {
   return (

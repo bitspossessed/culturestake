@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 
-import APIError from '../helpers/errors';
-import passport from '../services/passport';
+import APIError from '~/server/helpers/errors';
+import passport from '~/server/services/passport';
 
 function handleAuthentication(error, user, req, next) {
   if (error) {

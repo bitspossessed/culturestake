@@ -1,8 +1,8 @@
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import apiErrorMiddleware from '~/middlewares/apiError';
-import apiMiddleware from '~/middlewares/api';
+import apiErrorMiddleware from '~/client/middlewares/apiError';
+import apiMiddleware from '~/client/middlewares/api';
 
 const middlewares = [thunk, apiMiddleware, apiErrorMiddleware];
 

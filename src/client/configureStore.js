@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware } from 'redux';
 
-import middlewares from '~/middlewares';
-import reducers from '~/store';
+import middlewares from '~/client/middlewares';
+import reducers from '~/client/store';
 
 export default createStore(reducers, applyMiddleware(...middlewares));

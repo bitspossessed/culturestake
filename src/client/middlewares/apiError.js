@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 
-import ActionTypes from '~/store/api/types';
-import { resetToken } from '~/store/app/actions';
+import ActionTypes from '~/client/store/api/types';
+import { resetToken } from '~/client/store/app/actions';
 
 const apiErrorMiddleware = store => next => async action => {
   if (action.type !== ActionTypes.API_FAILURE) {

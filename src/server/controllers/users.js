@@ -1,5 +1,5 @@
-import User from '../models/user';
-import baseController from './';
+import User from '~/server/models/user';
+import baseController from '~/server/controllers';
 
 const options = {
   model: User,

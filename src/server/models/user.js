@@ -1,8 +1,8 @@
 import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
 
-import db from '../database';
-import { hashPassword, comparePasswords } from '../services/crypto';
+import db from '~/server/database';
+import { hashPassword, comparePasswords } from '~/server/services/crypto';
 
 const BCRYPT_HASH_LENGTH = 60;
 

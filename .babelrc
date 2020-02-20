@@ -4,6 +4,17 @@
     "@babel/react"
   ],
   "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": [
+          "./src"
+        ],
+        "alias": {
+          "~": "./src",
+        }
+      }
+    ],
     "@babel/plugin-transform-runtime",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",

@@ -3,7 +3,7 @@ import passport from 'passport';
 import { Strategy as StrategyJWT, ExtractJwt } from 'passport-jwt';
 import { Strategy as StrategyLocal } from 'passport-local';
 
-import User from '../models/user';
+import User from '~/server/models/user';
 
 const JWT_ALGORITHM = 'HS512';
 const JWT_EXPIRATION = '1h';

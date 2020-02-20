@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import api from '~/store/api/reducers';
-import app from '~/store/app/reducers';
+import api from '~/client/store/api/reducers';
+import app from '~/client/store/app/reducers';
 
 const rootReducer = combineReducers({
   api,

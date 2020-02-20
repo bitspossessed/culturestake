@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { slugValidation, paginationValidation } from './';
+import { slugValidation, paginationValidation } from '~/server/validations';
 
 const usernameValidation = {
   username: Joi.string()

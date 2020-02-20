@@ -1,13 +1,13 @@
 import httpStatus from 'http-status';
 import { UniqueConstraintError } from 'sequelize';
 
-import APIError from '../helpers/errors';
+import APIError from '~/server/helpers/errors';
 
 import {
   filterResponse,
   filterResponseAll,
   respondWithSuccess,
-} from '../helpers/respond';
+} from '~/server/helpers/respond';
 
 const DEFAULT_LIMIT = 20;
 const DEFAULT_ORDER_DIRECTION = 'asc';

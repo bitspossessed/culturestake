@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 
-import config from './config';
-import logger from '../helpers/logger';
+import config from '~/server/database/config';
+import logger from '~/server/helpers/logger';
 
 export default new Sequelize(config.url, {
   dialect: config.dialect,

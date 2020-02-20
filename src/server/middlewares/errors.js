@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
 import { isCelebrate as isValidationError } from 'celebrate';
 
-import APIError from '../helpers/errors';
-import logger from '../helpers/logger';
-import { respondWithError } from '../helpers/respond';
+import APIError from '~/server/helpers/errors';
+import logger from '~/server/helpers/logger';
+import { respondWithError } from '~/server/helpers/respond';
 
 // eslint-disable-next-line no-unused-vars
 export default function errorsMiddleware(err, req, res, next) {

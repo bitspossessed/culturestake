@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 import { EmptyResultError } from 'sequelize';
 
-import APIError from '../helpers/errors';
+import APIError from '~/server/helpers/errors';
 
 const DEFAULT_KEY = 'slug';
 

@@ -1,10 +1,10 @@
 import React, { Fragment, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import Footer from '~/components/Footer';
-import Header from '~/components/Header';
-import View from '~/components/View';
-import { requestToken } from '~/store/app/actions';
+import Footer from '~/client/components/Footer';
+import Header from '~/client/components/Header';
+import View from '~/client/components/View';
+import { requestToken } from '~/client/store/app/actions';
 
 const AdminLogin = () => {
   const dispatch = useDispatch();

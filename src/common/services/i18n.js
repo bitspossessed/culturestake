@@ -1,4 +1,4 @@
-import locales from '../locales';
+import locales from '~/common/locales';
 
 function keyToString(key) {
   if (Object.prototype.toString.call(key) === '[object Array]') {

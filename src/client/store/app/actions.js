@@ -1,5 +1,5 @@
-import ActionTypes from '~/store/app/types';
-import { postRequest } from '~/store/api/actions';
+import ActionTypes from '~/client/store/app/types';
+import { postRequest } from '~/client/store/api/actions';
 
 export function initializeApp() {
   return dispatch => {

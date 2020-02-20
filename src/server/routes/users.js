@@ -1,10 +1,10 @@
 import express from 'express';
 
-import User from '../models/user';
-import resourcesMiddleware from '../middlewares/resources';
-import usersController from '../controllers/users';
-import usersValidation from '../validations/users';
-import validate from '../helpers/validate';
+import User from '~/server/models/user';
+import resourcesMiddleware from '~/server/middlewares/resources';
+import usersController from '~/server/controllers/users';
+import usersValidation from '~/server/validations/users';
+import validate from '~/server/helpers/validate';
 
 const router = express.Router();
 

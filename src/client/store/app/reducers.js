@@ -1,8 +1,8 @@
 import update from 'immutability-helper';
 
-import ActionTypes from '~/store/app/types';
-import decodeToken from '~/utils/jwt';
-import { hasItem, getItem, setItem, removeItem } from '~/utils/storage';
+import ActionTypes from '~/client/store/app/types';
+import decodeToken from '~/client/utils/jwt';
+import { hasItem, getItem, setItem, removeItem } from '~/client/utils/storage';
 
 const TOKEN_STORAGE = 'token';
 

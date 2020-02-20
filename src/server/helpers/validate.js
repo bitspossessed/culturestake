@@ -1,6 +1,6 @@
 import { celebrate, Joi } from 'celebrate';
 
-import web3 from '../services/web3';
+import web3 from '~/server/services/web3';
 
 export const web3Validators = Joi.extend(joi => {
   return {
