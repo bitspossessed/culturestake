@@ -1,5 +1,8 @@
 import ActionTypes from '~/client/store/app/types';
+import { generateRequestId } from '~/client/middlewares/api';
 import { postRequest } from '~/client/store/api/actions';
+
+export const TOKEN_REQUEST_ID = generateRequestId();
 
 export function initializeApp() {
   return dispatch => {
@@ -20,6 +23,7 @@ export function initializeToken() {
 export function requestToken(email, password) {
   return postRequest(
     {
+      id: TOKEN_REQUEST_ID,
       path: ['auth'],
       body: {
         email,
