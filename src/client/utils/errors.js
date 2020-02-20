@@ -17,9 +17,7 @@ export class APIError extends ClientError {
     const { message, code, fields } = response;
     const { url, method, headers } = response.meta.options;
 
-    super(
-      `Unhandled API request error (url="${url}", code=${code}, message="${message}")`,
-    );
+    super(`API error (url="${url}", code=${code}, message="${message}")`);
 
     this.name = 'APIError';
 
@@ -42,7 +40,7 @@ export class RequestError extends ClientError {
     const code = response;
     const { url, method, headers, body } = response.meta.options;
 
-    super(`Unhandled request error (url="${url}", code=${code})`);
+    super(`Request error (url="${url}", code=${code})`);
 
     this.name = 'RequestError';
 
