@@ -20,14 +20,14 @@ const apiMiddleware = store => next => async action => {
   const { app } = store.getState();
   const { path, method, body, types } = action[API_REQUEST];
 
+  if (types.request && types.request.type) {
+    store.dispatch({ ...types.request });
+  }
+
   store.dispatch({
     type: ActionTypes.API_REQUEST,
     id,
   });
-
-  if (types.request && types.request.type) {
-    store.dispatch({ ...types.request });
-  }
 
   try {
     // Do the actual request
@@ -38,25 +38,25 @@ const apiMiddleware = store => next => async action => {
       token: app.token,
     });
 
+    if (types.success && types.success.type) {
+      store.dispatch({ ...types.success, response });
+    }
+
     store.dispatch({
       type: ActionTypes.API_SUCCESS,
       id,
       response,
     });
-
-    if (types.success && types.success.type) {
-      store.dispatch({ ...types.success, response });
-    }
   } catch (error) {
+    if (types.failure && types.failure.type) {
+      store.dispatch({ ...types.failure, error });
+    }
+
     store.dispatch({
       type: ActionTypes.API_FAILURE,
       id,
       error,
     });
-
-    if (types.failure && types.failure.type) {
-      store.dispatch({ ...types.failure, error });
-    }
   }
 };
 
