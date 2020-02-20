@@ -1,32 +1,14 @@
-import React, { Fragment, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { Fragment } from 'react';
 
 import Footer from '~/client/components/Footer';
 import Header from '~/client/components/Header';
 import View from '~/client/components/View';
-import { requestToken } from '~/client/store/app/actions';
+import FormLogin from '~/client/components/FormLogin';
 
 const AdminLogin = () => {
-  const dispatch = useDispatch();
+  const onSuccess = () => {};
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const onClick = event => {
-    event.preventDefault();
-
-    dispatch(requestToken(email, password));
-  };
-
-  const onChange = event => {
-    const { name, value } = event.target;
-
-    if (name === 'email') {
-      setEmail(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    }
-  };
+  const onError = () => {};
 
   return (
     <Fragment>
@@ -34,36 +16,7 @@ const AdminLogin = () => {
 
       <View>
         <h1>Login</h1>
-
-        <form onSubmit={onClick}>
-          <fieldset>
-            <label htmlFor="email">Email</label>
-
-            <input
-              id="email"
-              name="email"
-              type="email"
-              value={email}
-              onChange={onChange}
-            />
-          </fieldset>
-
-          <fieldset>
-            <label htmlFor="password">Password</label>
-
-            <input
-              id="password"
-              name="password"
-              type="password"
-              value={password}
-              onChange={onChange}
-            />
-          </fieldset>
-
-          <button type="submit" onClick={onClick}>
-            Login
-          </button>
-        </form>
+        <FormLogin onError={onError} onSuccess={onSuccess} />
       </View>
 
       <Footer />

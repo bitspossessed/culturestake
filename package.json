@@ -98,6 +98,7 @@
     "pug": "^2.0.4",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-form": "^4.0.1",
     "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
     "redux": "^4.0.5",
