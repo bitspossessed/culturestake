@@ -10,9 +10,8 @@ const web3 = new Web3(provider);
 //   process.env.RELAY_CONTRACT_ADDRESS
 // const txRelayABI = TxRelayContractJSON.abi
 
-module.exports = {
-  web3,
-  provider,
-  // txRelayAddress,
-  // txRelayABI
+const connect = async () => {
+  return (await web3.eth.getBlock('latest')).number;
 };
+
+export default { connect, web3 };
