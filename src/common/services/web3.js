@@ -9,4 +9,4 @@ const connect = async () => {
   return (await web3.eth.getBlock('latest')).number;
 };
 
-export default { connect, web3 };
+export default { connect, web3, provider };
