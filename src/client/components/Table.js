@@ -57,7 +57,11 @@ const Table = ({
 
   const onSelectHeader = ({ key }) => {
     if (orderKey === key) {
-      setOrderDirection(orderDirection === 'asc' ? 'desc' : 'asc');
+      setOrderDirection(
+        orderDirection === ORDER_DIRECTION_ASC
+          ? ORDER_DIRECTION_DESC
+          : ORDER_DIRECTION_ASC,
+      );
     } else {
       setOrderKey(key);
       setOrderDirection(DEFAULT_ORDER_DIRECTION);
