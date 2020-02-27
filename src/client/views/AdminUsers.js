@@ -33,9 +33,6 @@ const AdminUsers = () => {
     // @TODO: Handle actions
   };
 
-  // @TODO: Get current page index from path
-  const pageIndex = 0;
-
   return (
     <Fragment>
       <Header />
@@ -44,7 +41,6 @@ const AdminUsers = () => {
         <Table
           actions={table.actions}
           columns={table.columns}
-          pageIndex={pageIndex}
           path={table.path}
           onSelect={onSelect}
         />

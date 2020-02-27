@@ -16,7 +16,7 @@ const initialState = {
   orderKey: DEFAULT_ORDER_KEY,
   pageSize: DEFAULT_LIMIT,
   pageIndex: 0,
-  pagesTotal: 0,
+  pagesTotal: 1,
   results: [],
 };
 
@@ -31,7 +31,7 @@ const tablesReducer = (state = initialState, action) => {
         orderKey: { $set: action.meta.orderKey },
         pageSize: { $set: action.meta.pageSize },
         pageIndex: { $set: action.meta.pageIndex },
-        pagesTotal: { $set: 0 },
+        pagesTotal: { $set: 1 },
         results: { $set: [] },
       });
     case ActionTypes.TABLES_REQUEST_SUCCESS: {

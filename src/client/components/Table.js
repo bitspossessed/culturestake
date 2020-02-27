@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import {
@@ -11,6 +12,12 @@ import {
   requestTable,
 } from '~/client/store/tables/actions';
 
+export const PARAM_PAGE_INDEX = 'page';
+
+export const ACTION_DESTROY = Symbol('select-destroy');
+export const ACTION_EDIT = Symbol('select-edit');
+export const ACTION_SELECT = Symbol('select-action');
+
 const DEFAULT_HEADERS = [
   {
     isOrderKey: true,
@@ -19,21 +26,19 @@ const DEFAULT_HEADERS = [
   },
 ];
 
-export const ACTION_DESTROY = Symbol('select-destroy');
-export const ACTION_EDIT = Symbol('select-edit');
-export const ACTION_SELECT = Symbol('select-action');
-
 const Table = ({
   actions,
   columns,
   initialOrderDirection = DEFAULT_ORDER_DIRECTION,
   initialOrderKey = DEFAULT_ORDER_KEY,
   pageSize = DEFAULT_LIMIT,
-  pageIndex,
   path,
   onSelect,
 }) => {
   const dispatch = useDispatch();
+
+  const location = useLocation();
+  const history = useHistory();
 
   const [orderDirection, setOrderDirection] = useState(initialOrderDirection);
   const [orderKey, setOrderKey] = useState(initialOrderKey);
@@ -43,6 +48,25 @@ const Table = ({
   const pathString = path.join('/');
   const colSpan = DEFAULT_HEADERS.length + columns.length + 1;
 
+  // Find out if current page is set as an query parameter
+  let pageIndex = 0;
+
+  try {
+    const urlParams = new URLSearchParams(location.search);
+
+    if (urlParams.has(PARAM_PAGE_INDEX)) {
+      const pageParam = parseInt(urlParams.get(PARAM_PAGE_INDEX), 10);
+
+      if (pageParam > 1) {
+        pageIndex = pageParam - 1;
+      }
+    }
+  } catch (error) {
+    // Do nothing ..
+  }
+
+  // Check for changes in the resource path or
+  // pagination variables to request an update from the server
   useEffect(() => {
     dispatch(
       requestTable({
@@ -72,8 +96,10 @@ const Table = ({
     onSelect(event);
   };
 
-  const onSelectPage = item => {
-    onSelect(item);
+  const onSelectPage = nextPageIndex => {
+    history.push(
+      `${location.pathname}?${PARAM_PAGE_INDEX}=${nextPageIndex + 1}`,
+    );
   };
 
   return (
@@ -187,6 +213,11 @@ export const TableBody = ({
     return <TableBodyMessage colSpan={colSpan}>Loading ...</TableBodyMessage>;
   }
 
+  if (!isLoading && !isError && results.length === 0) {
+    // @TODO: Use i18n
+    return <TableBodyMessage colSpan={colSpan}>Empty!</TableBodyMessage>;
+  }
+
   if (isError) {
     // @TODO: Use i18n
     return (
@@ -268,7 +299,7 @@ export const TableFooter = ({
 }) => {
   const isDisabled = isLoading || !isSuccess;
   const isPreviousDisabled = isDisabled || pageIndex === 0;
-  const isNextDisabled = isDisabled || pageIndex === pagesTotal - 1;
+  const isNextDisabled = isDisabled || pageIndex >= pagesTotal - 1;
 
   const onClickPrevious = () => {
     onSelect(pageIndex - 1);
@@ -317,7 +348,6 @@ Table.propTypes = {
   initialOrderDirection: PropTypesOrderDirections,
   initialOrderKey: PropTypes.string,
   onSelect: PropTypes.func.isRequired,
-  pageIndex: PropTypes.number.isRequired,
   pageSize: PropTypes.number,
   path: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
