@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import translate from '~/common/services/i18n';
+
 import {
   DEFAULT_LIMIT,
   DEFAULT_ORDER_DIRECTION,
@@ -61,7 +63,7 @@ const Table = ({
         pageIndex = pageParam - 1;
       }
     }
-  } catch (error) {
+  } catch {
     // Do nothing ..
   }
 
@@ -209,20 +211,25 @@ export const TableBody = ({
   onSelect,
 }) => {
   if (isLoading) {
-    // @TODO: Use i18n
-    return <TableBodyMessage colSpan={colSpan}>Loading ...</TableBodyMessage>;
+    return (
+      <TableBodyMessage colSpan={colSpan}>
+        {translate('Table.messageLoading')}
+      </TableBodyMessage>
+    );
   }
 
   if (!isLoading && !isError && results.length === 0) {
-    // @TODO: Use i18n
-    return <TableBodyMessage colSpan={colSpan}>Empty!</TableBodyMessage>;
+    return (
+      <TableBodyMessage colSpan={colSpan}>
+        {translate('Table.messageEmpty')}
+      </TableBodyMessage>
+    );
   }
 
   if (isError) {
-    // @TODO: Use i18n
     return (
       <TableBodyMessage colSpan={colSpan}>
-        Something went wrong ...
+        {translate('Table.messageError')}
       </TableBodyMessage>
     );
   }

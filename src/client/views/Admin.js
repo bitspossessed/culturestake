@@ -12,7 +12,7 @@ const Admin = () => {
       <Header />
 
       <View>
-        <h1>{translate('admin')}</h1>
+        <h1>{translate('Admin.title')}</h1>
       </View>
 
       <Footer />
