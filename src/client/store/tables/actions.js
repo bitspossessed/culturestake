@@ -15,14 +15,12 @@ export function requestTable({
   orderDirection = DEFAULT_ORDER_DIRECTION,
   orderKey = DEFAULT_ORDER_KEY,
 }) {
-  const offset = pageIndex * pageSize;
-
   return getRequest(
     {
       path,
       params: {
         limit: pageSize,
-        offset,
+        offset: pageIndex * pageSize,
         orderDirection,
         orderKey,
       },

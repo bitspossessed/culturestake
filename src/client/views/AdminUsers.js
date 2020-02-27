@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import Footer from '~/client/components/Footer';
 import Header from '~/client/components/Header';
-import Table from '~/client/components/Table';
+import Table, { ACTION_EDIT } from '~/client/components/Table';
 import View from '~/client/components/View';
 
 // @TODO: Use I18n for labels
@@ -23,7 +23,7 @@ const table = {
   actions: [
     {
       label: 'Edit',
-      key: 'edit',
+      key: ACTION_EDIT,
     },
   ],
 };
