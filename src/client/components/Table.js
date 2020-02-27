@@ -244,14 +244,14 @@ export const TableBodyItems = ({ columns, values }) => {
 };
 
 export const TableActions = ({ actions, onSelect }) => {
-  return actions.map(action => {
+  return actions.map((action, index) => {
     const onSelectAction = event => {
       event.stopPropagation();
       onSelect(action.key);
     };
 
     return (
-      <button key={`action-${action.key}`} onClick={onSelectAction}>
+      <button key={`action-${index}`} onClick={onSelectAction}>
         {action.label}
       </button>
     );
@@ -296,7 +296,7 @@ export const TableFooter = ({
 };
 
 const PropTypesAction = PropTypes.shape({
-  key: PropTypes.string.isRequired,
+  key: PropTypes.symbol.isRequired,
   label: PropTypes.string.isRequired,
 });
 
