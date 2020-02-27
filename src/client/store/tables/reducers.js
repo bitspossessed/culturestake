@@ -16,8 +16,8 @@ const initialState = {
   orderKey: DEFAULT_ORDER_KEY,
   pageSize: DEFAULT_LIMIT,
   pageIndex: 0,
+  pagesTotal: 0,
   results: [],
-  total: 0,
 };
 
 const tablesReducer = (state = initialState, action) => {
@@ -31,16 +31,21 @@ const tablesReducer = (state = initialState, action) => {
         orderKey: { $set: action.meta.orderKey },
         pageSize: { $set: action.meta.pageSize },
         pageIndex: { $set: action.meta.pageIndex },
+        pagesTotal: { $set: 0 },
         results: { $set: [] },
-        total: { $set: 0 },
       });
-    case ActionTypes.TABLES_REQUEST_SUCCESS:
+    case ActionTypes.TABLES_REQUEST_SUCCESS: {
+      const pagesTotal = Math.ceil(
+        action.response.pagination.total / state.pageSize,
+      );
+
       return update(state, {
         isLoading: { $set: false },
         isSuccess: { $set: true },
         results: { $set: action.response.results },
-        total: { $set: action.response.pagination.total },
+        pagesTotal: { $set: pagesTotal },
       });
+    }
     case ActionTypes.TABLES_REQUEST_FAILURE:
       return update(state, {
         isLoading: { $set: false },

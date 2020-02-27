@@ -39,11 +39,9 @@ const Table = ({
   const [orderKey, setOrderKey] = useState(initialOrderKey);
 
   const tables = useSelector(state => state.tables);
+
   const pathString = path.join('/');
-
   const colSpan = DEFAULT_HEADERS.length + columns.length + 1;
-
-  const pagesTotal = Math.ceil(tables.total / pageSize);
 
   useEffect(() => {
     dispatch(
@@ -98,7 +96,7 @@ const Table = ({
         isLoading={tables.isLoading}
         isSuccess={tables.isSuccess}
         pageIndex={pageIndex}
-        pagesTotal={pagesTotal}
+        pagesTotal={tables.pagesTotal}
         onSelect={onSelectPage}
       />
     </table>
