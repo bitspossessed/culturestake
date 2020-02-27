@@ -1,12 +1,17 @@
 import Joi from '@hapi/joi';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+
+import translate from '~/common/services/i18n';
 
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import InputField from '~/client/components/InputField';
 import { requestToken, TOKEN_REQUEST_ID } from '~/client/store/app/actions';
 import { useForm } from '~/client/hooks/forms';
+
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 
 const schema = {
   email: Joi.string()
@@ -23,41 +28,44 @@ const FormLogin = () => {
     Form,
     meta: {
       canSubmit,
-      request: { isPending, isSuccess },
+      request: { isPending },
     },
   } = useForm({
     requestId: TOKEN_REQUEST_ID,
+    onSuccess: () => {
+      // @NOTE: Success state / auth token is handled in the app reducer
+    },
     onSubmit: ({ email, password }) => {
       dispatch(requestToken(email, password));
     },
-    onError: error => {
-      // @TODO: Show Flash component message instead
-      alert(error.message);
+    onError: () => {
+      dispatch(
+        notify({
+          text: translate('formLogin.authenticationError'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
     },
   });
-
-  if (isSuccess) {
-    return <Redirect to="/admin" />;
-  }
 
   return (
     <Form>
       <InputField
-        label="Your E-Mail-Address"
+        label={translate('formLogin.emailField')}
         name="email"
         type="email"
         validate={schema.email}
       />
 
       <InputField
-        label="Your password"
+        label={translate('formLogin.passwordField')}
         name="password"
         type="password"
         validate={schema.password}
       />
 
       <ButtonSubmit disabled={!canSubmit} isPending={isPending}>
-        Login
+        {translate('formLogin.submitButton')}
       </ButtonSubmit>
     </Form>
   );

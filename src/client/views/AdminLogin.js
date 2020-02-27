@@ -6,17 +6,12 @@ import View from '~/client/components/View';
 import FormLogin from '~/client/components/FormLogin';
 
 const AdminLogin = () => {
-  const onSuccess = () => {};
-
-  const onError = () => {};
-
   return (
     <Fragment>
       <Header />
 
       <View>
-        <h1>Login</h1>
-        <FormLogin onError={onError} onSuccess={onSuccess} />
+        <FormLogin />
       </View>
 
       <Footer />
