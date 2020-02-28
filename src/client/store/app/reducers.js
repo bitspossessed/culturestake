@@ -29,6 +29,8 @@ function initializeToken() {
 
     if (isNotExpired && isValidUser && isCorrectIssuer) {
       token = getItem(TOKEN_STORAGE);
+    } else {
+      removeItem(TOKEN_STORAGE);
     }
   }
 
