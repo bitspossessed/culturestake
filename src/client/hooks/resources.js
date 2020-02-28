@@ -1,7 +1,39 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { generateRequestId } from '~/client/middlewares/api';
 import { requestResource } from '~/client/store/resources/actions';
+
+export const useRequestId = () => {
+  return useMemo(() => {
+    return generateRequestId();
+  }, []);
+};
+
+export const useRequest = (requestId, { onError, onSuccess }) => {
+  const {
+    isError = false,
+    isSuccess = false,
+    isPending = false,
+    error,
+  } = useSelector(state => {
+    return state.api.requests[requestId] || {};
+  });
+
+  useEffect(() => {
+    if (isError && onError) {
+      onError(error);
+    } else if (isSuccess && onSuccess) {
+      onSuccess();
+    }
+  }, [isError, isSuccess]);
+
+  return {
+    isError,
+    isPending,
+    isSuccess,
+  };
+};
 
 export const useResource = path => {
   const dispatch = useDispatch();
