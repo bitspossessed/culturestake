@@ -1,10 +1,11 @@
 import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 
-import apiErrorMiddleware from '~/client/middlewares/apiError';
-import apiMiddleware from '~/client/middlewares/api';
+import api from '~/client/middlewares/api';
+import apiError from '~/client/middlewares/apiError';
+import notifications from '~/client/middlewares/notifications';
 
-const middlewares = [thunk, apiMiddleware, apiErrorMiddleware];
+const middlewares = [thunk, api, apiError, notifications];
 
 if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);

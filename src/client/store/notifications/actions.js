@@ -10,13 +10,11 @@ export const NotificationsTypes = {
   ERROR: Symbol('NotificationsTypesError'),
 };
 
-export default function notify(options) {
-  const {
-    text,
-    type = NotificationsTypes.INFO,
-    lifetime = DEFAULT_LIFETIME,
-  } = options;
-
+export default function notify({
+  text,
+  type = NotificationsTypes.INFO,
+  lifetime = DEFAULT_LIFETIME,
+}) {
   return {
     type: ActionTypes.NOTIFICATIONS_ADD,
     meta: {
