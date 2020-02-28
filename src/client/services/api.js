@@ -29,7 +29,7 @@ export default async function apiRequest({
   }
 
   // This is not an API error but something more serious
-  if (response.meta.status >= 400) {
+  if (response.meta && response.meta.status >= 400) {
     throw new RequestError(response);
   }
 

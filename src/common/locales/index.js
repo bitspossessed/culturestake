@@ -5,9 +5,13 @@ const components = {
     bodyLoading: 'Loading ...',
   },
   FormLogin: {
-    buttonSubmit: 'Login',
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
+  },
+  FormUsers: {
+    fieldEmail: 'Email-address:',
+    fieldPassword: 'Password:',
+    fieldUsername: 'Username:',
   },
 };
 
@@ -28,18 +32,35 @@ const views = {
   Admin: {
     title: 'Admin',
   },
+  AdminLogin: {
+    buttonSubmit: 'Login',
+    title: 'Login',
+  },
   AdminUsers: {
+    buttonNewUser: 'Create new user',
     fieldEmail: 'Email-address',
     fieldUsername: 'Username',
     title: 'Users',
   },
+  AdminUsersEdit: {
+    buttonSubmit: 'Save',
+    title: 'Edit user',
+  },
+  AdminUsersNew: {
+    buttonSubmit: 'Create',
+    title: 'Create new user',
+  },
   Homepage: {
     title: 'Hello, Decal!',
+  },
+  NotFound: {
+    title: 'Not Found',
   },
 };
 
 export default {
   default: {
+    buttonReturnToOverview: 'Return to overview',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',
   },

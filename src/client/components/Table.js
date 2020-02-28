@@ -119,6 +119,7 @@ const Table = ({
         columns={columns}
         isError={tables.isError}
         isLoading={tables.isLoading}
+        offset={tables.pageSize * tables.pageIndex}
         results={tables.results}
         onSelect={onSelectRow}
       />
@@ -207,6 +208,7 @@ export const TableBody = ({
   columns,
   isError,
   isLoading,
+  offset,
   results,
   onSelect,
 }) => {
@@ -253,7 +255,7 @@ export const TableBody = ({
 
         return (
           <tr key={`tr-${item.id}`} onClick={onSelectItem}>
-            <td>{index}</td>
+            <td>{index + offset + 1}</td>
             <TableBodyItems columns={columns} values={item} />
             <td>
               <TableActions actions={actions} onSelect={onSelectAction} />
@@ -365,6 +367,7 @@ TableBody.propTypes = {
   columns: PropTypes.arrayOf(PropTypesColumn).isRequired,
   isError: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  offset: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
   results: PropTypes.array.isRequired,
 };

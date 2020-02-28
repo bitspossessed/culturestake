@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import translate from '~/common/services/i18n';
 
@@ -30,23 +32,29 @@ const table = {
 };
 
 const AdminUsers = () => {
-  const onSelect = item => {
-    // @TODO: Handle actions
+  const history = useHistory();
+
+  const onSelect = ({ item: { slug } }) => {
+    history.push(`/admin/users/${slug}/edit`);
   };
 
   return (
     <Fragment>
-      <Header />
+      <Header>
+        <h1>{translate('AdminUsers.title')}</h1>
+      </Header>
 
       <View>
-        <h1>{translate('AdminUsers.title')}</h1>
-
         <Table
           actions={table.actions}
           columns={table.columns}
           path={table.path}
           onSelect={onSelect}
         />
+
+        <Link to="/admin/users/new">
+          {translate('AdminUsers.buttonNewUser')}
+        </Link>
       </View>
 
       <Footer />
