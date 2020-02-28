@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import Button from '~/client/components/Button';
 import translate from '~/common/services/i18n';
 
 import {
@@ -322,13 +323,13 @@ export const TableFooter = ({
     <tfoot>
       <tr>
         <td colSpan={colSpan}>
-          <button disabled={isPreviousDisabled} onClick={onClickPrevious}>
+          <Button disabled={isPreviousDisabled} onClick={onClickPrevious}>
             &lt;
-          </button>
+          </Button>
 
-          <button disabled={isNextDisabled} onClick={onClickNext}>
+          <Button disabled={isNextDisabled} onClick={onClickNext}>
             &gt;
-          </button>
+          </Button>
         </td>
       </tr>
     </tfoot>

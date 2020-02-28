@@ -44,11 +44,15 @@ const views = {
   },
   AdminUsersEdit: {
     buttonSubmit: 'Save',
+    notificationSuccess: 'You updated the user {username}.',
+    notificationDestroySuccess: 'You deleted user {username}.',
     title: 'Edit user',
   },
   AdminUsersNew: {
     buttonSubmit: 'Create',
     title: 'Create new user',
+    notificationSuccess: 'You created the user {username}.',
+    errorUniqueUser: 'A user with this email or username exists already.',
   },
   Homepage: {
     title: 'Hello, Decal!',
@@ -60,7 +64,10 @@ const views = {
 
 export default {
   default: {
+    areYouSure: 'Are you sure you really want to do this?',
+    buttonDestroy: 'Delete',
     buttonReturnToOverview: 'Return to overview',
+    errorMessage: 'Something went wrong ...',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',
   },

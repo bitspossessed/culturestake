@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import { Link } from 'react-router-dom';
 
 import translate from '~/common/services/i18n';
 
@@ -9,10 +10,12 @@ import View from '~/client/components/View';
 const Admin = () => {
   return (
     <Fragment>
-      <Header />
+      <Header>
+        <h1>{translate('Admin.title')}</h1>
+      </Header>
 
       <View>
-        <h1>{translate('Admin.title')}</h1>
+        <Link to="/admin/users">Users</Link>
       </View>
 
       <Footer />
