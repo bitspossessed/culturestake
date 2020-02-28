@@ -24,12 +24,12 @@ export default async function apiRequest({
   });
 
   // Check in the response data if an API error occurred
-  if (response.status !== 'ok') {
+  if (response.status && response.status !== 'ok') {
     throw new APIError(response);
   }
 
   // This is not an API error but something more serious
-  if (response.meta && response.meta.status >= 400) {
+  if (response && response.meta && response.meta.status >= 400) {
     throw new RequestError(response);
   }
 
