@@ -213,7 +213,7 @@ export const TableBody = ({
   if (isLoading) {
     return (
       <TableBodyMessage colSpan={colSpan}>
-        {translate('Table.messageLoading')}
+        {translate('Table.bodyLoading')}
       </TableBodyMessage>
     );
   }
@@ -221,7 +221,7 @@ export const TableBody = ({
   if (!isLoading && !isError && results.length === 0) {
     return (
       <TableBodyMessage colSpan={colSpan}>
-        {translate('Table.messageEmpty')}
+        {translate('Table.bodyEmpty')}
       </TableBodyMessage>
     );
   }
@@ -229,7 +229,7 @@ export const TableBody = ({
   if (isError) {
     return (
       <TableBodyMessage colSpan={colSpan}>
-        {translate('Table.messageError')}
+        {translate('Table.bodyError')}
       </TableBodyMessage>
     );
   }

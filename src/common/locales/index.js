@@ -1,14 +1,26 @@
 const components = {
   Table: {
-    messageEmpty: 'No entries given',
-    messageError: 'Something went wrong ...',
-    messageLoading: 'Loading ...',
+    bodyEmpty: 'No entries given',
+    bodyError: 'Something went wrong ...',
+    bodyLoading: 'Loading ...',
   },
   FormLogin: {
     buttonSubmit: 'Login',
-    errorAuthentication: 'The credentials are incorrect, please try again.',
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
+  },
+};
+
+const middlewares = {
+  apiError: {
+    errorExpiredSession: 'Your session has expired. Please login again.',
+  },
+};
+
+const store = {
+  app: {
+    notificationTokenSuccess: 'Login successful! Welcome!',
+    errorTokenFailure: 'Login failed, please try again.',
   },
 };
 
@@ -32,5 +44,7 @@ export default {
     tableActionEdit: 'Edit',
   },
   ...components,
+  ...middlewares,
+  ...store,
   ...views,
 };

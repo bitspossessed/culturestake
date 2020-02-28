@@ -32,19 +32,8 @@ const FormLogin = () => {
     },
   } = useForm({
     requestId: TOKEN_REQUEST_ID,
-    onSuccess: () => {
-      // @NOTE: Success state / auth token is handled in the app reducer
-    },
     onSubmit: ({ email, password }) => {
       dispatch(requestToken(email, password));
-    },
-    onError: () => {
-      dispatch(
-        notify({
-          text: translate('FormLogin.errorAuthentication'),
-          type: NotificationsTypes.ERROR,
-        }),
-      );
     },
   });
 
