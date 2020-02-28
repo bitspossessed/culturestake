@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 import Admin from '~/client/views/Admin';
 import AdminLogin from '~/client/views/AdminLogin';
+import AdminUsers from '~/client/views/AdminUsers';
 import Booth from '~/client/views/Booth';
 import Homepage from '~/client/views/Homepage';
 import NotFound from '~/client/views/NotFound';
@@ -58,6 +59,7 @@ const PublicRoute = ({ component, path }) => {
 const Routes = () => (
   <Switch>
     <PublicRoute component={Homepage} exact path="/" />
+    <AuthenticatedRoute component={AdminUsers} path="/admin/users" />
     <AuthenticatedRoute component={Admin} path="/admin" />
     <UnauthenticatedRoute component={AdminLogin} path="/login" />
     <PublicRoute component={Booth} path="/booth" />

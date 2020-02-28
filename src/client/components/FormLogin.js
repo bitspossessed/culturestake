@@ -41,7 +41,7 @@ const FormLogin = () => {
     onError: () => {
       dispatch(
         notify({
-          text: translate('formLogin.authenticationError'),
+          text: translate('FormLogin.errorAuthentication'),
           type: NotificationsTypes.ERROR,
         }),
       );
@@ -51,21 +51,21 @@ const FormLogin = () => {
   return (
     <Form>
       <InputField
-        label={translate('formLogin.emailField')}
+        label={translate('FormLogin.fieldEmail')}
         name="email"
         type="email"
         validate={schema.email}
       />
 
       <InputField
-        label={translate('formLogin.passwordField')}
+        label={translate('FormLogin.fieldPassword')}
         name="password"
         type="password"
         validate={schema.password}
       />
 
       <ButtonSubmit disabled={!canSubmit} isPending={isPending}>
-        {translate('formLogin.submitButton')}
+        {translate('FormLogin.buttonSubmit')}
       </ButtonSubmit>
     </Form>
   );
