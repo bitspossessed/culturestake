@@ -36,7 +36,7 @@ const assetsManifestoPath = getPath(ASSETS_MANIFESTO_FILE);
 // Check if assets exist
 if (!fs.existsSync(assetsManifestoPath)) {
   logger.error(
-    `"${ASSETS_MANIFESTO_FILE}" was not found, please bundle assets first`,
+    `"${ASSETS_MANIFESTO_FILE}" was not found, please bundle assets via 'npm run client:build' or 'npm run client:watch' first`,
   );
   process.exit(1);
 }
