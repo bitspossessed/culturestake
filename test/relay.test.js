@@ -8,7 +8,10 @@ import { initializeDatabase } from './helpers/database';
 
 import app from '~/server';
 import blockchain from '~/common/services/web3';
-import { getRelayerContract, getVoteContract } from '~/common/services/contracts';
+import {
+  getRelayerContract,
+  getVoteContract,
+} from '~/common/services/contracts';
 
 let metaTxHandler;
 
@@ -19,7 +22,6 @@ describe('API', () => {
 
   beforeAll(async () => {
     await initializeDatabase();
-    console.log(process.env.RELAYER_CONTRACT);
     relayer = getRelayerContract(blockchain.web3, process.env.RELAYER_CONTRACT);
     vote = getVoteContract(blockchain.web3, process.env.VOTE_CONTRACT);
     sender = blockchain.web3.eth.accounts.create();
@@ -33,7 +35,7 @@ describe('API', () => {
 
   describe('POST /api/relay', () => {
     it('should respond with a successful message', async () => {
-      const metaNonce = await relayer.methods.getNonce(sender.address).call();
+      const metaNonce = await relayer.methods.getNonce(sender.address.toString()).call();
       const txParams = {
         from: sender.address,
         to: relayer.options.address,
@@ -43,7 +45,7 @@ describe('API', () => {
       const tx = new metaTxHandler.Transaction(txParams);
       const metaSignedTx = metaTxHandler.signMetaTx(
         tx,
-        sender.privateKey,
+        sender.privateKey.substring(2),
         metaNonce,
       );
       await request(app)
