@@ -1,5 +1,5 @@
 import { respondWithSuccess } from '~/server/helpers/respond';
-import { metaTxHandler } from '~/server/services/metatx';
+import metaTxHandler from '~/server/services/metatx';
 import blockchain from '~/common/services/web3';
 
 async function relay(req, res, next) {

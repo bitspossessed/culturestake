@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 import httpStatus from 'http-status';
 import request from 'supertest';
 import MetaTxHandler from 'metatx-handler';
@@ -28,35 +26,39 @@ describe('API', () => {
     metaTxHandler = new MetaTxHandler(
       process.env.PAYER_PRIV_KEY,
       blockchain.provider,
-      process.env.RELAY_CONTRACT,
+      process.env.RELAYER_CONTRACT,
       relayer.options.jsonInterface,
     );
   });
 
   describe('POST /api/relay', () => {
     it('should respond with a successful message', async () => {
-      const metaNonce = await relayer.methods.getNonce(sender.address.toString()).call();
+      const metaNonce = await relayer.methods
+        .getNonce(sender.address.toString())
+        .call();
+      // console.log(metaNonce)
+
       const txParams = {
         from: sender.address,
-        to: relayer.options.address,
+        to: vote.options.address,
         value: 0,
-        data: vote.methods.recordVote().encodeABI(),
+        nonce: metaNonce,
+        data: vote.methods.recordVote(sender.address).encodeABI(),
       };
-      const tx = new metaTxHandler.Transaction(txParams);
-      const metaSignedTx = metaTxHandler.signMetaTx(
-        tx,
+      const metaSignedTx = await metaTxHandler.signMetaTx(
+        txParams,
         sender.privateKey.substring(2),
         metaNonce,
       );
+      // console.log(sender.address)
+      // console.log('signed', metaSignedTx)
       await request(app)
         .post('/api/relay')
         .send({
           metaNonce,
           metaSignedTx,
         })
-        .expect(httpStatus.OK, {
-          status: 'ok',
-        });
+        .expect(httpStatus.OK);
     });
   });
 });

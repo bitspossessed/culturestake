@@ -12,7 +12,7 @@ const relayer = getRelayerContract(
 const metaTxHandler = new MetaTxHandler(
   process.env.PAYER_PRIV_KEY,
   blockchain.provider,
-  process.env.RELAY_CONTRACT,
+  process.env.RELAYER_CONTRACT,
   relayer.options.jsonInterface,
   logger,
 );
