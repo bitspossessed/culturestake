@@ -91,7 +91,7 @@
     "jsonwebtoken": "^8.5.1",
     "jwt-decode": "^2.2.0",
     "luxon": "^1.22.0",
-    "metatx-handler": "^1.0.12",
+    "metatx-handler": "^1.0.13",
     "method-override": "^3.0.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.1",
