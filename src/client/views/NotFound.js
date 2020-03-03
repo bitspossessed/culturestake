@@ -1,13 +1,15 @@
 import React, { Fragment } from 'react';
 
-import View from '~/client/components/View';
+import translate from '~/common/services/i18n';
+
+import Header from '~/client/components/Header';
 
 const NotFound = () => {
   return (
     <Fragment>
-      <View>
-        <h1>Not Found</h1>
-      </View>
+      <Header>
+        <h1>{translate('NotFound.title')}</h1>
+      </Header>
     </Fragment>
   );
 };

@@ -1,11 +1,11 @@
 import Joi from '@hapi/joi';
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 
 import {
   useField as useReactFormField,
   useForm as useReactForm,
 } from 'react-form';
+
+import { useRequest } from '~/client/hooks/resources';
 
 const joiOptions = {
   errors: {
@@ -42,25 +42,6 @@ export const useForm = ({
   schema,
   ...rest
 }) => {
-  // Check for state of the current request
-  const {
-    isError = false,
-    isSuccess = false,
-    isPending = false,
-    error,
-  } = useSelector(state => {
-    return state.api.requests[requestId] || {};
-  });
-
-  // Handle callbacks for request state changes
-  useEffect(() => {
-    if (isError && onError) {
-      onError(error);
-    } else if (isSuccess && onSuccess) {
-      onSuccess();
-    }
-  }, [isError, isSuccess]);
-
   // Wrap our custom validation method around react-form API
   const formApi = useReactForm({
     ...rest,
@@ -70,16 +51,23 @@ export const useForm = ({
     },
   });
 
+  // Check for state of the current request
+  const request = useRequest(requestId, {
+    onError,
+    onSuccess: () => {
+      if (onSuccess) {
+        onSuccess(formApi.values);
+      }
+    },
+  });
+
+  // Handle callbacks for request state changes
   return {
     ...formApi,
     meta: {
       ...formApi.meta,
-      canSubmit: formApi.meta.canSubmit && !isPending,
-      request: {
-        isError,
-        isPending,
-        isSuccess,
-      },
+      canSubmit: formApi.meta.canSubmit && !request.isPending,
+      request,
     },
   };
 };
