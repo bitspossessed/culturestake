@@ -61,5 +61,8 @@ export default async function request(customOptions) {
     };
   }
 
-  return response.body;
+  return {
+    data: await response.text(),
+    meta,
+  };
 }

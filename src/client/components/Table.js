@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import Button from '~/client/components/Button';
 import translate from '~/common/services/i18n';
 
 import {
@@ -119,6 +120,7 @@ const Table = ({
         columns={columns}
         isError={tables.isError}
         isLoading={tables.isLoading}
+        offset={tables.pageSize * tables.pageIndex}
         results={tables.results}
         onSelect={onSelectRow}
       />
@@ -207,6 +209,7 @@ export const TableBody = ({
   columns,
   isError,
   isLoading,
+  offset,
   results,
   onSelect,
 }) => {
@@ -253,7 +256,7 @@ export const TableBody = ({
 
         return (
           <tr key={`tr-${item.id}`} onClick={onSelectItem}>
-            <td>{index}</td>
+            <td>{index + offset + 1}</td>
             <TableBodyItems columns={columns} values={item} />
             <td>
               <TableActions actions={actions} onSelect={onSelectAction} />
@@ -320,13 +323,13 @@ export const TableFooter = ({
     <tfoot>
       <tr>
         <td colSpan={colSpan}>
-          <button disabled={isPreviousDisabled} onClick={onClickPrevious}>
+          <Button disabled={isPreviousDisabled} onClick={onClickPrevious}>
             &lt;
-          </button>
+          </Button>
 
-          <button disabled={isNextDisabled} onClick={onClickNext}>
+          <Button disabled={isNextDisabled} onClick={onClickNext}>
             &gt;
-          </button>
+          </Button>
         </td>
       </tr>
     </tfoot>
@@ -365,6 +368,7 @@ TableBody.propTypes = {
   columns: PropTypes.arrayOf(PropTypesColumn).isRequired,
   isError: PropTypes.bool.isRequired,
   isLoading: PropTypes.bool.isRequired,
+  offset: PropTypes.number.isRequired,
   onSelect: PropTypes.func.isRequired,
   results: PropTypes.array.isRequired,
 };
