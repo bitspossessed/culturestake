@@ -6,8 +6,6 @@ import httpStatus from 'http-status';
 import mime from 'mime';
 import multer, { MulterError } from 'multer';
 
-const DEFAULT_FIELD_NAME = 'files';
-const DEFAULT_FILE_LIMIT = 1;
 const DEFAULT_FILE_MAX_SIZE = 5 * 1000 * 1000;
 const DEFAULT_FILE_TYPES = ['jpeg', 'jpg', 'png'];
 
@@ -27,17 +25,35 @@ function generateFileName(ext) {
   return `${suffix}.${ext}`;
 }
 
-export default function({
-  allowedFileTypes = DEFAULT_FILE_TYPES,
-  fieldName = DEFAULT_FIELD_NAME,
-  fileLimit = DEFAULT_FILE_LIMIT,
-  maxFileSize = DEFAULT_FILE_MAX_SIZE,
-}) {
+// Handle file uploads for one or more fields, like:
+//
+// [
+//    {
+//      name: "images",
+//      maxFileSize: 5 * 1000 * 1000,
+//    },
+//    {
+//      name: "files",
+//      allowedFileTypes: ['pdf'],
+//    },
+//    ...
+// ]
+export default function(fields) {
   const fileFilter = (req, file, cb) => {
     const ext = mime.getExtension(file.mimetype);
 
+    const {
+      maxFileSize = DEFAULT_FILE_MAX_SIZE,
+      allowedFileTypes = DEFAULT_FILE_TYPES,
+    } = fields[file.fieldname];
+
     if (allowedFileTypes.includes(ext)) {
-      cb(new APIError('Invalid file format', httpStatus.BAD_REQUEST), false);
+      cb(
+        new APIError('Invalid file format', httpStatus.UNSUPPORTED_MEDIA_TYPE),
+        false,
+      );
+    } else if (file.size > maxFileSize) {
+      cb(new APIError('File is too large', httpStatus.REQUEST_TOO_LONG), false);
     } else {
       cb(null, true);
     }
@@ -60,10 +76,7 @@ export default function({
   const uploadFiles = multer({
     fileFilter,
     storage,
-    limits: {
-      fileSize: maxFileSize,
-    },
-  }).array(fieldName, fileLimit);
+  }).fields(fields);
 
   return (req, res, next) => {
     uploadFiles((req, res, error) => {

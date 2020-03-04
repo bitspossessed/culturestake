@@ -109,6 +109,7 @@
     "redux-thunk": "^2.3.0",
     "sequelize": "^5.21.5",
     "sequelize-slugify": "^0.9.1",
+    "sharp": "^0.24.1",
     "styled-components": "^5.0.1",
     "styled-normalize": "^8.0.7",
     "web3": "^1.2.6",
