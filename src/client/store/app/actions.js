@@ -1,4 +1,8 @@
+import translate from '~/common/services/i18n';
+
 import ActionTypes from '~/client/store/app/types';
+import { NOTIFICATION } from '~/client/middlewares/notifications';
+import { NotificationsTypes } from '~/client/store/notifications/actions';
 import { generateRequestId } from '~/client/middlewares/api';
 import { postRequest } from '~/client/store/api/actions';
 
@@ -36,9 +40,16 @@ export function requestToken(email, password) {
       },
       success: {
         type: ActionTypes.APP_TOKEN_REQUEST_SUCCESS,
+        [NOTIFICATION]: {
+          text: translate('app.notificationTokenSuccess'),
+        },
       },
       failure: {
         type: ActionTypes.APP_TOKEN_REQUEST_FAILURE,
+        [NOTIFICATION]: {
+          text: translate('app.errorTokenFailure'),
+          type: NotificationsTypes.ERROR,
+        },
       },
     },
   );
