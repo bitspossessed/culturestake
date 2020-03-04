@@ -5,7 +5,7 @@ import MetaTxHandler from 'metatx-handler';
 import { initializeDatabase } from './helpers/database';
 
 import app from '~/server';
-import blockchain from '~/common/services/web3';
+import web3, { provider } from '~/common/services/web3';
 import {
   getRelayerContract,
   getVoteContract,
@@ -20,24 +20,20 @@ describe('API', () => {
 
   beforeAll(async () => {
     await initializeDatabase();
-    relayer = getRelayerContract(blockchain.web3, process.env.RELAYER_CONTRACT);
-    vote = getVoteContract(blockchain.web3, process.env.VOTE_CONTRACT);
-    sender = blockchain.web3.eth.accounts.create();
+    relayer = getRelayerContract(process.env.RELAYER_CONTRACT);
+    vote = getVoteContract(process.env.VOTE_CONTRACT);
+    sender = web3.eth.accounts.create();
     metaTxHandler = new MetaTxHandler(
       process.env.PAYER_PRIV_KEY,
-      blockchain.provider,
-      process.env.RELAYER_CONTRACT,
+      provider,
+      relayer.options.address,
       relayer.options.jsonInterface,
     );
   });
 
   describe('POST /api/relay', () => {
     it('should respond with a successful message', async () => {
-      const metaNonce = await relayer.methods
-        .getNonce(sender.address.toString())
-        .call();
-      // console.log(metaNonce)
-
+      const metaNonce = await relayer.methods.getNonce(sender.address).call();
       const txParams = {
         from: sender.address,
         to: vote.options.address,
@@ -50,8 +46,6 @@ describe('API', () => {
         sender.privateKey.substring(2),
         metaNonce,
       );
-      // console.log(sender.address)
-      // console.log('signed', metaSignedTx)
       await request(app)
         .post('/api/relay')
         .send({
