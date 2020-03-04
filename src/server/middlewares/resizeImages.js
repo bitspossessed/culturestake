@@ -18,7 +18,7 @@ const DEFAULT_HEIGHT = 1200;
 //    },
 //    ...
 // ]
-export default function(fields) {
+export default function resizeImages(fields) {
   return async (req, res, next) => {
     if (!req.files) {
       return next();

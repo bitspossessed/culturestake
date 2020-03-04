@@ -38,7 +38,7 @@ function generateFileName(ext) {
 //    },
 //    ...
 // ]
-export default function(fields) {
+export default function uploadFiles(fields) {
   const fileFilter = (req, file, cb) => {
     const ext = mime.getExtension(file.mimetype);
 
@@ -73,13 +73,13 @@ export default function(fields) {
     },
   });
 
-  const uploadFiles = multer({
+  const uploadViaMulter = multer({
     fileFilter,
     storage,
   }).fields(fields);
 
   return (req, res, next) => {
-    uploadFiles((req, res, error) => {
+    uploadViaMulter((req, res, error) => {
       if (error instanceof MulterError) {
         next(new APIError(error.message, httpStatus.BAD_REQUEST));
       } else if (error) {
