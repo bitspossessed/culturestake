@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-
 import web3 from '~/common/services/web3';
 
 import {
@@ -9,11 +7,6 @@ import {
 
 describe('Crypto service', () => {
   let str;
-
-  beforeAll(() => {
-    // We have to manually import the .env variables for this test
-    dotenv.config();
-  });
 
   beforeEach(() => {
     str = 'juppi puppi 2000';
