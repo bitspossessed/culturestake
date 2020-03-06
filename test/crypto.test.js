@@ -4,9 +4,7 @@ import web3 from '~/common/services/web3';
 
 import {
   compareHashSecret,
-  hashSecretAddress,
-  hashSecret,
-  validateHashSecret,
+  generateHashSecret,
 } from '~/server/services/crypto';
 
 describe('Crypto service', () => {
@@ -21,35 +19,25 @@ describe('Crypto service', () => {
     str = 'juppi puppi 2000';
   });
 
-  describe('hashSecret', () => {
-    it('should deterministcally generate a hash', () => {
-      const hash = hashSecret(str);
+  describe('generateHashSecret', () => {
+    it('should non-deterministcally generate a hash', () => {
+      const { hash, secret } = generateHashSecret(str);
 
-      expect(hash).toBe(hashSecret(str));
-      expect(hash.length).toBe(132);
+      expect(hash).not.toBe(generateHashSecret(str).hash);
+      expect(hash.length).toBe(66);
+      expect(secret.length).toBe(64);
       expect(web3.utils.isHexStrict(hash)).toBeTruthy();
     });
   });
 
   describe('compareHashSecret', () => {
     it('should correctly indicate if the hash input is correct', () => {
-      const hash = hashSecret(str);
-      const wrongHash = hashSecret(str + 'ha');
+      const { hash, secret } = generateHashSecret(str);
+      const { hash: anotherHash } = generateHashSecret(str);
 
-      expect(compareHashSecret(str, hash)).toBeTruthy();
-      expect(compareHashSecret(str, wrongHash)).toBeFalsy();
-      expect(compareHashSecret(str + 'ha', hash)).toBeFalsy();
-    });
-  });
-
-  describe('validateHashSecret', () => {
-    it('should help us to verify if this hash was signed by a known address', () => {
-      const address = hashSecretAddress();
-      const { address: wrongAddress } = web3.eth.accounts.create();
-      const hash = hashSecret(str);
-
-      expect(validateHashSecret(str, hash, address)).toBeTruthy();
-      expect(validateHashSecret(str, hash, wrongAddress)).toBeFalsy();
+      expect(compareHashSecret(secret, hash)).toBeTruthy();
+      expect(compareHashSecret(secret, anotherHash)).toBeFalsy();
+      expect(compareHashSecret(secret + 'ha', hash)).toBeFalsy();
     });
   });
 });
