@@ -15,7 +15,6 @@ const User = db.define('user', {
   },
   slug: {
     type: DataTypes.STRING,
-    unique: true,
   },
   username: {
     type: DataTypes.STRING,

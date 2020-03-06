@@ -1,9 +1,9 @@
-import User from '~/server/models/user';
+import Festival from '~/server/models/festival';
 import baseController from '~/server/controllers';
 
 const options = {
-  model: User,
-  fields: ['username', 'email'],
+  model: Festival,
+  fields: ['title', 'description'],
 };
 
 function create(req, res, next) {

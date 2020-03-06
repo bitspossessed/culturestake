@@ -8,6 +8,10 @@ const components = {
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
   },
+  FormFestivals: {
+    fieldDescription: 'Description:',
+    fieldTitle: 'Title:',
+  },
   FormUsers: {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
@@ -53,6 +57,23 @@ const views = {
     title: 'Create new user',
     notificationSuccess: 'You created the user {username}.',
     errorUniqueUser: 'A user with this email or username exists already.',
+  },
+  AdminFestivals: {
+    buttonNewFestival: 'Create new festival',
+    fieldTitle: 'Title',
+    fieldDescription: 'Description',
+    title: 'Festivals',
+  },
+  AdminFestivalsEdit: {
+    buttonSubmit: 'Save',
+    notificationSuccess: 'You updated the festival {title}.',
+    notificationDestroySuccess: 'You deleted the festival {title}.',
+    title: 'Edit festival',
+  },
+  AdminFestivalsNew: {
+    buttonSubmit: 'Create',
+    title: 'Create new festival',
+    notificationSuccess: 'You created the festival {title}.',
   },
   Homepage: {
     title: 'Hello, Decal!',

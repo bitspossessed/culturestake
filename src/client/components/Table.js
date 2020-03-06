@@ -27,6 +27,16 @@ const DEFAULT_HEADERS = [
     key: 'id',
     label: 'ID',
   },
+  {
+    isOrderKey: true,
+    key: 'createdAt',
+    label: 'Created at', // @TODO: I18n
+  },
+  {
+    isOrderKey: true,
+    key: 'updatedAt',
+    label: 'Updated at', // @TODO: I18n
+  },
 ];
 
 const Table = ({
