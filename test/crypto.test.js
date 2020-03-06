@@ -13,7 +13,7 @@ describe('Crypto service', () => {
   });
 
   describe('generateHashSecret', () => {
-    it('should non-deterministcally generate a hash', () => {
+    it('should generate a hash and return the secret input', () => {
       const { hash, secret } = generateHashSecret(str);
       const { hash: anotherHash } = generateHashSecret(str);
 
