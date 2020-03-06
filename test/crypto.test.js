@@ -15,11 +15,18 @@ describe('Crypto service', () => {
   describe('generateHashSecret', () => {
     it('should non-deterministcally generate a hash', () => {
       const { hash, secret } = generateHashSecret(str);
+      const { hash: anotherHash } = generateHashSecret(str);
 
-      expect(hash).not.toBe(generateHashSecret(str).hash);
-      expect(hash.length).toBe(66);
+      // It has the right format
       expect(secret.length).toBe(64);
+      expect(hash.length).toBe(66);
       expect(web3.utils.isHexStrict(hash)).toBeTruthy();
+
+      // It is non deterministic
+      expect(hash).not.toBe(anotherHash);
+
+      // It contains a human readable information
+      expect(secret.includes('juppi')).toBe(true);
     });
   });
 
