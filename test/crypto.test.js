@@ -3,6 +3,7 @@ import web3 from '~/common/services/web3';
 import {
   compareHashSecret,
   generateHashSecret,
+  generateRandomString,
 } from '~/server/services/crypto';
 
 describe('Crypto service', () => {
@@ -38,6 +39,18 @@ describe('Crypto service', () => {
       expect(compareHashSecret(secret, hash)).toBeTruthy();
       expect(compareHashSecret(secret, anotherHash)).toBeFalsy();
       expect(compareHashSecret(secret + 'ha', hash)).toBeFalsy();
+    });
+  });
+
+  describe('generateRandomString', () => {
+    it('should generate a random string', () => {
+      const len = 8;
+      const randomStr = generateRandomString(len);
+      const anotherRandomStr = generateRandomString(len);
+
+      expect(randomStr.length).toBe(len);
+      expect(anotherRandomStr.length).toBe(len);
+      expect(randomStr).not.toBe(anotherRandomStr);
     });
   });
 });

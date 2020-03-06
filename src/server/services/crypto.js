@@ -21,7 +21,7 @@ export function generateHashSecret(str) {
   // The input string is padded with a random hex
   // sequence to get a fixed length. The input string
   // should contain a human readable information.
-  const randomStr = web3.utils.randomHex(HASH_SECRET_LENGTH / 2).slice(2);
+  const randomStr = generateRandomString(HASH_SECRET_LENGTH);
   const inputStr = str.replace(/\s/g, '').slice(0, HASH_SECRET_LENGTH / 2);
   const randomArg = randomStr.slice(0, randomStr.length - inputStr.length);
 
@@ -36,4 +36,8 @@ export function generateHashSecret(str) {
 
 export function compareHashSecret(secret, hash) {
   return web3.utils.sha3(secret) === hash;
+}
+
+export function generateRandomString(len) {
+  return web3.utils.randomHex(len / 2).slice(2);
 }
