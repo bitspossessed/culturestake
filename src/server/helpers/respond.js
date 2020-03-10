@@ -1,5 +1,7 @@
 import httpStatus from 'http-status';
 
+const DEFAULT_FIELDS = ['id', 'slug', 'createdAt', 'updatedAt'];
+
 function respond(res, status, data, code) {
   res.status(code).json({
     status,
@@ -19,8 +21,9 @@ export function respondWithError(
   respond(res, 'error', data, code);
 }
 
-export function filterResponse(response, schema) {
+export function filterResponse(response, filterSchema) {
   const data = response.toJSON();
+  const schema = DEFAULT_FIELDS.concat(filterSchema);
 
   return Object.keys(data).reduce((acc, key) => {
     if (schema.includes(key)) {
