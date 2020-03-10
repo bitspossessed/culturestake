@@ -4,6 +4,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Admin from '~/client/views/Admin';
+import AdminFestivals from '~/client/views/AdminFestivals';
+import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
+import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
@@ -58,11 +61,24 @@ const PublicRoute = ({ component, path }) => {
   );
 };
 
+// prettier-ignore
 const Routes = () => (
   <Switch>
-    <PublicRoute component={Homepage} exact path="/" />
-    <AuthenticatedRoute component={Admin} exact path="/admin" />
-    <AuthenticatedRoute component={AdminUsers} exact path="/admin/users" />
+    <PublicRoute
+      component={Homepage}
+      exact
+      path="/"
+    />
+    <AuthenticatedRoute
+      component={Admin}
+      exact
+      path="/admin"
+    />
+    <AuthenticatedRoute
+      component={AdminUsers}
+      exact
+      path="/admin/users"
+    />
     <AuthenticatedRoute
       component={AdminUsersNew}
       exact
@@ -73,10 +89,36 @@ const Routes = () => (
       exact
       path="/admin/users/:slug/edit"
     />
-    <UnauthenticatedRoute component={AdminLogin} path="/login" />
-    <PublicRoute component={Booth} path="/booth" />
-    <PublicRoute component={Vote} path="/vote" />
-    <Route component={NotFound} />
+    <AuthenticatedRoute
+      component={AdminFestivals}
+      exact
+      path="/admin/festivals"
+    />
+    <AuthenticatedRoute
+      component={AdminFestivalsNew}
+      exact
+      path="/admin/festivals/new"
+    />
+    <AuthenticatedRoute
+      component={AdminFestivalsEdit}
+      exact
+      path="/admin/festivals/:slug/edit"
+    />
+    <UnauthenticatedRoute
+      component={AdminLogin}
+      path="/login"
+    />
+    <PublicRoute
+      component={Booth}
+      path="/booth"
+    />
+    <PublicRoute
+      component={Vote}
+      path="/vote"
+    />
+    <Route
+      component={NotFound}
+    />
   </Switch>
 );
 
