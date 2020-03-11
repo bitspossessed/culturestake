@@ -16,6 +16,7 @@ const Admin = () => {
 
       <View>
         <Link to="/admin/users">Users</Link>
+        <Link to="/admin/festivals">Festivals</Link>
       </View>
 
       <Footer />
