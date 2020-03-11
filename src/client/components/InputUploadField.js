@@ -41,7 +41,7 @@ const InputUploadField = ({
   // information we need to preview and manage files in the
   // user interface
   const [filesData, setFilesData] = useState([]);
-  const [tempFilesData, setTempFilesData] = useState([]);
+  const [previousFilesData, setPreviousFilesData] = useState([]);
   const [pendingFilesData, setPendingFilesData] = useState([]);
 
   // Upload files to server and receive file ids
@@ -49,7 +49,7 @@ const InputUploadField = ({
 
   const { isPending } = useRequest(requestId, {
     onError: () => {
-      setFilesData(tempFilesData);
+      setFilesData(previousFilesData);
 
       dispatch(
         notify({
@@ -61,17 +61,32 @@ const InputUploadField = ({
     onSuccess: uploadedFiles => {
       // Update new files for internal state as well
       setFilesData(
-        tempFilesData.concat(
+        previousFilesData.concat(
           uploadedFiles.map((file, index) => {
             // Keep previews to not reload images
-            file.base64 = pendingFilesData[index].base64;
-            return file;
+            return {
+              ...file,
+              base64: pendingFilesData[index].base64,
+            };
           }),
         ),
       );
 
+      // setPendingFilesData([]);
+      setPreviousFilesData([]);
+
       // Add uploaded file id to field values
-      setValue(value.concat(uploadedFiles));
+      setValue(
+        value.concat(
+          uploadedFiles.map(file => {
+            // Remove timestamps
+            delete file.createdAt;
+            delete file.updatedAt;
+
+            return file;
+          }),
+        ),
+      );
     },
   });
 
@@ -103,7 +118,10 @@ const InputUploadField = ({
 
   const onRemove = fileId => {
     setValue(value.filter(file => file.id !== fileId));
+
     setFilesData(filesData.filter(file => file.id !== fileId));
+    setPendingFilesData(filesData.filter(file => file.id !== fileId));
+    setPreviousFilesData(filesData.filter(file => file.id !== fileId));
   };
 
   const onChangeFiles = async event => {
@@ -151,7 +169,7 @@ const InputUploadField = ({
     }
 
     // Add new files to previous ones
-    setTempFilesData([...filesData]);
+    setPreviousFilesData([...filesData]);
     setPendingFilesData([...newFilesData]);
     setFilesData(filesData.concat(newFilesData));
 

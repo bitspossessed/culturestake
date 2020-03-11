@@ -3,9 +3,11 @@ import { celebrate, Joi } from 'celebrate';
 import web3 from '~/common/services/web3';
 
 const filesBaseValidation = {
-  id: Joi.number(),
+  id: Joi.number().required(),
+  fileName: Joi.string().required(),
+  fileType: Joi.string().required(),
   url: Joi.string()
-    .uri()
+    .uri({ relativeOnly: true })
     .required(),
 };
 
@@ -19,13 +21,13 @@ export const imagesValidation = Joi.array().items(
   Joi.object({
     ...filesBaseValidation,
     urlThreshold: Joi.string()
-      .uri()
+      .uri({ relativeOnly: true })
       .required(),
     urlThresholdThumb: Joi.string()
-      .uri()
+      .uri({ relativeOnly: true })
       .required(),
     urlThumb: Joi.string()
-      .uri()
+      .uri({ relativeOnly: true })
       .required(),
   }),
 );

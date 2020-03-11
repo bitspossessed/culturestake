@@ -56,6 +56,7 @@ const AdminFestivalsEditForm = () => {
   } = useForm({
     requestId,
     defaultValues: festival,
+    debugForm: true,
     onSubmit: ({ title, description }) => {
       dispatch(
         postRequest({

@@ -1,5 +1,4 @@
 import fs from 'fs';
-import path from 'path';
 
 import bodyParser from 'body-parser';
 import compression from 'compression';
@@ -16,6 +15,12 @@ import db from '~/server/database';
 import errorsMiddleware from '~/server/middlewares/errors';
 import logger from '~/server/helpers/logger';
 import passport from '~/server/services/passport';
+import { getBuildPath } from '~/server/helpers/path';
+
+import {
+  UPLOAD_FOLDER_NAME,
+  UPLOAD_FOLDER_PATH,
+} from '~/server/routes/uploads';
 
 const ASSETS_FOLDER_NAME = 'static';
 const ASSETS_MANIFESTO_FILE = 'webpack-assets.json';
@@ -23,15 +28,7 @@ const ASSETS_MAX_AGE = '14d';
 
 const DEFAULT_PORT = 3000;
 
-function getPath(filePath) {
-  if (process.env.NODE_ENV === 'production') {
-    return path.resolve(__dirname, filePath);
-  }
-
-  return path.resolve(__dirname, '..', '..', 'build', filePath);
-}
-
-const assetsManifestoPath = getPath(ASSETS_MANIFESTO_FILE);
+const assetsManifestoPath = getBuildPath(ASSETS_MANIFESTO_FILE);
 
 // Check if assets exist
 if (!fs.existsSync(assetsManifestoPath)) {
@@ -83,9 +80,19 @@ app.use(
 // Static assets hosting
 app.use(
   `/${ASSETS_FOLDER_NAME}`,
-  express.static(getPath(ASSETS_FOLDER_NAME), {
+  express.static(getBuildPath(ASSETS_FOLDER_NAME), {
     index: false,
     redirect: false,
+    maxAge: ASSETS_MAX_AGE,
+  }),
+);
+
+// Server uploaded files
+app.use(
+  `/${UPLOAD_FOLDER_NAME}`,
+  express.static(UPLOAD_FOLDER_PATH, {
+    index: false,
+    // redirect: false,
     maxAge: ASSETS_MAX_AGE,
   }),
 );

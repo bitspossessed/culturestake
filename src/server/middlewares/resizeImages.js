@@ -6,7 +6,6 @@ const DEFAULT_HEIGHT = 1200;
 const DEFAULT_SUFFIX = 'default';
 
 const THRESHOLD = 128;
-const FILE_FORMAT = 'jpg';
 
 // Handle image file resizes for one or more fields, like:
 //
@@ -55,9 +54,10 @@ export default function resizeImages(fields) {
 
           req.files[field.name].forEach((file, index) => {
             // Rename file based on version suffix
-            const filename = file.filename.split('.')[0];
-            const newFilename = `${filename}-${suffix}.${FILE_FORMAT}`;
-            const newPath = `${file.destination}/${newFilename}`;
+            const fileName = file.filename.split('.')[0];
+            const baseFileName = `${fileName}.jpg`;
+            const newFileName = `${fileName}-${suffix}.jpg`;
+            const newPath = `${file.destination}/${newFileName}`;
 
             const promise = new Promise((resolve, reject) => {
               const operation = sharp(file.path);
@@ -76,7 +76,7 @@ export default function resizeImages(fields) {
 
               // 3. Convert to JPEG file and store it
               operation
-                .toFormat(FILE_FORMAT)
+                .toFormat('jpg')
                 .jpeg({ quality })
                 .toFile(newPath, error => {
                   if (error) {
@@ -85,7 +85,9 @@ export default function resizeImages(fields) {
                     resolve({
                       index,
                       fieldname: field.name,
-                      filename: newFilename,
+                      originalFileName: baseFileName,
+                      fileName: newFileName,
+                      fileType: 'jpeg',
                       path: newPath,
                       version,
                     });
@@ -103,15 +105,22 @@ export default function resizeImages(fields) {
       const results = await Promise.all(operations);
 
       // Group versions by original image
-      req.locals.images = results.reduce((acc, { index, ...rest }) => {
-        if (!acc[index]) {
-          acc[index] = [];
-        }
+      req.locals.images = results.reduce(
+        (acc, { index, fieldname, ...rest }) => {
+          if (!acc[fieldname]) {
+            acc[fieldname] = [];
+          }
 
-        acc[index].push(rest);
+          if (!acc[fieldname][index]) {
+            acc[fieldname][index] = [];
+          }
 
-        return acc;
-      }, []);
+          acc[fieldname][index].push(rest);
+
+          return acc;
+        },
+        {},
+      );
 
       next();
     } catch (error) {
