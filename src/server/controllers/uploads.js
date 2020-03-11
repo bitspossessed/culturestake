@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import httpStatus from 'http-status';
+import mime from 'mime';
 
 import File from '~/server/models/file';
 import { respondWithSuccess } from '~/server/helpers/respond';
@@ -17,19 +18,19 @@ import {
 } from '~/server/routes/uploads';
 
 function getVersionUrl(versions, suffix) {
-  const { path } = versions.find(file => {
+  const { path: versionPath } = versions.find(file => {
     return file.version.suffix === suffix;
   });
 
-  return toFileUrl(path);
+  return toFileUrl(versionPath);
 }
 
-function toFileUrl(path) {
-  const split = path.split('/');
+function toFileUrl(filePath) {
+  const split = filePath.split('/');
   return `/${UPLOAD_FOLDER_NAME}/${split[split.length - 1]}`;
 }
 
-async function copyToUploadsDir(file) {
+async function copyToUploadsDir(filePath, fileName) {
   if (!fs.existsSync(UPLOAD_FOLDER_PATH)) {
     throw new Error(`"${UPLOAD_FOLDER_PATH}" folder does not exist`);
   }
@@ -38,8 +39,8 @@ async function copyToUploadsDir(file) {
     // Safely copy file from tmp folder to uploads folder
     await new Promise((resolve, reject) => {
       fs.copyFile(
-        file.path,
-        path.join(UPLOAD_FOLDER_PATH, file.fileName),
+        filePath,
+        path.join(UPLOAD_FOLDER_PATH, fileName),
         fs.constants.COPYFILE_EXCL,
         err => {
           if (err) {
@@ -53,7 +54,7 @@ async function copyToUploadsDir(file) {
 
     // Remove original file in tmp folder
     await new Promise((resolve, reject) => {
-      fs.unlink(file.path, err => {
+      fs.unlink(filePath, err => {
         if (err) {
           reject(err);
         } else {
@@ -63,7 +64,7 @@ async function copyToUploadsDir(file) {
     });
   } catch (error) {
     throw new Error(
-      `Could not copy file ${file.fileName} to uploads folder: ${error}`,
+      `Could not copy file ${fileName} to uploads folder: ${error}`,
     );
   }
 }
@@ -74,7 +75,7 @@ async function uploadImages(req, res, next) {
 
     // Move all files to /uploads folder to make them public
     for (let imageVersion of images.flat()) {
-      await copyToUploadsDir(imageVersion);
+      await copyToUploadsDir(imageVersion.path, imageVersion.fileName);
     }
 
     // Convert image data to database model format
@@ -101,7 +102,29 @@ async function uploadImages(req, res, next) {
 }
 
 async function uploadDocuments(req, res, next) {
-  respondWithSuccess(res, [], httpStatus.CREATED);
+  try {
+    const files = req.files[FIELD_NAME];
+
+    // Move all files to /uploads folder to make them public
+    for (let file of files) {
+      await copyToUploadsDir(file.path, file.filename);
+    }
+
+    // Convert image data to database model format
+    const fileEntries = files.map(file => {
+      return {
+        fileName: file.filename,
+        fileType: mime.getExtension(file.mimetype),
+        url: toFileUrl(file.path),
+      };
+    });
+
+    const response = await File.bulkCreate(fileEntries);
+
+    respondWithSuccess(res, response, httpStatus.CREATED);
+  } catch (error) {
+    next(error);
+  }
 }
 
 export default {

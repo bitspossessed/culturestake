@@ -14,6 +14,9 @@ const filesBaseValidation = {
 export const filesValidation = Joi.array().items(
   Joi.object({
     ...filesBaseValidation,
+    urlThreshold: Joi.allow(null),
+    urlThresholdThumb: Joi.allow(null),
+    urlThumb: Joi.allow(null),
   }),
 );
 
