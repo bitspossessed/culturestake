@@ -10,12 +10,17 @@ const components = {
   },
   FormFestivals: {
     fieldDescription: 'Description:',
+    fieldImages: 'Images:',
     fieldTitle: 'Title:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
+  },
+  InputUploadField: {
+    buttonRemoveFile: 'Remove',
+    buttonSelectFiles: 'Select files',
   },
 };
 
