@@ -1,36 +1,88 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import mime from 'mime/lite';
+import { useDispatch } from 'react-redux';
 
 import translate from '~/common/services/i18n';
 
 import InputFieldset from '~/client/components/InputFieldset';
 import { imageToBase64 } from '~/client/services/images';
+import { postRequest } from '~/client/store/api/actions';
 import { useField } from '~/client/hooks/forms';
+import { useRequest, useRequestId } from '~/client/hooks/resources';
 
-export const DOCUMENT_FILE_TYPES = ['pdf'];
-export const IMAGE_FILE_TYPES = ['jpg', 'jpeg', 'png'];
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 
-const DEFAULT_FILE_TYPES = IMAGE_FILE_TYPES;
 const DEFAULT_MAX_FILE_COUNT = 1;
+
+const DOCUMENT_FILE_TYPES = ['pdf'];
+const IMAGE_FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 function isImage(fileType) {
   return IMAGE_FILE_TYPES.includes(fileType);
 }
 
 const InputUploadField = ({
-  fileTypes = DEFAULT_FILE_TYPES,
+  isImageUpload = true,
   maxFileCount = DEFAULT_MAX_FILE_COUNT,
   label,
   name,
   validate,
 }) => {
+  const dispatch = useDispatch();
+
   const fileInputElem = React.createRef();
+
+  const fileTypes = isImageUpload ? IMAGE_FILE_TYPES : DOCUMENT_FILE_TYPES;
 
   // Internal state of the component which holds all the
   // information we need to preview and manage files in the
   // user interface
   const [filesData, setFilesData] = useState([]);
+  const [tempFilesData, setTempFilesData] = useState([]);
+  const [pendingFilesData, setPendingFilesData] = useState([]);
+
+  // Upload files to server and receive file ids
+  const requestId = useRequestId();
+
+  const { isPending } = useRequest(requestId, {
+    onError: () => {
+      setFilesData(tempFilesData);
+
+      dispatch(
+        notify({
+          text: translate('InputUploadField.errorMessage'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
+    },
+    onSuccess: uploadedFiles => {
+      // Update new files for internal state as well
+      setFilesData(
+        tempFilesData.concat(
+          uploadedFiles.map((file, index) => {
+            // Keep previews to not reload images
+            file.base64 = pendingFilesData[index].base64;
+            return file;
+          }),
+        ),
+      );
+
+      // Add uploaded file id to field values
+      setValue(value.concat(uploadedFiles));
+    },
+  });
+
+  useEffect(() => {
+    // Indicate that we're upload the files now, this causes
+    // the form submit button to be disabled during the
+    // upload
+    form.setMeta({
+      isPending,
+    });
+  }, [isPending]);
 
   // Register form field
   const { form, meta, setMeta, setValue, value } = useField(name, {
@@ -99,7 +151,8 @@ const InputUploadField = ({
     }
 
     // Add new files to previous ones
-    const tempFilesData = [...filesData];
+    setTempFilesData([...filesData]);
+    setPendingFilesData([...newFilesData]);
     setFilesData(filesData.concat(newFilesData));
 
     // Inform form element that this field was used
@@ -107,39 +160,18 @@ const InputUploadField = ({
       isTouched: true,
     });
 
-    // Indicate that we're upload the files now, this causes
-    // the form submit button to be disabled during the
-    // upload
-    form.setMeta({
-      isPending: true,
-    });
-
-    // Upload files to server and receive file ids
-    // const uploadedFiles = await uploadFiles(files); // @TODO
-    await new Promise(resolve => setTimeout(resolve, 2500));
-    const uploadedFiles = newFilesData.map(file => {
-      file.id = Math.round(Math.random() * 100000);
-      return file;
-    });
-
-    // Update new files for internal state as well
-    setFilesData(
-      tempFilesData.concat(
-        uploadedFiles.map((file, index) => {
-          // Keep previews to not reload images
-          file.base64 = newFilesData[index].base64;
-          return file;
-        }),
-      ),
+    // Start upload
+    dispatch(
+      postRequest({
+        id: requestId,
+        isResponseKept: true,
+        path: isImageUpload ? ['uploads', 'images'] : ['uploads', 'documents'],
+        body: [...files].reduce((acc, file) => {
+          acc.append('files', file, file.name);
+          return acc;
+        }, new FormData()),
+      }),
     );
-
-    // Add uploaded file id to field values
-    setValue(value.concat(uploadedFiles));
-
-    // Unset pending flag for form
-    form.setMeta({
-      isPending: false,
-    });
 
     // Reset upload input element
     event.target.value = '';
@@ -200,7 +232,7 @@ const InputUploadFieldItems = ({ files, onRemove }) => {
 };
 
 InputUploadField.propTypes = {
-  fileTypes: PropTypes.arrayOf(PropTypes.string),
+  isImageUpload: PropTypes.bool,
   label: PropTypes.string.isRequired,
   maxFileCount: PropTypes.number,
   name: PropTypes.string.isRequired,

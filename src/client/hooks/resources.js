@@ -13,9 +13,10 @@ export const useRequestId = () => {
 export const useRequest = (requestId, { onError, onSuccess }) => {
   const {
     isError = false,
-    isSuccess = false,
     isPending = false,
+    isSuccess = false,
     error,
+    response,
   } = useSelector(state => {
     return state.api.requests[requestId] || {};
   });
@@ -24,7 +25,7 @@ export const useRequest = (requestId, { onError, onSuccess }) => {
     if (isError && onError) {
       onError(error);
     } else if (isSuccess && onSuccess) {
-      onSuccess();
+      onSuccess(response);
     }
   }, [isError, isSuccess]);
 
@@ -33,6 +34,15 @@ export const useRequest = (requestId, { onError, onSuccess }) => {
     isPending,
     isSuccess,
   };
+};
+
+export const useRequestAsync = requestId => {
+  return new Promise((resolve, reject) => {
+    useRequest(requestId, {
+      onError: reject,
+      onSuccess: resolve,
+    });
+  });
 };
 
 export const useResource = path => {
