@@ -4,8 +4,6 @@ import web3 from '~/common/services/web3';
 
 const fileBase = {
   id: Joi.number(),
-  fileName: Joi.string().required(),
-  fileType: Joi.string().required(),
   url: Joi.string()
     .uri()
     .required(),

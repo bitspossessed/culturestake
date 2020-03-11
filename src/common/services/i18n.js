@@ -48,7 +48,7 @@ function titleize(sentence) {
 function errorMessage(key) {
   if (process.env.NODE_ENV === 'development') {
     const message = `Translation "${keyToString(key)}" is missing.`;
-    console.warn(message); // eslint-disable-line no-console
+    // console.warn(message); // eslint-disable-line no-console
     return message;
   }
 

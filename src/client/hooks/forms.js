@@ -61,12 +61,17 @@ export const useForm = ({
     },
   });
 
+  // Give option to manually set isPending state in meta if
+  // we need to indicate that something is loading before we
+  // can submit
+  const isPending = 'isPending' in formApi.meta && formApi.meta.isPending;
+
   // Handle callbacks for request state changes
   return {
     ...formApi,
     meta: {
       ...formApi.meta,
-      canSubmit: formApi.meta.canSubmit && !request.isPending,
+      canSubmit: formApi.meta.canSubmit && !request.isPending && !isPending,
       request,
     },
   };

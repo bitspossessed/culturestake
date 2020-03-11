@@ -14,20 +14,17 @@ export async function comparePasswords(password, hash) {
 }
 
 export function generateHashSecret(str) {
-  // We generate a salted hash for all data instances
-  // to identify them on the blockchain without leaking
-  // any data / to keep them private.
+  // We generate a salted hash for all data instances to identify them on the
+  // blockchain without leaking any data / to keep them private.
 
-  // The input string is padded with a random hex
-  // sequence to get a fixed length. The input string
-  // should contain a human readable information.
+  // The input string is padded with a random hex sequence to get a fixed
+  // length. The input string should contain a human readable information.
   const randomStr = generateRandomString(HASH_SECRET_LENGTH);
   const inputStr = str.replace(/\s/g, '').slice(0, HASH_SECRET_LENGTH / 2);
   const randomArg = randomStr.slice(0, randomStr.length - inputStr.length);
 
-  // Hash this secret and return both. The Hash can be
-  // used publicly, the secret can be shared optionally
-  // to verify the hash.
+  // Hash this secret and return both. The Hash can be used publicly, the
+  // secret can be shared optionally to verify the hash.
   const secret = `${inputStr}${randomArg}`;
   const hash = web3.utils.sha3(secret);
 
