@@ -10,6 +10,7 @@ const components = {
   },
   FormFestivals: {
     fieldDescription: 'Description:',
+    fieldDocuments: 'Documents:',
     fieldImages: 'Images:',
     fieldTitle: 'Title:',
   },
