@@ -2,22 +2,22 @@ import { celebrate, Joi } from 'celebrate';
 
 import web3 from '~/common/services/web3';
 
-const fileBase = {
+const filesBaseValidation = {
   id: Joi.number(),
   url: Joi.string()
     .uri()
     .required(),
 };
 
-export const fileValidator = Joi.array().items(
+export const filesValidation = Joi.array().items(
   Joi.object({
-    ...fileBase,
+    ...filesBaseValidation,
   }),
 );
 
-export const imageValidator = Joi.array().items(
+export const imagesValidation = Joi.array().items(
   Joi.object({
-    ...fileBase,
+    ...filesBaseValidation,
     urlThreshold: Joi.string()
       .uri()
       .required(),
