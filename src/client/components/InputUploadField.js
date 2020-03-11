@@ -15,8 +15,6 @@ import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
 
-const DEFAULT_MAX_FILE_COUNT = 1;
-
 const DOCUMENT_FILE_TYPES = ['pdf'];
 const IMAGE_FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
@@ -26,7 +24,7 @@ function isImage(fileType) {
 
 const InputUploadField = ({
   isImageUpload = true,
-  maxFileCount = DEFAULT_MAX_FILE_COUNT,
+  isMultipleFilesAllowed = false,
   label,
   name,
   validate,
@@ -207,7 +205,7 @@ const InputUploadField = ({
 
       <input
         accept={fileTypesStr}
-        multiple={maxFileCount > 1}
+        multiple={isMultipleFilesAllowed}
         ref={fileInputElem}
         style={{ display: 'none' }}
         type="file"
@@ -251,8 +249,8 @@ const InputUploadFieldItems = ({ files, onRemove }) => {
 
 InputUploadField.propTypes = {
   isImageUpload: PropTypes.bool,
+  isMultipleFilesAllowed: PropTypes.bool,
   label: PropTypes.string.isRequired,
-  maxFileCount: PropTypes.number,
   name: PropTypes.string.isRequired,
   validate: PropTypes.object.isRequired,
   value: PropTypes.string,

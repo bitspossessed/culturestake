@@ -9,15 +9,13 @@ import InputField from '~/client/components/InputField';
 import InputUploadField from '~/client/components/InputUploadField';
 import InputTextareaField from '~/client/components/InputTextareaField';
 
-const MAX_FILE_COUNT = 10;
-
 const FormFestivals = () => {
   const schema = {
     title: Joi.string()
       .max(128)
       .required(),
     description: Joi.string().required(),
-    images: imagesValidation.max(MAX_FILE_COUNT),
+    images: imagesValidation.max(10),
     documents: filesValidation.max(1),
   };
 
@@ -37,8 +35,9 @@ const FormFestivals = () => {
       />
 
       <InputUploadField
+        isImageUpload
+        isMultipleFilesAllowed
         label={translate('FormFestivals.fieldImages')}
-        maxFileCount={MAX_FILE_COUNT}
         name="images"
         validate={schema.images}
       />
