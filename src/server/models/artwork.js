@@ -2,7 +2,6 @@ import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
-import Answer from '~/server/models/answer';
 
 const Artwork = db.define('artwork', {
   id: {
@@ -23,8 +22,6 @@ const Artwork = db.define('artwork', {
     },
   },
 });
-
-Artwork.hasMany(Answer);
 
 SequelizeSlugify.slugifyModel(Artwork, {
   source: ['title'],

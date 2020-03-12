@@ -3,21 +3,21 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface
-      .addColumn('answers', 'artworkSlug', {
-        type: Sequelize.STRING,
+      .addColumn('answers', 'artworkId', {
+        type: Sequelize.INTEGER,
         references: {
           model: 'artworks',
-          key: 'slug',
+          key: 'id',
         },
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
       })
       .then(
-        queryInterface.addColumn('answers', 'propertySlug', {
-          type: Sequelize.STRING,
+        queryInterface.addColumn('answers', 'propertyId', {
+          type: Sequelize.INTEGER,
           references: {
             model: 'properties',
-            key: 'slug',
+            key: 'id',
           },
           onUpdate: 'CASCADE',
           onDelete: 'SET NULL',
@@ -27,7 +27,7 @@ module.exports = {
 
   down: queryInterface => {
     return queryInterface
-      .removeColumn('answers', 'artworkSlug')
-      .then(queryInterface.removeColumn('answers', 'propertySlug'));
+      .removeColumn('answers', 'artworkId')
+      .then(queryInterface.removeColumn('answers', 'propertyId'));
   },
 };

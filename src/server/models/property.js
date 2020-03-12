@@ -24,10 +24,6 @@ const Property = db.define('property', {
   },
 });
 
-Property.hasMany(Answer, {
-  foreignKey: 'slug',
-});
-
 SequelizeSlugify.slugifyModel(Property, {
   source: ['title'],
 });
