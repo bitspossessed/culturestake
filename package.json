@@ -10,6 +10,7 @@
     "client:clear": "rimraf ./build/static",
     "client:watch": "cross-env NODE_ENV=development webpack --mode development --watch --progress",
     "db:migrate": "sequelize db:migrate",
+    "db:new-migration": "./node_modules/.bin/sequelize-cli migration:generate --name",
     "db:seed": "sequelize db:seed:all",
     "lint": "npm run lint:css && npm run lint:js",
     "lint:css": "stylelint './src/client/**/*.js'",

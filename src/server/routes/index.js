@@ -5,6 +5,8 @@ import APIError from '~/server/helpers/errors';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
+import artworksRouter from '~/server/routes/artworks';
+import propertiesRouter from '~/server/routes/properties';
 import usersRouter from '~/server/routes/users';
 import relayRouter from '~/server/routes/relay';
 
@@ -23,6 +25,10 @@ router.use('/users', authMiddleware, usersRouter);
 router.use('/relay', relayRouter);
 
 router.use('/festivals', festivalsRouter);
+
+router.use('/artworks', artworksRouter);
+
+router.use('/properties', propertiesRouter);
 
 router.use(() => {
   throw new APIError(httpStatus.NOT_FOUND);
