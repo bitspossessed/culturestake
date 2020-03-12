@@ -2,6 +2,9 @@ import { DataTypes } from 'sequelize';
 import SequelizeSlugify from 'sequelize-slugify';
 
 import db from '~/server/database';
+
+import Property from '~/server/models/property';
+import Artwork from '~/server/models/artwork';
 import {
   generateRandomString,
   generateHashSecret,
@@ -21,7 +24,6 @@ const Answer = db.define('answer', {
   },
   clientId: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
     validate: {
       isAlphanumeric: true,
@@ -29,7 +31,6 @@ const Answer = db.define('answer', {
   },
   chainId: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
     validate: {
       isAlphanumeric: true,
@@ -37,7 +38,6 @@ const Answer = db.define('answer', {
   },
   secret: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
     validate: {
       isAlphanumeric: true,
@@ -50,23 +50,28 @@ const Answer = db.define('answer', {
   },
 });
 
-Answer.hasOne(require('~/server/model/artwork'), {
-  allowNull: true,
-});
-
-Answer.hasOne(require('~/server/model/property'), {
-  allowNull: true,
+Answer.addHook('beforeCreate', async answer => {
+  console.log('hook')
+  let model;
+  let key;
+  if (answer.type == 'property') {
+    model = Property;
+    key = answer.propertyId;
+  } else {
+    model = Artwork;
+    key = answer.artworkId;
+  }
+  console.log(key)
+  const link = await model.findByPk(key);
+  console.log(link)
+  answer.clientId = generateRandomString(32);
+  const { hash, secret } = await generateHashSecret(link.title);
+  answer.chainId = hash;
+  answer.secret = secret;
 });
 
 SequelizeSlugify.slugifyModel(Answer, {
   source: ['clientId'],
-});
-
-Answer.addHook('beforeCreate', async (answer, options) => {
-  answer.clientId = generateRandomString(32);
-  const { hash, secret } = await generateHashSecret(options.str);
-  answer.chainId = hash;
-  answer.secret = secret;
 });
 
 export default Answer;

@@ -1,4 +1,4 @@
-import Answer from '~/server/models/artwork';
+import Answer from '~/server/models/answer';
 import baseController from '~/server/controllers';
 
 const options = {
@@ -7,6 +7,7 @@ const options = {
 };
 
 function create(req, res, next) {
+  console.log('answers create')
   baseController.create(options)(req, res, next);
 }
 

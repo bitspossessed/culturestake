@@ -2,7 +2,6 @@ import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
-import Answer from '~/server/models/answer';
 
 const Property = db.define('property', {
   id: {
@@ -18,9 +17,6 @@ const Property = db.define('property', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isAlphanumeric: true,
-    },
   },
 });
 

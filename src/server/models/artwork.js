@@ -17,9 +17,6 @@ const Artwork = db.define('artwork', {
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
-    validate: {
-      isAlphanumeric: true,
-    },
   },
 });
 

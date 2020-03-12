@@ -7,6 +7,7 @@ import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
 import artworksRouter from '~/server/routes/artworks';
 import propertiesRouter from '~/server/routes/properties';
+import answersRouter from '~/server/routes/answers';
 import usersRouter from '~/server/routes/users';
 import relayRouter from '~/server/routes/relay';
 
@@ -29,6 +30,8 @@ router.use('/festivals', festivalsRouter);
 router.use('/artworks', artworksRouter);
 
 router.use('/properties', propertiesRouter);
+
+router.use('/answers', answersRouter);
 
 router.use(() => {
   throw new APIError(httpStatus.NOT_FOUND);
