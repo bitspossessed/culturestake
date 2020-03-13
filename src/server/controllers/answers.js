@@ -7,7 +7,6 @@ const options = {
 };
 
 function create(req, res, next) {
-  console.log('answers create')
   baseController.create(options)(req, res, next);
 }
 

@@ -15,29 +15,28 @@ describe('Answers', () => {
     await authRequest.put('/api/properties').send(properties.aProperty);
   });
 
+  afterAll(async () => {
+    await authRequest.del('/api/artworks/mona-lisa');
+    await authRequest.del('/api/properties/is-blue');
+  });
+
   describe('PUT /api/artworks', () => {
-    afterEach(async () => {
-      await authRequest.del('/api/artworks/mona-lisa');
-      await authRequest.del('/api/properties/is-blue');
-    });
-
-    // it('should fail with a too short password', async () => {
-    //   await authRequest
-    //     .put('/api/users')
-    //     .send({
-    //       ...users.lisa,
-    //       password: 'short',
-    //     })
-    //     .expect(httpStatus.BAD_REQUEST);
-    // });
-
-    it('should succeeed creating a new answer', async () => {
-      console.log('test')
+    it('should succeeed creating a new answer for an artwork', async () => {
       await authRequest
         .put('/api/answers')
         .send({
           type: 'artwork',
           artworkId: 1,
+        })
+        .expect(httpStatus.CREATED);
+    });
+
+    it('should succeeed creating a new answer for a property', async () => {
+      await authRequest
+        .put('/api/answers')
+        .send({
+          type: 'property',
+          propertyId: 1,
         })
         .expect(httpStatus.CREATED);
     });

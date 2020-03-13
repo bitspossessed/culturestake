@@ -16,7 +16,6 @@ const getAnswerResource = resourcesMiddleware({
 router.put(
   '/',
   authMiddleware,
-  (req, res, next) => { console.log(res.status); next() },
   validate(answersValidation.create),
   answersController.create,
 );

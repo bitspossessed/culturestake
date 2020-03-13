@@ -48,10 +48,17 @@ const Answer = db.define('answer', {
     values: types,
     allowNull: false,
   },
+  artworkId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  propertyId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 });
 
 Answer.addHook('beforeCreate', async answer => {
-  console.log('hook')
   let model;
   let key;
   if (answer.type == 'property') {
@@ -61,9 +68,7 @@ Answer.addHook('beforeCreate', async answer => {
     model = Artwork;
     key = answer.artworkId;
   }
-  console.log(key)
   const link = await model.findByPk(key);
-  console.log(link)
   answer.clientId = generateRandomString(32);
   const { hash, secret } = await generateHashSecret(link.title);
   answer.chainId = hash;
