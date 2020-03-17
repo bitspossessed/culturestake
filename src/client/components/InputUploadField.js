@@ -74,17 +74,7 @@ const InputUploadField = ({
       setPreviousFilesData([]);
 
       // Add uploaded file id to field values
-      setValue(
-        value.concat(
-          uploadedFiles.map(file => {
-            // Remove timestamps
-            delete file.createdAt;
-            delete file.updatedAt;
-
-            return file;
-          }),
-        ),
-      );
+      setValue(value.concat(uploadedFiles));
     },
   });
 
@@ -107,7 +97,7 @@ const InputUploadField = ({
   // mounted
   useEffect(() => {
     setFilesData(value);
-  }, []);
+  }, [value]);
 
   const onClickUpload = event => {
     event.preventDefault();

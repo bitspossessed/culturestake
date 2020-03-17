@@ -2,12 +2,18 @@ import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
 
-const File = db.define('file', {
+const Image = db.define('image', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
+  },
+  attachableId: {
+    type: DataTypes.INTEGER,
+  },
+  attachableType: {
+    type: DataTypes.STRING,
   },
   fileName: {
     type: DataTypes.STRING,
@@ -32,4 +38,4 @@ const File = db.define('file', {
   },
 });
 
-export default File;
+export default Image;

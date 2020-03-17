@@ -4,6 +4,12 @@ import web3 from '~/common/services/web3';
 
 const filesBaseValidation = {
   id: Joi.number().required(),
+  createdAt: Joi.date()
+    .iso()
+    .required(),
+  updatedAt: Joi.date()
+    .iso()
+    .required(),
   fileName: Joi.string().required(),
   fileType: Joi.string().required(),
   url: Joi.string()
@@ -11,12 +17,9 @@ const filesBaseValidation = {
     .required(),
 };
 
-export const filesValidation = Joi.array().items(
+export const documentsValidation = Joi.array().items(
   Joi.object({
     ...filesBaseValidation,
-    urlThreshold: Joi.allow(null),
-    urlThresholdThumb: Joi.allow(null),
-    urlThumb: Joi.allow(null),
   }),
 );
 

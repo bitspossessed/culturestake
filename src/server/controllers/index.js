@@ -1,26 +1,169 @@
 import httpStatus from 'http-status';
-import { UniqueConstraintError } from 'sequelize';
+import { UniqueConstraintError, Op } from 'sequelize';
 
 import APIError from '~/server/helpers/errors';
-
+import { filterResponse, respondWithSuccess } from '~/server/helpers/respond';
 import {
-  filterResponse,
-  filterResponseAll,
-  respondWithSuccess,
-} from '~/server/helpers/respond';
+  singularize,
+  pluralize,
+  uppercaseFirst,
+} from '~/common/helpers/strings';
 
 const DEFAULT_LIMIT = 20;
 const DEFAULT_ORDER_DIRECTION = 'asc';
 const DEFAULT_ORDER_KEY = 'id';
 
+// The base controller handles basic CRUD requests for all
+// types of resources. It manages API responses (what is
+// publicly visible and what not), errors, pagination, and
+// updates associations accordingly. All of this can be
+// configured via the `options` object.
+
+// Filters the response accordingly to only expose certain
+// fields to the public API
+function filterResponseFields(req, data, options) {
+  // Filter association responses as well
+  if (options.associations) {
+    options.associations.forEach(
+      ({ association, fields = [], fieldsProtected = [] }) => {
+        const { as } = association;
+
+        if (as in data) {
+          const newData = data[as].reduce((acc, item) => {
+            acc.push(
+              filterResponseFields(req, item, {
+                fields,
+                fieldsProtected,
+              }),
+            );
+
+            return acc;
+          }, []);
+
+          data.set(as, newData, {
+            raw: true,
+          });
+        }
+      },
+    );
+  }
+
+  // Show protected fields when user is authenticated
+  const fields =
+    req.locals && req.locals.user
+      ? options.fields.concat(options.fieldsProtected)
+      : options.fields;
+
+  return filterResponse(data, fields);
+}
+
+function filterResponseFieldsAll(req, arr, options) {
+  return arr.map(data => {
+    return filterResponseFields(req, data, options);
+  });
+}
+
+// Helper method to handle associations of resources,
+// removing or adding them when needed
+async function handleAssociation(instance, options, items) {
+  // Prepare names for different operations
+  const name = singularize(options.association.target.name);
+  const nameUppercase = uppercaseFirst(name);
+  const namePlural = pluralize(name);
+  const namePluralUppercase = uppercaseFirst(namePlural);
+
+  // Collect ids of all items to be associated to instance
+  const ids = [];
+  items.forEach(item => {
+    if (typeof item === 'number') {
+      ids.push(item);
+    } else {
+      if (!('id' in item)) {
+        throw new Error('`id` missing in association items');
+      }
+
+      ids.push(item.id);
+    }
+  });
+
+  // Get items we want to be associated with
+  const futureItems = await options.association.target.findAll({
+    where: {
+      id: {
+        [Op.in]: ids,
+      },
+    },
+  });
+
+  // Get already existing associations of that kind
+  const currentItems = await instance[`get${namePluralUppercase}`]();
+
+  const currentIds = currentItems.map(item => {
+    return item.id;
+  });
+
+  // Check for to-be-removed associations
+  const removePromises = currentItems
+    .filter(item => {
+      return !ids.includes(item.id);
+    })
+    .reduce((acc, item) => {
+      acc.push(instance[`remove${nameUppercase}`](item));
+
+      // Remove item itself when cascade is enabled
+      if (options.destroyCascade) {
+        acc.push(item.destroy());
+      }
+
+      return acc;
+    }, []);
+
+  // Check for to-be-added / new associations
+  const addPromises = futureItems
+    .filter(futureItem => {
+      return !currentIds.includes(futureItem.id);
+    })
+    .map(item => {
+      return instance[`add${nameUppercase}`](item);
+    });
+
+  return Promise.all([...removePromises, ...addPromises]);
+}
+
+async function handleAssociations(instance, associations, data) {
+  if (!associations) {
+    return;
+  }
+
+  const promises = associations.map(association => {
+    if (!('association' in association)) {
+      throw new Error('`association` required in association');
+    }
+
+    const { as = association.as } = association.association;
+
+    if (!(as in data)) {
+      throw new Error(
+        'Invalid `as` key, cant find association data in instance',
+      );
+    }
+
+    return handleAssociation(instance, association, data[as]);
+  }, []);
+
+  return Promise.all(promises);
+}
+
 function create(options) {
   return async (req, res, next) => {
     try {
-      const response = await options.model.create(req.body);
+      const instance = await options.model.create(req.body);
+
+      await handleAssociations(instance, options.associations, req.body);
 
       respondWithSuccess(
         res,
-        filterResponse(response, options.fields),
+        filterResponseFields(req, instance, options),
         httpStatus.CREATED,
       );
     } catch (error) {
@@ -47,10 +190,11 @@ function readAll(options) {
         limit,
         offset,
         order: [[orderKey, orderDirection.toUpperCase()]],
+        include: options.include,
       });
 
       respondWithSuccess(res, {
-        results: filterResponseAll(response.rows, options.fields),
+        results: filterResponseFieldsAll(req, response.rows, options),
         pagination: {
           limit: parseInt(limit, 10),
           offset: parseInt(offset, 10),
@@ -68,10 +212,17 @@ function readAll(options) {
 function read(options) {
   return async (req, res, next) => {
     try {
-      respondWithSuccess(
-        res,
-        filterResponse(req.locals.resource, options.fields),
-      );
+      const instance = await options.model.findOne({
+        rejectOnEmpty: true,
+        where: {
+          id: req.locals.resource.id,
+        },
+        include: options.include,
+      });
+
+      const test = filterResponseFields(req, instance, options);
+
+      respondWithSuccess(res, test);
     } catch (error) {
       next(error);
     }
@@ -81,12 +232,15 @@ function read(options) {
 function update(options) {
   return async (req, res, next) => {
     try {
-      await options.model.update(req.body, {
+      const instance = await options.model.update(req.body, {
         where: {
           id: req.locals.resource.id,
         },
         individualHooks: true,
+        include: options.include,
       });
+
+      await handleAssociations(instance[1][0], options.associations, req.body);
 
       respondWithSuccess(res, null, httpStatus.NO_CONTENT);
     } catch (error) {

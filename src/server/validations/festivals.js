@@ -1,7 +1,9 @@
 import { Joi, Segments } from 'celebrate';
 
-import { imagesValidation } from '~/common/helpers/validate';
-
+import {
+  imagesValidation,
+  documentsValidation,
+} from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
@@ -10,6 +12,7 @@ const defaultValidation = {
     .required(),
   description: Joi.string().required(),
   images: imagesValidation.max(10),
+  documents: documentsValidation.max(1),
 };
 
 export default {

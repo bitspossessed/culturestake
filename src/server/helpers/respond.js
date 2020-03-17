@@ -22,7 +22,9 @@ export function respondWithError(
 }
 
 export function filterResponse(response, filterSchema) {
-  const data = response.toJSON();
+  const data =
+    typeof response.toJSON === 'function' ? response.toJSON() : response;
+
   const schema = DEFAULT_FIELDS.concat(filterSchema);
 
   return Object.keys(data).reduce((acc, key) => {

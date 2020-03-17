@@ -72,6 +72,11 @@ export const useResource = path => {
     dispatch(requestResource(path));
   }, [pathStr, currentPathStr]);
 
+  // Request the resource on every component mount
+  useEffect(() => {
+    dispatch(requestResource(path));
+  }, []);
+
   // Return the resource (when given) and the loading state
   const data = useMemo(() => {
     if (isRequestedPath() && isSuccess) {

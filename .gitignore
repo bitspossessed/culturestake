@@ -2,8 +2,10 @@
 build
 
 # Uploads folder
-uploads/*
-!uploads/.gitkeep
+uploads/images/*
+uploads/documents/*
+!uploads/images/.gitkeep
+!uploads/documents/.gitkeep
 
 # Dependencies
 node_modules

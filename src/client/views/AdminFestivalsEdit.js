@@ -56,14 +56,16 @@ const AdminFestivalsEditForm = () => {
   } = useForm({
     requestId,
     defaultValues: festival,
-    onSubmit: ({ title, description }) => {
+    onSubmit: ({ title, description, images, documents }) => {
       dispatch(
         postRequest({
           id: requestId,
           path: ['festivals', slug],
           body: {
-            title,
             description,
+            documents,
+            images,
+            title,
           },
         }),
       );

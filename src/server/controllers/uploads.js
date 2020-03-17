@@ -4,11 +4,16 @@ import path from 'path';
 import httpStatus from 'http-status';
 import mime from 'mime';
 
-import File from '~/server/models/file';
-import { respondWithSuccess } from '~/server/helpers/respond';
-
+import Document from '~/server/models/document';
+import Image from '~/server/models/image';
 import {
+  filterResponseAll,
+  respondWithSuccess,
+} from '~/server/helpers/respond';
+import {
+  DOCUMENTS_SUBFOLDER,
   FIELD_NAME,
+  IMAGES_SUBFOLDER,
   SUFFIX_DEFAULT,
   SUFFIX_THRESHOLD,
   SUFFIX_THRESHOLD_THUMB,
@@ -17,20 +22,41 @@ import {
   UPLOAD_FOLDER_PATH,
 } from '~/server/routes/uploads';
 
-function getVersionUrl(versions, suffix) {
+const IMAGE_FIELDS = [
+  'id',
+  'fileName',
+  'fileType',
+  'url',
+  'urlThreshold',
+  'urlThumb',
+  'urlThresholdThumb',
+  'createdAt',
+  'updatedAt',
+];
+
+const DOCUMENT_FIELDS = [
+  'id',
+  'fileName',
+  'fileType',
+  'url',
+  'createdAt',
+  'updatedAt',
+];
+
+function getVersionUrl(versions, suffix, subfolder) {
   const { path: versionPath } = versions.find(file => {
     return file.version.suffix === suffix;
   });
 
-  return toFileUrl(versionPath);
+  return toFileUrl(versionPath, subfolder);
 }
 
-function toFileUrl(filePath) {
+function toFileUrl(filePath, subfolder) {
   const split = filePath.split('/');
-  return `/${UPLOAD_FOLDER_NAME}/${split[split.length - 1]}`;
+  return `/${UPLOAD_FOLDER_NAME}/${subfolder}/${split[split.length - 1]}`;
 }
 
-async function copyToUploadsDir(filePath, fileName) {
+async function copyToUploadsDir(filePath, fileName, subfolder) {
   if (!fs.existsSync(UPLOAD_FOLDER_PATH)) {
     throw new Error(`"${UPLOAD_FOLDER_PATH}" folder does not exist`);
   }
@@ -40,7 +66,7 @@ async function copyToUploadsDir(filePath, fileName) {
     await new Promise((resolve, reject) => {
       fs.copyFile(
         filePath,
-        path.join(UPLOAD_FOLDER_PATH, fileName),
+        path.join(UPLOAD_FOLDER_PATH, subfolder, fileName),
         fs.constants.COPYFILE_EXCL,
         err => {
           if (err) {
@@ -75,7 +101,11 @@ async function uploadImages(req, res, next) {
 
     // Move all files to /uploads folder to make them public
     for (let imageVersion of images.flat()) {
-      await copyToUploadsDir(imageVersion.path, imageVersion.fileName);
+      await copyToUploadsDir(
+        imageVersion.path,
+        imageVersion.fileName,
+        IMAGES_SUBFOLDER,
+      );
     }
 
     // Convert image data to database model format
@@ -86,16 +116,28 @@ async function uploadImages(req, res, next) {
       return {
         fileName,
         fileType,
-        url: getVersionUrl(versions, SUFFIX_DEFAULT),
-        urlThreshold: getVersionUrl(versions, SUFFIX_THRESHOLD),
-        urlThresholdThumb: getVersionUrl(versions, SUFFIX_THRESHOLD_THUMB),
-        urlThumb: getVersionUrl(versions, SUFFIX_THUMB),
+        url: getVersionUrl(versions, SUFFIX_DEFAULT, IMAGES_SUBFOLDER),
+        urlThreshold: getVersionUrl(
+          versions,
+          SUFFIX_THRESHOLD,
+          IMAGES_SUBFOLDER,
+        ),
+        urlThresholdThumb: getVersionUrl(
+          versions,
+          SUFFIX_THRESHOLD_THUMB,
+          IMAGES_SUBFOLDER,
+        ),
+        urlThumb: getVersionUrl(versions, SUFFIX_THUMB, IMAGES_SUBFOLDER),
       };
     });
 
-    const response = await File.bulkCreate(fileEntries);
+    const response = await Image.bulkCreate(fileEntries);
 
-    respondWithSuccess(res, response, httpStatus.CREATED);
+    respondWithSuccess(
+      res,
+      filterResponseAll(response, IMAGE_FIELDS),
+      httpStatus.CREATED,
+    );
   } catch (error) {
     next(error);
   }
@@ -107,7 +149,7 @@ async function uploadDocuments(req, res, next) {
 
     // Move all files to /uploads folder to make them public
     for (let file of files) {
-      await copyToUploadsDir(file.path, file.filename);
+      await copyToUploadsDir(file.path, file.filename, DOCUMENTS_SUBFOLDER);
     }
 
     // Convert image data to database model format
@@ -115,13 +157,17 @@ async function uploadDocuments(req, res, next) {
       return {
         fileName: file.filename,
         fileType: mime.getExtension(file.mimetype),
-        url: toFileUrl(file.path),
+        url: toFileUrl(file.path, DOCUMENTS_SUBFOLDER),
       };
     });
 
-    const response = await File.bulkCreate(fileEntries);
+    const response = await Document.bulkCreate(fileEntries);
 
-    respondWithSuccess(res, response, httpStatus.CREATED);
+    respondWithSuccess(
+      res,
+      filterResponseAll(response, DOCUMENT_FIELDS),
+      httpStatus.CREATED,
+    );
   } catch (error) {
     next(error);
   }

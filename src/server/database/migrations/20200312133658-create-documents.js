@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('files', {
+    return queryInterface.createTable('documents', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -12,6 +12,12 @@ module.exports = {
       },
       updatedAt: {
         type: Sequelize.DATE,
+      },
+      attachableId: {
+        type: Sequelize.INTEGER,
+      },
+      attachableType: {
+        type: Sequelize.STRING,
       },
       fileName: {
         type: Sequelize.STRING,
@@ -25,18 +31,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      urlThreshold: {
-        type: Sequelize.STRING,
-      },
-      urlThresholdThumb: {
-        type: Sequelize.STRING,
-      },
-      urlThumb: {
-        type: Sequelize.STRING,
-      },
     });
   },
   down: queryInterface => {
-    return queryInterface.dropTable('files');
+    return queryInterface.dropTable('documents');
   },
 };

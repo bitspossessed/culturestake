@@ -30,14 +30,16 @@ const AdminFestivalsNew = () => {
     },
   } = useForm({
     requestId,
-    onSubmit: ({ title, description }) => {
+    onSubmit: ({ title, description, images, documents }) => {
       dispatch(
         putRequest({
           id: requestId,
           path: ['festivals'],
           body: {
-            title,
             description,
+            documents,
+            images,
+            title,
           },
         }),
       );

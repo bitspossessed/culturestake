@@ -16,6 +16,9 @@ export const SUFFIX_THUMB = 'thumb';
 export const UPLOAD_FOLDER_NAME = 'uploads';
 export const UPLOAD_FOLDER_PATH = getPath(UPLOAD_FOLDER_NAME);
 
+export const IMAGES_SUBFOLDER = 'images';
+export const DOCUMENTS_SUBFOLDER = 'documents';
+
 const router = express.Router();
 
 router.post(
