@@ -1,11 +1,11 @@
 import express from 'express';
 
-import relayController from '~/server/controllers/relay';
-import relayValidation from '~/server/validations/relay';
+import voteController from '~/server/controllers/votes';
+import voteValidation from '~/server/validations/votes';
 import validate from '~/server/helpers/validate';
 
 const router = express.Router();
 
-router.post('/', validate(relayValidation.metatx), relayController.relay);
+router.post('/', validate(voteValidation.metatx), voteController.create);
 
 export default router;

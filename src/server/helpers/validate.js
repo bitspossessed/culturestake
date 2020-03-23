@@ -9,6 +9,7 @@ export const web3Validators = Joi.extend(joi => {
     messages: {
       'web3.address': 'is invalid Ethereum address',
       'web3.addressChecksum': 'is invalid Ethereum address checksum',
+      'web3.signature': 'is invalid Ethereum signature',
     },
     rules: {
       address: {
@@ -26,6 +27,27 @@ export const web3Validators = Joi.extend(joi => {
             return helpers.error('web3.addressChecksum');
           }
 
+          return value;
+        },
+      },
+      signature: {
+        params: {
+          message: joi.string().required(),
+          address: joi
+            .string()
+            .required()
+            .max(40),
+        },
+        validate(params, value, helpers) {
+          let recovered;
+          try {
+            recovered = web3.eth.accounts.recover(params.message, value);
+          } catch (err) {
+            return helpers.error('web3.signature');
+          }
+          if (!value || recovered !== params.address) {
+            return helpers.error('web3.signature');
+          }
           return value;
         },
       },

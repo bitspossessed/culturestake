@@ -1,20 +1,18 @@
 import { Joi, Segments } from 'celebrate';
 
+import { packBooth, packVotes } from '~/server/validations';
+
 const defaultValidation = {
-  sigR: Joi.string()
-    .max(64)
-    .required(),
-  sigS: Joi.string()
-    .max(64)
-    .required(),
-  sigV: Joi.number().required(),
-  boothR: Joi.string()
-    .max(64)
-    .required(),
-  boothS: Joi.string()
-    .max(64)
-    .required(),
-  boothV: Joi.number().required(),
+  signature: Joi.web3.signature(
+    packVotes(Joi.ref('answers'), Joi.ref('voteTokens')),
+    Joi.ref('sender'),
+  ),
+  sender: Joi.web3.address(),
+  booth: Joi.web3.address(),
+  boothSignature: Joi.web3.signature(
+    packBooth(Joi.ref('answers'), Joi.ref('nonce')),
+    Joi.ref('booth'),
+  ),
   nonce: Joi.number().required(),
   festival: Joi.string()
     .max(64)

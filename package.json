@@ -85,6 +85,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "culturestake-contracts": "^1.0.4",
+    "ethereumjs-abi": "^0.6.8",
     "express": "^4.17.1",
     "helmet": "^3.21.3",
     "http-status": "^1.4.2",
