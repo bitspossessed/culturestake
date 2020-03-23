@@ -6,14 +6,14 @@ import { types } from '~/server/models/answer';
 const defaultValidation = Joi.alternatives().try(
   Joi.object().keys({
     type: Joi.string()
-      .valid(types[0], types[1])
+      .valid(...types)
       .required(),
     artworkId: Joi.any().valid(null),
     propertyId: Joi.number().integer(),
   }),
   Joi.object().keys({
     type: Joi.string()
-      .valid(types[0], types[1])
+      .valid(...types)
       .required(),
     artworkId: Joi.number().integer(),
     propertyId: Joi.any().valid(null),

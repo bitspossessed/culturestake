@@ -9,7 +9,7 @@ import artworksRouter from '~/server/routes/artworks';
 import propertiesRouter from '~/server/routes/properties';
 import answersRouter from '~/server/routes/answers';
 import usersRouter from '~/server/routes/users';
-import relayRouter from '~/server/routes/relay';
+import voteRouter from '~/server/routes/vote';
 
 import { respondWithSuccess } from '~/server/helpers/respond';
 
@@ -23,7 +23,7 @@ router.use('/auth', authRouter);
 
 router.use('/users', authMiddleware, usersRouter);
 
-router.use('/relay', relayRouter);
+router.use('/vote', voteRouter);
 
 router.use('/festivals', festivalsRouter);
 
