@@ -1,24 +1,33 @@
 import { Joi, Segments } from 'celebrate';
 
-import { packBooth, packVotes } from '~/server/validations';
+import { voteTypes, boothTypes } from '~/common/services/encoding';
+import { web3Validators } from '~/server/helpers/validate';
 
 const defaultValidation = {
-  signature: Joi.web3.signature(
-    packVotes(Joi.ref('answers'), Joi.ref('voteTokens')),
-    Joi.ref('sender'),
-  ),
-  sender: Joi.web3.address(),
-  booth: Joi.web3.address(),
-  boothSignature: Joi.web3.signature(
-    packBooth(Joi.ref('answers'), Joi.ref('nonce')),
-    Joi.ref('booth'),
-  ),
+  signature: web3Validators
+    .web3()
+    .signature(
+      voteTypes,
+      Joi.ref('answers'),
+      Joi.ref('voteTokens'),
+      Joi.ref('sender'),
+    ),
+  sender: web3Validators.web3().address(),
+  booth: web3Validators.web3().address(),
+  boothSignature: web3Validators
+    .web3()
+    .signature(
+      boothTypes,
+      Joi.ref('answers'),
+      Joi.ref('nonce'),
+      Joi.ref('booth'),
+    ),
   nonce: Joi.number().required(),
   festival: Joi.string()
-    .max(64)
+    .max(66)
     .required(),
   answers: Joi.array()
-    .items(Joi.string().max(64))
+    .items(Joi.string().max(66))
     .required(),
   voteTokens: Joi.array()
     .items(Joi.number())
