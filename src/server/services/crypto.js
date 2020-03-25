@@ -41,3 +41,11 @@ export function compareHashSecret(secret, hash) {
 export function generateRandomString(len) {
   return web3.utils.randomHex(len / 2).slice(2);
 }
+
+export function isSignatureValid(payload, signature, claimed) {
+  let recovered = web3.eth.accounts.recover(payload, signature);
+  if (claimed === recovered) {
+    return true;
+  }
+  return false;
+}

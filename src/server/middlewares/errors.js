@@ -7,21 +7,16 @@ import { respondWithError } from '~/server/helpers/respond';
 
 // eslint-disable-next-line no-unused-vars
 export default function errorsMiddleware(err, req, res, next) {
-  console.log(err)
-  console.log('errorsMiddleware')
   // Check if error is public facing and known to us
   if (isValidationError(err)) {
     const { joi } = err;
 
     logger.debug(joi);
 
-    console.log(err)
-
     // Show validation errors to user
     err = new APIError(httpStatus.BAD_REQUEST);
 
     if (joi.details) {
-      console.log(joi)
       err.data = {
         fields: joi.details.map(detail => {
           return {
