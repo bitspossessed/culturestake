@@ -12,9 +12,7 @@ const defaultValidation = {
     .max(132)
     .required(),
   nonce: Joi.number().required(),
-  festival: Joi.string()
-    .max(66)
-    .required(),
+  question: web3Validators.web3().address(),
   answers: Joi.array()
     .items(Joi.string().max(66))
     .required(),

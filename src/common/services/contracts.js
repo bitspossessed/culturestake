@@ -1,5 +1,5 @@
-import AdminContract from 'culturestake-contracts/build/contracts/Admin.json';
-import VoteContract from 'culturestake-contracts/build/contracts/Vote.json';
+import AdminContract from 'culturestake-contracts/build/contracts/Culturestake.json';
+import QuestionContract from 'culturestake-contracts/build/contracts/Question.json';
 
 import web3 from '~/common/services/web3';
 
@@ -11,6 +11,6 @@ export function getAdminContract(address) {
   return getContract(AdminContract.abi, address);
 }
 
-export function getVoteContract(address) {
-  return getContract(VoteContract.abi, address);
+export function getQuestionContract(address) {
+  return getContract(QuestionContract.abi, address);
 }

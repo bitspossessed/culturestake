@@ -6,12 +6,12 @@ import { initializeDatabase } from './helpers/database';
 import app from '~/server';
 import web3 from '~/common/services/web3';
 import {
-  getVoteContract,
+  getQuestionContract,
 } from '~/common/services/contracts';
 import { packBooth, packVote } from '~/common/services/encoding';
 
 describe('API', () => {
-  // let vote;
+  let question;
   let sender;
   let booth;
   let answer = web3.utils.sha3('an answer');
@@ -19,7 +19,7 @@ describe('API', () => {
 
   beforeAll(async () => {
     await initializeDatabase();
-    // vote = getVoteContract(process.env.VOTE_CONTRACT);
+    question = getQuestionContract(process.env.QUESTION_CONTRACT);
     sender = web3.eth.accounts.create();
     booth = web3.eth.accounts.create();
   });
@@ -38,7 +38,7 @@ describe('API', () => {
           booth.privateKey,
         ).signature,
         nonce: 1,
-        festival,
+        question: question.options.address,
         answers: [answer],
         voteTokens: [1],
       };
@@ -46,7 +46,7 @@ describe('API', () => {
         .post('/api/vote')
         .send(vote)
         .expect(httpStatus.OK);
-      })
+    });
 
     // it('should respond with a successful message', async () => {
     //   const metaNonce = await relayer.methods.getNonce(sender.address).call();
