@@ -25,6 +25,15 @@ const checkQuestion = async (vote, question) => {
   }
 };
 
+const checkNonce = async vote => {
+  const isValidNonce = await admin.methods
+    .isValidVotingNonce(vote.booth, vote.nonce)
+    .call();
+  if (!isValidNonce) {
+    throw Error();
+  }
+};
+
 const checkSigs = async vote => {
   if (
     !isSignatureValid(
@@ -82,8 +91,9 @@ export default async function(req, res, next) {
   try {
     checkSigs(vote, question);
     checkBooth(vote);
-    checkQuestion(vote);
-    checkAnswers(vote);
+    checkNonce(vote);
+    checkQuestion(vote, question);
+    checkAnswers(vote, question);
   } catch (err) {
     throw new APIError(httpStatus.BAD_REQUEST);
   }
