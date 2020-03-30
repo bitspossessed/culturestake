@@ -6,11 +6,13 @@ import { initializeDatabase } from './helpers/database';
 import app from '~/server';
 import web3 from '~/common/services/web3';
 import {
+  getAdminContract,
   getQuestionContract,
 } from '~/common/services/contracts';
 import { packBooth, packVote } from '~/common/services/encoding';
 
 describe('API', () => {
+  let admin;
   let question;
   let sender;
   let booth;
@@ -19,9 +21,14 @@ describe('API', () => {
 
   beforeAll(async () => {
     await initializeDatabase();
-    question = getQuestionContract(process.env.QUESTION_CONTRACT);
+    admin = getAdminContract(process.env.ADMIN_CONTRACT);
+    const logs = await admin.getPastEvents('InitQuestion', {
+      fromBlock: 0,
+      toBlock: 'latest',
+    });
+    question = getQuestionContract(logs[0].returnValues.questionAddress);
     sender = web3.eth.accounts.create();
-    booth = web3.eth.accounts.create();
+    booth = web3.eth.accounts.privateKeyToAccount(`0x${process.env.BOOTH_PRIV_KEY}`);
   });
 
   describe('POST /api/vote', () => {

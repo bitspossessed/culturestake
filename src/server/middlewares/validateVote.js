@@ -11,7 +11,7 @@ import APIError from '~/server/helpers/errors';
 const admin = getAdminContract(process.env.ADMIN_CONTRACT);
 
 const checkBooth = async (vote, question) => {
-  const booth = await admin.methods.getVotingBooth(vote.booth);
+  const booth = await admin.methods.getVotingBooth(vote.booth).call();
   const festival = await question.methods.festival().call();
   if (!booth[0] || festival !== booth[1]) {
     throw Error();
@@ -21,7 +21,7 @@ const checkBooth = async (vote, question) => {
 const checkQuestion = async (vote, question) => {
   const hasVoted = await question.methods.hasVoted(vote.sender).call();
   if (hasVoted) {
-    throw Error();
+    throw Error('has voted');
   }
 };
 
@@ -30,7 +30,7 @@ const checkNonce = async vote => {
     .isValidVotingNonce(vote.booth, vote.nonce)
     .call();
   if (!isValidNonce) {
-    throw Error();
+    throw Error('invalid nonce');
   }
 };
 
@@ -57,43 +57,37 @@ const checkAnswers = async (vote, question) => {
   }
   const seen = {};
   const checks = [];
-  const votesPer = await question.methods.votesPer().call();
+  const maxVoteTokens = await question.methods.maxVoteTokens().call();
   let sum = 0;
-  vote.answers.map(answer => {
+  vote.answers.map(async answer => {
     if (seen[answer]) {
       throw Error();
     }
     seen[answer] = true;
     sum += vote.votes;
-    checks.push(
-      new Promise(res => {
-        question.methods
-          .getAnswer(answer)
-          .call()
-          .then(a => {
-            if (a[0] !== true) {
-              throw Error();
-            }
-            res();
-          });
-      }),
-    );
-    if (sum > votesPer * vote.answers.length) {
-      throw Error();
+    checks.push(async res => {
+      const a = await question.methods.getAnswer(answer).call();
+      if (a[0] !== true) {
+        throw Error('invalid answer');
+      }
+      res();
+    });
+    if (sum > maxVoteTokens * vote.answers.length) {
+      throw Error('too many votes');
     }
-    return Promise.all(checks);
   });
+  return Promise.all(checks.map(check => new Promise(check)));
 };
 
 export default async function(req, res, next) {
   const vote = req.body;
   const question = getQuestionContract(vote.question);
   try {
-    checkSigs(vote, question);
-    checkBooth(vote);
-    checkNonce(vote);
-    checkQuestion(vote, question);
-    checkAnswers(vote, question);
+    await checkSigs(vote, question);
+    await checkBooth(vote, question);
+    await checkNonce(vote);
+    await checkQuestion(vote, question);
+    await checkAnswers(vote, question);
   } catch (err) {
     throw new APIError(httpStatus.BAD_REQUEST);
   }
