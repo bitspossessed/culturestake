@@ -28,7 +28,9 @@ describe('API', () => {
     });
     question = getQuestionContract(logs[0].returnValues.questionAddress);
     sender = web3.eth.accounts.create();
-    booth = web3.eth.accounts.privateKeyToAccount(`0x${process.env.BOOTH_PRIV_KEY}`);
+    booth = web3.eth.accounts.privateKeyToAccount(
+      `0x${process.env.BOOTH_PRIV_KEY}`
+    );
   });
 
   describe('POST /api/vote', () => {
