@@ -53,14 +53,12 @@ const views = {
     title: 'Users',
   },
   AdminUsersEdit: {
-    buttonSubmit: 'Save',
     errorNotFound: 'This user does not exist.',
     notificationSuccess: 'You updated the user {username}.',
     notificationDestroySuccess: 'You deleted user {username}.',
     title: 'Edit user',
   },
   AdminUsersNew: {
-    buttonSubmit: 'Create',
     title: 'Create new user',
     notificationSuccess: 'You created the user {username}.',
     errorUniqueUser: 'A user with this email or username exists already.',
@@ -72,14 +70,12 @@ const views = {
     title: 'Festivals',
   },
   AdminFestivalsEdit: {
-    buttonSubmit: 'Save',
     errorNotFound: 'This festival does not exist.',
     notificationDestroySuccess: 'You deleted the festival {title}.',
     notificationSuccess: 'You updated the festival {title}.',
     title: 'Edit festival',
   },
   AdminFestivalsNew: {
-    buttonSubmit: 'Create',
     title: 'Create new festival',
     notificationSuccess: 'You created the festival {title}.',
   },
@@ -96,6 +92,8 @@ export default {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',
     buttonReturnToOverview: 'Return to overview',
+    buttonSubmitEdit: 'Save',
+    buttonSubmitNew: 'Create',
     errorMessage: 'Something went wrong ...',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',
