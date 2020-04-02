@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 import httpStatus from 'http-status';
 import mime from 'mime';
 
@@ -18,9 +15,12 @@ import {
   SUFFIX_THRESHOLD,
   SUFFIX_THRESHOLD_THUMB,
   SUFFIX_THUMB,
-  UPLOAD_FOLDER_NAME,
-  UPLOAD_FOLDER_PATH,
 } from '~/server/routes/uploads';
+import {
+  copyToUploadsDir,
+  getVersionUrl,
+  toFileUrl,
+} from '~/server/helpers/uploads';
 
 const IMAGE_FIELDS = [
   'id',
@@ -42,58 +42,6 @@ const DOCUMENT_FIELDS = [
   'createdAt',
   'updatedAt',
 ];
-
-function getVersionUrl(versions, suffix, subfolder) {
-  const { path: versionPath } = versions.find(file => {
-    return file.version.suffix === suffix;
-  });
-
-  return toFileUrl(versionPath, subfolder);
-}
-
-function toFileUrl(filePath, subfolder) {
-  const split = filePath.split('/');
-  return `/${UPLOAD_FOLDER_NAME}/${subfolder}/${split[split.length - 1]}`;
-}
-
-async function copyToUploadsDir(filePath, fileName, subfolder) {
-  if (!fs.existsSync(UPLOAD_FOLDER_PATH)) {
-    throw new Error(`"${UPLOAD_FOLDER_PATH}" folder does not exist`);
-  }
-
-  try {
-    // Safely copy file from tmp folder to uploads folder
-    await new Promise((resolve, reject) => {
-      fs.copyFile(
-        filePath,
-        path.join(UPLOAD_FOLDER_PATH, subfolder, fileName),
-        fs.constants.COPYFILE_EXCL,
-        err => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve();
-          }
-        },
-      );
-    });
-
-    // Remove original file in tmp folder
-    await new Promise((resolve, reject) => {
-      fs.unlink(filePath, err => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve();
-        }
-      });
-    });
-  } catch (error) {
-    throw new Error(
-      `Could not copy file ${fileName} to uploads folder: ${error}`,
-    );
-  }
-}
 
 async function uploadImages(req, res, next) {
   try {
