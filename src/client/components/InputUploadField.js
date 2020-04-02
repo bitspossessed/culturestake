@@ -9,7 +9,7 @@ import InputFieldset from '~/client/components/InputFieldset';
 import { imageToBase64 } from '~/client/services/images';
 import { postRequest } from '~/client/store/api/actions';
 import { useField } from '~/client/hooks/forms';
-import { useRequest, useRequestId } from '~/client/hooks/resources';
+import { useRequest, useRequestId } from '~/client/hooks/requests';
 
 import notify, {
   NotificationsTypes,

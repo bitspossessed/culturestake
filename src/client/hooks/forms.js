@@ -5,7 +5,7 @@ import {
   useForm as useReactForm,
 } from 'react-form';
 
-import { useRequest } from '~/client/hooks/resources';
+import { useRequest } from '~/client/hooks/requests';
 
 const joiOptions = {
   errors: {

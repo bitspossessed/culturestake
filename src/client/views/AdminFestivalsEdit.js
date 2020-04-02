@@ -13,8 +13,8 @@ import Header from '~/client/components/Header';
 import View from '~/client/components/View';
 import { postRequest, destroyRequest } from '~/client/store/api/actions';
 import { useForm } from '~/client/hooks/forms';
-import { useResource, useRequestId } from '~/client/hooks/resources';
-
+import { useRequest, useRequestId } from '~/client/hooks/requests';
+import { useResource } from '~/client/hooks/resources';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
@@ -44,8 +44,21 @@ const AdminFestivalsEditForm = () => {
   const history = useHistory();
 
   const { slug } = useParams();
-  const [festival, isLoading] = useResource(['festivals', slug]);
+
   const requestId = useRequestId();
+  const requestIdDelete = useRequestId();
+
+  const [festival, isLoading] = useResource(['festivals', slug], {
+    onError: () => {
+      dispatch(
+        notify({
+          text: translate('AdminFestivalsEdit.errorNotFound'),
+        }),
+      );
+
+      history.push('/admin/festivals');
+    },
+  });
 
   const {
     Form,
@@ -91,6 +104,20 @@ const AdminFestivalsEditForm = () => {
     },
   });
 
+  useRequest(requestIdDelete, {
+    onSuccess: () => {
+      dispatch(
+        notify({
+          text: translate('AdminFestivalsEdit.notificationDestroySuccess', {
+            title: festival.title,
+          }),
+        }),
+      );
+
+      history.push('/admin/festivals');
+    },
+  });
+
   const onClickDestroy = () => {
     if (!window.confirm(translate('default.areYouSure'))) {
       return;
@@ -98,19 +125,10 @@ const AdminFestivalsEditForm = () => {
 
     dispatch(
       destroyRequest({
+        id: requestIdDelete,
         path: ['festivals', slug],
       }),
     );
-
-    dispatch(
-      notify({
-        text: translate('AdminFestivalsEdit.notificationDestroySuccess', {
-          title: festival.title,
-        }),
-      }),
-    );
-
-    history.push('/admin/festivals');
   };
 
   if (isLoading) {

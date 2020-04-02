@@ -54,6 +54,7 @@ const views = {
   },
   AdminUsersEdit: {
     buttonSubmit: 'Save',
+    errorNotFound: 'This user does not exist.',
     notificationSuccess: 'You updated the user {username}.',
     notificationDestroySuccess: 'You deleted user {username}.',
     title: 'Edit user',
@@ -72,8 +73,9 @@ const views = {
   },
   AdminFestivalsEdit: {
     buttonSubmit: 'Save',
-    notificationSuccess: 'You updated the festival {title}.',
+    errorNotFound: 'This festival does not exist.',
     notificationDestroySuccess: 'You deleted the festival {title}.',
+    notificationSuccess: 'You updated the festival {title}.',
     title: 'Edit festival',
   },
   AdminFestivalsNew: {
