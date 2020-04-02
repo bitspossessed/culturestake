@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
+import { DOCUMENTS_SUBFOLDER } from '~/server/routes/uploads';
+import { removeFile } from '~/server/helpers/uploads';
 
 const Document = db.define('document', {
   id: {
@@ -27,6 +29,10 @@ const Document = db.define('document', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+});
+
+Document.addHook('beforeDestroy', file => {
+  return removeFile(file.url, DOCUMENTS_SUBFOLDER);
 });
 
 export default Document;

@@ -1,6 +1,8 @@
 import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
+import { IMAGES_SUBFOLDER } from '~/server/routes/uploads';
+import { removeFile } from '~/server/helpers/uploads';
 
 const Image = db.define('image', {
   id: {
@@ -36,6 +38,15 @@ const Image = db.define('image', {
   urlThumb: {
     type: DataTypes.STRING,
   },
+});
+
+Image.addHook('beforeDestroy', image => {
+  return Promise.all([
+    removeFile(image.url, IMAGES_SUBFOLDER),
+    removeFile(image.urlThreshold, IMAGES_SUBFOLDER),
+    removeFile(image.urlThresholdThumb, IMAGES_SUBFOLDER),
+    removeFile(image.urlThumb, IMAGES_SUBFOLDER),
+  ]);
 });
 
 export default Image;
