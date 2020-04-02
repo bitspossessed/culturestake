@@ -154,6 +154,23 @@ async function handleAssociations(instance, associations, data) {
   return Promise.all(promises);
 }
 
+// Remove all associations by passing on an empty array to handler
+async function destroyAssociations(instance, associations) {
+  if (!associations) {
+    return;
+  }
+
+  const promises = associations.map(association => {
+    if (!('association' in association)) {
+      throw new Error('`association` required in association');
+    }
+
+    return handleAssociation(instance, association, []);
+  }, []);
+
+  return Promise.all(promises);
+}
+
 function create(options) {
   return async (req, res, next) => {
     try {
@@ -256,11 +273,18 @@ function update(options) {
 function destroy(options) {
   return async (req, res, next) => {
     try {
-      await options.model.destroy({
+      const instance = await options.model.findOne({
+        rejectOnEmpty: true,
         where: {
           id: req.locals.resource.id,
         },
       });
+
+      if (options.associations) {
+        await destroyAssociations(instance, options.associations);
+      }
+
+      await instance.destroy();
 
       respondWithSuccess(res, null, httpStatus.NO_CONTENT);
     } catch (error) {
