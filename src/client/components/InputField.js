@@ -1,26 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import InputFieldset from '~/client/components/InputFieldset';
 import { useField } from '~/client/hooks/forms';
 
 // eslint-disable-next-line react/display-name
 const InputField = React.forwardRef(
   ({ name, validate, label, ...rest }, ref) => {
     const { meta, getInputProps } = useField(name, { validate });
-    const { error, isTouched } = meta;
 
     return (
-      <fieldset>
-        <label htmlFor={name}>{label}</label>
-
-        {isTouched && error ? (
-          <p>
-            <em>{error}</em>
-          </p>
-        ) : null}
-
+      <InputFieldset label={label} meta={meta} name={name}>
         <input {...getInputProps({ ref, id: name, ...rest })} ref={ref} />
-      </fieldset>
+      </InputFieldset>
     );
   },
 );

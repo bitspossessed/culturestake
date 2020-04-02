@@ -3,8 +3,12 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import translate from '~/common/services/i18n';
-
+import {
+  imagesValidation,
+  documentsValidation,
+} from '~/common/helpers/validate';
 import InputField from '~/client/components/InputField';
+import InputUploadField from '~/client/components/InputUploadField';
 import InputTextareaField from '~/client/components/InputTextareaField';
 
 const FormFestivals = () => {
@@ -13,6 +17,8 @@ const FormFestivals = () => {
       .max(128)
       .required(),
     description: Joi.string().required(),
+    images: imagesValidation.max(10),
+    documents: documentsValidation.max(1),
   };
 
   return (
@@ -28,6 +34,22 @@ const FormFestivals = () => {
         label={translate('FormFestivals.fieldDescription')}
         name="description"
         validate={schema.description}
+      />
+
+      <InputUploadField
+        isImageUpload
+        isMultipleFilesAllowed
+        label={translate('FormFestivals.fieldImages')}
+        name="images"
+        validate={schema.images}
+      />
+
+      <InputUploadField
+        isImageUpload={false}
+        label={translate('FormFestivals.fieldDocuments')}
+        maxFileCount={1}
+        name="documents"
+        validate={schema.documents}
       />
     </Fragment>
   );

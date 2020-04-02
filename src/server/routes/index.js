@@ -5,6 +5,7 @@ import APIError from '~/server/helpers/errors';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
+import uploadsRouter from '~/server/routes/uploads';
 import usersRouter from '~/server/routes/users';
 import { respondWithSuccess } from '~/server/helpers/respond';
 
@@ -15,6 +16,8 @@ router.get('/', (req, res) => {
 });
 
 router.use('/auth', authRouter);
+
+router.use('/uploads', uploadsRouter);
 
 router.use('/users', authMiddleware, usersRouter);
 

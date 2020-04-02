@@ -13,7 +13,8 @@ import Header from '~/client/components/Header';
 import View from '~/client/components/View';
 import { postRequest, destroyRequest } from '~/client/store/api/actions';
 import { useForm } from '~/client/hooks/forms';
-import { useResource, useRequestId } from '~/client/hooks/resources';
+import { useRequestId, useRequest } from '~/client/hooks/requests';
+import { useResource } from '~/client/hooks/resources';
 
 import notify, {
   NotificationsTypes,
@@ -44,8 +45,21 @@ const AdminUsersEditForm = () => {
   const history = useHistory();
 
   const { slug } = useParams();
-  const [user, isLoading] = useResource(['users', slug]);
+
   const requestId = useRequestId();
+  const requestIdDelete = useRequestId();
+
+  const [user, isLoading] = useResource(['users', slug], {
+    onError: () => {
+      dispatch(
+        notify({
+          text: translate('AdminUsersEdit.errorNotFound'),
+        }),
+      );
+
+      history.push('/admin/users');
+    },
+  });
 
   const {
     Form,
@@ -89,6 +103,20 @@ const AdminUsersEditForm = () => {
     },
   });
 
+  useRequest(requestIdDelete, {
+    onSuccess: () => {
+      dispatch(
+        notify({
+          text: translate('AdminUsersEdit.notificationDestroySuccess', {
+            username: user.username,
+          }),
+        }),
+      );
+
+      history.push('/admin/users');
+    },
+  });
+
   const onClickDestroy = () => {
     if (!window.confirm(translate('default.areYouSure'))) {
       return;
@@ -96,19 +124,10 @@ const AdminUsersEditForm = () => {
 
     dispatch(
       destroyRequest({
+        id: requestIdDelete,
         path: ['users', slug],
       }),
     );
-
-    dispatch(
-      notify({
-        text: translate('AdminUsersEdit.notificationDestroySuccess', {
-          username: user.username,
-        }),
-      }),
-    );
-
-    history.push('/admin/users');
   };
 
   if (isLoading) {

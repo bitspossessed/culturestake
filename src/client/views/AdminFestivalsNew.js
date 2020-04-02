@@ -11,7 +11,7 @@ import Header from '~/client/components/Header';
 import View from '~/client/components/View';
 import { putRequest } from '~/client/store/api/actions';
 import { useForm } from '~/client/hooks/forms';
-import { useRequestId } from '~/client/hooks/resources';
+import { useRequestId } from '~/client/hooks/requests';
 
 import notify, {
   NotificationsTypes,
@@ -30,14 +30,16 @@ const AdminFestivalsNew = () => {
     },
   } = useForm({
     requestId,
-    onSubmit: ({ title, description }) => {
+    onSubmit: ({ title, description, images, documents }) => {
       dispatch(
         putRequest({
           id: requestId,
           path: ['festivals'],
           body: {
-            title,
             description,
+            documents,
+            images,
+            title,
           },
         }),
       );

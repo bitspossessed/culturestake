@@ -13,7 +13,7 @@ import View from '~/client/components/View';
 import { APIError } from '~/client/utils/errors';
 import { putRequest } from '~/client/store/api/actions';
 import { useForm } from '~/client/hooks/forms';
-import { useRequestId } from '~/client/hooks/resources';
+import { useRequestId } from '~/client/hooks/requests';
 
 import notify, {
   NotificationsTypes,

@@ -10,12 +10,18 @@ const components = {
   },
   FormFestivals: {
     fieldDescription: 'Description:',
+    fieldDocuments: 'Documents:',
+    fieldImages: 'Images:',
     fieldTitle: 'Title:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
+  },
+  InputUploadField: {
+    buttonRemoveFile: 'Remove',
+    buttonSelectFiles: 'Select files',
   },
 };
 
@@ -48,6 +54,7 @@ const views = {
   },
   AdminUsersEdit: {
     buttonSubmit: 'Save',
+    errorNotFound: 'This user does not exist.',
     notificationSuccess: 'You updated the user {username}.',
     notificationDestroySuccess: 'You deleted user {username}.',
     title: 'Edit user',
@@ -66,8 +73,9 @@ const views = {
   },
   AdminFestivalsEdit: {
     buttonSubmit: 'Save',
-    notificationSuccess: 'You updated the festival {title}.',
+    errorNotFound: 'This festival does not exist.',
     notificationDestroySuccess: 'You deleted the festival {title}.',
+    notificationSuccess: 'You updated the festival {title}.',
     title: 'Edit festival',
   },
   AdminFestivalsNew: {

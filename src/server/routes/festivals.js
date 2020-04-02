@@ -1,11 +1,12 @@
 import express from 'express';
 
+import validate from '~/common/helpers/validate';
+
 import Festival from '~/server/models/festival';
 import authMiddleware from '~/server/middlewares/passport';
 import festivalsController from '~/server/controllers/festivals';
 import festivalsValidation from '~/server/validations/festivals';
 import resourcesMiddleware from '~/server/middlewares/resources';
-import validate from '~/server/helpers/validate';
 
 const router = express.Router();
 

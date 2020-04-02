@@ -26,6 +26,7 @@ const apiMiddleware = store => next => async action => {
 
   store.dispatch({
     type: ActionTypes.API_REQUEST,
+    isResponseKept: action[API_REQUEST].isResponseKept,
     id,
   });
 

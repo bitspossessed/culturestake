@@ -1,3 +1,11 @@
 .env
 build
+
+# Uploads folder
+uploads/images/*
+uploads/documents/*
+!uploads/images/.gitkeep
+!uploads/documents/.gitkeep
+
+# Dependencies
 node_modules
