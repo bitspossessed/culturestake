@@ -69,7 +69,7 @@ Answer.addHook('beforeCreate', async answer => {
     key = answer.artworkId;
   }
   const link = await model.findByPk(key);
-  answer.clientId = generateRandomString(32);
+  answer.clientId = `0x${generateRandomString(64)}`;
   const { hash, secret } = await generateHashSecret(link.title);
   answer.chainId = hash;
   answer.secret = secret;

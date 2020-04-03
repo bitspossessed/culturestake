@@ -3,7 +3,7 @@ import { getQuestionContract } from '~/common/services/contracts';
 
 const payerPrivKey = process.env.PAYER_PRIV_KEY;
 
-const payer = web3.eth.accounts.privateKeyToAccount(payerPrivKey);
+const payer = web3.eth.accounts.privateKeyToAccount(`0x${payerPrivKey}`);
 
 export default async function dispatchVote({
   booth,
