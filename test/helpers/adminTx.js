@@ -9,11 +9,13 @@ export default async function adminTx(contract, data) {
     to: contract.options.address,
     data,
   });
+  const nonce = await web3.eth.getTransactionCount(payer.address);
   const signed = await web3.eth.accounts.signTransaction(
     {
       from: payer.address,
       to: contract.options.address,
       data,
+      nonce,
       gas: gas.toString(),
     },
     payerPrivKey,

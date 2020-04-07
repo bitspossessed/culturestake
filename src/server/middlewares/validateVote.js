@@ -13,8 +13,9 @@ const admin = getAdminContract(process.env.ADMIN_CONTRACT);
 const checkBooth = async (vote, question) => {
   const booth = await admin.methods.getVotingBooth(vote.booth).call();
   const festival = await question.methods.festival().call();
+  vote.festival = festival;
   if (!booth[0] || festival !== booth[1]) {
-    throw Error();
+    throw Error('invalid booth');
   }
 };
 
@@ -28,14 +29,14 @@ const checkHasVoted = async (vote, question) => {
 const checkQuestion = async vote => {
   const active = await admin.methods.questions(vote.question).call();
   if (!active) {
-    throw Error('has voted');
+    throw Error('inactive question');
   }
 };
 
 const checkFestival = async vote => {
   const valid = await admin.methods.isValidFestival(vote.festival).call();
   if (!valid) {
-    throw Error('has voted');
+    throw Error('invalid festival');
   }
 };
 
@@ -67,36 +68,34 @@ const checkSigs = async vote => {
       vote.booth,
     )
   ) {
-    throw Error();
+    throw Error('invalid sig');
   }
 };
 
 const checkAnswers = async (vote, question) => {
   if (vote.answers.length !== vote.voteTokens.length) {
-    throw Error();
+    throw Error('wrong array length');
   }
   const seen = {};
-  const checks = [];
   const maxVoteTokens = await question.methods.maxVoteTokens().call();
   let sum = 0;
-  vote.answers.map(async answer => {
-    if (seen[answer.clientId]) {
-      throw Error();
-    }
-    seen[answer.clientId] = true;
-    sum += vote.votes;
-    checks.push(async res => {
+  await Promise.all(
+    vote.answers.map(async answer => {
+      if (seen[answer.clientId]) {
+        throw Error('repeated answer');
+      }
+      seen[answer.clientId] = true;
+      sum += vote.votes;
+
       const a = await question.methods.getAnswer(answer.chainId).call();
       if (a[0] !== true) {
         throw Error('invalid answer');
       }
-      res();
-    });
-    if (sum > maxVoteTokens * vote.answers.length) {
-      throw Error('too many votes');
-    }
-  });
-  return Promise.all(checks.map(check => new Promise(check)));
+    }),
+  );
+  if (sum > maxVoteTokens * vote.answers.length) {
+    throw Error('too many votes');
+  }
 };
 
 export default async function(req, res, next) {
@@ -110,7 +109,9 @@ export default async function(req, res, next) {
     await checkQuestion(vote);
     await checkFestival(vote);
     await checkAnswers(vote, question);
+    vote.answers = vote.answers.map(a => a.chainId);
   } catch (err) {
+    console.log(err)
     throw new APIError(httpStatus.BAD_REQUEST);
   }
   next();

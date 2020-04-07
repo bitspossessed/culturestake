@@ -57,6 +57,7 @@ describe('API', () => {
 
   describe('POST /api/vote', () => {
     it('should successfully build the vote data', async () => {
+      console.log('in test')
       const vote = {
         signature: web3.eth.accounts.sign(
           packVote([answer.clientId], [1]),
