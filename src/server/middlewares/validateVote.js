@@ -111,7 +111,6 @@ export default async function(req, res, next) {
     await checkAnswers(vote, question);
     vote.answers = vote.answers.map(a => a.chainId);
   } catch (err) {
-    console.log(err)
     throw new APIError(httpStatus.BAD_REQUEST);
   }
   next();

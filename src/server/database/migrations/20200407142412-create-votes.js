@@ -2,7 +2,7 @@
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('answers', {
+    return queryInterface.createTable('votes', {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -15,27 +15,35 @@ module.exports = {
       updatedAt: {
         type: Sequelize.DATE,
       },
-      slug: {
-        type: Sequelize.STRING,
-      },
-      clientId: {
-        type: Sequelize.STRING(66),
+      signature: {
+        type: Sequelize.STRING(132),
         allowNull: false,
         unique: true,
       },
-      chainId: {
-        type: Sequelize.STRING(66),
+      sender: {
+        type: Sequelize.STRING(40),
+        allowNull: false,
+      },
+      booth: {
+        type: Sequelize.STRING(40),
+        allowNull: false,
+      },
+      boothSignature: {
+        type: Sequelize.STRING(132),
         allowNull: false,
         unique: true,
       },
-      type: {
-        type: Sequelize.ENUM,
-        values: ['artwork', 'property'],
+      nonce: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      question: {
+        type: Sequelize.STRING(66),
         allowNull: false,
       },
     });
   },
   down: queryInterface => {
-    return queryInterface.dropTable('answers');
+    return queryInterface.dropTable('votes');
   },
 };

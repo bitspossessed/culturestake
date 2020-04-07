@@ -1,13 +1,13 @@
 import { respondWithSuccess } from '~/server/helpers/respond';
 import dispatch from '~/server/services/dispatcher';
+import Vote from '~/server/models/vote';
 
 async function create(req, res, next) {
   const vote = req.body;
   try {
-    const tx = await dispatch(vote);
-    respondWithSuccess(res, {
-      receipt: tx,
-    });
+    await Vote.create(vote);
+    await dispatch(vote);
+    respondWithSuccess(res);
   } catch (error) {
     return next(error);
   }

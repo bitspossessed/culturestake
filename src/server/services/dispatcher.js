@@ -8,14 +8,13 @@ const payer = web3.eth.accounts.privateKeyToAccount(`0x${payerPrivKey}`);
 export default async function dispatchVote({
   booth,
   nonce,
-  sender,
   answers,
   voteTokens,
   question,
 }) {
   const q = getQuestionContract(question);
   const data = q.methods
-    .recordUnsignedVote(answers, voteTokens, booth, nonce, sender)
+    .recordUnsignedVote(answers, voteTokens, booth, nonce)
     .encodeABI();
   const txNonce = await web3.eth.getTransactionCount(payer.address);
   const gas = await web3.eth.estimateGas({ to: question, data });
