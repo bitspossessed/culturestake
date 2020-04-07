@@ -2,32 +2,38 @@ import { celebrate, Joi } from 'celebrate';
 
 import web3 from '~/common/services/web3';
 
-const fileBase = {
-  id: Joi.number(),
+const filesBaseValidation = {
+  id: Joi.number().required(),
+  createdAt: Joi.date()
+    .iso()
+    .required(),
+  updatedAt: Joi.date()
+    .iso()
+    .required(),
   fileName: Joi.string().required(),
   fileType: Joi.string().required(),
   url: Joi.string()
-    .uri()
+    .uri({ relativeOnly: true })
     .required(),
 };
 
-export const fileValidator = Joi.array().items(
+export const documentsValidation = Joi.array().items(
   Joi.object({
-    ...fileBase,
+    ...filesBaseValidation,
   }),
 );
 
-export const imageValidator = Joi.array().items(
+export const imagesValidation = Joi.array().items(
   Joi.object({
-    ...fileBase,
+    ...filesBaseValidation,
     urlThreshold: Joi.string()
-      .uri()
+      .uri({ relativeOnly: true })
       .required(),
     urlThresholdThumb: Joi.string()
-      .uri()
+      .uri({ relativeOnly: true })
       .required(),
     urlThumb: Joi.string()
-      .uri()
+      .uri({ relativeOnly: true })
       .required(),
   }),
 );
@@ -39,7 +45,6 @@ export const web3Validators = Joi.extend(joi => {
     messages: {
       'web3.address': 'is invalid Ethereum address',
       'web3.addressChecksum': 'is invalid Ethereum address checksum',
-      'web3.signature': 'is invalid Ethereum signature',
     },
     rules: {
       address: {

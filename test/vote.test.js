@@ -57,7 +57,6 @@ describe('API', () => {
 
   describe('POST /api/vote', () => {
     it('should successfully build the vote data', async () => {
-      console.log('in test')
       const vote = {
         signature: web3.eth.accounts.sign(
           packVote([answer.clientId], [1]),
@@ -80,27 +79,5 @@ describe('API', () => {
         .expect(httpStatus.OK);
     });
 
-    // it('should respond with a successful message', async () => {
-    //   const metaNonce = await relayer.methods.getNonce(sender.address).call();
-    //   const txParams = {
-    //     from: sender.address,
-    //     to: vote.options.address,
-    //     value: 0,
-    //     nonce: metaNonce,
-    //     data: vote.methods.recordVote(sender.address).encodeABI(),
-    //   };
-    //   const metaSignedTx = await metaTxHandler.signMetaTx(
-    //     txParams,
-    //     sender.privateKey.substring(2),
-    //     metaNonce,
-    //   );
-    //   await request(app)
-    //     .post('/api/relay')
-    //     .send({
-    //       metaNonce,
-    //       metaSignedTx,
-    //     })
-    //     .expect(httpStatus.OK);
-    // });
   });
 });

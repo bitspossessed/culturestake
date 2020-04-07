@@ -8,6 +8,7 @@ import festivalsRouter from '~/server/routes/festivals';
 import artworksRouter from '~/server/routes/artworks';
 import propertiesRouter from '~/server/routes/properties';
 import answersRouter from '~/server/routes/answers';
+import uploadsRouter from '~/server/routes/uploads';
 import usersRouter from '~/server/routes/users';
 import voteRouter from '~/server/routes/vote';
 
@@ -20,6 +21,8 @@ router.get('/', (req, res) => {
 });
 
 router.use('/auth', authRouter);
+
+router.use('/uploads', uploadsRouter);
 
 router.use('/users', authMiddleware, usersRouter);
 

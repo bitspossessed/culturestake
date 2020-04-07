@@ -1,19 +1,14 @@
 import React, { Fragment } from 'react';
-import httpStatus from 'http-status';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import translate from '~/common/services/i18n';
 
-import ButtonSubmit from '~/client/components/ButtonSubmit';
 import Footer from '~/client/components/Footer';
 import FormUsers from '~/client/components/FormUsers';
 import Header from '~/client/components/Header';
 import View from '~/client/components/View';
-import { APIError } from '~/client/utils/errors';
-import { putRequest } from '~/client/store/api/actions';
-import { useForm } from '~/client/hooks/forms';
-import { useRequestId } from '~/client/hooks/resources';
+import { useNewForm } from '~/client/hooks/forms';
 
 import notify, {
   NotificationsTypes,
@@ -21,54 +16,26 @@ import notify, {
 
 const AdminUsersNew = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const requestId = useRequestId();
 
-  const {
-    Form,
-    meta: {
-      canSubmit,
-      request: { isPending },
-    },
-  } = useForm({
-    requestId,
-    onSubmit: ({ email, password, username }) => {
-      dispatch(
-        putRequest({
-          id: requestId,
-          path: ['users'],
-          body: {
-            email,
-            password,
-            username,
-          },
-        }),
-      );
-    },
+  const returnUrl = '/admin/users';
+
+  const { ButtonSubmit, Form } = useNewForm({
+    fields: ['email', 'password', 'username'],
+    resourcePath: ['users'],
+    returnUrl,
     onSuccess: ({ username }) => {
       dispatch(
         notify({
-          text: translate('AdminUsersNew.notificationSuccess', {
-            username: username,
+          text: translate('AdminFestivalsNew.notificationSuccess', {
+            username,
           }),
         }),
       );
-
-      history.push('/admin/users');
     },
-    onError: error => {
-      let text = translate('default.errorMessage');
-
-      if (
-        error instanceof APIError &&
-        error.response.code === httpStatus.CONFLICT
-      ) {
-        text = translate('AdminUsersNew.errorUniqueUser');
-      }
-
+    onError: () => {
       dispatch(
         notify({
-          text,
+          text: translate('default.errorMessage'),
           type: NotificationsTypes.ERROR,
         }),
       );
@@ -84,13 +51,10 @@ const AdminUsersNew = () => {
       <View>
         <Form>
           <FormUsers />
-
-          <ButtonSubmit disabled={!canSubmit} isPending={isPending}>
-            {translate('AdminUsersNew.buttonSubmit')}
-          </ButtonSubmit>
+          <ButtonSubmit />
         </Form>
 
-        <Link to="/admin/users">
+        <Link to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </Link>
       </View>

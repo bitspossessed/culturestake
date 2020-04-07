@@ -6,6 +6,7 @@ import {
   getQuestionContract,
   getAdminContract,
 } from '~/common/services/contracts';
+import Vote from '~/server/models/vote';
 import APIError from '~/server/helpers/errors';
 
 const admin = getAdminContract(process.env.ADMIN_CONTRACT);
@@ -21,7 +22,10 @@ const checkBooth = async (vote, question) => {
 
 const checkHasVoted = async (vote, question) => {
   const hasVoted = await question.methods.hasVoted(vote.sender).call();
-  if (hasVoted) {
+  const localHasVoted = await Vote.findOne({
+    where: { sender: vote.sender, question: vote.question },
+  });
+  if (hasVoted || localHasVoted) {
     throw Error('has voted');
   }
 };

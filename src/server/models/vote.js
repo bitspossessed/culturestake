@@ -1,5 +1,4 @@
 import { DataTypes } from 'sequelize';
-import SequelizeSlugify from 'sequelize-slugify';
 
 import db from '~/server/database';
 
@@ -9,9 +8,6 @@ const Vote = db.define('vote', {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
-  },
-  slug: {
-    type: DataTypes.STRING,
   },
   signature: {
     type: DataTypes.STRING,
@@ -41,7 +37,7 @@ const Vote = db.define('vote', {
   },
   nonce: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
   },
   question: {
     type: DataTypes.STRING,

@@ -11,9 +11,10 @@ export default async function request(customOptions) {
     path,
   } = customOptions;
 
-  const defaultHeaders = {
-    'Content-Type': 'application/json',
-  };
+  const defaultHeaders = {};
+  if (!(body instanceof FormData)) {
+    defaultHeaders['Content-Type'] = 'application/json';
+  }
 
   const options = {
     method: customOptions.method || DEFAULT_METHOD,
@@ -29,6 +30,8 @@ export default async function request(customOptions) {
   if (body) {
     if (options.method === 'GET') {
       paramsStr = parameterize(body);
+    } else if (body instanceof FormData) {
+      options.body = body;
     } else {
       options.body = JSON.stringify(body);
     }

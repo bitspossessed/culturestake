@@ -1,47 +1,16 @@
 import { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { generateRequestId } from '~/client/middlewares/api';
 import { requestResource } from '~/client/store/resources/actions';
 
-export const useRequestId = () => {
-  return useMemo(() => {
-    return generateRequestId();
-  }, []);
-};
-
-export const useRequest = (requestId, { onError, onSuccess }) => {
-  const {
-    isError = false,
-    isSuccess = false,
-    isPending = false,
-    error,
-  } = useSelector(state => {
-    return state.api.requests[requestId] || {};
-  });
-
-  useEffect(() => {
-    if (isError && onError) {
-      onError(error);
-    } else if (isSuccess && onSuccess) {
-      onSuccess();
-    }
-  }, [isError, isSuccess]);
-
-  return {
-    isError,
-    isPending,
-    isSuccess,
-  };
-};
-
-export const useResource = path => {
+export const useResource = (path, { onError, onSuccess }) => {
   const dispatch = useDispatch();
 
   // Check the redux store for the current caching state
   const {
     data: currentData,
     path: currentPath,
+    isError,
     isLoading,
     isSuccess,
   } = useSelector(state => state.resources);
@@ -54,13 +23,18 @@ export const useResource = path => {
   // another resource is still in the cache
   const isRequestedPath = () => currentPathStr === pathStr;
 
+  // Request the resource on every component mount
   useEffect(() => {
-    if (isRequestedPath()) {
-      return;
-    }
-
     dispatch(requestResource(path));
-  }, [pathStr, currentPathStr]);
+  }, []);
+
+  useEffect(() => {
+    if (isError && onError) {
+      onError();
+    } else if (isSuccess && onSuccess) {
+      onSuccess();
+    }
+  }, [currentPathStr, isError, isSuccess]);
 
   // Return the resource (when given) and the loading state
   const data = useMemo(() => {
