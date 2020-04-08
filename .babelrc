@@ -13,6 +13,7 @@
     "@babel/plugin-transform-runtime",
     "@babel/proposal-class-properties",
     "@babel/proposal-object-rest-spread",
-    "add-module-exports"
+    "add-module-exports",
+    "babel-plugin-styled-components"
   ]
 }

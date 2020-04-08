@@ -50,6 +50,7 @@
     "babel-loader": "^8.1.0",
     "babel-plugin-add-module-exports": "^1.0.2",
     "babel-plugin-module-resolver": "^4.0.0",
+    "babel-plugin-styled-components": "^1.10.7",
     "cross-env": "^7.0.2",
     "css-loader": "^3.5.3",
     "dotenv": "^8.2.0",
