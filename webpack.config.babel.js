@@ -80,13 +80,14 @@ export default () => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|jp(e?)g|gif|woff(2?)|svg|ttf|eot)$/,
+          test: /\.(png|jp(e?)g|gif|glb|woff(2?)|svg|ttf|eot)$/,
           exclude,
           use: [
             {
               loader: 'file-loader',
               options: {
-                name: `[path]${filename}.[ext]`,
+                name: `${filename}.[ext]`,
+                publicPath: '/static/',
               },
             },
           ],
