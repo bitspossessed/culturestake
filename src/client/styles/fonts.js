@@ -39,5 +39,4 @@ export default createGlobalStyle`
       url(${data70Woff2}) format('woff2'),
       url(${data70Woff}) format('woff');
   }
-
 `;
