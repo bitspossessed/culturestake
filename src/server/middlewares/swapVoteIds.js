@@ -15,8 +15,8 @@ export default async function(req, res, next) {
         return { id: answer, chainId: a.chainId };
       }),
     );
+    next();
   } catch (err) {
-    throw new APIError(httpStatus.BAD_REQUEST);
+    next(new APIError(httpStatus.BAD_REQUEST));
   }
-  next();
 }
