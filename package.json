@@ -15,7 +15,7 @@
     "lint": "npm run lint:css && npm run lint:js",
     "lint:css": "stylelint './src/client/**/*.js'",
     "lint:js": "eslint --ignore-path .gitignore ./",
-    "server:build": "babel ./src/common --out-dir ./build && cp ./src/server/index.pug ./build/index.pug",
+    "server:build": "babel ./src/server --out-dir ./build && cp ./src/server/index.pug ./build/index.pug",
     "server:start": "cross-env NODE_ENV=production node ./build/index.js",
     "server:watch": "nodemon --watch ./src/server --exec cross-env NODE_ENV=development babel-node ./src/server/index.js --source-maps inline",
     "start": "npm run server:start",
