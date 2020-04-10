@@ -14,7 +14,7 @@ const defaultValidation = {
   nonce: Joi.number().required(),
   question: web3Validators.web3().address(),
   answers: Joi.array()
-    .items(Joi.string().max(66))
+    .items(Joi.number().positive())
     .required(),
   voteTokens: Joi.array().items(Joi.number().positive()),
 };

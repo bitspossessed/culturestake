@@ -3,7 +3,7 @@ import baseController from '~/server/controllers';
 
 const options = {
   model: Answer,
-  fields: ['clientId', 'type', 'artworkId', 'propertyId'],
+  fields: ['type', 'artworkId', 'propertyId'],
 };
 
 function create(req, res, next) {

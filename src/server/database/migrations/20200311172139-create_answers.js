@@ -18,11 +18,6 @@ module.exports = {
       slug: {
         type: Sequelize.STRING,
       },
-      clientId: {
-        type: Sequelize.STRING(66),
-        allowNull: false,
-        unique: true,
-      },
       chainId: {
         type: Sequelize.STRING(66),
         allowNull: false,

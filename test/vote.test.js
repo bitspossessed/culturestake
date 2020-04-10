@@ -57,20 +57,21 @@ describe('API', () => {
 
   describe('POST /api/vote', () => {
     it('should successfully build the vote data', async () => {
+      const nonce = Math.floor(Math.random() * Math.floor(1000));
       const vote = {
         signature: web3.eth.accounts.sign(
-          packVote([answer.clientId], [1]),
+          packVote([answer.id], [1]),
           sender.privateKey,
         ).signature,
         sender: sender.address,
         booth: booth.address,
         boothSignature: web3.eth.accounts.sign(
-          packBooth([answer.clientId], 1),
+          packBooth([answer.id], nonce),
           booth.privateKey,
         ).signature,
-        nonce: 1,
+        nonce,
         question: question.options.address,
-        answers: [answer.clientId],
+        answers: [answer.id],
         voteTokens: [1],
       };
       await request(app)
@@ -78,6 +79,5 @@ describe('API', () => {
         .send(vote)
         .expect(httpStatus.OK);
     });
-
   });
 });

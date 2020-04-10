@@ -8,11 +8,11 @@ export default async function(req, res, next) {
   try {
     vote.answers = await Promise.all(
       vote.answers.map(async answer => {
-        const a = await Answers.findOne({ where: { clientId: answer } });
+        const a = await Answers.findByPk(answer);
         if (!a) {
           throw Error();
         }
-        return { clientId: answer, chainId: a.chainId };
+        return { id: answer, chainId: a.chainId };
       }),
     );
   } catch (err) {

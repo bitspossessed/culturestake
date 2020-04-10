@@ -22,13 +22,6 @@ const Answer = db.define('answer', {
   slug: {
     type: DataTypes.STRING,
   },
-  clientId: {
-    type: DataTypes.STRING,
-    unique: true,
-    validate: {
-      isAlphanumeric: true,
-    },
-  },
   chainId: {
     type: DataTypes.STRING,
     unique: true,
@@ -69,7 +62,6 @@ Answer.addHook('beforeCreate', async answer => {
     key = answer.artworkId;
   }
   const link = await model.findByPk(key);
-  answer.clientId = `0x${generateRandomString(64)}`;
   const { hash, secret } = await generateHashSecret(link.title);
   answer.chainId = hash;
   answer.secret = secret;

@@ -57,7 +57,7 @@ const checkSigs = async vote => {
   if (
     !isSignatureValid(
       packVote(
-        vote.answers.map(a => a.clientId),
+        vote.answers.map(a => a.id),
         vote.voteTokens,
       ),
       vote.signature,
@@ -65,7 +65,7 @@ const checkSigs = async vote => {
     ) ||
     !isSignatureValid(
       packBooth(
-        vote.answers.map(a => a.clientId),
+        vote.answers.map(a => a.id),
         vote.nonce,
       ),
       vote.boothSignature,
@@ -85,10 +85,10 @@ const checkAnswers = async (vote, question) => {
   let sum = 0;
   await Promise.all(
     vote.answers.map(async answer => {
-      if (seen[answer.clientId]) {
+      if (seen[answer.id]) {
         throw Error('repeated answer');
       }
-      seen[answer.clientId] = true;
+      seen[answer.id] = true;
       sum += vote.votes;
 
       const a = await question.methods.getAnswer(answer.chainId).call();
