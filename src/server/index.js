@@ -11,6 +11,7 @@ import morgan from 'morgan';
 
 dotenv.config();
 
+import { checkConnection } from '~/common/services/web3';
 import db from '~/server/database';
 import errorsMiddleware from '~/server/middlewares/errors';
 import logger from '~/server/helpers/logger';
@@ -45,6 +46,16 @@ db.authenticate()
   })
   .catch(() => {
     logger.error('Unable to connect to database');
+    process.exit(1);
+  });
+
+// Check blockchain connection
+checkConnection()
+  .then(num => {
+    logger.info(`Blockchain connection established, block height is ${num}`);
+  })
+  .catch(() => {
+    logger.error('Unable to connect to blockchain');
     process.exit(1);
   });
 
