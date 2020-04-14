@@ -4,7 +4,17 @@ const dimensions = {};
 
 const monochromes = {
   black: '#000',
+  grayLight: '#f7f7f7',
+  gray: '#d5d5d5',
   white: '#fff',
+  blue: '#083e9e',
+  cyan: '#6dfcf1',
+  cyanDark: '#54d2f6',
+  green: '#40f2a2',
+  greenLight: '#9cfcd2',
+  pink: '#f3c4fd',
+  pinkDark: '#b726f8',
+  red: '#dc3e77',
 };
 
 const colors = {
