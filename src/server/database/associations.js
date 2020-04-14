@@ -3,10 +3,12 @@ import Property from '~/server/models/property';
 import Artwork from '~/server/models/artwork';
 import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
+import Question from '~/server/models/question';
 import Image from '~/server/models/image';
 
 Artwork.hasMany(Answer);
 Property.hasMany(Answer);
+Question.hasMany(Answer);
 
 Answer.belongsTo(Artwork, {
   allowNull: true,
@@ -14,6 +16,7 @@ Answer.belongsTo(Artwork, {
 Answer.belongsTo(Property, {
   allowNull: true,
 });
+Answer.belongsTo(Question);
 
 const attachableMixin = {
   foreignKey: 'attachableId',
