@@ -8,8 +8,8 @@ import ThreeModel from '~/client/components/ThreeModel';
 import ThreeSpinner from '~/client/components/ThreeSpinner';
 import { randomRange, randomFromArray } from '~/common/utils/random';
 
-const RANDOM_ANIMATION_MIN = 8000;
-const RANDOM_ANIMATION_MAX = 25000;
+const RANDOM_ANIMATION_MIN = 15000;
+const RANDOM_ANIMATION_MAX = 30000;
 
 const eulerVector = new Vector3(Math.PI * 2, Math.PI * 2, Math.PI * 2);
 
