@@ -5,7 +5,6 @@ import { Vector3 } from 'three';
 import { useFrame } from 'react-three-fiber';
 
 import ThreeModel from '~/client/components/ThreeModel';
-import ThreeSpinner from '~/client/components/ThreeSpinner';
 import { randomFromArray } from '~/common/utils/random';
 
 const eulerVector = new Vector3(Math.PI * 2, Math.PI * 2, Math.PI * 2);
@@ -52,7 +51,7 @@ const ThreeModelAnimated = ({ onClick, svg, texture, ...props }) => {
   }, []);
 
   return (
-    <Suspense fallback={<ThreeSpinner />}>
+    <Suspense fallback={null}>
       <Group
         {...props}
         ref={model}
