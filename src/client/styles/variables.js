@@ -4,17 +4,18 @@ const dimensions = {};
 
 const monochromes = {
   black: '#000',
-  grayLight: '#f7f7f7',
+  blueLight: '#3fc1ff',
+  cyanLight: '#6afff4',
   gray: '#d5d5d5',
+  grayLight: '#f7f7f7',
+  lime: '#33ffa7',
+  magenta: '#f0f',
+  magentaPale: '#f3c2ff',
+  pink: '#ff0062',
+  red: '#f0f',
+  violet: '#ba00ff',
   white: '#fff',
-  blue: '#083e9e',
-  cyan: '#6dfcf1',
-  cyanDark: '#54d2f6',
-  green: '#40f2a2',
-  greenLight: '#9cfcd2',
-  pink: '#f3c4fd',
-  pinkDark: '#b726f8',
-  red: '#dc3e77',
+  yellow: '#ff0',
 };
 
 const colors = {

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense, useState } from 'react';
 import styled from 'styled-components';
 import { AmbientLight, Group, PointLight } from 'react-three-fiber/components';
 import { Canvas, useThree } from 'react-three-fiber';
@@ -8,33 +8,37 @@ import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeButtonNavigation from '~/client/components/ThreeButtonNavigation';
 
 const ThreeInterface = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const onClickLogo = () => {
     // @TODO
   };
 
   const onClickNavigation = () => {
-    // @TODO
+    setIsExpanded(!isExpanded);
   };
 
   return (
     <ThreeInterfaceStyle>
       <Canvas orthographic pixelRatio={window.devicePixelRatio}>
-        <AmbientLight intensity={2} />
+        <AmbientLight intensity={0.9} />
 
-        <Group position={[0, 0, -500]}>
-          <PointLight intensity={2} position={[0, 0, 20]} />
+        <Suspense fallback={null}>
+          <Group position={[0, 0, -500]}>
+            <PointLight intensity={0.5} position={[0, 100, 100]} />
 
-          <ThreeInterfaceElement left top>
-            <ThreeButtonLogo scale={[4, 4, 4]} onClick={onClickLogo} />
-          </ThreeInterfaceElement>
+            <ThreeInterfaceElement left top>
+              <ThreeButtonLogo onClick={onClickLogo} />
+            </ThreeInterfaceElement>
 
-          <ThreeInterfaceElement right top>
-            <ThreeButtonNavigation
-              scale={[4, 4, 4]}
-              onClick={onClickNavigation}
-            />
-          </ThreeInterfaceElement>
-        </Group>
+            <ThreeInterfaceElement right top>
+              <ThreeButtonNavigation
+                isExpanded={isExpanded}
+                onClick={onClickNavigation}
+              />
+            </ThreeInterfaceElement>
+          </Group>
+        </Suspense>
       </Canvas>
     </ThreeInterfaceStyle>
   );
