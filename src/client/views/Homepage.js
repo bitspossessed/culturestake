@@ -8,7 +8,7 @@ import View from '~/client/components/View';
 const Homepage = () => {
   return (
     <Fragment>
-      <ThreeInterface />
+      <ThreeInterface isShowingInfo />
 
       <View>
         <h1>{translate('Homepage.title')}</h1>

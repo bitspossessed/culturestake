@@ -46,3 +46,29 @@ export const limeGradientTexture = generateGradientTexture({
     },
   ],
 });
+
+export const redGradientTexture = generateGradientTexture({
+  colorStops: [
+    {
+      position: 0,
+      color: styles.colors.gray,
+    },
+    {
+      position: 1,
+      color: styles.colors.red,
+    },
+  ],
+});
+
+export const blueGradientTexture = generateGradientTexture({
+  colorStops: [
+    {
+      position: 0,
+      color: styles.colors.blueLight,
+    },
+    {
+      position: 1,
+      color: styles.colors.cyanLight,
+    },
+  ],
+});

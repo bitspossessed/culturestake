@@ -12,7 +12,7 @@ const monochromes = {
   magenta: '#f0f',
   magentaPale: '#f3c2ff',
   pink: '#ff0062',
-  red: '#f0f',
+  red: '#f00',
   violet: '#ba00ff',
   white: '#fff',
   yellow: '#ff0',

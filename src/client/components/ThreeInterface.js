@@ -4,18 +4,34 @@ import styled from 'styled-components';
 import { AmbientLight, Group, PointLight } from 'react-three-fiber/components';
 import { Canvas, useThree } from 'react-three-fiber';
 
+import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeButtonNavigation from '~/client/components/ThreeButtonNavigation';
 
-const ThreeInterface = () => {
+const ThreeInterface = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isInfoExpanded, setIsInfoExpanded] = useState(false);
 
   const onClickLogo = () => {
-    // @TODO
+    if (props.onClickLogo) {
+      props.onClickLogo();
+    }
   };
 
   const onClickNavigation = () => {
     setIsExpanded(!isExpanded);
+
+    if (props.onClickNavigation) {
+      props.onClickNavigation(isExpanded);
+    }
+  };
+
+  const onClickInfo = () => {
+    setIsInfoExpanded(!isInfoExpanded);
+
+    if (props.onClickInfo) {
+      props.onClickInfo();
+    }
   };
 
   return (
@@ -37,6 +53,15 @@ const ThreeInterface = () => {
                 onClick={onClickNavigation}
               />
             </ThreeInterfaceElement>
+
+            {props.isShowingInfo ? (
+              <ThreeInterfaceElement bottom left>
+                <ThreeButtonInfo
+                  isExpanded={isInfoExpanded}
+                  onClick={onClickInfo}
+                />
+              </ThreeInterfaceElement>
+            ) : null}
           </Group>
         </Suspense>
       </Canvas>
@@ -72,6 +97,13 @@ const ThreeInterfaceElement = ({ offset = 50, ...props }) => {
       {props.children}
     </Group>
   );
+};
+
+ThreeInterface.propTypes = {
+  isShowingInfo: PropTypes.bool,
+  onClickInfo: PropTypes.func,
+  onClickLogo: PropTypes.func,
+  onClickNavigation: PropTypes.func,
 };
 
 ThreeInterfaceElement.propTypes = {
