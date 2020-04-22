@@ -1,6 +1,9 @@
 // Definitions
 
-const dimensions = {};
+const dimensions = {
+  width: '800px',
+  height: '720px',
+};
 
 const monochromes = {
   black: '#000',
@@ -28,8 +31,8 @@ const typography = {
   family: 'Montserrat Regular',
   familyAccessible: 'Myriad Pro Regular',
   familyHeading: 'Data70 Regular',
-  lineHeight: 1.5,
-  size: '1.6em',
+  lineHeight: 1.15,
+  size: '1.4em',
   style: 'normal',
   weight: 400,
 };
@@ -55,12 +58,14 @@ const components = {};
 // Media-query
 
 const media = {
-  // desktop: `(min-width: ${dimensions.width})`,
+  desktop: `(min-width: ${dimensions.width})`,
 };
 
 // Z-index
 
-const layers = {};
+const layers = {
+  ThreeInterfaceElement: 10000,
+};
 
 // Variables
 

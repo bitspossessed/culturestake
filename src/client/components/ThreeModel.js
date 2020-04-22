@@ -3,15 +3,15 @@ import React, { useMemo, useState } from 'react';
 import { Vector3 } from 'three';
 import {
   BoxGeometry,
-  ExtrudeGeometry,
+  ExtrudeBufferGeometry,
   Group,
   Mesh,
   MeshStandardMaterial,
 } from 'react-three-fiber/components';
 import { useUpdate } from 'react-three-fiber';
 
-const SCALE = 0.5;
 const EXTRUDE_DEPTH = 20;
+const DEFAULT_SCALE = 0.5;
 
 const ThreeModel = ({ svg, texture, ...props }) => {
   const [boxSize, setBoxSize] = useState([0, 0, 0]);
@@ -48,16 +48,10 @@ const ThreeModel = ({ svg, texture, ...props }) => {
   );
 
   return (
-    <Group scale={[SCALE, SCALE, SCALE]}>
+    <Group scale={props.scale || [DEFAULT_SCALE, DEFAULT_SCALE, DEFAULT_SCALE]}>
       <Mesh {...props} ref={ref}>
-        <ExtrudeGeometry args={[shapes, options]} attach="geometry" />
-
-        <MeshStandardMaterial
-          attach="material"
-          map={texture}
-          metalness={0.1}
-          roughness={0}
-        />
+        <ExtrudeBufferGeometry args={[shapes, options]} attach="geometry" />
+        <MeshStandardMaterial attach="material" map={texture} metalness={0.1} />
       </Mesh>
 
       <Mesh visible={false}>
@@ -68,6 +62,7 @@ const ThreeModel = ({ svg, texture, ...props }) => {
 };
 
 ThreeModel.propTypes = {
+  scale: PropTypes.arrayOf(PropTypes.number),
   svg: PropTypes.object.isRequired,
   texture: PropTypes.object.isRequired,
 };

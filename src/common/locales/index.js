@@ -88,6 +88,7 @@ const views = {
 };
 
 export default {
+  title: 'Future Fairness',
   default: {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',

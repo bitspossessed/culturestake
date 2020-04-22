@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, Fragment, useState } from 'react';
 import styled from 'styled-components';
-import { AmbientLight, Group, PointLight } from 'react-three-fiber/components';
-import { Canvas, useThree } from 'react-three-fiber';
 
 import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeButtonNavigation from '~/client/components/ThreeButtonNavigation';
+import ThreeCanvas from '~/client/components/ThreeCanvas';
+import ThreeRotator from '~/client/components/ThreeRotator';
+import styles from '~/client/styles/variables';
 
 const ThreeInterface = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -35,71 +36,44 @@ const ThreeInterface = (props) => {
   };
 
   return (
-    <ThreeInterfaceStyle>
-      <Canvas orthographic pixelRatio={window.devicePixelRatio}>
-        <AmbientLight intensity={0.9} />
+    <Fragment>
+      {props.isShowingHome ? (
+        <ThreeInterfaceElement left top onClick={onClickLogo}>
+          <ThreeRotator rotation={[3.5, -0.6, 0]}>
+            <ThreeButtonLogo />
+          </ThreeRotator>
+        </ThreeInterfaceElement>
+      ) : null}
 
-        <Suspense fallback={null}>
-          <Group position={[0, 0, -500]}>
-            <PointLight intensity={0.5} position={[0, 100, 100]} />
+      <ThreeInterfaceElement right top onClick={onClickNavigation}>
+        <ThreeRotator rotation={[3.5, 0.3, 0]}>
+          <ThreeButtonNavigation isExpanded={isExpanded} />
+        </ThreeRotator>
+      </ThreeInterfaceElement>
 
-            <ThreeInterfaceElement left top>
-              <ThreeButtonLogo onClick={onClickLogo} />
-            </ThreeInterfaceElement>
-
-            <ThreeInterfaceElement right top>
-              <ThreeButtonNavigation
-                isExpanded={isExpanded}
-                onClick={onClickNavigation}
-              />
-            </ThreeInterfaceElement>
-
-            {props.isShowingInfo ? (
-              <ThreeInterfaceElement bottom left>
-                <ThreeButtonInfo
-                  isExpanded={isInfoExpanded}
-                  onClick={onClickInfo}
-                />
-              </ThreeInterfaceElement>
-            ) : null}
-          </Group>
-        </Suspense>
-      </Canvas>
-    </ThreeInterfaceStyle>
+      {props.isShowingInfo ? (
+        <ThreeInterfaceElement bottom left onClick={onClickInfo}>
+          <ThreeRotator rotation={[3, -0.5, -0.1]}>
+            <ThreeButtonInfo isExpanded={isInfoExpanded} />
+          </ThreeRotator>
+        </ThreeInterfaceElement>
+      ) : null}
+    </Fragment>
   );
 };
 
-const ThreeInterfaceElement = ({ offset = 50, ...props }) => {
-  const { size } = useThree();
-
-  // Move elements to the right corners of the screen
-  const width = size.width / 2;
-  const height = size.height / 2;
-
-  const y = props.top ? height - offset : -height + offset;
-  const x = props.right ? width - offset : -width + offset;
-
-  // Show a pointer when hovering over the element
-  const onPointerEnter = () => {
-    document.body.style.cursor = 'pointer';
-  };
-
-  const onPointerLeave = () => {
-    document.body.style.cursor = null;
-  };
-
+const ThreeInterfaceElement = (props) => {
   return (
-    <Group
-      position={[x, y, 0]}
-      onPointerEnter={onPointerEnter}
-      onPointerLeave={onPointerLeave}
-    >
-      {props.children}
-    </Group>
+    <ThreeInterfaceElementStyle {...props}>
+      <ThreeCanvas>
+        <Suspense fallback={null}>{props.children}</Suspense>
+      </ThreeCanvas>
+    </ThreeInterfaceElementStyle>
   );
 };
 
 ThreeInterface.propTypes = {
+  isShowingHome: PropTypes.bool,
   isShowingInfo: PropTypes.bool,
   onClickInfo: PropTypes.func,
   onClickLogo: PropTypes.func,
@@ -115,13 +89,22 @@ ThreeInterfaceElement.propTypes = {
   top: PropTypes.bool,
 };
 
-const ThreeInterfaceStyle = styled.div`
+const ThreeInterfaceElementStyle = styled.div`
   position: fixed;
 
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  ${(props) => (props.top ? 'top: 0;' : '')}
+  ${(props) => (props.right ? 'right: 0;' : '')}
+  ${(props) => (props.bottom ? 'bottom: 0;' : '')}
+  ${(props) => (props.left ? 'left: 0;' : '')}
+
+  z-index: ${styles.layers.ThreeInterfaceElement};
+
+  width: 6.5rem;
+  height: 6.5rem;
+
+  margin: 1rem;
+
+  cursor: pointer;
 `;
 
 export default ThreeInterface;

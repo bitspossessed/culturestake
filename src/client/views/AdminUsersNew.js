@@ -2,14 +2,12 @@ import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import translate from '~/common/services/i18n';
-
 import Footer from '~/client/components/Footer';
 import FormUsers from '~/client/components/FormUsers';
 import Header from '~/client/components/Header';
 import View from '~/client/components/View';
+import translate from '~/common/services/i18n';
 import { useNewForm } from '~/client/hooks/forms';
-
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';

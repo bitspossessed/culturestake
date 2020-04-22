@@ -31,6 +31,7 @@ export default createGlobalStyle`
   h4,
   h5,
   h6 {
+    font-weight: ${styles.typography.weight};
     font-family: ${styles.typography.familyHeading}, sans-serif;
   }
 `;

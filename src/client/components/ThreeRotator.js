@@ -4,7 +4,6 @@ import { Group } from 'react-three-fiber/components';
 import { Vector3 } from 'three';
 import { useFrame } from 'react-three-fiber';
 
-import ThreeModel from '~/client/components/ThreeModel';
 import { randomFromArray } from '~/common/utils/random';
 
 const eulerVector = new Vector3(Math.PI * 2, Math.PI * 2, Math.PI * 2);
@@ -15,8 +14,8 @@ const possibleRotations = [
   new Vector3(0, 0, 1),
 ];
 
-const ThreeModelAnimated = ({ onClick, svg, texture, ...props }) => {
-  const model = useRef();
+const ThreeRotator = ({ children, ...props }) => {
+  const ref = useRef();
 
   const [originalRotation, setOriginalRotation] = useState(new Vector3());
   const [targetRotation, setTargetRotation] = useState(new Vector3());
@@ -34,12 +33,11 @@ const ThreeModelAnimated = ({ onClick, svg, texture, ...props }) => {
   };
 
   useFrame((state, delta) => {
-    if (!model.current) {
+    if (!ref.current) {
       return;
     }
 
-    const { rotation } = model.current;
-
+    const { rotation } = ref.current;
     rotation.setFromVector3(rotation.toVector3().lerp(targetRotation, delta));
   });
 
@@ -52,23 +50,16 @@ const ThreeModelAnimated = ({ onClick, svg, texture, ...props }) => {
 
   return (
     <Suspense fallback={null}>
-      <Group
-        {...props}
-        ref={model}
-        onClick={onClick}
-        onPointerEnter={onPointerEnter}
-      >
-        <ThreeModel svg={svg} texture={texture} />
+      <Group {...props} ref={ref} onPointerEnter={onPointerEnter}>
+        {children}
       </Group>
     </Suspense>
   );
 };
 
-ThreeModelAnimated.propTypes = {
-  onClick: PropTypes.func.isRequired,
+ThreeRotator.propTypes = {
+  children: PropTypes.node.isRequired,
   rotation: PropTypes.array.isRequired,
-  svg: PropTypes.object.isRequired,
-  texture: PropTypes.object.isRequired,
 };
 
-export default ThreeModelAnimated;
+export default ThreeRotator;
