@@ -1,34 +1,21 @@
 import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
-// import {
-//   FestivalHasManyImages,
-//   FestivalHasManyDocuments,
-// } from '~/server/database/associations';
+import { QuestionHasManyAnswers } from '~/server/database/associations';
 
-const baseFileFields = ['fileName', 'fileType', 'url'];
+const answerFields = ['type', 'artworkId', 'propertyId'];
 
 const options = {
   model: Question,
-  fields: ['title', 'description'],
+  fields: ['title', 'address'],
   fieldsProtected: [],
-  // include: [FestivalHasManyImages, FestivalHasManyDocuments],
-  // associations: [
-  //   {
-  //     association: FestivalHasManyImages,
-  //     destroyCascade: true,
-  //     fields: [
-  //       ...baseFileFields,
-  //       'urlThreshold',
-  //       'urlThresholdThumb',
-  //       'urlThumb',
-  //     ],
-  //   },
-  //   {
-  //     association: FestivalHasManyDocuments,
-  //     destroyCascade: true,
-  //     fields: [...baseFileFields],
-  //   },
-  // ],
+  include: [QuestionHasManyAnswers],
+  associations: [
+    {
+      association: QuestionHasManyAnswers,
+      destroyCascade: true,
+      fields: [...answerFields],
+    },
+  ],
 };
 
 function create(req, res, next) {

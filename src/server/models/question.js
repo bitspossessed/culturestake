@@ -17,6 +17,10 @@ const Question = db.define('question', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Question, {

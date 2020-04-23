@@ -6,6 +6,9 @@ const defaultValidation = {
   title: Joi.string()
     .max(128)
     .required(),
+  address: Joi.string()
+    .max(40)
+    .required(),
 };
 
 export default {

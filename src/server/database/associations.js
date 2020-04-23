@@ -8,7 +8,6 @@ import Image from '~/server/models/image';
 
 Artwork.hasMany(Answer);
 Property.hasMany(Answer);
-Question.hasMany(Answer);
 
 Answer.belongsTo(Artwork, {
   allowNull: true,
@@ -37,4 +36,13 @@ export const FestivalHasManyDocuments = Festival.hasMany(Document, {
     attachableType: 'document',
   },
   as: 'documents',
+});
+
+export const QuestionHasManyAnswers = Question.hasMany(Answer, {
+  ...attachableMixin,
+  foreignKey: 'questionId',
+  scope: {
+    attachableType: 'answer',
+  },
+  as: 'answers',
 });
