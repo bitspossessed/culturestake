@@ -5,13 +5,10 @@ import APIError from '~/server/helpers/errors';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
-<<<<<<< HEAD
 import questionsRouter from '~/server/routes/questions';
-=======
 import artworksRouter from '~/server/routes/artworks';
 import propertiesRouter from '~/server/routes/properties';
 import answersRouter from '~/server/routes/answers';
->>>>>>> adc41e5247b695d5cb359572bf710937b54d3d17
 import uploadsRouter from '~/server/routes/uploads';
 import usersRouter from '~/server/routes/users';
 import voteRouter from '~/server/routes/vote';

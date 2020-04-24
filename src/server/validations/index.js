@@ -14,3 +14,10 @@ export const paginationValidation = {
 export const slugValidation = {
   slug: Joi.string().required(),
 };
+
+export const idValidation = {
+  id: Joi.number()
+    .integer()
+    .positive()
+    .required(),
+};

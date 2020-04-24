@@ -11,6 +11,8 @@ const router = express.Router();
 
 const getAnswerResource = resourcesMiddleware({
   model: Answer,
+  modelKey: 'id',
+  paramsKey: 'id',
 });
 
 router.put(
@@ -23,14 +25,14 @@ router.put(
 router.get('/', validate(answersValidation.readAll), answersController.readAll);
 
 router.get(
-  '/:slug',
+  '/:id',
   validate(answersValidation.read),
   getAnswerResource,
   answersController.read,
 );
 
 router.delete(
-  '/:slug',
+  '/:id',
   authMiddleware,
   validate(answersValidation.destroy),
   getAnswerResource,

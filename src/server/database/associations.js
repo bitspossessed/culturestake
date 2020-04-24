@@ -41,8 +41,5 @@ export const FestivalHasManyDocuments = Festival.hasMany(Document, {
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {
   ...attachableMixin,
   foreignKey: 'questionId',
-  scope: {
-    attachableType: 'answer',
-  },
   as: 'answers',
 });

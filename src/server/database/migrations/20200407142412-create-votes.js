@@ -21,11 +21,11 @@ module.exports = {
         unique: true,
       },
       sender: {
-        type: Sequelize.STRING(40),
+        type: Sequelize.STRING(42),
         allowNull: false,
       },
       booth: {
-        type: Sequelize.STRING(40),
+        type: Sequelize.STRING(42),
         allowNull: false,
       },
       boothSignature: {

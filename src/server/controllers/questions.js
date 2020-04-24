@@ -6,7 +6,7 @@ const answerFields = ['type', 'artworkId', 'propertyId'];
 
 const options = {
   model: Question,
-  fields: ['title', 'address'],
+  fields: ['title', 'address', 'answers'],
   fieldsProtected: [],
   include: [QuestionHasManyAnswers],
   associations: [

@@ -39,7 +39,6 @@ export const web3Validators = Joi.extend(joi => {
     messages: {
       'web3.address': 'is invalid Ethereum address',
       'web3.addressChecksum': 'is invalid Ethereum address checksum',
-      'web3.signature': 'is invalid Ethereum signature',
     },
     rules: {
       address: {

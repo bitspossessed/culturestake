@@ -1,14 +1,10 @@
 import { DataTypes } from 'sequelize';
-import SequelizeSlugify from 'sequelize-slugify';
 
 import db from '~/server/database';
 
 import Property from '~/server/models/property';
 import Artwork from '~/server/models/artwork';
-import {
-  generateRandomString,
-  generateHashSecret,
-} from '~/server/services/crypto';
+import { generateHashSecret } from '~/server/services/crypto';
 
 export const types = ['property', 'artwork'];
 
@@ -18,9 +14,6 @@ const Answer = db.define('answer', {
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
-  },
-  slug: {
-    type: DataTypes.STRING,
   },
   chainId: {
     type: DataTypes.STRING,
@@ -65,10 +58,6 @@ Answer.addHook('beforeCreate', async answer => {
   const { hash, secret } = await generateHashSecret(link.title);
   answer.chainId = hash;
   answer.secret = secret;
-});
-
-SequelizeSlugify.slugifyModel(Answer, {
-  source: ['clientId'],
 });
 
 export default Answer;
