@@ -24,8 +24,6 @@ export default function resourcesMiddleware(customOptions) {
       if (!paramsKey || req.query[paramsKey]) {
         throw new APIError(httpStatus.BAD_REQUEST);
       }
-  
-      console.log(req.params)
 
       const response = await model.findOne({
         rejectOnEmpty: true,

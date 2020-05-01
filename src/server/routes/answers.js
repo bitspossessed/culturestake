@@ -1,7 +1,9 @@
 import express from 'express';
 
 import Answer from '~/server/models/answer';
-import authMiddleware from '~/server/middlewares/passport';
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from '~/server/middlewares/passport';
 import answersController from '~/server/controllers/answers';
 import answersValidation from '~/server/validations/answers';
 import resourcesMiddleware from '~/server/middlewares/resources';
@@ -22,10 +24,16 @@ router.put(
   answersController.create,
 );
 
-router.get('/', validate(answersValidation.readAll), answersController.readAll);
+router.get(
+  '/',
+  optionalAuthMiddleware,
+  validate(answersValidation.readAll),
+  answersController.readAll,
+);
 
 router.get(
   '/:id',
+  optionalAuthMiddleware,
   validate(answersValidation.read),
   getAnswerResource,
   answersController.read,

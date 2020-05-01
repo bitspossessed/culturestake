@@ -1,10 +1,13 @@
 import httpStatus from 'http-status';
+import request from 'supertest';
 
 import createSupertest from './helpers/supertest';
 import artworks from './data/artworks';
 import questions from './data/questions';
 import answersData from './data/answers';
 import { initializeDatabase } from './helpers/database';
+
+import app from '~/server';
 
 describe('Answers', () => {
   let authRequest;
@@ -36,8 +39,8 @@ describe('Answers', () => {
 
   describe('GET /api/questions', () => {
     it('should return the question and answer', async () => {
-      const answer = await authRequest.get('/api/answers/1');
-      await authRequest
+      const answer = await request(app).get('/api/answers/1');
+      await request(app)
         .get('/api/questions/1')
         .expect(httpStatus.OK)
         .expect(response => {

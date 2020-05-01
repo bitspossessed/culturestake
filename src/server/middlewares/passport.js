@@ -24,6 +24,14 @@ export function authLocalMiddleware(req, res, next) {
   })(req, res, next);
 }
 
+export function optionalAuthMiddleware(req, res, next) {
+  const auth = req.get('Authorization');
+  if (!auth) return next();
+  passport.authenticate('jwt', (error, user) => {
+    handleAuthentication(error, user, req, next);
+  })(req, res, next);
+}
+
 export default function authMiddleware(req, res, next) {
   passport.authenticate('jwt', (error, user) => {
     handleAuthentication(error, user, req, next);
