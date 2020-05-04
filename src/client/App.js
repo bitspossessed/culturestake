@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import GlobalStyle from '~/client/styles';
 import Notifications from '~/client/components/Notifications';
 import Routes from '~/client/routes';
+import ThreeInterface from '~/client/components/ThreeInterface';
 import { initializeApp } from '~/client/store/app/actions';
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
 
   return (
     <Router>
+      <ThreeInterface />
       <GlobalStyle />
       <Notifications />
       <Routes />

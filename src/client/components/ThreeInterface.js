@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Suspense, Fragment, useState } from 'react';
 import styled from 'styled-components';
 
+import Navigation from '~/client/components/Navigation';
 import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeButtonNavigation from '~/client/components/ThreeButtonNavigation';
@@ -58,6 +59,8 @@ const ThreeInterface = (props) => {
           </ThreeRotator>
         </ThreeInterfaceElement>
       ) : null}
+
+      {isExpanded ? <Navigation /> : null}
     </Fragment>
   );
 };

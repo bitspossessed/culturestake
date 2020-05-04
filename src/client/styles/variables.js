@@ -35,6 +35,7 @@ const typography = {
   size: '1.4em',
   style: 'normal',
   weight: 400,
+  weightBold: 900,
 };
 
 // Base
@@ -64,6 +65,7 @@ const media = {
 // Z-index
 
 const layers = {
+  Navigation: 9000,
   ThreeInterfaceElement: 10000,
 };
 

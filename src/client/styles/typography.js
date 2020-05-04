@@ -1,4 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import styles from '~/client/styles/variables';
 
@@ -34,4 +34,20 @@ export default createGlobalStyle`
     font-weight: ${styles.typography.weight};
     font-family: ${styles.typography.familyHeading}, sans-serif;
   }
+`;
+
+export const ParagraphStyle = styled.p`
+  margin: ${styles.layout.spacing};
+`;
+
+export const HeadingPrimaryStyle = styled.h1`
+  margin: ${styles.layout.spacing};
+
+  font-size: 3em;
+`;
+
+export const HeadingSecondaryStyle = styled.h2`
+  margin: ${styles.layout.spacing};
+
+  font-size: 1.5em;
 `;

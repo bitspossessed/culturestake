@@ -3,11 +3,13 @@ import styled from 'styled-components';
 import { Group } from 'react-three-fiber/components';
 import { useThree } from 'react-three-fiber';
 
+import ColorSection, { SCHEME_BLACK } from '~/client/components/ColorSection';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeRotator from '~/client/components/ThreeRotator';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
+import { HeadingPrimaryStyle } from '~/client/styles/typography';
 import { randomRange, randomRangeFloat } from '~/common/utils/random';
 
 const ICONS_COUNT = 16;
@@ -22,9 +24,11 @@ const ThreeSplash = () => {
         </Suspense>
       </ThreeCanvas>
 
-      <ThreeSplashTitleStyle>
-        <h1>{translate('title')}</h1>
-      </ThreeSplashTitleStyle>
+      <ThreeSplashTitleContainerStyle>
+        <ColorSection scheme={SCHEME_BLACK}>
+          <ThreeSplashTitleStyle>{translate('title')}</ThreeSplashTitleStyle>
+        </ColorSection>
+      </ThreeSplashTitleContainerStyle>
     </ThreeSplashStyle>
   );
 };
@@ -69,7 +73,15 @@ const ThreeSplashStyle = styled.div`
   height: 80%;
 `;
 
-const ThreeSplashTitleStyle = styled.div`
+const ThreeSplashTitleStyle = styled(HeadingPrimaryStyle)`
+  @media ${styles.media.desktop} {
+    font-size: 12em;
+  }
+
+  font-size: 4em;
+`;
+
+const ThreeSplashTitleContainerStyle = styled.div`
   position: absolute;
 
   top: 50%;
@@ -83,14 +95,6 @@ const ThreeSplashTitleStyle = styled.div`
   transform: translate3d(-50%, -50%, 0);
 
   pointer-events: none;
-
-  h1 {
-    @media ${styles.media.desktop} {
-      font-size: 16rem;
-    }
-
-    font-size: 6rem;
-  }
 `;
 
 export default ThreeSplash;
