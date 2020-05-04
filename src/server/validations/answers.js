@@ -1,19 +1,18 @@
 import { Joi, Segments } from 'celebrate';
 
-import { slugValidation, paginationValidation } from '~/server/validations';
-import { types } from '~/server/models/answer';
+import { idValidation, paginationValidation } from '~/server/validations';
 
-const defaultValidation = Joi.alternatives().try(
+export const defaultValidation = Joi.alternatives().try(
   Joi.object().keys({
     type: Joi.string()
-      .valid(...types)
+      .valid('property')
       .required(),
     artworkId: Joi.any().valid(null),
     propertyId: Joi.number().integer(),
   }),
   Joi.object().keys({
     type: Joi.string()
-      .valid(...types)
+      .valid('artwork')
       .required(),
     artworkId: Joi.number().integer(),
     propertyId: Joi.any().valid(null),
@@ -32,12 +31,12 @@ export default {
   },
   read: {
     [Segments.PARAMS]: {
-      ...slugValidation,
+      ...idValidation,
     },
   },
   destroy: {
     [Segments.PARAMS]: {
-      ...slugValidation,
+      ...idValidation,
     },
   },
 };

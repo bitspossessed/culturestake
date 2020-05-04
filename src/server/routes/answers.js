@@ -1,7 +1,9 @@
 import express from 'express';
 
 import Answer from '~/server/models/answer';
-import authMiddleware from '~/server/middlewares/passport';
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from '~/server/middlewares/passport';
 import answersController from '~/server/controllers/answers';
 import answersValidation from '~/server/validations/answers';
 import resourcesMiddleware from '~/server/middlewares/resources';
@@ -11,6 +13,8 @@ const router = express.Router();
 
 const getAnswerResource = resourcesMiddleware({
   model: Answer,
+  modelKey: 'id',
+  paramsKey: 'id',
 });
 
 router.put(
@@ -20,17 +24,23 @@ router.put(
   answersController.create,
 );
 
-router.get('/', validate(answersValidation.readAll), answersController.readAll);
+router.get(
+  '/',
+  optionalAuthMiddleware,
+  validate(answersValidation.readAll),
+  answersController.readAll,
+);
 
 router.get(
-  '/:slug',
+  '/:id',
+  optionalAuthMiddleware,
   validate(answersValidation.read),
   getAnswerResource,
   answersController.read,
 );
 
 router.delete(
-  '/:slug',
+  '/:id',
   authMiddleware,
   validate(answersValidation.destroy),
   getAnswerResource,

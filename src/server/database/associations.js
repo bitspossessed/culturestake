@@ -3,6 +3,7 @@ import Property from '~/server/models/property';
 import Artwork from '~/server/models/artwork';
 import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
+import Question from '~/server/models/question';
 import Image from '~/server/models/image';
 
 Artwork.hasMany(Answer);
@@ -14,6 +15,7 @@ Answer.belongsTo(Artwork, {
 Answer.belongsTo(Property, {
   allowNull: true,
 });
+Answer.belongsTo(Question);
 
 const attachableMixin = {
   foreignKey: 'attachableId',
@@ -34,4 +36,10 @@ export const FestivalHasManyDocuments = Festival.hasMany(Document, {
     attachableType: 'document',
   },
   as: 'documents',
+});
+
+export const QuestionHasManyAnswers = Question.hasMany(Answer, {
+  ...attachableMixin,
+  foreignKey: 'questionId',
+  as: 'answers',
 });

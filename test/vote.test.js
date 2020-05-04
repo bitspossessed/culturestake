@@ -75,6 +75,7 @@ describe('API', () => {
 
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
+    await authRequest.del('/api/answers/1');
   });
 
   describe('POST /api/vote', () => {

@@ -5,6 +5,7 @@ import APIError from '~/server/helpers/errors';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
+import questionsRouter from '~/server/routes/questions';
 import artworksRouter from '~/server/routes/artworks';
 import propertiesRouter from '~/server/routes/properties';
 import answersRouter from '~/server/routes/answers';
@@ -29,6 +30,8 @@ router.use('/users', authMiddleware, usersRouter);
 router.use('/vote', voteRouter);
 
 router.use('/festivals', festivalsRouter);
+
+router.use('/questions', questionsRouter);
 
 router.use('/artworks', artworksRouter);
 

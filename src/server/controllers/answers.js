@@ -4,6 +4,7 @@ import baseController from '~/server/controllers';
 const options = {
   model: Answer,
   fields: ['type', 'artworkId', 'propertyId'],
+  fieldsProtected: ['chainId'],
 };
 
 function create(req, res, next) {
