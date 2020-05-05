@@ -1,6 +1,7 @@
 import { Joi, Segments } from 'celebrate';
 
 import { web3Validators } from '~/server/helpers/validate';
+import { idValidation } from '~/server/validations';
 
 const defaultValidation = {
   signature: Joi.string()
@@ -23,6 +24,11 @@ export default {
   create: {
     [Segments.BODY]: {
       ...defaultValidation,
+    },
+  },
+  read: {
+    [Segments.PARAMS]: {
+      ...idValidation,
     },
   },
 };

@@ -8,6 +8,8 @@ import validateVote from '~/server/middlewares/validateVote';
 
 const router = express.Router();
 
+router.get('/:question', validate(voteValidation.read), voteController.read);
+
 router.post(
   '/',
   validate(voteValidation.create),
