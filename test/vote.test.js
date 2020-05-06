@@ -16,7 +16,7 @@ import createSupertest from './helpers/supertest';
 import { packBooth, packVote } from '~/common/services/encoding';
 import adminTx from './helpers/adminTx';
 
-const refreshNonce = () => Math.floor(Math.random() * Math.floor(1000));
+const generateNonce = () => Math.floor(Math.random() * Math.floor(1000));
 
 describe('API', () => {
   let authRequest;
@@ -53,7 +53,7 @@ describe('API', () => {
     booth = web3.eth.accounts.privateKeyToAccount(
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
-    nonce = refreshNonce();
+    nonce = generateNonce();
 
     vote = {
       signature: web3.eth.accounts.sign(
@@ -134,7 +134,7 @@ describe('API', () => {
       await request(app)
         .post('/api/vote')
         .send(vote);
-      vote.nonce = refreshNonce();
+      vote.nonce = generateNonce();
       await request(app)
         .post('/api/vote')
         .send(vote)
