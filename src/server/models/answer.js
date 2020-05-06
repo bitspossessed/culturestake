@@ -55,7 +55,7 @@ Answer.addHook('beforeCreate', async answer => {
     key = answer.artworkId;
   }
   const link = await model.findByPk(key);
-  const { hash, secret } = await generateHashSecret(link.title);
+  const { hash, secret } = generateHashSecret(link.title);
   answer.chainId = hash;
   answer.secret = secret;
 });
