@@ -1,10 +1,10 @@
 import Answer from '~/server/models/answer';
-import Property from '~/server/models/property';
 import Artwork from '~/server/models/artwork';
 import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
-import Question from '~/server/models/question';
 import Image from '~/server/models/image';
+import Property from '~/server/models/property';
+import Question from '~/server/models/question';
 
 const attachableMixin = {
   foreignKey: 'attachableId',
