@@ -6,21 +6,24 @@ import Festival from '~/server/models/festival';
 import Question from '~/server/models/question';
 import Image from '~/server/models/image';
 
-Artwork.hasMany(Answer);
-Property.hasMany(Answer);
-
-Answer.belongsTo(Artwork, {
-  allowNull: true,
-});
-Answer.belongsTo(Property, {
-  allowNull: true,
-});
-Answer.belongsTo(Question);
-
 const attachableMixin = {
   foreignKey: 'attachableId',
   constraints: false,
 };
+
+export const ArtworkHasManyAnswers = Artwork.hasMany(Answer);
+
+export const PropertyHasManyAnswers = Property.hasMany(Answer);
+
+export const AnswerBelongsToArtwork = Answer.belongsTo(Artwork, {
+  allowNull: true,
+});
+
+export const AnswerBelongsToProperty = Answer.belongsTo(Property, {
+  allowNull: true,
+});
+
+export const AnswerBelongsToQuestion = Answer.belongsTo(Question);
 
 export const FestivalHasManyImages = Festival.hasMany(Image, {
   ...attachableMixin,
