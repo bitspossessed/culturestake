@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Suspense, Fragment, useState } from 'react';
 import styled from 'styled-components';
+import { useHistory, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 
 import Navigation from '~/client/components/Navigation';
@@ -16,18 +17,19 @@ const ThreeInterface = (props) => {
   const [isInfoExpanded, setIsInfoExpanded] = useState(false);
   const { isAlternateColor } = useSelector((state) => state.app);
 
+  const location = useLocation();
+  const history = useHistory();
+
+  const isShowingHome = location.pathname !== '/';
+
   const onClickLogo = () => {
-    if (props.onClickLogo) {
-      props.onClickLogo();
-    }
+    setIsExpanded(false);
+
+    history.push('/');
   };
 
   const onClickNavigation = () => {
     setIsExpanded(!isExpanded);
-
-    if (props.onClickNavigation) {
-      props.onClickNavigation(isExpanded);
-    }
   };
 
   const onClickInfo = () => {
@@ -44,7 +46,7 @@ const ThreeInterface = (props) => {
 
   return (
     <Fragment>
-      {props.isShowingHome ? (
+      {isShowingHome ? (
         <ThreeInterfaceElement left top onClick={onClickLogo}>
           <ThreeRotator rotation={[3.5, -0.6, 0]}>
             <ThreeButtonLogo isAlternateColor={isAlternateColor} />
@@ -88,11 +90,8 @@ const ThreeInterfaceElement = (props) => {
 };
 
 ThreeInterface.propTypes = {
-  isShowingHome: PropTypes.bool,
   isShowingInfo: PropTypes.bool,
   onClickInfo: PropTypes.func,
-  onClickLogo: PropTypes.func,
-  onClickNavigation: PropTypes.func,
 };
 
 ThreeInterfaceElement.propTypes = {
