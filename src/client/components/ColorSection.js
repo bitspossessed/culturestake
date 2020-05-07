@@ -6,8 +6,8 @@ import styles from '~/client/styles/variables';
 import {
   HeadingPrimaryStyle,
   HeadingSecondaryStyle,
+  ParagraphStyle,
 } from '~/client/styles/typography';
-import { ParagraphStyle } from '~/client/styles/typography';
 
 export const SCHEME_ALTERNATE = 'alternative';
 export const SCHEME_BLACK = 'black';
@@ -53,18 +53,16 @@ const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
 };
 
 export const ColorSectionStyle = styled.div`
-  ${HeadingPrimaryStyle},
-  ${HeadingSecondaryStyle},
-  ${ParagraphStyle} {
+  ${/* sc-selector */ ParagraphStyle},
+  ${/* sc-selector */ HeadingPrimaryStyle},
+  ${/* sc-selector */ HeadingSecondaryStyle} {
     color: ${(props) => {
       const { foreground, background } = SCHEMES[props.scheme];
       return props.isInverted ? background : foreground;
     }};
 
-    ${(props) => {
-      return props.isAlternateFontFace
-        ? `font-family: ${ALTERNATE_FONT_FACE}`
-        : '';
+    font-family: ${(props) => {
+      return props.isAlternateFontFace ? ALTERNATE_FONT_FACE : 'inherit';
     }};
   }
 `;

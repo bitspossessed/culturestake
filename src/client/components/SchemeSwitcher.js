@@ -88,18 +88,11 @@ const SchemeSwitcherItemStyle = styled.li`
 
   cursor: pointer;
 
-  ${(props) => {
-    // Hack to align alternate font in center
-    if (props.isAlternateFontFace) {
-      return `
-        span {
-          position: relative;
+  span {
+    position: relative;
 
-          top: 2px;
-        }
-      `;
-    }
-  }};
+    top: ${(props) => (props.isAlternateFontFace ? '2px' : '0')};
+  }
 `;
 
 export default SchemeSwitcher;

@@ -95,10 +95,10 @@ ThreeInterfaceElement.propTypes = {
 const ThreeInterfaceElementStyle = styled.div`
   position: fixed;
 
-  ${(props) => (props.top ? 'top: 0;' : '')}
-  ${(props) => (props.right ? 'right: 0;' : '')}
-  ${(props) => (props.bottom ? 'bottom: 0;' : '')}
-  ${(props) => (props.left ? 'left: 0;' : '')}
+  top: ${(props) => (props.top ? '0' : 'auto')};
+  right: ${(props) => (props.right ? '0' : 'auto')};
+  bottom: ${(props) => (props.bottom ? '0' : 'auto')};
+  left: ${(props) => (props.left ? '0' : 'auto')};
 
   z-index: ${styles.layers.ThreeInterfaceElement};
 

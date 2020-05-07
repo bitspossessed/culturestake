@@ -8,7 +8,7 @@ const Heading = (props) => {
   return <HeadingStyle>{props.children}</HeadingStyle>;
 };
 
-export const HeadingStyle = styled(`h${props.level}`)`
+export const HeadingStyle = styled.p`
   margin: ${styles.layout.spacing};
 `;
 

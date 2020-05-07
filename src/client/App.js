@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Normalize } from 'styled-normalize';
 import { useDispatch } from 'react-redux';
 
 import GlobalStyle from '~/client/styles';
@@ -22,12 +23,16 @@ const App = () => {
   useEffect(onAppStart, []);
 
   return (
-    <Router>
-      <ThreeInterface />
+    <Fragment>
+      <Normalize />
       <GlobalStyle />
+      <ThreeInterface />
       <Notifications />
-      <Routes />
-    </Router>
+
+      <Router>
+        <Routes />
+      </Router>
+    </Fragment>
   );
 };
 
