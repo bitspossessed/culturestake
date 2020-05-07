@@ -20,10 +20,14 @@ async function create(req, res, next) {
 
 async function read(req, res, next) {
   const query = `{
-    answers()
+    answers
+    (where:
+      {question: "0x79183957be84c0f4da451e534d5ba5ba3fb9c696"}
+    ) { id voteTokens votePower votes active question { id } }
   }`;
   try {
     const graphAnswers = await requestGraph(query);
+    console.log(graphAnswers)
     respondWithSuccess(res, filterAnswers(graphAnswers));
   } catch (error) {
     return next(error);
