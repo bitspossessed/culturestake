@@ -7,6 +7,7 @@ import ThreeModel from '~/client/components/ThreeModel';
 import close from '~/client/assets/images/close.svg';
 import info from '~/client/assets/images/info.svg';
 import {
+  alternateGradientTexture,
   blueGradientTexture,
   redGradientTexture,
 } from '~/client/styles/textures';
@@ -14,7 +15,12 @@ import {
 const ThreeButtonInfo = (props) => {
   const [closeSvg, infoSvg] = useLoader(SVGLoader, [close, info]);
   const svg = props.isExpanded ? closeSvg : infoSvg;
-  const texture = props.isExpanded ? redGradientTexture : blueGradientTexture;
+
+  const texture = props.isExpanded
+    ? redGradientTexture
+    : props.isAlternateColor
+    ? alternateGradientTexture
+    : blueGradientTexture;
 
   // The info.svg is a little smoler than the others, lets rescale it!
   const scale = props.isExpanded ? 1 : 96 / 68.59;
@@ -30,6 +36,7 @@ const ThreeButtonInfo = (props) => {
 };
 
 ThreeButtonInfo.propTypes = {
+  isAlternateColor: PropTypes.bool,
   isExpanded: PropTypes.bool.isRequired,
 };
 

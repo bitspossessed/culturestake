@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Suspense, Fragment, useState } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import Navigation from '~/client/components/Navigation';
 import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
@@ -13,6 +14,7 @@ import styles from '~/client/styles/variables';
 const ThreeInterface = (props) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isInfoExpanded, setIsInfoExpanded] = useState(false);
+  const { isAlternateColor } = useSelector((state) => state.app);
 
   const onClickLogo = () => {
     if (props.onClickLogo) {
@@ -41,21 +43,27 @@ const ThreeInterface = (props) => {
       {props.isShowingHome ? (
         <ThreeInterfaceElement left top onClick={onClickLogo}>
           <ThreeRotator rotation={[3.5, -0.6, 0]}>
-            <ThreeButtonLogo />
+            <ThreeButtonLogo isAlternateColor={isAlternateColor} />
           </ThreeRotator>
         </ThreeInterfaceElement>
       ) : null}
 
       <ThreeInterfaceElement right top onClick={onClickNavigation}>
         <ThreeRotator rotation={[3.5, 0.3, 0]}>
-          <ThreeButtonNavigation isExpanded={isExpanded} />
+          <ThreeButtonNavigation
+            isAlternateColor={isAlternateColor}
+            isExpanded={isExpanded}
+          />
         </ThreeRotator>
       </ThreeInterfaceElement>
 
       {props.isShowingInfo ? (
         <ThreeInterfaceElement bottom left onClick={onClickInfo}>
           <ThreeRotator rotation={[3, -0.5, -0.1]}>
-            <ThreeButtonInfo isExpanded={isInfoExpanded} />
+            <ThreeButtonInfo
+              isAlternateColor={isAlternateColor}
+              isExpanded={isInfoExpanded}
+            />
           </ThreeRotator>
         </ThreeInterfaceElement>
       ) : null}
@@ -95,10 +103,10 @@ ThreeInterfaceElement.propTypes = {
 const ThreeInterfaceElementStyle = styled.div`
   position: fixed;
 
-  top: ${(props) => (props.top ? '0' : 'auto')};
-  right: ${(props) => (props.right ? '0' : 'auto')};
-  bottom: ${(props) => (props.bottom ? '0' : 'auto')};
-  left: ${(props) => (props.left ? '0' : 'auto')};
+  top: ${(props) => (props.top ? '0' : null)};
+  right: ${(props) => (props.right ? '0' : null)};
+  bottom: ${(props) => (props.bottom ? '0' : null)};
+  left: ${(props) => (props.left ? '0' : null)};
 
   z-index: ${styles.layers.ThreeInterfaceElement};
 

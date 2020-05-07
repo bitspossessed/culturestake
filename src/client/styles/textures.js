@@ -72,3 +72,16 @@ export const blueGradientTexture = generateGradientTexture({
     },
   ],
 });
+
+export const alternateGradientTexture = generateGradientTexture({
+  colorStops: [
+    {
+      position: 0,
+      color: styles.colors.yellow,
+    },
+    {
+      position: 1,
+      color: styles.colors.yellow,
+    },
+  ],
+});

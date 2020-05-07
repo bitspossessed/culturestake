@@ -1,50 +1,30 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
-import styles from '~/client/styles/variables';
+import styles, {
+  DEFAULT_SCHEME,
+  SCHEME_ALTERNATE,
+} from '~/client/styles/variables';
 import {
   HeadingPrimaryStyle,
   HeadingSecondaryStyle,
   ParagraphStyle,
 } from '~/client/styles/typography';
-
-export const SCHEME_ALTERNATE = 'alternative';
-export const SCHEME_BLACK = 'black';
-export const SCHEME_PINK = 'pink';
-export const SCHEME_VIOLET = 'violet';
-
-export const DEFAULT_SCHEME = SCHEME_VIOLET;
-
-const SCHEMES = {
-  [SCHEME_ALTERNATE]: {
-    background: styles.colors.black,
-    foreground: styles.colors.yellow,
-  },
-  [SCHEME_BLACK]: {
-    background: styles.colors.white,
-    foreground: styles.colors.black,
-  },
-  [SCHEME_PINK]: {
-    background: styles.colors.white,
-    foreground: styles.colors.pink,
-  },
-  [SCHEME_VIOLET]: {
-    background: styles.colors.white,
-    foreground: styles.colors.violet,
-  },
-};
-
-const ALTERNATE_FONT_FACE = styles.typography.familyAccessible;
+import { BackgroundAreaStyle } from '~/client/styles/layout';
 
 const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
-  const isAlternateColor = false;
-  const isAlternateFontFace = false;
+  const { isAlternateColor, isAlternateFontFace, isLargerFont } = useSelector(
+    (state) => state.app,
+  );
 
   return (
     <ColorSectionStyle
+      isAlternateColor={isAlternateColor}
       isAlternateFontFace={isAlternateFontFace}
       isInverted={props.isInverted}
+      isLargerFont={isLargerFont}
       scheme={isAlternateColor ? SCHEME_ALTERNATE : scheme}
     >
       {props.children}
@@ -57,12 +37,39 @@ export const ColorSectionStyle = styled.div`
   ${/* sc-selector */ HeadingPrimaryStyle},
   ${/* sc-selector */ HeadingSecondaryStyle} {
     color: ${(props) => {
-      const { foreground, background } = SCHEMES[props.scheme];
+      const { foreground, background } = styles.schemes[props.scheme];
       return props.isInverted ? background : foreground;
     }};
 
     font-family: ${(props) => {
-      return props.isAlternateFontFace ? ALTERNATE_FONT_FACE : 'inherit';
+      return props.isAlternateFontFace
+        ? styles.typography.familyAccessible
+        : null;
+    }};
+  }
+
+  ${/* sc-selector */ ParagraphStyle} {
+    font-size: ${(props) => {
+      return props.isLargerFont ? '1.5em' : null;
+    }};
+  }
+
+  ${/* sc-selector */ HeadingPrimaryStyle} {
+    font-size: ${(props) => {
+      return props.isLargerFont ? '6em' : null;
+    }};
+  }
+
+  ${/* sc-selector */ HeadingSecondaryStyle} {
+    font-size: ${(props) => {
+      return props.isLargerFont ? '2.5em' : null;
+    }};
+  }
+
+  ${/* sc-selector */ BackgroundAreaStyle} {
+    background-color: ${(props) => {
+      const { foreground, background } = styles.schemes[props.scheme];
+      return props.isInverted ? foreground : background;
     }};
   }
 `;
@@ -70,7 +77,7 @@ export const ColorSectionStyle = styled.div`
 ColorSection.propTypes = {
   children: PropTypes.node,
   isInverted: PropTypes.bool,
-  scheme: PropTypes.oneOf(Object.keys(SCHEMES)),
+  scheme: PropTypes.oneOf(Object.keys(styles.schemes)),
 };
 
 export default ColorSection;

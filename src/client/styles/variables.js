@@ -69,6 +69,34 @@ const layers = {
   ThreeInterfaceElement: 10000,
 };
 
+// Accessibility
+
+export const SCHEME_ALTERNATE = 'alternate';
+export const SCHEME_BLACK = 'black';
+export const SCHEME_PINK = 'pink';
+export const SCHEME_VIOLET = 'violet';
+
+export const DEFAULT_SCHEME = SCHEME_VIOLET;
+
+const schemes = {
+  [SCHEME_ALTERNATE]: {
+    background: colors.black,
+    foreground: colors.yellow,
+  },
+  [SCHEME_BLACK]: {
+    background: colors.white,
+    foreground: colors.black,
+  },
+  [SCHEME_PINK]: {
+    background: colors.white,
+    foreground: colors.pink,
+  },
+  [SCHEME_VIOLET]: {
+    background: colors.white,
+    foreground: colors.violet,
+  },
+};
+
 // Variables
 
 export default {
@@ -78,5 +106,6 @@ export default {
   layout,
   links,
   media,
+  schemes,
   typography,
 };

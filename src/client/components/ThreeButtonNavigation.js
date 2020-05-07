@@ -6,15 +6,24 @@ import { useLoader } from 'react-three-fiber';
 import ThreeModel from '~/client/components/ThreeModel';
 import close from '~/client/assets/images/close.svg';
 import menu from '~/client/assets/images/menu.svg';
-import { limeGradientTexture } from '~/client/styles/textures';
+import {
+  alternateGradientTexture,
+  limeGradientTexture,
+} from '~/client/styles/textures';
 
 const ThreeButtonNavigation = (props) => {
   const [closeSvg, menuSvg] = useLoader(SVGLoader, [close, menu]);
   const svg = props.isExpanded ? closeSvg : menuSvg;
-  return <ThreeModel {...props} svg={svg} texture={limeGradientTexture} />;
+
+  const texture = props.isAlternateColor
+    ? alternateGradientTexture
+    : limeGradientTexture;
+
+  return <ThreeModel {...props} svg={svg} texture={texture} />;
 };
 
 ThreeButtonNavigation.propTypes = {
+  isAlternateColor: PropTypes.bool,
   isExpanded: PropTypes.bool.isRequired,
 };
 

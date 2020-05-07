@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Normalize } from 'styled-normalize';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import GlobalStyle from '~/client/styles';
 import Notifications from '~/client/components/Notifications';
@@ -11,6 +11,7 @@ import { initializeApp } from '~/client/store/app/actions';
 
 const App = () => {
   const dispatch = useDispatch();
+  const { isAlternateColor } = useSelector((state) => state.app);
 
   const onAppStart = () => {
     const initialize = async () => {
@@ -25,7 +26,7 @@ const App = () => {
   return (
     <Fragment>
       <Normalize />
-      <GlobalStyle />
+      <GlobalStyle isAlternateColor={isAlternateColor} />
       <ThreeInterface />
       <Notifications />
 

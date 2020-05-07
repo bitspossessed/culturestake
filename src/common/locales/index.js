@@ -19,6 +19,10 @@ const components = {
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
   },
+  Navigation: {
+    titleAccessibility: 'Accessibility',
+    titleFestivals: 'Festivals:',
+  },
   InputUploadField: {
     buttonRemoveFile: 'Remove',
     buttonSelectFiles: 'Select files',

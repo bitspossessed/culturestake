@@ -1,29 +1,45 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
-import SchemeSwitcher from '~/client/components/SchemeSwitcher';
+import AccessibilitySettings from '~/client/components/AccessibilitySettings';
+import ColorSection from '~/client/components/ColorSection';
 import styles from '~/client/styles/variables';
+import translate from '~/common/services/i18n';
+import { HeadingSecondaryStyle } from '~/client/styles/typography';
+import { BackgroundAreaStyle } from '~/client/styles/layout';
 
 const Navigation = () => {
+  const { isAlternateColor } = useSelector((state) => state.app);
+
   return (
-    <NavigationStyle>
-      <NavigationAccessibilityStyle>
-        <h2>Accessibility</h2>
-        <SchemeSwitcher />
-      </NavigationAccessibilityStyle>
+    <NavigationStyle isAlternateColor={isAlternateColor}>
+      <ColorSection>
+        <NavigationAccessibilityStyle>
+          <HeadingSecondaryStyle>
+            {translate('Navigation.titleAccessibility')}
+          </HeadingSecondaryStyle>
 
-      <NavigationMenuStyle>
-        <NavigationMenuItemStyle>
-          <h2>Festivals:</h2>
-        </NavigationMenuItemStyle>
+          <AccessibilitySettings />
+        </NavigationAccessibilityStyle>
+      </ColorSection>
 
-        <NavigationMenuItemStyle>{/* @TODO */}</NavigationMenuItemStyle>
-      </NavigationMenuStyle>
+      <ColorSection isInverted>
+        <NavigationMenuStyle>
+          <NavigationMenuItemStyle>
+            <HeadingSecondaryStyle>
+              {translate('Navigation.titleFestivals')}
+            </HeadingSecondaryStyle>
+          </NavigationMenuItemStyle>
+
+          <NavigationMenuItemStyle>{/* @TODO */}</NavigationMenuItemStyle>
+        </NavigationMenuStyle>
+      </ColorSection>
     </NavigationStyle>
   );
 };
 
-const NavigationStyle = styled.nav`
+const NavigationStyle = styled(BackgroundAreaStyle)`
   position: fixed;
 
   top: 0;
@@ -32,15 +48,11 @@ const NavigationStyle = styled.nav`
   left: 0;
 
   z-index: ${styles.layers.Navigation};
-
-  background-color: ${styles.colors.violet};
 `;
 
-const NavigationAccessibilityStyle = styled.div`
+const NavigationAccessibilityStyle = styled(BackgroundAreaStyle)`
   padding: ${styles.layout.spacing};
   padding-bottom: 4rem;
-
-  background-color: ${styles.colors.white};
 
   text-align: center;
 

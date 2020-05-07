@@ -33,6 +33,8 @@ export default createGlobalStyle`
   h6 {
     font-weight: ${styles.typography.weight};
     font-family: ${styles.typography.familyHeading}, sans-serif;
+
+    overflow-wrap: anywhere;
   }
 `;
 

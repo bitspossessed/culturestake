@@ -1,13 +1,18 @@
+import PropTypes from 'prop-types';
 import React, { Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import { Group } from 'react-three-fiber/components';
+import { useSelector } from 'react-redux';
 import { useThree } from 'react-three-fiber';
 
-import ColorSection, { SCHEME_BLACK } from '~/client/components/ColorSection';
+import ColorSection from '~/client/components/ColorSection';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeRotator from '~/client/components/ThreeRotator';
-import styles from '~/client/styles/variables';
+import styles, {
+  SCHEME_ALTERNATE,
+  SCHEME_BLACK,
+} from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { HeadingPrimaryStyle } from '~/client/styles/typography';
 import { randomRange, randomRangeFloat } from '~/common/utils/random';
@@ -16,24 +21,31 @@ const ICONS_COUNT = 16;
 const ICONS_SCALE = 3;
 
 const ThreeSplash = () => {
+  const { isAlternateColor } = useSelector((state) => state.app);
+
   return (
     <ThreeSplashStyle>
-      <ThreeCanvas camera={{ far: ICONS_COUNT * 250 }}>
+      <ThreeCanvas
+        camera={{ far: ICONS_COUNT * 250 }}
+        isDimmed={isAlternateColor}
+      >
         <Suspense fallback={null}>
-          <ThreeSplashLogos />
+          <ThreeSplashLogos isAlternateColor={isAlternateColor} />
         </Suspense>
       </ThreeCanvas>
 
       <ThreeSplashTitleContainerStyle>
         <ColorSection scheme={SCHEME_BLACK}>
-          <ThreeSplashTitleStyle>{translate('title')}</ThreeSplashTitleStyle>
+          <ThreeSplashTitleStyle isAlternateColor={isAlternateColor}>
+            {translate('title')}
+          </ThreeSplashTitleStyle>
         </ColorSection>
       </ThreeSplashTitleContainerStyle>
     </ThreeSplashStyle>
   );
 };
 
-const ThreeSplashLogos = () => {
+const ThreeSplashLogos = (props) => {
   const { size } = useThree();
   const { width, height } = size;
 
@@ -59,12 +71,16 @@ const ThreeSplashLogos = () => {
           scale={[ICONS_SCALE, ICONS_SCALE, ICONS_SCALE]}
         >
           <ThreeRotator rotation={[0, 0, 0]}>
-            <ThreeButtonLogo />
+            <ThreeButtonLogo isAlternateColor={props.isAlternateColor} />
           </ThreeRotator>
         </Group>
       );
     });
-  }, [width, height]);
+  }, [width, height, props.isAlternateColor]);
+};
+
+ThreeSplashLogos.propTypes = {
+  isAlternateColor: PropTypes.bool,
 };
 
 const ThreeSplashStyle = styled.div`
@@ -78,6 +94,12 @@ const ThreeSplashTitleStyle = styled(HeadingPrimaryStyle)`
     font-size: 12em;
   }
 
+  background-color: ${(props) => {
+    return props.isAlternateColor
+      ? styles.schemes[SCHEME_ALTERNATE].background
+      : 'transparent';
+  }};
+
   font-size: 4em;
 `;
 
@@ -86,6 +108,8 @@ const ThreeSplashTitleContainerStyle = styled.div`
 
   top: 50%;
   left: 50%;
+
+  width: 100%;
 
   line-height: 1;
 

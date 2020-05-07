@@ -38,7 +38,10 @@ function initializeToken() {
 }
 
 const initialState = {
+  isAlternateColor: false,
+  isAlternateFontFace: false,
   isAuthenticated: false,
+  isLargerFont: false,
   isReady: false,
   token: null,
 };
@@ -53,7 +56,7 @@ const appReducer = (state = initialState, action) => {
       const token = initializeToken();
 
       return update(state, {
-        isAuthenticated: { $set: token !== null },
+        isAuthenticated: { $set: !!token },
         token: { $set: token },
       });
     }
@@ -75,6 +78,12 @@ const appReducer = (state = initialState, action) => {
         token: { $set: null },
       });
     }
+    case ActionTypes.APP_ACCESSIBILITY_UPDATE:
+      return update(state, {
+        isAlternateColor: { $set: !!action.meta.isAlternateColor },
+        isAlternateFontFace: { $set: !!action.meta.isAlternateFontFace },
+        isLargerFont: { $set: !!action.meta.isLargerFont },
+      });
     default:
       return state;
   }

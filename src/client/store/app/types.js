@@ -1,6 +1,7 @@
 import createTypes from 'redux-create-action-types';
 
 export default createTypes(
+  'APP_ACCESSIBILITY_UPDATE',
   'APP_INITIALIZE',
   'APP_TOKEN_INITIALIZE',
   'APP_TOKEN_REQUEST',
