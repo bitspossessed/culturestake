@@ -2,16 +2,18 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import AccessibilitySettings from '~/client/components/AccessibilitySettings';
 import ColorSection from '~/client/components/ColorSection';
 import styles from '~/client/styles/variables';
+import notify from '~/client/store/notifications/actions';
 import translate from '~/common/services/i18n';
 import {
   ParagraphStyle,
   HeadingSecondaryStyle,
 } from '~/client/styles/typography';
+import { resetToken } from '~/client/store/app/actions';
 import { BackgroundAreaStyle } from '~/client/styles/layout';
 
 const Navigation = ({ onClickItem }) => {
@@ -76,10 +78,40 @@ const Navigation = ({ onClickItem }) => {
                 </ParagraphStyle>
               </NavigationLink>
             </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
+              <NavigationLogoutButton onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminSignOut')}
+                </ParagraphStyle>
+              </NavigationLogoutButton>
+            </NavigationMenuItemStyle>
           </NavigationMenuStyle>
         ) : null}
       </ColorSection>
     </NavigationStyle>
+  );
+};
+
+const NavigationLogoutButton = (props) => {
+  const dispatch = useDispatch();
+
+  const onClick = () => {
+    dispatch(resetToken());
+
+    dispatch(
+      notify({
+        text: translate('Navigation.notificationSignOutSuccess'),
+      }),
+    );
+
+    props.onClick('/');
+  };
+
+  return (
+    <Link to="/" onClick={onClick}>
+      {props.children}
+    </Link>
   );
 };
 
@@ -103,6 +135,11 @@ NavigationLink.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func.isRequired,
   to: PropTypes.string.isRequired,
+};
+
+NavigationLogoutButton.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 const NavigationStyle = styled(BackgroundAreaStyle)`

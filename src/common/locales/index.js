@@ -22,7 +22,9 @@ const components = {
   Navigation: {
     linkAdminDashboard: 'Dashboard',
     linkAdminFestivals: 'Festivals',
+    linkAdminSignOut: '🚪',
     linkAdminUsers: 'Users',
+    notificationSignOutSuccess: 'Your session has ended. See you soon!',
     titleAccessibility: 'Accessibility',
     titleAdmin: 'Admin:',
     titleFestivals: 'Festivals:',
