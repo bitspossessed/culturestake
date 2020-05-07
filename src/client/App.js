@@ -27,10 +27,10 @@ const App = () => {
     <Fragment>
       <Normalize />
       <GlobalStyle isAlternateColor={isAlternateColor} />
-      <ThreeInterface />
-      <Notifications />
 
       <Router>
+        <Notifications />
+        <ThreeInterface />
         <Routes />
       </Router>
     </Fragment>

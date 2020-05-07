@@ -38,6 +38,10 @@ const ThreeInterface = (props) => {
     }
   };
 
+  const onClickNavigationItem = () => {
+    setIsExpanded(false);
+  };
+
   return (
     <Fragment>
       {props.isShowingHome ? (
@@ -68,7 +72,7 @@ const ThreeInterface = (props) => {
         </ThreeInterfaceElement>
       ) : null}
 
-      {isExpanded ? <Navigation /> : null}
+      {isExpanded ? <Navigation onClickItem={onClickNavigationItem} /> : null}
     </Fragment>
   );
 };

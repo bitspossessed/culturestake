@@ -20,7 +20,11 @@ const components = {
     fieldUsername: 'Username:',
   },
   Navigation: {
+    linkAdminDashboard: 'Dashboard',
+    linkAdminFestivals: 'Festivals',
+    linkAdminUsers: 'Users',
     titleAccessibility: 'Accessibility',
+    titleAdmin: 'Admin:',
     titleFestivals: 'Festivals:',
   },
   InputUploadField: {
