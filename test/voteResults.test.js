@@ -71,6 +71,8 @@ describe('API', () => {
       answers: [answer.id],
       voteTokens: [1],
     };
+
+    console.log(vote)
     await request(app)
       .post('/api/vote')
       .send(vote);
@@ -86,7 +88,7 @@ describe('API', () => {
       await request(app)
         .get(`/api/vote/${question.options.address}`)
         .then((res) => {
-          console.log(res.body)
+          console.log(res.body.data.results)
         })
     });
   });

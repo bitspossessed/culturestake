@@ -5,14 +5,13 @@ import Vote from '~/server/models/vote';
 import Answer from '~/server/models/answer';
 import baseController from '~/server/controllers';
 
-const filterAnswers = graphAnswers => {
-  return graphAnswers;
-};
-
 const options = {
   model: Answer,
-  fields: ['type', 'artworkId', 'propertyId', 'votes', 'voteTokens', 'votePower'],
-  // fieldsProtected: ['chainId'],
+  fields: ['id', 'votes', 'voteTokens', 'votePower', 'question'],
+  thresholdFields: ['type', 'artworkId', 'propertyId'],
+  threshold: 3,
+  thresholdKey: 'votePower',
+  graphMatchingKey: 'chainId',
 };
 
 async function create(req, res, next) {
@@ -30,11 +29,13 @@ async function read(req, res, next) {
   const query = `{
     answers
     (where:
-      {question: "${req.params.question}"}
+      {question: "${req.params.question.toLowerCase()}"}
     ) { id voteTokens votePower votes active question { id } }
   }`;
   try {
-    req.locals.graphData = await requestGraph(query);
+    req.locals = req.locals || {};
+    const graphData = await requestGraph(query);
+    req.locals.graphData = graphData.answers;
     baseController.readAll(options)(req, res, next);
   } catch (error) {
     return next(error);

@@ -61,7 +61,8 @@ function filterResponseFieldsAll(req, arr, options) {
   if (req.locals && req.locals.graphData) {
     const combined = req.locals.graphData.map(i => {
       const datum = arr.find(d => d[options.graphMatchingKey] === i.id);
-      return Object.assign(i, datum);
+      if (datum) return Object.assign(i, datum.dataValues);
+      return i;
     });
     arr = combined;
   }
@@ -76,9 +77,10 @@ function filterResponseFieldsAll(req, arr, options) {
 
   return arr.map((data, index) => {
     if (options.threshold && index < options.threshold) {
-      const optionsOverride = Object.assign(options, {
+      const optionsOverride = {
+        ...options,
         fields: options.fields.concat(options.thresholdFields),
-      })
+      };
       return filterResponseFields(req, data, optionsOverride);
     }
     return filterResponseFields(req, data, options);

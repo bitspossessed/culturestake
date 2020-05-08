@@ -2,8 +2,6 @@ import { GraphQLClient } from 'graphql-request';
 
 const endpoint = `${process.env.GRAPH_NODE_ENDPOINT}subgraphs/name/${process.env.SUBGRAPH_NAME}`;
 
-console.log(endpoint)
-
 export const graphQLClient = new GraphQLClient(endpoint, { headers: {} });
 
 export default async function requestGraph(query, variables) {
