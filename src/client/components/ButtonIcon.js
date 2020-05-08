@@ -34,6 +34,10 @@ const ButtonIconStyle = styled(Button)`
 
   background-color: transparent;
 
+  opacity: ${(props) => {
+    return props.disabled ? '0.3' : '1';
+  }};
+
   cursor: pointer;
 
   text-overflow: ellipsis;
