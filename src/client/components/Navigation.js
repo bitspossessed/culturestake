@@ -151,6 +151,9 @@ const NavigationStyle = styled(BackgroundAreaStyle)`
   left: 0;
 
   z-index: ${styles.layers.Navigation};
+
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 const NavigationAccessibilityStyle = styled(BackgroundAreaStyle)`
