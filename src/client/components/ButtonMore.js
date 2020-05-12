@@ -1,16 +1,23 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 
 import Button from '~/client/components/Button';
+import InlineSVG from '~/client/components/InlineSVG';
 import dots from '~/client/assets/images/dots.svg';
 
 // eslint-disable-next-line react/display-name
 const ButtonMore = React.forwardRef((props, ref) => {
-  return <ButtonMoreStyle {...props} ref={ref} />;
+  return (
+    <Suspense fallback={null}>
+      <ButtonMoreStyle {...props} ref={ref}>
+        <InlineSVG url={dots} />
+      </ButtonMoreStyle>
+    </Suspense>
+  );
 });
 
-const ButtonMoreStyle = styled(Button)`
+export const ButtonMoreStyle = styled(Button)`
   width: 3rem;
   height: 3rem;
 
@@ -18,13 +25,7 @@ const ButtonMoreStyle = styled(Button)`
 
   border: 0;
 
-  color: transparent;
-
   background-color: transparent;
-  background-image: url(${dots});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
 
   opacity: ${(props) => {
     return props.disabled ? '0.3' : '1';

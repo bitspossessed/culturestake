@@ -1,24 +1,32 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 
+import InlineSVG from '~/client/components/InlineSVG';
 import dotline from '~/client/assets/images/dotline.svg';
 
 const HorizontalLine = () => {
-  return <HorizontalLineStyle />;
+  return (
+    <Suspense fallback={null}>
+      <HorizontalLineStyle>
+        <InlineSVG url={dotline} />
+      </HorizontalLineStyle>
+    </Suspense>
+  );
 };
 
-const HorizontalLineStyle = styled.hr`
-  height: 1rem;
+export const HorizontalLineStyle = styled.div`
+  overflow: hidden;
 
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  max-width: 66rem;
+  height: 1.5rem;
+
+  margin: 2rem auto;
 
   border: 0;
 
-  background-color: transparent;
-  background-image: url(${dotline});
-  background-repeat: no-repeat;
-  background-position: center;
+  svg {
+    min-width: 33rem;
+  }
 `;
 
 export default HorizontalLine;

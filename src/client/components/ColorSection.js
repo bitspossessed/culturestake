@@ -3,8 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import corner from '~/client/assets/images/corner.svg';
-import cornerYellow from '~/client/assets/images/corner-yellow.svg';
 import styles, {
   DEFAULT_SCHEME,
   SCHEME_ALTERNATE,
@@ -15,7 +13,13 @@ import {
   ParagraphStyle,
 } from '~/client/styles/typography';
 import { BackgroundAreaStyle } from '~/client/styles/layout';
+import {
+  ButtonIconSVGStyle,
+  ButtonIconStyle,
+} from '~/client/components/ButtonIcon';
+import { ButtonMoreStyle } from '~/client/components/ButtonMore';
 import { FramedBoxCornerStyle } from '~/client/components/FramedBox';
+import { HorizontalLineStyle } from '~/client/components/HorizontalLine';
 
 const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
   const { isAlternateColor, isAlternateFontFace, isLargerFont } = useSelector(
@@ -37,6 +41,7 @@ const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
 
 export const ColorSectionStyle = styled.div`
   ${/* sc-selector */ ParagraphStyle},
+  ${/* sc-selector */ ButtonIconStyle},
   ${/* sc-selector */ HeadingPrimaryStyle},
   ${/* sc-selector */ HeadingSecondaryStyle} {
     color: ${(props) => {
@@ -51,6 +56,7 @@ export const ColorSectionStyle = styled.div`
     }};
   }
 
+  ${/* sc-selector */ ButtonIconStyle},
   ${/* sc-selector */ ParagraphStyle} {
     font-size: ${(props) => {
       return props.isLargerFont ? '1.5em' : null;
@@ -76,14 +82,32 @@ export const ColorSectionStyle = styled.div`
     }};
   }
 
+  ${/* sc-selector */ ButtonIconSVGStyle},
   ${/* sc-selector */ FramedBoxCornerStyle} {
-    background-image: url(${(props) => {
-      if (props.scheme === SCHEME_ALTERNATE) {
-        return cornerYellow;
-      }
+    g {
+      stroke: ${(props) => {
+        const { foreground, background } = styles.schemes[props.scheme];
+        return props.isInverted ? background : foreground;
+      }};
+    }
+  }
 
-      return corner;
-    }});
+  ${/* sc-selector */ ButtonMoreStyle},
+  ${/* sc-selector */ HorizontalLineStyle} {
+    g {
+      fill: ${(props) => {
+        const { foreground, background } = styles.schemes[props.scheme];
+        return props.isInverted ? background : foreground;
+      }};
+    }
+  }
+
+  ${/* sc-selector */ ButtonIconStyle},
+  ${/* sc-selector */ ButtonIconSVGStyle} {
+    border-color: ${(props) => {
+      const { foreground, background } = styles.schemes[props.scheme];
+      return props.isInverted ? background : foreground;
+    }};
   }
 `;
 

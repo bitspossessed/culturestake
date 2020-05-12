@@ -1,18 +1,29 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 
+import InlineSVG from '~/client/components/InlineSVG';
 import corner from '~/client/assets/images/corner.svg';
 
 const FramedBox = ({ children, ...props }) => {
   return (
     <FramedBoxStyle {...props}>
       {children}
-      <FramedBoxCornerStyle left top />
-      <FramedBoxCornerStyle right top />
-      <FramedBoxCornerStyle bottom left />
-      <FramedBoxCornerStyle bottom right />
+      <FramedBoxCorner left top />
+      <FramedBoxCorner right top />
+      <FramedBoxCorner bottom left />
+      <FramedBoxCorner bottom right />
     </FramedBoxStyle>
+  );
+};
+
+const FramedBoxCorner = (props) => {
+  return (
+    <Suspense fallback={null}>
+      <FramedBoxCornerStyle {...props}>
+        <InlineSVG url={corner} />
+      </FramedBoxCornerStyle>
+    </Suspense>
   );
 };
 
@@ -42,11 +53,6 @@ export const FramedBoxCornerStyle = styled.div`
   width: 4rem;
   height: 4rem;
 
-  background-image: url(${corner});
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-
   transform: rotate(
     ${(props) => {
       if (props.bottom && props.right) {
@@ -64,6 +70,13 @@ export const FramedBoxCornerStyle = styled.div`
 
 FramedBox.propTypes = {
   children: PropTypes.node.isRequired,
+};
+
+FramedBoxCorner.propTypes = {
+  bottom: PropTypes.bool,
+  left: PropTypes.bool,
+  right: PropTypes.bool,
+  top: PropTypes.bool,
 };
 
 export default FramedBox;

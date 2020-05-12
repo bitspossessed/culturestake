@@ -1,21 +1,30 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 
 import Button from '~/client/components/Button';
+import InlineSVG from '~/client/components/InlineSVG';
 import arrow from '~/client/assets/images/arrow.svg';
 import styles from '~/client/styles/variables';
 
 // eslint-disable-next-line react/display-name
-const ButtonIcon = React.forwardRef(({ children, ...props }, ref) => {
-  return (
-    <ButtonIconStyle {...props} ref={ref}>
-      {children}
-    </ButtonIconStyle>
-  );
-});
+const ButtonIcon = React.forwardRef(
+  ({ children, url = arrow, ...props }, ref) => {
+    return (
+      <ButtonIconStyle {...props} ref={ref}>
+        {children}
 
-const ButtonIconStyle = styled(Button)`
+        <Suspense fallback={null}>
+          <ButtonIconSVGStyle {...props}>
+            <InlineSVG url={url} />
+          </ButtonIconSVGStyle>
+        </Suspense>
+      </ButtonIconStyle>
+    );
+  },
+);
+
+export const ButtonIconStyle = styled(Button)`
   position: relative;
 
   overflow: hidden;
@@ -28,9 +37,7 @@ const ButtonIconStyle = styled(Button)`
     return props.isIconLeft ? 'padding-left' : 'padding-right';
   }}: 3.5rem;
 
-  border: 1px solid ${styles.colors.violet};
-
-  color: ${styles.colors.violet};
+  border: 1px solid ${styles.colors.black};
 
   background-color: transparent;
 
@@ -41,38 +48,36 @@ const ButtonIconStyle = styled(Button)`
   cursor: pointer;
 
   text-overflow: ellipsis;
+`;
 
-  &::after {
-    position: absolute;
+export const ButtonIconSVGStyle = styled.div`
+  position: absolute;
 
-    top: -1px;
+  top: -1px;
+  ${(props) => {
+    return props.isIconLeft ? 'left' : 'right';
+  }}: 0;
+
+  width: 3rem;
+  height: 3rem;
+
+  padding-top: 0.5rem;
+
+  ${(props) => {
+    return props.isIconLeft !== props.isIconFlipped
+      ? 'border-right'
+      : 'border-left';
+  }}: 1px solid ${styles.colors.black};
+
+  transform: rotate(
     ${(props) => {
-      return props.isIconLeft ? 'left' : 'right';
-    }}: 0;
+      return props.isIconFlipped ? '180' : '0';
+    }}deg
+  );
 
-    display: block;
-
-    width: 3rem;
-    height: 3rem;
-
-    ${(props) => {
-      return props.isIconLeft !== props.isIconFlipped
-        ? 'border-right'
-        : 'border-left';
-    }}: 1px solid ${styles.colors.violet};
-
-    content: '';
-
-    background-image: url(${arrow});
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 65%;
-
-    transform: rotate(
-      ${(props) => {
-        return props.isIconFlipped ? '180' : '0';
-      }}deg
-    );
+  svg {
+    width: 2rem;
+    height: 2rem;
   }
 `;
 
@@ -84,6 +89,7 @@ ButtonIcon.propTypes = {
   isIconLeft: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
+  url: PropTypes.string,
 };
 
 export default ButtonIcon;
