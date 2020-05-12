@@ -17,7 +17,7 @@ export default createGlobalStyle`
   }
 
   p {
-    margin: 0 auto;
+    margin: 0;
     padding: 0;
 
     + p {
@@ -31,6 +31,9 @@ export default createGlobalStyle`
   h4,
   h5,
   h6 {
+    margin: 0;
+    padding: 0;
+
     font-weight: ${styles.typography.weight};
     font-family: ${styles.typography.familyHeading}, sans-serif;
 
@@ -38,18 +41,12 @@ export default createGlobalStyle`
   }
 `;
 
-export const ParagraphStyle = styled.p`
-  margin: ${styles.layout.spacing};
-`;
+export const ParagraphStyle = styled.p``;
 
 export const HeadingPrimaryStyle = styled.h1`
-  margin: ${styles.layout.spacing};
-
   font-size: 3em;
 `;
 
 export const HeadingSecondaryStyle = styled.h2`
-  margin: ${styles.layout.spacing};
-
   font-size: 1.5em;
 `;
