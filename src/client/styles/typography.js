@@ -8,7 +8,7 @@ export default createGlobalStyle`
   }
 
   body {
-    min-width: 380px;
+    min-width: 360px;
 
     font-weight: ${styles.typography.weight};
     font-style: ${styles.typography.style};
