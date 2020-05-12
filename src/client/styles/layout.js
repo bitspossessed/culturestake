@@ -28,5 +28,8 @@ export const BackgroundAreaStyle = styled.div`
 `;
 
 export const ContainerStyle = styled.div`
+  max-width: 70rem;
+
+  margin: 0 auto;
   padding: ${styles.layout.spacing};
 `;
