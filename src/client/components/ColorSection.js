@@ -3,6 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
+import corner from '~/client/assets/images/corner.svg';
+import cornerYellow from '~/client/assets/images/corner-yellow.svg';
 import styles, {
   DEFAULT_SCHEME,
   SCHEME_ALTERNATE,
@@ -13,6 +15,7 @@ import {
   ParagraphStyle,
 } from '~/client/styles/typography';
 import { BackgroundAreaStyle } from '~/client/styles/layout';
+import { FramedBoxCornerStyle } from '~/client/components/FramedBox';
 
 const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
   const { isAlternateColor, isAlternateFontFace, isLargerFont } = useSelector(
@@ -71,6 +74,16 @@ export const ColorSectionStyle = styled.div`
       const { foreground, background } = styles.schemes[props.scheme];
       return props.isInverted ? foreground : background;
     }};
+  }
+
+  ${/* sc-selector */ FramedBoxCornerStyle} {
+    background-image: url(${(props) => {
+      if (props.scheme === SCHEME_ALTERNATE) {
+        return cornerYellow;
+      }
+
+      return corner;
+    }});
   }
 `;
 
