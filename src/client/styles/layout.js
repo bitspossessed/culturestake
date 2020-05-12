@@ -26,3 +26,7 @@ export const BackgroundAreaStyle = styled.div`
       : styles.schemes[DEFAULT_SCHEME].foreground;
   }};
 `;
+
+export const ContainerStyle = styled.div`
+  padding: ${styles.layout.spacing};
+`;

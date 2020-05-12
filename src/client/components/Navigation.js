@@ -165,6 +165,9 @@ const NavigationAccessibilityStyle = styled(BackgroundAreaStyle)`
   justify-content: center;
 
   h2 {
+    margin-top: ${styles.layout.spacing};
+    margin-bottom: ${styles.layout.spacing};
+
     color: ${styles.colors.violet};
   }
 `;

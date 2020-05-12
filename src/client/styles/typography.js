@@ -8,6 +8,8 @@ export default createGlobalStyle`
   }
 
   body {
+    min-width: 380px;
+
     font-weight: ${styles.typography.weight};
     font-style: ${styles.typography.style};
     font-size: ${styles.typography.size};
@@ -21,7 +23,7 @@ export default createGlobalStyle`
     padding: 0;
 
     + p {
-      margin-top: 1rem;
+      margin-top: 1.5rem;
     }
   }
 

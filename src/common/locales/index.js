@@ -90,7 +90,7 @@ const views = {
     notificationSuccess: 'You created the festival {title}.',
   },
   Homepage: {
-    title: 'Hello, Decal!',
+    buttonViewFestivals: 'View Festivals',
   },
   NotFound: {
     title: 'Not Found',
