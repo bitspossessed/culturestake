@@ -71,10 +71,17 @@ const ClipPathDefinitions = () => {
             <filter id={`filter-${schemeId}`} key={schemeId}>
               <feFlood
                 floodColor={styles.schemes[schemeId].foreground}
-                result="fill"
+                result="flood"
               />
 
-              <feBlend in="SourceGraphic" in2="fill" mode="lighten" />
+              <feComposite
+                in="flood"
+                in2="SourceAlpha"
+                operator="atop"
+                result="floodMasked"
+              />
+
+              <feBlend in="SourceGraphic" in2="floodMasked" mode="screen" />
             </filter>
           );
         })}

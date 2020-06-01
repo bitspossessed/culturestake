@@ -12,7 +12,7 @@ import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
 import star from '~/client/assets/images/star.svg';
 import { randomRange, randomFromArray } from '~/common/utils/random';
 
-import testImage from '../../../uploads/images/1585835290873455311979-threshold.jpg';
+import testImage from '../../../uploads/images/1591012122628144964733-threshold.png';
 
 const Sticker = ({
   clipPathId = Object.keys(CLIP_PATHS)[0],
