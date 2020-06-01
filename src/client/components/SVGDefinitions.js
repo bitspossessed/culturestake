@@ -27,19 +27,29 @@ export const ClipPathCorners = () => {
 export const ClipPathRectangle = () => {
   return (
     <rect
-      height={CLIP_PATH_DIMENSION / 2}
+      height={CLIP_PATH_DIMENSION / 1.5}
       rx="10"
-      width={CLIP_PATH_DIMENSION / 2}
-      x={CLIP_PATH_DIMENSION / 4}
-      y={CLIP_PATH_DIMENSION / 4}
+      width={CLIP_PATH_DIMENSION / 1.5}
+      x={CLIP_PATH_DIMENSION / 6}
+      y={CLIP_PATH_DIMENSION / 6}
+    />
+  );
+};
+
+export const ClipPathSnake = () => {
+  return (
+    <path
+      d="M1 1L200 1L200 159C132 124 93 111 85 120C72 133 129 184 117 197C109 206 70 193 1 159L1 1Z"
+      transform="translate(50, 50)"
     />
   );
 };
 
 export const CLIP_PATHS = {
-  'clip-path-ellipsis': ClipPathEllipsis,
   'clip-path-corners': ClipPathCorners,
+  'clip-path-ellipsis': ClipPathEllipsis,
   'clip-path-rectangle': ClipPathRectangle,
+  'clip-path-snake': ClipPathSnake,
 };
 
 export const CLIP_PATH_DIMENSION = 300;
