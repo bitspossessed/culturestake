@@ -3,10 +3,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Normalize } from 'styled-normalize';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ClipPathDefinitions from '~/client/components/ClipPathDefinitions';
 import GlobalStyle from '~/client/styles';
 import Notifications from '~/client/components/Notifications';
 import Routes from '~/client/routes';
+import SVGDefinitions from '~/client/components/SVGDefinitions';
 import ThreeInterface from '~/client/components/ThreeInterface';
 import { initializeApp } from '~/client/store/app/actions';
 
@@ -28,7 +28,7 @@ const App = () => {
     <Fragment>
       <Normalize />
       <GlobalStyle isAlternateColor={isAlternateColor} />
-      <ClipPathDefinitions />
+      <SVGDefinitions />
 
       <Router>
         <Notifications />

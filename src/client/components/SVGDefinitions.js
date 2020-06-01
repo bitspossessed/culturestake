@@ -44,8 +44,10 @@ export const CLIP_PATHS = {
 
 export const CLIP_PATH_DIMENSION = 300;
 
-const ClipPathDefinitions = () => {
+const SVGDefinitions = () => {
   return (
+    // We need this component in the DOM so other elements can refer to it, but
+    // keep it hidden from the user!
     <svg
       height={CLIP_PATH_DIMENSION}
       style={{
@@ -56,6 +58,7 @@ const ClipPathDefinitions = () => {
       width={CLIP_PATH_DIMENSION}
     >
       <defs>
+        {/* Clip path definitions to shape elements */}
         {Object.keys(CLIP_PATHS).map((clipPathId) => {
           const ClipPathDefinition = CLIP_PATHS[clipPathId];
 
@@ -66,6 +69,7 @@ const ClipPathDefinitions = () => {
           );
         })}
 
+        {/* Filter definitions to manipulate element colors */}
         {Object.keys(styles.schemes).map((schemeId) => {
           return (
             <filter id={`filter-${schemeId}`} key={schemeId}>
@@ -90,4 +94,4 @@ const ClipPathDefinitions = () => {
   );
 };
 
-export default ClipPathDefinitions;
+export default SVGDefinitions;

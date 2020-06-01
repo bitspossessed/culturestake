@@ -7,12 +7,10 @@ import { useLoader } from 'react-three-fiber';
 import {
   CLIP_PATHS,
   CLIP_PATH_DIMENSION,
-} from '~/client/components/ClipPathDefinitions';
+} from '~/client/components/SVGDefinitions';
 import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
 import star from '~/client/assets/images/star.svg';
 import { randomRange, randomFromArray } from '~/common/utils/random';
-
-import testImage from '../../../uploads/images/1591012122628144964733-threshold.png';
 
 const Sticker = ({
   clipPathId = Object.keys(CLIP_PATHS)[0],
@@ -28,11 +26,7 @@ const Sticker = ({
       width={CLIP_PATH_DIMENSION}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <StickerImage
-        clipPathId={clipPathId}
-        scheme={scheme}
-        src={props.src || testImage}
-      />
+      <StickerImage clipPathId={clipPathId} scheme={scheme} src={props.src} />
 
       <Suspense fallback={null}>
         <StickerParticles
@@ -151,7 +145,7 @@ Sticker.propTypes = {
   particleCount: PropTypes.number,
   particlePath: PropTypes.string,
   scheme: PropTypes.string,
-  src: PropTypes.string,
+  src: PropTypes.string.isRequired,
 };
 
 StickerImage.propTypes = {
