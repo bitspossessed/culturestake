@@ -37,15 +37,19 @@ const Sticker = ({
       </Suspense>
 
       {clipPathId === 'clip-path-corners' ? (
-        <rect
+        <g
           fill="transparent"
-          height={CLIP_PATH_DIMENSION / 1.5}
+          shapeRendering="crispEdges"
           stroke={styles.schemes[scheme].foreground}
-          strokeWidth="2"
-          width={CLIP_PATH_DIMENSION / 1.75}
-          x={CLIP_PATH_DIMENSION / 4.7}
-          y={CLIP_PATH_DIMENSION / 6}
-        />
+          strokeWidth="1.5"
+        >
+          <rect
+            height={CLIP_PATH_DIMENSION / 1.5}
+            width={CLIP_PATH_DIMENSION / 1.75}
+            x={CLIP_PATH_DIMENSION / 4.7}
+            y={CLIP_PATH_DIMENSION / 6}
+          />
+        </g>
       ) : null}
     </StickerStyle>
   );
@@ -105,6 +109,9 @@ const StickerParticles = ({ offset = 30, ...props }) => {
     } else if (side === 'left') {
       y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
     }
+
+    // Make elements smaller
+    xml.firstChild.setAttribute('transform', 'scale(0.7)');
 
     return (
       <g
