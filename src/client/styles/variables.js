@@ -7,6 +7,7 @@ const dimensions = {
 
 const monochromes = {
   black: '#000',
+  blue: '#023ba2',
   blueLight: '#3fc1ff',
   cyanLight: '#6afff4',
   gray: '#d5d5d5',
@@ -23,6 +24,7 @@ const monochromes = {
 
 const colors = {
   ...monochromes,
+  transparent: 'transparent',
 };
 
 // Typography
@@ -73,6 +75,7 @@ const layers = {
 
 export const SCHEME_ALTERNATE = 'alternate';
 export const SCHEME_BLACK = 'black';
+export const SCHEME_BLUE = 'blue';
 export const SCHEME_PINK = 'pink';
 export const SCHEME_VIOLET = 'violet';
 
@@ -82,18 +85,27 @@ const schemes = {
   [SCHEME_ALTERNATE]: {
     background: colors.black,
     foreground: colors.yellow,
+    backgroundSticker: colors.black,
   },
   [SCHEME_BLACK]: {
     background: colors.white,
     foreground: colors.black,
+    backgroundSticker: colors.white,
+  },
+  [SCHEME_BLUE]: {
+    background: colors.white,
+    foreground: colors.blue,
+    backgroundSticker: colors.lime,
   },
   [SCHEME_PINK]: {
     background: colors.white,
     foreground: colors.pink,
+    backgroundSticker: colors.white,
   },
   [SCHEME_VIOLET]: {
     background: colors.white,
     foreground: colors.violet,
+    backgroundSticker: colors.magentaPale,
   },
 };
 
