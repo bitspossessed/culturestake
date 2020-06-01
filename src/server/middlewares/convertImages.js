@@ -91,7 +91,7 @@ export default function convertImages(fields) {
                               width,
                               height,
                               channels: 3,
-                              background: { r: 255, g: 255, b: 255 },
+                              background: { r: 0, g: 0, b: 0 },
                             },
                           }).joinChannel(data),
                         );
