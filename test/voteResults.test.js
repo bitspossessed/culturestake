@@ -1,9 +1,10 @@
-import httpStatus from 'http-status';
 import request from 'supertest';
 
 import { initializeDatabase } from './helpers/database';
 import artworks from './data/artworks';
 import answers from './data/answers';
+import questions from './data/questions';
+
 import Answers from '~/server/models/answer';
 
 import app from '~/server';
@@ -33,7 +34,6 @@ describe('API', () => {
     await initializeDatabase();
     authRequest = await createSupertest();
     await authRequest.put('/api/artworks').send(artworks.davinci);
-    await authRequest.put('/api/answers').send(answers.artworkAnswer);
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
@@ -43,12 +43,21 @@ describe('API', () => {
     });
     question = getQuestionContract(logs[0].returnValues.questionAddress);
 
-    // add test answer
+    // add question to api
+    await authRequest.put('/api/questions').send({
+      ...questions['1'],
+      address: question.options.address,
+    });
+
+    // add answer to api
+    await authRequest.put('/api/answers').send(answers.artworkAnswer);
+
+    // use chainId from api to create answer on blockchain
     answer = await Answers.findByPk(1);
     const data = question.methods.initAnswer(answer.chainId).encodeABI();
     await adminTx(question, data);
 
-    // accounts for voting
+    // create accounts for voting
     sender = web3.eth.accounts.create();
     booth = web3.eth.accounts.privateKeyToAccount(
       `0x${process.env.BOOTH_PRIV_KEY}`,
@@ -72,7 +81,6 @@ describe('API', () => {
       voteTokens: [1],
     };
 
-    console.log(vote)
     await request(app)
       .post('/api/vote')
       .send(vote);
@@ -81,6 +89,7 @@ describe('API', () => {
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
     await authRequest.del('/api/answers/1');
+    await authRequest.del('/api/questions/1');
   });
 
   describe('GET /api/vote', () => {
@@ -88,8 +97,8 @@ describe('API', () => {
       await request(app)
         .get(`/api/vote/${question.options.address}`)
         .then((res) => {
-          console.log(res.body)
-        })
+          console.log(res.body.data)
+        });
     });
   });
 });

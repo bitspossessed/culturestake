@@ -8,9 +8,7 @@ export default function(queryBuilder, paramName) {
     const query = queryBuilder(req.params[paramName]);
     try {
       req.locals = req.locals || {};
-      console.log(query)
       const graphData = await requestGraph(query);
-      console.log(graphData)
       req.locals.graphData = graphData.answers;
       next();
     } catch (err) {

@@ -1,19 +1,28 @@
 import express from 'express';
 
-import { voteByQuestion } from '~/common/services/subgraph';
+import { answersByQuestion } from '~/common/services/subgraph';
 import voteController from '~/server/controllers/votes';
 import voteValidation from '~/server/validations/votes';
 import validate from '~/server/helpers/validate';
 import swapVoteIds from '~/server/middlewares/swapVoteIds';
 import validateVote from '~/server/middlewares/validateVote';
 import fetchFromGraph from '~/server/middlewares/fetchFromGraph';
+import Question from '~/server/models/question';
+import resourcesMiddleware from '~/server/middlewares/resources';
 
 const router = express.Router();
 
+const getQuestionResource = resourcesMiddleware({
+  model: Question,
+  modelKey: 'address',
+  paramsKey: 'question',
+});
+
 router.get(
-  '/:graphParam',
+  '/:question',
   validate(voteValidation.read),
-  fetchFromGraph(voteByQuestion, 'question'),
+  getQuestionResource,
+  fetchFromGraph(answersByQuestion, 'question'),
   voteController.read,
 );
 

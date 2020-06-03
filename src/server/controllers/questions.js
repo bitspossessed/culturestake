@@ -8,14 +8,6 @@ const options = {
   model: Question,
   fields: ['title', 'address', 'answers'],
   fieldsProtected: [],
-  include: [QuestionHasManyAnswers],
-  associations: [
-    {
-      association: QuestionHasManyAnswers,
-      destroyCascade: true,
-      fields: [...answerFields],
-    },
-  ],
 };
 
 function create(req, res, next) {
@@ -27,7 +19,17 @@ function readAll(req, res, next) {
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read({
+    ...options,
+    include: [QuestionHasManyAnswers],
+    associations: [
+      {
+        association: QuestionHasManyAnswers,
+        destroyCascade: true,
+        fields: [...answerFields],
+      },
+    ],
+  })(req, res, next);
 }
 
 async function update(req, res, next) {

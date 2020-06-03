@@ -16,28 +16,28 @@ describe('Answers', () => {
     await initializeDatabase();
     authRequest = await createSupertest();
     await authRequest.put('/api/artworks').send(artworks.davinci);
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer);
   });
 
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
     await authRequest.del('/api/answers/1');
+    await authRequest.del('/api/questions/1');
   });
 
   describe('PUT /api/questions', () => {
-    it('should succeeed creating a question an its resultant answers', async () => {
-      const body = {
-        ...questions['1'],
-        answers: [{ id: 1 }],
-      };
+    it('should succeeed creating a question', async () => {
       await authRequest
         .put('/api/questions')
-        .send(body)
+        .send(questions['1'])
         .expect(httpStatus.CREATED);
     });
   });
 
   describe('GET /api/questions', () => {
+    beforeAll(async () => {
+      await authRequest.put('/api/answers').send(answersData.artworkAnswer);
+    });
+
     it('should return the question and answer', async () => {
       const answer = await request(app).get('/api/answers/1');
       await request(app)

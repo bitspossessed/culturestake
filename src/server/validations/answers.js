@@ -9,6 +9,9 @@ export const defaultValidation = Joi.alternatives().try(
       .required(),
     artworkId: Joi.any().valid(null),
     propertyId: Joi.number().integer(),
+    questionId: Joi.number()
+      .integer()
+      .required(),
   }),
   Joi.object().keys({
     type: Joi.string()
@@ -16,6 +19,9 @@ export const defaultValidation = Joi.alternatives().try(
       .required(),
     artworkId: Joi.number().integer(),
     propertyId: Joi.any().valid(null),
+    questionId: Joi.number()
+      .integer()
+      .required(),
   }),
 );
 

@@ -8,9 +8,11 @@ export default async function requestGraph(query, variables) {
   return graphQLClient.request(query, variables);
 }
 
-export const voteByQuestion = question => `{
+export const answersByQuestion = question => `{
     answers
-    (where:
-      {question: "${question.toLowerCase()}"}
+    (
+      where: {question: "${question.toLowerCase()}"}
+      orderBy: votePower
+      orderDirection: desc
     ) { id voteTokens votePower votes active question { id } }
   }`;

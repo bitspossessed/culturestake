@@ -1,10 +1,12 @@
  {
   "artworkAnswer": {
     "type": "artwork",
-    "artworkId": 1
+    "artworkId": 1,
+    "questionId": 1
   },
   "propertyAnswer": {
     "type": "property",
-    "propertyId": 1
+    "propertyId": 1,
+    "questionId": 2
   }
 }
