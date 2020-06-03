@@ -26,16 +26,7 @@ async function create(req, res, next) {
 }
 
 async function read(req, res, next) {
-  const query = `{
-    answers
-    (where:
-      {question: "${req.params.question.toLowerCase()}"}
-    ) { id voteTokens votePower votes active question { id } }
-  }`;
   try {
-    req.locals = req.locals || {};
-    const graphData = await requestGraph(query);
-    req.locals.graphData = graphData.answers;
     baseController.readAll(options)(req, res, next);
   } catch (error) {
     return next(error);

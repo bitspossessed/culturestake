@@ -88,7 +88,7 @@ describe('API', () => {
       await request(app)
         .get(`/api/vote/${question.options.address}`)
         .then((res) => {
-          console.log(res.body.data.results)
+          console.log(res.body)
         })
     });
   });
