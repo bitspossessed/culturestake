@@ -3,7 +3,7 @@ import { Joi, Segments } from 'celebrate';
 import { web3Validators } from '~/server/helpers/validate';
 
 export const paramValidation = {
-  question: web3Validators.web3().address(),
+  questionAddress: web3Validators.web3().address(),
 };
 
 const defaultValidation = {

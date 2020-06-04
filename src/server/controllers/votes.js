@@ -9,19 +9,25 @@ import {
   filterResponseFields,
 } from '~/server/controllers';
 
-const customFilter = (req, data, options) => {
+const topThreeFilter = (req, data, options) => {
+  // combine graph data with postgres data, mapping chainId : id
   let combined = combineWithGraph(
     req.locals.graphData,
     data.answers,
     'chainId',
   );
+  // if the user is authenticated, pass them to the normal filterResponseFieldsAll
+  // since they can see everything
   if (req.locals && req.locals.user) {
     data.set('answers', combined, {
       raw: true,
     });
     return filterResponseFieldsAll(req, data, options);
   }
+  // find the top three votePowers
   const topThree = findTopThree(combined, 'votePower');
+  // for each answer, if it's in the top three votePowers, override the options and
+  // allow the protected fields to be seen
   combined = combined.map(datum => {
     if (topThree.includes(parseInt(datum['votePower']))) {
       const optionsOverride = {
@@ -57,37 +63,28 @@ const options = {
       destroyCascade: true,
     },
   ],
-  customFilter,
+  customFilter: topThreeFilter,
 };
 
 const combineWithGraph = (graphData, apiData, matchingKey) => {
-  const combined = graphData.map(i => {
-    const datum = apiData.find(d => d[matchingKey] === i.id);
-    if (datum) return Object.assign(datum.dataValues, i);
-    return i;
+  const combined = graphData.map(datum => {
+    const match = apiData.find(d => d[matchingKey] === datum.id);
+    if (match) {
+      return Object.assign(match.dataValues, datum);
+    }
+    return match;
   });
   return combined;
 };
 
 const findTopThree = (array, matchingKey) => {
-  let first = -1;
-  let second = -1;
-  let third = -1;
+  // returns top three values, regardless of duplicates in array
+  // unless there are less than three unique values, then returns all values
   let results = array.map(item => parseInt(item[matchingKey]));
   results = new Set(results);
-  results.forEach(item => {
-    if (item > first) {
-      third = second;
-      second = first;
-      first = item;
-    } else if (item > second) {
-      third = second;
-      second = item;
-    } else if (item > third) {
-      third = item;
-    }
-  });
-  return [first, second, third];
+  return results
+    .sort((itemA, itemB) => itemA - itemB)
+    .slice(0, results.length > 3 ? 3 : results.length);
 };
 
 async function create(req, res, next) {

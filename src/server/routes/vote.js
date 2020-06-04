@@ -19,10 +19,10 @@ const getQuestionResource = resourcesMiddleware({
 });
 
 router.get(
-  '/:question',
+  '/:questionAddress',
   validate(voteValidation.read),
   getQuestionResource,
-  fetchFromGraph(answersByQuestion, 'question'),
+  fetchFromGraph(answersByQuestion, 'questionAddress'),
   voteController.read,
 );
 
