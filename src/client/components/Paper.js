@@ -9,7 +9,7 @@ const Paper = (props) => {
   return <PaperStyle scheme={props.scheme}>{props.children}</PaperStyle>;
 };
 
-const PaperStyle = styled.div`
+export const PaperStyle = styled.div`
   position: relative;
 
   background-color: ${(props) => {
@@ -29,6 +29,8 @@ const PaperStyle = styled.div`
     right: 0;
     bottom: 0;
     left: 0;
+
+    z-index: ${styles.layers.Paper};
 
     display: block;
 
