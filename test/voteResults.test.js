@@ -1,9 +1,9 @@
 import request from 'supertest';
 
 import { initializeDatabase } from './helpers/database';
-import artworks from './data/artworks';
-import answers from './data/answers';
-import questions from './data/questions';
+import artworksData from './data/artworks';
+import answersData from './data/answers';
+import questionsData from './data/questions';
 
 import Answers from '~/server/models/answer';
 
@@ -14,10 +14,10 @@ import {
   getQuestionContract,
 } from '~/common/services/contracts';
 import createSupertest from './helpers/supertest';
-import { packBooth, packVote } from '~/common/services/encoding';
 import adminTx from './helpers/adminTx';
-
-const refreshNonce = () => Math.floor(Math.random() * Math.floor(1000));
+import initQuestion from './helpers/initQuestion';
+import initAnswer from './helpers/initAnswer';
+import buildVote from './helpers/buildVote';
 
 describe('API', () => {
   let authRequest;
@@ -26,31 +26,31 @@ describe('API', () => {
   let question;
   let sender;
   let booth;
-  let nonce;
   let vote;
 
   beforeAll(async () => {
     // add test data
     await initializeDatabase();
     authRequest = await createSupertest();
-    await authRequest.put('/api/artworks').send(artworks.davinci);
+    await authRequest.put('/api/artworks').send(artworksData.davinci);
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
-    const logs = await admin.getPastEvents('InitQuestion', {
-      fromBlock: 0,
-      toBlock: 'latest',
-    });
-    question = getQuestionContract(logs[0].returnValues.questionAddress);
+    const questionAddress = await initQuestion(
+      admin,
+      'festival',
+      'my question',
+    );
+    question = getQuestionContract(questionAddress);
 
     // add question to api
     await authRequest.put('/api/questions').send({
-      ...questions['1'],
+      ...questionsData['1'],
       address: question.options.address,
     });
 
     // add answer to api
-    await authRequest.put('/api/answers').send(answers.artworkAnswer);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer);
 
     // use chainId from api to create answer on blockchain
     answer = await Answers.findByPk(1);
@@ -62,24 +62,10 @@ describe('API', () => {
     booth = web3.eth.accounts.privateKeyToAccount(
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
-    nonce = refreshNonce();
 
-    vote = {
-      signature: web3.eth.accounts.sign(
-        packVote([answer.id], [1]),
-        sender.privateKey,
-      ).signature,
-      sender: sender.address,
-      booth: booth.address,
-      boothSignature: web3.eth.accounts.sign(
-        packBooth([answer.id], nonce),
-        booth.privateKey,
-      ).signature,
-      nonce,
-      question: question.options.address,
-      answers: [answer.id],
-      voteTokens: [1],
-    };
+    const answers = [answer.id];
+    const votes = [1];
+    vote = buildVote(booth, sender, question, answers, votes);
 
     await request(app)
       .post('/api/vote')
