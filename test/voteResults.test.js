@@ -5,8 +5,6 @@ import artworksData from './data/artworks';
 import answersData from './data/answers';
 import questionsData from './data/questions';
 
-import Answers from '~/server/models/answer';
-
 import app from '~/server';
 import web3 from '~/common/services/web3';
 import {
@@ -14,14 +12,13 @@ import {
   getQuestionContract,
 } from '~/common/services/contracts';
 import createSupertest from './helpers/supertest';
-import adminTx from './helpers/adminTx';
 import initQuestion from './helpers/initQuestion';
 import initAnswer from './helpers/initAnswer';
 import buildVote from './helpers/buildVote';
 
 describe('API', () => {
   let authRequest;
-  let answer;
+  let answers;
   let admin;
   let question;
   let sender;
@@ -33,6 +30,10 @@ describe('API', () => {
     await initializeDatabase();
     authRequest = await createSupertest();
     await authRequest.put('/api/artworks').send(artworksData.davinci);
+    await authRequest.put('/api/artworks').send(artworksData.rothko);
+    await authRequest.put('/api/artworks').send(artworksData.goya);
+    await authRequest.put('/api/artworks').send(artworksData.bourgeois);
+    await authRequest.put('/api/artworks').send(artworksData.martin);
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
@@ -49,13 +50,20 @@ describe('API', () => {
       address: question.options.address,
     });
 
-    // add answer to api
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer);
+    // add answers to api
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer2);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer3);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer4);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer5);
 
     // use chainId from api to create answer on blockchain
-    answer = await Answers.findByPk(1);
-    const data = question.methods.initAnswer(answer.chainId).encodeABI();
-    await adminTx(question, data);
+    const answer1 = await initAnswer(question, 1);
+    const answer2 = await initAnswer(question, 2);
+    const answer3 = await initAnswer(question, 3);
+    const answer4 = await initAnswer(question, 4);
+    const answer5 = await initAnswer(question, 5);
+    answers = [answer1, answer2, answer3, answer4, answer5];
 
     // create accounts for voting
     sender = web3.eth.accounts.create();
@@ -63,9 +71,9 @@ describe('API', () => {
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
 
-    const answers = [answer.id];
-    const votes = [1];
-    vote = buildVote(booth, sender, question, answers, votes);
+    const answerIds = answers.map(a => a.id);
+    const votes = [1, 2, 3, 4, 5];
+    vote = buildVote(booth, sender, question, answerIds, votes);
 
     await request(app)
       .post('/api/vote')
@@ -74,7 +82,15 @@ describe('API', () => {
 
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
+    await authRequest.del('/api/artworks/untitled-black-and-grey');
+    await authRequest.del('/api/artworks/saturn-devouring-his-son');
+    await authRequest.del('/api/artworks/spider');
+    await authRequest.del('/api/artworks/little-sister');
     await authRequest.del('/api/answers/1');
+    await authRequest.del('/api/answers/2');
+    await authRequest.del('/api/answers/3');
+    await authRequest.del('/api/answers/4');
+    await authRequest.del('/api/answers/5');
     await authRequest.del('/api/questions/1');
   });
 
