@@ -40,9 +40,6 @@ export function generateRandomString(len) {
 }
 
 export function isSignatureValid(payload, signature, claimed) {
-  let recovered = web3.eth.accounts.recover(payload, signature);
-  if (claimed === recovered) {
-    return true;
-  }
-  return false;
+  const recovered = web3.eth.accounts.recover(payload, signature);
+  return claimed === recovered;
 }

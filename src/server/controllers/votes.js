@@ -1,5 +1,3 @@
-import { respondWithSuccess } from '~/server/helpers/respond';
-import dispatch from '~/server/services/dispatcher';
 import Vote from '~/server/models/vote';
 import { QuestionHasManyAnswers } from '~/server/database/associations';
 import Question from '~/server/models/question';
@@ -8,6 +6,8 @@ import {
   filterResponseFieldsAll,
   filterResponseFields,
 } from '~/server/controllers';
+import dispatch from '~/server/services/dispatcher';
+import { respondWithSuccess } from '~/server/helpers/respond';
 
 const topThreeFilter = (req, data, options) => {
   // combine graph data with postgres data, mapping chainId : id
@@ -87,6 +87,7 @@ const findTopThree = (array, matchingKey) => {
 
 async function create(req, res, next) {
   const vote = req.body;
+
   try {
     await dispatch({
       ...vote,

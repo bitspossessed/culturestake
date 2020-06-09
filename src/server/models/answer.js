@@ -6,7 +6,7 @@ import Property from '~/server/models/property';
 import Artwork from '~/server/models/artwork';
 import { generateHashSecret } from '~/server/services/crypto';
 
-export const types = ['property', 'artwork'];
+export const ANSWER_TYPES = ['property', 'artwork'];
 
 const Answer = db.define('answer', {
   id: {
@@ -31,7 +31,7 @@ const Answer = db.define('answer', {
   },
   type: {
     type: DataTypes.ENUM,
-    values: types,
+    values: ANSWER_TYPES,
     allowNull: false,
   },
   artworkId: {
@@ -59,7 +59,7 @@ Answer.addHook('beforeCreate', async answer => {
     key = answer.artworkId;
   }
   const link = await model.findByPk(key);
-  const { hash, secret } = await generateHashSecret(link.title);
+  const { hash, secret } = generateHashSecret(link.title);
   answer.chainId = hash;
   answer.secret = secret;
 });
