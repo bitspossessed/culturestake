@@ -1,5 +1,5 @@
 import web3 from '~/common/services/web3';
-import { refreshNonce } from './helpers/utils';
+import { refreshNonce } from './utils';
 import { packBooth, packVote } from '~/common/services/encoding';
 
 export default (booth, sender, question, answers, votes) => {

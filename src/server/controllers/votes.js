@@ -81,17 +81,21 @@ const findTopThree = (array, matchingKey) => {
   // returns top three values, regardless of duplicates in array
   // unless there are less than three unique values, then returns all values
   let results = array.map(item => parseInt(item[matchingKey]));
-  results = new Set(results);
-  return results
-    .sort((itemA, itemB) => itemA - itemB)
-    .slice(0, results.length > 3 ? 3 : results.length);
+  results = Array.from(new Set(results));
+  return results.sort((itemA, itemB) => itemB - itemA).slice(0, 3);
 };
 
 async function create(req, res, next) {
   const vote = req.body;
   try {
-    await Vote.create(vote);
-    await dispatch(vote);
+    await dispatch({
+      ...vote,
+      answers: vote.answers.map(a => a.chainId)
+    });
+    await Vote.create({
+      ...vote,
+      answers: vote.answers.map(a => a.id)
+    });
     respondWithSuccess(res);
   } catch (error) {
     return next(error);

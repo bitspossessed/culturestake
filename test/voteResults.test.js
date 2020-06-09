@@ -1,4 +1,5 @@
 import request from 'supertest';
+import httpStatus from 'http-status';
 
 import { initializeDatabase } from './helpers/database';
 import artworksData from './data/artworks';
@@ -39,8 +40,8 @@ describe('API', () => {
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
     const questionAddress = await initQuestion(
       admin,
-      'festival',
       'my question',
+      'festival',
     );
     question = getQuestionContract(questionAddress);
 
@@ -95,12 +96,40 @@ describe('API', () => {
   });
 
   describe('GET /api/vote', () => {
-    it('should succesfully vote', async () => {
-      await request(app)
-        .get(`/api/vote/${question.options.address}`)
-        .then((res) => {
-          console.log(res.body.data)
-        });
+    it('should return answer info for top three answers for public request', async done => {
+      setTimeout(async () => {
+        await request(app)
+          .get(`/api/vote/${question.options.address}`)
+          .expect(httpStatus.OK)
+          .expect(response => {
+            const summary = response.body.data;
+            for (const a in summary.answers) {
+              if (a.votePower >= 3) {
+                expect(a.artworkId).toBeDefined();
+              } else {
+                expect(a.artworkId).toBeUndefined();
+              }
+            }
+          })
+          .then(done())
+          .catch(err => done(err));
+      }, 1000);
+    });
+
+    it('should return answer info for all answers for auth request', async done => {
+      setTimeout(async () => {
+        await authRequest
+          .get(`/api/vote/${question.options.address}`)
+          .expect(httpStatus.OK)
+          .expect(response => {
+            const summary = response.body.data;
+            for (const a in summary.answers) {
+              expect(a.artworkId).toBeDefined();
+            }
+          })
+          .then(done())
+          .catch(err => done(err));
+      }, 1000);
     });
   });
 });

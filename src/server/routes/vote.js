@@ -15,7 +15,7 @@ const router = express.Router();
 const getQuestionResource = resourcesMiddleware({
   model: Question,
   modelKey: 'address',
-  paramsKey: 'question',
+  paramsKey: 'questionAddress',
 });
 
 router.get(

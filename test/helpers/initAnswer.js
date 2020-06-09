@@ -1,4 +1,4 @@
-import adminTx from '.adminTx';
+import adminTx from './adminTx';
 import Answers from '~/server/models/answer';
 
 export default async (questionContract, answerPk) => {

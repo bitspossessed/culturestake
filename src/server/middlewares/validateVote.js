@@ -113,7 +113,6 @@ export default async function(req, res, next) {
     await checkQuestion(vote);
     await checkFestival(vote);
     await checkAnswers(vote, question);
-    vote.answers = vote.answers.map(a => a.chainId);
     next();
   } catch (err) {
     next(new APIError(httpStatus.BAD_REQUEST));
