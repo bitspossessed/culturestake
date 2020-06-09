@@ -1,8 +1,23 @@
- {
+{
   "davinci": {
     "title": "mona lisa"
   },
   "rothko": {
     "title": "untitled (black and grey)"
+  },
+  "goya": {
+    "title": "saturn devouring his son"
+  },
+  "bourgeois": {
+    "title": "spider"
+  },
+  "martin": {
+    "title": "little sister"
+  },
+  "duchamp": {
+    "title": "fountain"
+  },
+  "o'keefe": {
+    "title": "pelvis iv"
   }
 }

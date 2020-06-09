@@ -2,6 +2,10 @@ import { Joi, Segments } from 'celebrate';
 
 import { web3Validators } from '~/server/helpers/validate';
 
+export const paramValidation = {
+  questionAddress: web3Validators.web3().address(),
+};
+
 const defaultValidation = {
   signature: Joi.string()
     .max(132)
@@ -23,6 +27,11 @@ export default {
   create: {
     [Segments.BODY]: {
       ...defaultValidation,
+    },
+  },
+  read: {
+    [Segments.PARAMS]: {
+      ...paramValidation,
     },
   },
 };

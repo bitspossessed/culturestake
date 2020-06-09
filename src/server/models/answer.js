@@ -42,6 +42,10 @@ const Answer = db.define('answer', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  questionId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 });
 
 Answer.addHook('beforeCreate', async answer => {

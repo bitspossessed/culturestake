@@ -21,7 +21,7 @@ const DEFAULT_ORDER_KEY = 'id';
 
 // Filters the response accordingly to only expose certain
 // fields to the public API
-function filterResponseFields(req, data, options) {
+export function filterResponseFields(req, data, options) {
   // Filter association responses as well
   if (options.associations) {
     options.associations.forEach(
@@ -57,7 +57,7 @@ function filterResponseFields(req, data, options) {
   return filterResponse(data, fields);
 }
 
-function filterResponseFieldsAll(req, arr, options) {
+export function filterResponseFieldsAll(req, arr, options) {
   return arr.map(data => {
     return filterResponseFields(req, data, options);
   });
@@ -237,7 +237,11 @@ function read(options) {
         include: options.include,
       });
 
-      const test = filterResponseFields(req, instance, options);
+      const filter = options.customFilter
+        ? options.customFilter
+        : filterResponseFields;
+
+      const test = filter(req, instance, options);
 
       respondWithSuccess(res, test);
     } catch (error) {
