@@ -130,8 +130,9 @@ const PaperStampStyle = styled.div`
 
   ${/* sc-selector */ PaperStyle} {
     margin-bottom: 2px;
-    padding-top: 2rem;
-    padding-bottom: 2rem;
+    padding: 2rem;
+    padding-top: 4rem;
+    padding-bottom: 7rem;
   }
 `;
 

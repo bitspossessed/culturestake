@@ -40,6 +40,10 @@ export const PaperStyle = styled.div`
     background-size: 75px;
 
     mix-blend-mode: multiply;
+
+    user-select: none;
+
+    pointer-events: none;
   }
 `;
 
