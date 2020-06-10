@@ -8,7 +8,7 @@ import {
 
 // Get relative web URL of a file version (thumbnail etc.)
 export function getVersionUrl(versions, suffix, subfolder) {
-  const { path: versionPath } = versions.find(file => {
+  const { path: versionPath } = versions.find((file) => {
     return file.version.suffix === suffix;
   });
 
@@ -40,7 +40,7 @@ export async function copyToUploadsDir(filePath, fileName, subfolder) {
         filePath,
         toFilePath(fileName, subfolder),
         fs.constants.COPYFILE_EXCL,
-        err => {
+        (err) => {
           if (err) {
             reject(err);
           } else {
@@ -52,7 +52,7 @@ export async function copyToUploadsDir(filePath, fileName, subfolder) {
 
     // Remove original file in tmp folder
     await new Promise((resolve, reject) => {
-      fs.unlink(filePath, err => {
+      fs.unlink(filePath, (err) => {
         if (err) {
           reject(err);
         } else {
@@ -71,7 +71,7 @@ export async function copyToUploadsDir(filePath, fileName, subfolder) {
 export async function removeFile(fileUrl, subfolder) {
   try {
     return new Promise((resolve, reject) => {
-      fs.unlink(toFilePath(fileUrl, subfolder), error => {
+      fs.unlink(toFilePath(fileUrl, subfolder), (error) => {
         if (error) {
           reject(error);
         } else {

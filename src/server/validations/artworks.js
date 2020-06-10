@@ -3,9 +3,7 @@ import { Joi, Segments } from 'celebrate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
-  title: Joi.string()
-    .max(128)
-    .required(),
+  title: Joi.string().max(128).required(),
 };
 
 export default {

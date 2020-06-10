@@ -33,7 +33,7 @@ export const useField = (fieldName, { validate: schema, ...fieldOptions }) => {
       defaultValue: fieldOptions.defaultValue || '',
 
       // Validate via Joi schema and take ValidationError message from it
-      validate: value => {
+      validate: (value) => {
         const { error } = schema.validate(value, joiOptions);
 
         if (error) {
@@ -108,7 +108,7 @@ export const useNewForm = ({
     },
   } = useForm({
     requestId,
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(
         putRequest({
           id: requestId,
@@ -120,7 +120,7 @@ export const useNewForm = ({
         }),
       );
     },
-    onSuccess: resource => {
+    onSuccess: (resource) => {
       if (onSuccess) {
         onSuccess(resource);
       }
@@ -185,7 +185,7 @@ export const useEditForm = ({
   } = useForm({
     requestId,
     defaultValues: resource,
-    onSubmit: values => {
+    onSubmit: (values) => {
       dispatch(
         postRequest({
           id: requestId,

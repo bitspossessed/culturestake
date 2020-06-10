@@ -5,7 +5,7 @@ import logger from '~/server/helpers/logger';
 
 export default new Sequelize(config.url, {
   dialect: config.dialect,
-  logging: msg => {
+  logging: (msg) => {
     logger.debug(msg);
   },
 });

@@ -67,10 +67,7 @@ describe('API', () => {
 
   describe('POST /api/vote', () => {
     it('should succesfully vote', async () => {
-      await request(app)
-        .post('/api/vote')
-        .send(vote)
-        .expect(httpStatus.OK);
+      await request(app).post('/api/vote').send(vote).expect(httpStatus.OK);
     });
 
     it('should return bad request when answer id not in database', async () => {
@@ -118,9 +115,7 @@ describe('API', () => {
     });
 
     it('should return bad request when sender has already voted', async () => {
-      await request(app)
-        .post('/api/vote')
-        .send(vote);
+      await request(app).post('/api/vote').send(vote);
       vote.nonce = refreshNonce();
       await request(app)
         .post('/api/vote')
@@ -129,9 +124,7 @@ describe('API', () => {
     });
 
     it('should return bad request when nonce has already been used', async () => {
-      await request(app)
-        .post('/api/vote')
-        .send(vote);
+      await request(app).post('/api/vote').send(vote);
       sender = web3.eth.accounts.create();
       vote.signature = web3.eth.accounts.sign(
         packVote([answer.id], [1]),

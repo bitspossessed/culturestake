@@ -40,7 +40,7 @@ const Image = db.define('image', {
   },
 });
 
-Image.addHook('beforeDestroy', image => {
+Image.addHook('beforeDestroy', (image) => {
   return Promise.all([
     removeFile(image.url, IMAGES_SUBFOLDER),
     removeFile(image.urlThreshold, IMAGES_SUBFOLDER),

@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import requestGraph from '~/common/services/subgraph';
 import APIError from '~/server/helpers/errors';
 
-export default function(queryBuilder, paramName) {
+export default function (queryBuilder, paramName) {
   return async (req, res, next) => {
     const query = queryBuilder(req.params[paramName]);
     try {

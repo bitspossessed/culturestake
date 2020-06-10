@@ -1,5 +1,5 @@
 module.exports = {
-  up: queryInterface => {
+  up: (queryInterface) => {
     return queryInterface.bulkInsert('users', [
       {
         createdAt: new Date(),
@@ -12,7 +12,7 @@ module.exports = {
       },
     ]);
   },
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface.bulkDelete('users', [
       {
         email: ['admin@domain.com'],

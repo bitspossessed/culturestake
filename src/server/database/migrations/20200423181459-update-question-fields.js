@@ -6,7 +6,7 @@ module.exports = {
       type: Sequelize.STRING(42),
     });
   },
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface.removeColumn('questions', 'address');
   },
 };

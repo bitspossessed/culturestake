@@ -43,7 +43,7 @@ describe('Answers', () => {
       await request(app)
         .get('/api/questions/1')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { title, answers } = response.body.data;
           expect(title).toBe(questions['1'].title);
           expect(answers).toMatchObject([answer.body.data]);

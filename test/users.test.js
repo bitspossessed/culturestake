@@ -54,12 +54,12 @@ describe('Users', () => {
       createdUsers = [];
 
       await Promise.all(
-        [users.hanna, users.lisa, users.petra].map(async user => {
+        [users.hanna, users.lisa, users.petra].map(async (user) => {
           return await authRequest
             .put('/api/users')
             .send(user)
             .expect(httpStatus.CREATED)
-            .then(response => {
+            .then((response) => {
               createdUsers.push(response.body.data);
             });
         }),
@@ -68,7 +68,7 @@ describe('Users', () => {
 
     afterEach(async () => {
       await Promise.all(
-        [users.hanna, users.lisa, users.petra].map(async user => {
+        [users.hanna, users.lisa, users.petra].map(async (user) => {
           return await authRequest
             .del(`/api/users/${user.username}`)
             .expect(httpStatus.NO_CONTENT);
@@ -80,11 +80,11 @@ describe('Users', () => {
       await authRequest
         .get('/api/users')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { results } = response.body.data;
 
-          createdUsers.forEach(user => {
-            const foundUser = results.find(item => item.id === user.id);
+          createdUsers.forEach((user) => {
+            const foundUser = results.find((item) => item.id === user.id);
 
             expect(foundUser).toBeDefined();
             expect(foundUser.email).toBe(user.email);
@@ -121,7 +121,7 @@ describe('Users', () => {
       await authRequest
         .get('/api/users/peter')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { username, email } = response.body.data;
 
           expect(username).toBe('peter');

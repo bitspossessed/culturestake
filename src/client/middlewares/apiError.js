@@ -9,7 +9,7 @@ import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
 
-const apiErrorMiddleware = store => next => async action => {
+const apiErrorMiddleware = (store) => (next) => async (action) => {
   if (action.type !== ActionTypes.API_FAILURE) {
     return next(action);
   }

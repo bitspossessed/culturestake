@@ -30,21 +30,21 @@ const checkHasVoted = async (vote, question) => {
   }
 };
 
-const checkQuestion = async vote => {
+const checkQuestion = async (vote) => {
   const active = await admin.methods.questions(vote.question).call();
   if (!active) {
     throw Error('inactive question');
   }
 };
 
-const checkFestival = async vote => {
+const checkFestival = async (vote) => {
   const valid = await admin.methods.isValidFestival(vote.festival).call();
   if (!valid) {
     throw Error('invalid festival');
   }
 };
 
-const checkNonce = async vote => {
+const checkNonce = async (vote) => {
   const isValidNonce = await admin.methods
     .isValidVotingNonce(vote.booth, vote.nonce)
     .call();
@@ -53,11 +53,11 @@ const checkNonce = async vote => {
   }
 };
 
-const checkSigs = async vote => {
+const checkSigs = async (vote) => {
   if (
     !isSignatureValid(
       packVote(
-        vote.answers.map(a => a.id),
+        vote.answers.map((a) => a.id),
         vote.voteTokens,
       ),
       vote.signature,
@@ -65,7 +65,7 @@ const checkSigs = async vote => {
     ) ||
     !isSignatureValid(
       packBooth(
-        vote.answers.map(a => a.id),
+        vote.answers.map((a) => a.id),
         vote.nonce,
       ),
       vote.boothSignature,
@@ -84,7 +84,7 @@ const checkAnswers = async (vote, question) => {
   const maxVoteTokens = await question.methods.maxVoteTokens().call();
   let sum = 0;
   await Promise.all(
-    vote.answers.map(async answer => {
+    vote.answers.map(async (answer) => {
       if (seen[answer.id]) {
         throw Error('repeated answer');
       }
@@ -102,7 +102,7 @@ const checkAnswers = async (vote, question) => {
   }
 };
 
-export default async function(req, res, next) {
+export default async function (req, res, next) {
   const vote = req.body;
   const question = getQuestionContract(vote.question);
   try {

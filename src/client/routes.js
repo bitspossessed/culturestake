@@ -17,7 +17,7 @@ import NotFound from '~/client/views/NotFound';
 import Vote from '~/client/views/Vote';
 
 const SessionContainer = ({ component: Component, isTokenRequired = null }) => {
-  const app = useSelector(state => state.app);
+  const app = useSelector((state) => state.app);
 
   // Do not do anything yet when not ready
   if (!app.isReady) {

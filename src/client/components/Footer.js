@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const Footer = props => {
+const Footer = (props) => {
   return <footer>{props.children}</footer>;
 };
 

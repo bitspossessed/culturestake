@@ -13,7 +13,7 @@ export const useResource = (path, { onError, onSuccess }) => {
     isError,
     isLoading,
     isSuccess,
-  } = useSelector(state => state.resources);
+  } = useSelector((state) => state.resources);
 
   // Convert arrays to strings for easier comparison
   const pathStr = path.join('');

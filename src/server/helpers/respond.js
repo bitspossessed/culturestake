@@ -37,7 +37,7 @@ export function filterResponse(response, filterSchema) {
 }
 
 export function filterResponseAll(arr, schema) {
-  return arr.map(data => {
+  return arr.map((data) => {
     return filterResponse(data, schema);
   });
 }

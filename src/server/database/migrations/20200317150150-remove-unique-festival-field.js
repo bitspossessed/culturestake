@@ -1,5 +1,5 @@
 module.exports = {
-  up: queryInterface => {
+  up: (queryInterface) => {
     return queryInterface.removeConstraint(
       'festivals',
       'festivals_description_key',
@@ -8,7 +8,7 @@ module.exports = {
       },
     );
   },
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface.addConstraint('festivals', ['description'], {
       type: 'unique',
       name: 'festivals_description_key',

@@ -25,7 +25,7 @@ module.exports = {
       );
   },
 
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface
       .removeColumn('answers', 'artworkId')
       .then(queryInterface.removeColumn('answers', 'propertyId'));

@@ -18,7 +18,7 @@ export default function errorsMiddleware(err, req, res, next) {
 
     if (joi.details) {
       err.data = {
-        fields: joi.details.map(detail => {
+        fields: joi.details.map((detail) => {
           return {
             path: detail.path,
             message: detail.message,

@@ -57,7 +57,7 @@ async function uploadImages(req, res, next) {
     }
 
     // Convert image data to database model format
-    const fileEntries = images.map(versions => {
+    const fileEntries = images.map((versions) => {
       const fileName = versions[0].originalFileName;
       const fileType = versions[0].fileType;
 
@@ -101,7 +101,7 @@ async function uploadDocuments(req, res, next) {
     }
 
     // Convert image data to database model format
-    const fileEntries = files.map(file => {
+    const fileEntries = files.map((file) => {
       return {
         fileName: file.filename,
         fileType: mime.getExtension(file.mimetype),

@@ -47,7 +47,7 @@ const AdminUsersEditForm = () => {
         }),
       );
     },
-    onDeleteSuccess: user => {
+    onDeleteSuccess: (user) => {
       dispatch(
         notify({
           text: translate('AdminUsersEdit.notificationDestroySuccess', {
@@ -56,7 +56,7 @@ const AdminUsersEditForm = () => {
         }),
       );
     },
-    onUpdateSuccess: user => {
+    onUpdateSuccess: (user) => {
       dispatch(
         notify({
           text: translate('AdminUsersEdit.notificationSuccess', {

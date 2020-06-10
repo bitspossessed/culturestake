@@ -47,19 +47,19 @@ const Vote = db.define('vote', {
   },
   answers: {
     type: DataTypes.STRING,
-    get: function() {
+    get: function () {
       return JSON.parse(this.getDataValue('answers'));
     },
-    set: function(val) {
+    set: function (val) {
       return this.setDataValue('answers', JSON.stringify(val));
     },
   },
   voteTokens: {
     type: DataTypes.STRING,
-    get: function() {
+    get: function () {
       return JSON.parse(this.getDataValue('voteTokens'));
     },
-    set: function(val) {
+    set: function (val) {
       return this.setDataValue('voteTokens', JSON.stringify(val));
     },
   },

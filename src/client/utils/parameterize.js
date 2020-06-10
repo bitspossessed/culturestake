@@ -17,7 +17,7 @@ export default function parameterize(obj) {
           }
 
           const merged = obj[key]
-            .map(item => {
+            .map((item) => {
               return `${encode(key)}[]=${encode(item)}`;
             })
             .join('&');

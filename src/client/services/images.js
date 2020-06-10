@@ -20,7 +20,7 @@ export async function imageToBase64(file) {
 
 export async function imagesToBase64(files) {
   return Promise.all(
-    [...files].map(file => {
+    [...files].map((file) => {
       return imageToBase64(file);
     }),
   );

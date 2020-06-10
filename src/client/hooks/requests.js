@@ -16,7 +16,7 @@ export const useRequest = (requestId, { onError, onSuccess }) => {
     isSuccess = false,
     error,
     response,
-  } = useSelector(state => {
+  } = useSelector((state) => {
     return state.api.requests[requestId] || {};
   });
 

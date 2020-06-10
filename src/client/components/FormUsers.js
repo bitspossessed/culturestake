@@ -8,21 +8,14 @@ import InputField from '~/client/components/InputField';
 
 const FormUsers = ({ isPasswordHidden = false }) => {
   const schema = {
-    username: Joi.string()
-      .alphanum()
-      .min(3)
-      .max(24)
-      .required(),
+    username: Joi.string().alphanum().min(3).max(24).required(),
     email: Joi.string()
       .email({ tlds: { allow: false } })
       .required(),
   };
 
   if (!isPasswordHidden) {
-    schema.password = Joi.string()
-      .min(8)
-      .max(128)
-      .required();
+    schema.password = Joi.string().min(8).max(128).required();
   }
 
   return (

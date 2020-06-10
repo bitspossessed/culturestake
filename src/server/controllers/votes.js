@@ -28,7 +28,7 @@ const topThreeFilter = (req, data, options) => {
   const topThree = findTopThree(combined, 'votePower');
   // for each answer, if it's in the top three votePowers, override the options and
   // allow the protected fields to be seen
-  combined = combined.map(datum => {
+  combined = combined.map((datum) => {
     if (topThree.includes(parseInt(datum['votePower']))) {
       const optionsOverride = {
         ...options,
@@ -67,8 +67,8 @@ const options = {
 };
 
 const combineWithGraph = (graphData, apiData, matchingKey) => {
-  const combined = graphData.map(datum => {
-    const match = apiData.find(d => d[matchingKey] === datum.id);
+  const combined = graphData.map((datum) => {
+    const match = apiData.find((d) => d[matchingKey] === datum.id);
     if (match) {
       return Object.assign(match.dataValues, datum);
     }
@@ -80,7 +80,7 @@ const combineWithGraph = (graphData, apiData, matchingKey) => {
 const findTopThree = (array, matchingKey) => {
   // returns top three values, regardless of duplicates in array
   // unless there are less than three unique values, then returns all values
-  let results = array.map(item => parseInt(item[matchingKey]));
+  let results = array.map((item) => parseInt(item[matchingKey]));
   results = Array.from(new Set(results));
   return results.sort((itemA, itemB) => itemB - itemA).slice(0, 3);
 };
@@ -91,11 +91,11 @@ async function create(req, res, next) {
   try {
     await dispatch({
       ...vote,
-      answers: vote.answers.map(a => a.chainId)
+      answers: vote.answers.map((a) => a.chainId),
     });
     await Vote.create({
       ...vote,
-      answers: vote.answers.map(a => a.id)
+      answers: vote.answers.map((a) => a.id),
     });
     respondWithSuccess(res);
   } catch (error) {

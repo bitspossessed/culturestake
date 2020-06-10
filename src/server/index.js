@@ -51,7 +51,7 @@ db.authenticate()
 
 // Check blockchain connection
 checkConnection()
-  .then(num => {
+  .then((num) => {
     logger.info(`Blockchain connection established, block height is ${num}`);
   })
   .catch(() => {
@@ -83,7 +83,7 @@ app.use(passport.initialize());
 app.use(
   morgan('dev', {
     stream: {
-      write: message => logger.verbose(message.replace('\n', '')),
+      write: (message) => logger.verbose(message.replace('\n', '')),
     },
   }),
 );

@@ -31,7 +31,7 @@ const Document = db.define('document', {
   },
 });
 
-Document.addHook('beforeDestroy', file => {
+Document.addHook('beforeDestroy', (file) => {
   return removeFile(file.url, DOCUMENTS_SUBFOLDER);
 });
 

@@ -13,9 +13,7 @@ import InputTextareaField from '~/client/components/InputTextareaField';
 
 const FormFestivals = () => {
   const schema = {
-    title: Joi.string()
-      .max(128)
-      .required(),
+    title: Joi.string().max(128).required(),
     description: Joi.string().required(),
     images: imagesValidation.max(10),
     documents: documentsValidation.max(1),

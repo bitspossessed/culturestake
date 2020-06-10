@@ -43,7 +43,7 @@ export default function resizeImages(fields) {
           return acc;
         }
 
-        field.versions.forEach(version => {
+        field.versions.forEach((version) => {
           const {
             quality = DEFAULT_QUALITY,
             width = DEFAULT_WIDTH,
@@ -78,7 +78,7 @@ export default function resizeImages(fields) {
               operation
                 .toFormat('jpg')
                 .jpeg({ quality })
-                .toFile(newPath, error => {
+                .toFile(newPath, (error) => {
                   if (error) {
                     reject(error);
                   } else {

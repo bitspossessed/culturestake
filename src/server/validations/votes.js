@@ -7,19 +7,13 @@ export const paramValidation = {
 };
 
 const defaultValidation = {
-  signature: Joi.string()
-    .max(132)
-    .required(),
+  signature: Joi.string().max(132).required(),
   sender: web3Validators.web3().address(),
   booth: web3Validators.web3().address(),
-  boothSignature: Joi.string()
-    .max(132)
-    .required(),
+  boothSignature: Joi.string().max(132).required(),
   nonce: Joi.number().required(),
   question: web3Validators.web3().address(),
-  answers: Joi.array()
-    .items(Joi.number().positive())
-    .required(),
+  answers: Joi.array().items(Joi.number().positive()).required(),
   voteTokens: Joi.array().items(Joi.number().positive()),
 };
 

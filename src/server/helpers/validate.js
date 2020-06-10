@@ -6,9 +6,7 @@ const fileBase = {
   id: Joi.number(),
   fileName: Joi.string().required(),
   fileType: Joi.string().required(),
-  url: Joi.string()
-    .uri()
-    .required(),
+  url: Joi.string().uri().required(),
 };
 
 export const fileValidator = Joi.array().items(
@@ -20,19 +18,13 @@ export const fileValidator = Joi.array().items(
 export const imageValidator = Joi.array().items(
   Joi.object({
     ...fileBase,
-    urlThreshold: Joi.string()
-      .uri()
-      .required(),
-    urlThresholdThumb: Joi.string()
-      .uri()
-      .required(),
-    urlThumb: Joi.string()
-      .uri()
-      .required(),
+    urlThreshold: Joi.string().uri().required(),
+    urlThresholdThumb: Joi.string().uri().required(),
+    urlThumb: Joi.string().uri().required(),
   }),
 );
 
-export const web3Validators = Joi.extend(joi => {
+export const web3Validators = Joi.extend((joi) => {
   return {
     type: 'web3',
     base: joi.string(),

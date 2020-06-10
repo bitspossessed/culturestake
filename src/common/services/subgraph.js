@@ -8,7 +8,7 @@ export default async function requestGraph(query, variables) {
   return graphQLClient.request(query, variables);
 }
 
-export const answersByQuestion = question => `{
+export const answersByQuestion = (question) => `{
     answers
     (
       where: {question: "${question.toLowerCase()}"}

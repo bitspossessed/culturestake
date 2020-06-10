@@ -3,22 +3,13 @@ import { Joi, Segments } from 'celebrate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const usernameValidation = {
-  username: Joi.string()
-    .alphanum()
-    .min(3)
-    .max(24)
-    .required(),
+  username: Joi.string().alphanum().min(3).max(24).required(),
 };
 
 const defaultValidation = {
   ...usernameValidation,
-  email: Joi.string()
-    .email()
-    .required(),
-  password: Joi.string()
-    .min(8)
-    .max(128)
-    .required(),
+  email: Joi.string().email().required(),
+  password: Joi.string().min(8).max(128).required(),
 };
 
 export default {
@@ -49,10 +40,7 @@ export default {
       ...slugValidation,
     },
     [Segments.BODY]: {
-      username: Joi.string()
-        .alphanum()
-        .min(3)
-        .max(24),
+      username: Joi.string().alphanum().min(3).max(24),
       email: Joi.string().email(),
     },
   },

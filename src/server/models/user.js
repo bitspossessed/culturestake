@@ -41,13 +41,13 @@ const User = db.define('user', {
   },
 });
 
-User.addHook('beforeValidate', async user => {
+User.addHook('beforeValidate', async (user) => {
   if (user.password) {
     user.password = await hashPassword(user.password);
   }
 });
 
-User.prototype.comparePasswords = async function(password) {
+User.prototype.comparePasswords = async function (password) {
   return await comparePasswords(password, this.password);
 };
 

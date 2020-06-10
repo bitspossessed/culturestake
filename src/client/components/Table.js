@@ -56,7 +56,7 @@ const Table = ({
   const [orderDirection, setOrderDirection] = useState(initialOrderDirection);
   const [orderKey, setOrderKey] = useState(initialOrderKey);
 
-  const tables = useSelector(state => state.tables);
+  const tables = useSelector((state) => state.tables);
 
   const pathString = path.join('/');
   const colSpan = DEFAULT_HEADERS.length + columns.length + 1;
@@ -105,11 +105,11 @@ const Table = ({
     }
   };
 
-  const onSelectRow = event => {
+  const onSelectRow = (event) => {
     onSelect(event);
   };
 
-  const onSelectPage = nextPageIndex => {
+  const onSelectPage = (nextPageIndex) => {
     history.push(
       `${location.pathname}?${PARAM_PAGE_INDEX}=${nextPageIndex + 1}`,
     );
@@ -250,7 +250,7 @@ export const TableBody = ({
   return (
     <tbody>
       {results.map((item, index) => {
-        const onSelectAction = type => {
+        const onSelectAction = (type) => {
           onSelect({
             type,
             item,
@@ -289,14 +289,14 @@ export const TableBodyMessage = ({ children, colSpan }) => {
 };
 
 export const TableBodyItems = ({ columns, values }) => {
-  return DEFAULT_HEADERS.concat(columns).map(column => {
+  return DEFAULT_HEADERS.concat(columns).map((column) => {
     return <td key={`td-${values.id}-${column.key}`}>{values[column.key]}</td>;
   });
 };
 
 export const TableActions = ({ actions, onSelect }) => {
   return actions.map((action, index) => {
-    const onSelectAction = event => {
+    const onSelectAction = (event) => {
       event.stopPropagation();
       onSelect(action.key);
     };

@@ -56,7 +56,7 @@ const InputUploadField = ({
         }),
       );
     },
-    onSuccess: uploadedFiles => {
+    onSuccess: (uploadedFiles) => {
       // Update new files for internal state as well
       setFilesData(
         previousFilesData.concat(
@@ -99,20 +99,20 @@ const InputUploadField = ({
     setFilesData(value);
   }, [value]);
 
-  const onClickUpload = event => {
+  const onClickUpload = (event) => {
     event.preventDefault();
     fileInputElem.current.click();
   };
 
-  const onRemove = fileId => {
-    setValue(value.filter(file => file.id !== fileId));
+  const onRemove = (fileId) => {
+    setValue(value.filter((file) => file.id !== fileId));
 
-    setFilesData(filesData.filter(file => file.id !== fileId));
-    setPendingFilesData(filesData.filter(file => file.id !== fileId));
-    setPreviousFilesData(filesData.filter(file => file.id !== fileId));
+    setFilesData(filesData.filter((file) => file.id !== fileId));
+    setPendingFilesData(filesData.filter((file) => file.id !== fileId));
+    setPreviousFilesData(filesData.filter((file) => file.id !== fileId));
   };
 
-  const onChangeFiles = async event => {
+  const onChangeFiles = async (event) => {
     event.persist();
 
     const { files } = event.target;
@@ -184,7 +184,7 @@ const InputUploadField = ({
   };
 
   const fileTypesStr = fileTypes
-    .map(ext => {
+    .map((ext) => {
       return mime.getType(ext);
     })
     .join(',');

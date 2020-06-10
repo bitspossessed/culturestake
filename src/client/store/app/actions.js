@@ -9,7 +9,7 @@ import { postRequest } from '~/client/store/api/actions';
 export const TOKEN_REQUEST_ID = generateRequestId();
 
 export function initializeApp() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch(initializeToken());
 
     dispatch({

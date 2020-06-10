@@ -4,17 +4,11 @@ import web3 from '~/common/services/web3';
 
 const filesBaseValidation = {
   id: Joi.number().required(),
-  createdAt: Joi.date()
-    .iso()
-    .required(),
-  updatedAt: Joi.date()
-    .iso()
-    .required(),
+  createdAt: Joi.date().iso().required(),
+  updatedAt: Joi.date().iso().required(),
   fileName: Joi.string().required(),
   fileType: Joi.string().required(),
-  url: Joi.string()
-    .uri({ relativeOnly: true })
-    .required(),
+  url: Joi.string().uri({ relativeOnly: true }).required(),
 };
 
 export const documentsValidation = Joi.array().items(
@@ -26,19 +20,13 @@ export const documentsValidation = Joi.array().items(
 export const imagesValidation = Joi.array().items(
   Joi.object({
     ...filesBaseValidation,
-    urlThreshold: Joi.string()
-      .uri({ relativeOnly: true })
-      .required(),
-    urlThresholdThumb: Joi.string()
-      .uri({ relativeOnly: true })
-      .required(),
-    urlThumb: Joi.string()
-      .uri({ relativeOnly: true })
-      .required(),
+    urlThreshold: Joi.string().uri({ relativeOnly: true }).required(),
+    urlThresholdThumb: Joi.string().uri({ relativeOnly: true }).required(),
+    urlThumb: Joi.string().uri({ relativeOnly: true }).required(),
   }),
 );
 
-export const web3Validators = Joi.extend(joi => {
+export const web3Validators = Joi.extend((joi) => {
   return {
     type: 'web3',
     base: joi.string(),
