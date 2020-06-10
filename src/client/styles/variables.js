@@ -67,8 +67,9 @@ const media = {
 // Z-index
 
 const layers = {
-  Paper: 2000,
-  PaperTicket: 3000,
+  Paper: 3000,
+  PaperTicket: 3200,
+  PaperStamp: 3300,
   Navigation: 9000,
   ThreeInterfaceElement: 10000,
 };

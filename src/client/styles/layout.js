@@ -33,3 +33,11 @@ export const ContainerStyle = styled.div`
   margin: 0 auto;
   padding: ${styles.layout.spacing};
 `;
+
+export const PaperContainerStyle = styled.div`
+  overflow: hidden;
+
+  max-width: 70rem;
+
+  margin: 0 auto;
+`;
