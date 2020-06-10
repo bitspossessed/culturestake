@@ -21,6 +21,14 @@ const Question = db.define('question', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  festivalId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
+  artworkId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Question, {

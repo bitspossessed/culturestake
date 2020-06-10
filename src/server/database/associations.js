@@ -23,6 +23,18 @@ export const AnswerBelongsToProperty = Answer.belongsTo(Property, {
   allowNull: true,
 });
 
+export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
+  allowNull: true,
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE',
+});
+
+export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
+  allowNull: true,
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE',
+});
+
 export const AnswerBelongsToQuestion = Answer.belongsTo(Question);
 
 export const FestivalHasManyImages = Festival.hasMany(Image, {
@@ -39,6 +51,18 @@ export const FestivalHasManyDocuments = Festival.hasMany(Document, {
     attachableType: 'document',
   },
   as: 'documents',
+});
+
+export const FestivalHasManyQuestions = Festival.hasMany(Question, {
+  ...attachableMixin,
+  foreignKey: 'festivalId',
+  as: 'questions',
+});
+
+export const ArtworkHasManyQuestions = Artwork.hasMany(Question, {
+  ...attachableMixin,
+  foreignKey: 'artworkId',
+  as: 'questions',
 });
 
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {
