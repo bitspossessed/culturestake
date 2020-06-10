@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import Paper, { PaperStyle } from '~/client/components/Paper';
 import styles from '~/client/styles/variables';
 
-const DOTS_COUNT = 12;
-
 const PaperTicket = (props) => {
   return (
     <PaperTicketStyle>
@@ -19,24 +17,26 @@ const PaperTicket = (props) => {
 
 const PaperTicketLine = (props) => {
   return (
-    <PaperTicketLineStyle position={props.position} scheme={props.scheme}>
+    <PaperTicketLineStyle position={props.position}>
       <PaperTicketDotsStyle position="right">
-        <PaperTicketLineDots />
+        <PaperTicketLineDots scheme={props.scheme} />
       </PaperTicketDotsStyle>
 
-      <PaperTicketLargeDotStyle />
+      <PaperTicketLargeDotStyle scheme={props.scheme} />
 
       <PaperTicketDotsStyle position="left">
-        <PaperTicketLineDots />
+        <PaperTicketLineDots scheme={props.scheme} />
       </PaperTicketDotsStyle>
     </PaperTicketLineStyle>
   );
 };
 
-const PaperTicketLineDots = () => {
-  return new Array(DOTS_COUNT)
+const PaperTicketLineDots = (props) => {
+  return new Array(12)
     .fill(0)
-    .map((item, index) => <PaperTicketDotsItemStyle key={index} />);
+    .map((item, index) => (
+      <PaperTicketDotsItemStyle key={index} scheme={props.scheme} />
+    ));
 };
 
 const PaperTicketStyle = styled.div`
@@ -58,17 +58,6 @@ const PaperTicketLineStyle = styled.div`
   left: 0;
 
   z-index: ${styles.layers.PaperTicket};
-
-  ${/* sc-selector */ PaperTicketLargeDotStyle},
-  ${/* sc-selector */ PaperTicketDotsItemStyle} {
-    background-color: ${(props) => {
-      if (props.scheme) {
-        return styles.schemes[props.scheme].backgroundSticker;
-      }
-
-      return styles.colors.white;
-    }};
-  }
 `;
 
 const PaperTicketLargeDotStyle = styled.div`
@@ -85,6 +74,14 @@ const PaperTicketLargeDotStyle = styled.div`
   border-radius: 50%;
 
   content: '';
+
+  background-color: ${(props) => {
+    if (props.scheme) {
+      return styles.schemes[props.scheme].backgroundSticker;
+    }
+
+    return styles.colors.white;
+  }};
 
   transform: translate3d(-50%, 0, 0);
 
@@ -121,6 +118,14 @@ const PaperTicketDotsItemStyle = styled.div`
   margin-left: 0.75rem;
 
   border-radius: 50%;
+
+  background-color: ${(props) => {
+    if (props.scheme) {
+      return styles.schemes[props.scheme].backgroundSticker;
+    }
+
+    return styles.colors.white;
+  }};
 
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 
