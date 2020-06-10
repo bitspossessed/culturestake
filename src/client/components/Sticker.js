@@ -10,11 +10,11 @@ import {
 } from '~/client/components/SVGDefinitions';
 import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
 import star from '~/client/assets/images/star.svg';
-import { randomRange, randomFromArray } from '~/common/utils/random';
 
+// @TODO: Extract properties from sticker generator codes
 const Sticker = ({
   clipPathId = Object.keys(CLIP_PATHS)[0],
-  particleCount = 5,
+  particlePositions = [],
   particlePath = star,
   scheme = DEFAULT_SCHEME,
   ...props
@@ -30,8 +30,8 @@ const Sticker = ({
 
       <Suspense fallback={null}>
         <StickerParticles
-          count={particleCount}
           path={particlePath}
+          positions={particlePositions}
           scheme={scheme}
         />
       </Suspense>
@@ -83,33 +83,10 @@ const StickerImage = ({ offset = 30, ...props }) => {
   );
 };
 
-const StickerParticles = ({ offset = 30, ...props }) => {
+const StickerParticles = (props) => {
   const { xml } = useLoader(SVGLoader, props.path);
 
-  return new Array(props.count).fill(0).map((item, index) => {
-    const side = randomFromArray(['top', 'right', 'bottom', 'left']);
-
-    let x = randomRange(offset, offset * 2);
-    let y = randomRange(offset, offset * 2);
-
-    if (side === 'top') {
-      x = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-    } else if (side === 'right') {
-      x = randomRange(
-        CLIP_PATH_DIMENSION - offset * 2,
-        CLIP_PATH_DIMENSION - offset,
-      );
-      y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-    } else if (side === 'bottom') {
-      x = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-      y = randomRange(
-        CLIP_PATH_DIMENSION - offset * 2,
-        CLIP_PATH_DIMENSION - offset,
-      );
-    } else if (side === 'left') {
-      y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-    }
-
+  return props.positions.map(({ x, y }, index) => {
     // Make elements smaller
     xml.firstChild.setAttribute('transform', 'scale(0.7)');
 
@@ -122,6 +99,47 @@ const StickerParticles = ({ offset = 30, ...props }) => {
     );
   });
 };
+
+// @TODO: Move this later to a Sticker Generator component
+// const StickerParticles = ({ offset = 30, ...props }) => {
+//   const { xml } = useLoader(SVGLoader, props.path);
+
+//   return new Array(props.count).fill(0).map((item, index) => {
+//     const side = randomFromArray(['top', 'right', 'bottom', 'left']);
+
+//     let x = randomRange(offset, offset * 2);
+//     let y = randomRange(offset, offset * 2);
+
+//     if (side === 'top') {
+//       x = randomRange(offset, CLIP_PATH_DIMENSION - offset);
+//     } else if (side === 'right') {
+//       x = randomRange(
+//         CLIP_PATH_DIMENSION - offset * 2,
+//         CLIP_PATH_DIMENSION - offset,
+//       );
+//       y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
+//     } else if (side === 'bottom') {
+//       x = randomRange(offset, CLIP_PATH_DIMENSION - offset);
+//       y = randomRange(
+//         CLIP_PATH_DIMENSION - offset * 2,
+//         CLIP_PATH_DIMENSION - offset,
+//       );
+//     } else if (side === 'left') {
+//       y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
+//     }
+
+//     // Make elements smaller
+//     xml.firstChild.setAttribute('transform', 'scale(0.7)');
+
+//     return (
+//       <g
+//         dangerouslySetInnerHTML={{ __html: xml.innerHTML }}
+//         key={index}
+//         transform={`translate(${x}, ${y})`}
+//       />
+//     );
+//   });
+// };
 
 const StickerStyle = styled.svg`
   display: block;
@@ -149,10 +167,21 @@ const StickerStyle = styled.svg`
 
 Sticker.propTypes = {
   clipPathId: PropTypes.string,
-  particleCount: PropTypes.number,
   particlePath: PropTypes.string,
+  particlePositions: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }),
   scheme: PropTypes.string,
   src: PropTypes.string.isRequired,
+};
+
+StickerParticles.propTypes = {
+  particlePath: PropTypes.string,
+  particlePositions: PropTypes.shape({
+    x: PropTypes.number.isRequired,
+    y: PropTypes.number.isRequired,
+  }),
 };
 
 StickerImage.propTypes = {
