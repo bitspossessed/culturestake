@@ -11,11 +11,11 @@ import morgan from 'morgan';
 
 dotenv.config();
 
-import { checkConnection } from '~/common/services/web3';
 import db from '~/server/database';
 import errorsMiddleware from '~/server/middlewares/errors';
 import logger from '~/server/helpers/logger';
 import passport from '~/server/services/passport';
+import { checkConnection } from '~/common/services/web3';
 import { getBuildPath } from '~/server/helpers/path';
 
 import {
