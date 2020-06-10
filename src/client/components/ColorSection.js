@@ -20,6 +20,7 @@ import {
 import { ButtonMoreStyle } from '~/client/components/ButtonMore';
 import { FramedBoxCornerStyle } from '~/client/components/FramedBox';
 import { HorizontalLineStyle } from '~/client/components/HorizontalLine';
+import { PaperStyle } from '~/client/components/Paper';
 
 const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
   const { isAlternateColor, isAlternateFontFace, isLargerFont } = useSelector(
@@ -79,6 +80,13 @@ export const ColorSectionStyle = styled.div`
     background-color: ${(props) => {
       const { foreground, background } = styles.schemes[props.scheme];
       return props.isInverted ? foreground : background;
+    }};
+  }
+
+  ${/* sc-selector */ PaperStyle} {
+    background-color: ${(props) => {
+      const { background } = styles.schemes[props.scheme];
+      return props.isAlternateColor ? background : null;
     }};
   }
 
