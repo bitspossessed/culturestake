@@ -1,5 +1,6 @@
 import Answer from '~/server/models/answer';
 import Artwork from '~/server/models/artwork';
+import Artist from '~/server/models/artist';
 import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
 import Image from '~/server/models/image';
@@ -22,6 +23,10 @@ export const AnswerBelongsToArtwork = Answer.belongsTo(Artwork, {
 export const AnswerBelongsToProperty = Answer.belongsTo(Property, {
   allowNull: true,
 });
+
+export const ArtworkBelongsToArtist = Artwork.belongsTo(Artist);
+
+export const ArtistHasManyArtworks = Artist.hasMany(Artwork);
 
 export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
   allowNull: true,
