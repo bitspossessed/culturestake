@@ -9,7 +9,7 @@ const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Festival,
-  fields: ['title', 'description', 'images', 'documents'],
+  fields: ['title', 'description', 'images', 'documents', 'chainId'],
   fieldsProtected: [],
   include: [FestivalHasManyImages, FestivalHasManyDocuments],
   associations: [
