@@ -30,7 +30,7 @@ const Artist = db.define('artist', {
 });
 
 SequelizeSlugify.slugifyModel(Artist, {
-  source: ['title'],
+  source: ['name'],
 });
 
 export default Artist;

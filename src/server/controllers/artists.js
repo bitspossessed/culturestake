@@ -1,13 +1,26 @@
-import Artwork from '~/server/models/artwork';
+import Artist from '~/server/models/artist';
 import baseController from '~/server/controllers';
 
-import {
-  ArtworkHasManyImages,
-} from '~/server/database/associations';
+import { ArtistHasManyImages } from '~/server/database/associations';
+
+const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
-  model: Artwork,
+  model: Artist,
   fields: ['title'],
+  include: [ArtistHasManyImages],
+  associations: [
+    {
+      association: ArtistHasManyImages,
+      destroyCascade: true,
+      fields: [
+        ...baseFileFields,
+        'urlThreshold',
+        'urlThresholdThumb',
+        'urlThumb',
+      ],
+    },
+  ],
 };
 
 function create(req, res, next) {
