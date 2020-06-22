@@ -45,7 +45,7 @@ export const AnswerBelongsToQuestion = Answer.belongsTo(Question);
 export const FestivalHasManyImages = Festival.hasMany(Image, {
   ...attachableMixin,
   scope: {
-    attachableType: 'image',
+    attachableType: 'festival',
   },
   as: 'images',
 });
@@ -53,7 +53,7 @@ export const FestivalHasManyImages = Festival.hasMany(Image, {
 export const FestivalHasManyDocuments = Festival.hasMany(Document, {
   ...attachableMixin,
   scope: {
-    attachableType: 'document',
+    attachableType: 'festival',
   },
   as: 'documents',
 });
@@ -74,4 +74,20 @@ export const QuestionHasManyAnswers = Question.hasMany(Answer, {
   ...attachableMixin,
   foreignKey: 'questionId',
   as: 'answers',
+});
+
+export const ArtworkHasManyImages = Artwork.hasMany(Image, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artwork',
+  },
+  as: 'images',
+});
+
+export const ArtistHasManyImages = Artist.hasMany(Image, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artist',
+  },
+  as: 'images',
 });
