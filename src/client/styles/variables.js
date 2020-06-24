@@ -47,6 +47,7 @@ const layout = {
   spacing: '2rem',
   width: dimensions.width,
   height: dimensions.height,
+  maxWidth: '70rem',
 };
 
 const links = {
@@ -72,6 +73,8 @@ const layers = {
   PaperStamp: 3300,
   Navigation: 9000,
   ThreeInterfaceElement: 10000,
+  VoteCreditsBar: 40000,
+  SnuggleRain: 50000,
 };
 
 // Accessibility

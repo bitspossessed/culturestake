@@ -4,6 +4,7 @@ import React, { useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { ResizeObserver } from '@juggle/resize-observer';
 
+import styles from '~/client/styles/variables';
 import { SNUGGLEPUNKS_COUNT } from '~/client/components/SVGDefinitions';
 import { randomRange } from '~/common/utils/random';
 
@@ -178,7 +179,7 @@ const SnuggleRainStyle = styled.div`
   bottom: 0;
   left: 0;
 
-  z-index: 99999999;
+  z-index: ${styles.layers.SnuggleRain};
 
   overflow: hidden;
 
