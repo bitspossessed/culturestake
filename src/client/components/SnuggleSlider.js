@@ -80,7 +80,7 @@ const SnuggleSlider = ({
 
 const SnuggleSliderBarStyle = styled.div`
   width: 100%;
-  height: 2rem;
+  height: 1.5rem;
 
   border: 1.5px solid;
   border-color: ${(props) => {
