@@ -1,9 +1,10 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, Suspense, useState } from 'react';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
 import PaperTicket from '~/client/components/PaperTicket';
+import SnuggleRain from '~/client/components/SnuggleRain';
 import SnuggleSlider from '~/client/components/SnuggleSlider';
 import Sticker from '~/client/components/Sticker';
 import ThreeSplash from '~/client/components/ThreeSplash';
@@ -23,6 +24,7 @@ const Homepage = () => {
     2: 0,
   });
 
+  const [snuggleness, setSnuggleness] = useState(0.0);
   const [creditLeft, setCreditLeft] = useState(creditTotal);
 
   const onCreditChange = ({ id, credit }) => {
@@ -38,12 +40,24 @@ const Homepage = () => {
       return acc - creditsNew[creditId];
     }, creditTotal);
     setCreditLeft(creditsLeftNew);
+
+    const totalVotePower = Math.sqrt(creditTotal);
+    const currentVotePower = Math.sqrt(creditNew);
+    setSnuggleness(currentVotePower / totalVotePower);
   };
 
   return (
     <Fragment>
       <View>
         <ThreeSplash />
+
+        <Suspense fallback={null}>
+          <SnuggleRain
+            left={creditLeft}
+            snuggleness={snuggleness}
+            total={creditTotal}
+          />
+        </Suspense>
 
         <ColorSection>
           <ContainerStyle>
@@ -71,39 +85,41 @@ const Homepage = () => {
           </ContainerStyle>
 
           <PaperContainerStyle>
-            <PaperTicket>
-              <Sticker src={image1} />
+            <Suspense fallback={null}>
+              <PaperTicket>
+                <Sticker src={image1} />
 
-              <SnuggleSlider
-                credit={credits[0]}
-                id={0}
-                total={creditTotal}
-                onChange={onCreditChange}
-              />
-            </PaperTicket>
+                <SnuggleSlider
+                  credit={credits[0]}
+                  id={0}
+                  total={creditTotal}
+                  onChange={onCreditChange}
+                />
+              </PaperTicket>
 
-            <PaperTicket scheme="blue">
-              <Sticker scheme="blue" src={image1} />
+              <PaperTicket scheme="blue">
+                <Sticker scheme="blue" src={image1} />
 
-              <SnuggleSlider
-                credit={credits[1]}
-                id={1}
-                scheme="blue"
-                total={creditTotal}
-                onChange={onCreditChange}
-              />
-            </PaperTicket>
+                <SnuggleSlider
+                  credit={credits[1]}
+                  id={1}
+                  scheme="blue"
+                  total={creditTotal}
+                  onChange={onCreditChange}
+                />
+              </PaperTicket>
 
-            <PaperTicket scheme="violet">
-              <Sticker scheme="violet" src={image1} />
+              <PaperTicket scheme="violet">
+                <Sticker scheme="violet" src={image1} />
 
-              <SnuggleSlider
-                credit={credits[2]}
-                id={2}
-                total={creditTotal}
-                onChange={onCreditChange}
-              />
-            </PaperTicket>
+                <SnuggleSlider
+                  credit={credits[2]}
+                  id={2}
+                  total={creditTotal}
+                  onChange={onCreditChange}
+                />
+              </PaperTicket>
+            </Suspense>
           </PaperContainerStyle>
 
           <ContainerStyle>
