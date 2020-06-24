@@ -26,7 +26,7 @@ export const useRequest = (requestId, { onError, onSuccess }) => {
     } else if (isSuccess && onSuccess) {
       onSuccess(response);
     }
-  }, [isError, isSuccess, onError, onSuccess, error, response]);
+  }, [isError, isSuccess]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
     isError,
