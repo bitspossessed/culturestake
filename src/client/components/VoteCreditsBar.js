@@ -21,7 +21,7 @@ const VoteCreditsBarStyle = styled.div`
   position: fixed;
 
   right: ${styles.layout.spacing};
-  bottom: ${styles.layout.spacing};
+  bottom: 2.75rem;
   left: ${styles.layout.spacing};
 
   z-index: ${styles.layers.VoteCreditsBar};
@@ -36,6 +36,10 @@ const VoteCreditsBarStyle = styled.div`
 `;
 
 const VoteCreditsBarRangeStyle = styled.div`
+  @media ${styles.media.desktop} {
+    margin-left: 0;
+  }
+
   display: flex;
 
   height: 3rem;

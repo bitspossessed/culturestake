@@ -22,17 +22,7 @@ const ThreeButtonInfo = (props) => {
     ? alternateGradientTexture
     : blueGradientTexture;
 
-  // The info.svg is a little smoler than the others, lets rescale it!
-  const scale = props.isExpanded ? 1 : 96 / 68.59;
-
-  return (
-    <ThreeModel
-      {...props}
-      scale={[scale, scale, scale]}
-      svg={svg}
-      texture={texture}
-    />
-  );
+  return <ThreeModel {...props} svg={svg} texture={texture} />;
 };
 
 ThreeButtonInfo.propTypes = {
