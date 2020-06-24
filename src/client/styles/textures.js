@@ -3,7 +3,7 @@ import { CanvasTexture, MirroredRepeatWrapping } from 'three';
 import styles from '~/client/styles/variables';
 
 export function generateGradientTexture({
-  size = 512,
+  size = 32,
   colorStops = [],
   repeat = 0.01,
 }) {
