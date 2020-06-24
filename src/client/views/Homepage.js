@@ -51,13 +51,7 @@ const Homepage = () => {
       <View>
         <ThreeSplash />
 
-        <Suspense fallback={null}>
-          <SnuggleRain
-            left={creditLeft}
-            snuggleness={snuggleness}
-            total={creditTotal}
-          />
-        </Suspense>
+        <SnuggleRain snuggleness={snuggleness} />
 
         <ColorSection>
           <ContainerStyle>
