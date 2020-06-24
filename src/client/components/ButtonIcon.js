@@ -37,7 +37,7 @@ export const ButtonIconStyle = styled(Button)`
     return props.isIconLeft ? 'padding-left' : 'padding-right';
   }}: 3.5rem;
 
-  border: 1px solid ${styles.colors.black};
+  border: 1.5px solid ${styles.colors.black};
 
   background-color: transparent;
 
