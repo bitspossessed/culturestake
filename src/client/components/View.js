@@ -10,7 +10,7 @@ View.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const ViewStyle = styled.main`
+export const ViewStyle = styled.main`
   height: 100%;
 `;
 

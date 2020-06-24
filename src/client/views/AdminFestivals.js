@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
 
 import translate from '~/common/services/i18n';
 
-import Footer from '~/client/components/Footer';
-import Header from '~/client/components/Header';
+import ButtonIcon from '~/client/components/ButtonIcon';
+import FooterAdmin from '~/client/components/FooterAdmin';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
 import Table, { ACTION_EDIT } from '~/client/components/Table';
-import View from '~/client/components/View';
+import ViewAdmin from '~/client/components/ViewAdmin';
 
 const table = {
   path: ['festivals'],
@@ -35,24 +35,22 @@ const AdminFestivals = () => {
 
   return (
     <Fragment>
-      <Header>
-        <h1>{translate('AdminFestivals.title')}</h1>
-      </Header>
+      <HeaderAdmin>{translate('AdminFestivals.title')}</HeaderAdmin>
 
-      <View>
+      <ViewAdmin>
         <Table
           actions={table.actions}
           columns={table.columns}
           path={table.path}
           onSelect={onSelect}
         />
+      </ViewAdmin>
 
-        <Link to="/admin/festivals/new">
+      <FooterAdmin>
+        <ButtonIcon to="/admin/festivals/new">
           {translate('AdminFestivals.buttonNewFestival')}
-        </Link>
-      </View>
-
-      <Footer />
+        </ButtonIcon>
+      </FooterAdmin>
     </Fragment>
   );
 };

@@ -3,27 +3,31 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // eslint-disable-next-line react/display-name
-const Button = React.forwardRef(({ children, to, onClick, ...props }, ref) => {
-  const buttonElem = React.createElement(
-    'button',
-    Object.assign({}, props, {
-      onClick,
-      ref,
-    }),
-    children,
-  );
+const Button = React.forwardRef(
+  // eslint-disable-next-line no-unused-vars
+  ({ children, to, isDangerous, onClick, ...props }, ref) => {
+    const buttonElem = React.createElement(
+      'button',
+      Object.assign({}, props, {
+        onClick,
+        ref,
+      }),
+      children,
+    );
 
-  if (to) {
-    return React.createElement(Link, { to }, buttonElem);
-  }
+    if (to) {
+      return React.createElement(Link, { to }, buttonElem);
+    }
 
-  return buttonElem;
-});
+    return buttonElem;
+  },
+);
 
 Button.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  isDangerous: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
   type: PropTypes.string,

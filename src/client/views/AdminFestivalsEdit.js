@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import translate from '~/common/services/i18n';
 
-import Footer from '~/client/components/Footer';
+import ButtonIcon from '~/client/components/ButtonIcon';
+import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
-import Header from '~/client/components/Header';
-import View from '~/client/components/View';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
+import ViewAdmin from '~/client/components/ViewAdmin';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -17,15 +17,8 @@ import notify, {
 const AdminFestivalsEdit = () => {
   return (
     <Fragment>
-      <Header>
-        <h1>{translate('AdminFestivalsEdit.title')}</h1>
-      </Header>
-
-      <View>
-        <AdminFestivalsEditForm />
-      </View>
-
-      <Footer />
+      <HeaderAdmin>{translate('AdminFestivalsEdit.title')}</HeaderAdmin>
+      <AdminFestivalsEditForm />
     </Fragment>
   );
 };
@@ -77,13 +70,19 @@ const AdminFestivalsEditForm = () => {
 
   return (
     <Fragment>
-      <Form>
-        <FormFestivals />
-        <ButtonSubmit />
-      </Form>
+      <ViewAdmin>
+        <Form>
+          <FormFestivals />
+          <ButtonDelete />
+          <ButtonSubmit />
+        </Form>
+      </ViewAdmin>
 
-      <ButtonDelete />
-      <Link to={returnUrl}>{translate('default.buttonReturnToOverview')}</Link>
+      <FooterAdmin>
+        <ButtonIcon to={returnUrl}>
+          {translate('default.buttonReturnToOverview')}
+        </ButtonIcon>
+      </FooterAdmin>
     </Fragment>
   );
 };

@@ -1,9 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { DateTime } from 'luxon';
 import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import Button from '~/client/components/Button';
+import ButtonOutline from '~/client/components/ButtonOutline';
+import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 
 import {
@@ -29,11 +32,13 @@ const DEFAULT_HEADERS = [
   },
   {
     isOrderKey: true,
+    isDate: true,
     key: 'createdAt',
     label: 'Created at', // @TODO: I18n
   },
   {
     isOrderKey: true,
+    isDate: true,
     key: 'updatedAt',
     label: 'Updated at', // @TODO: I18n
   },
@@ -124,7 +129,7 @@ const Table = ({
   };
 
   return (
-    <table>
+    <TableStyle>
       <TableHeader
         columns={columns}
         orderDirection={tables.orderDirection}
@@ -151,7 +156,7 @@ const Table = ({
         pagesTotal={tables.pagesTotal}
         onSelect={onSelectPage}
       />
-    </table>
+    </TableStyle>
   );
 };
 
@@ -162,9 +167,9 @@ export const TableHeader = ({
   onSelect,
 }) => {
   return (
-    <thead>
+    <TableHeaderStyle>
       <tr>
-        <th>#</th>
+        <TableHeaderItemStyle>#</TableHeaderItemStyle>
         {DEFAULT_HEADERS.concat(columns).map(({ label, key, isOrderKey }) => {
           return (
             <TableHeaderItem
@@ -178,9 +183,9 @@ export const TableHeader = ({
             />
           );
         })}
-        <th>Actions</th>
+        <TableHeaderItemStyle>Actions</TableHeaderItemStyle>
       </tr>
-    </thead>
+    </TableHeaderStyle>
   );
 };
 
@@ -193,7 +198,7 @@ export const TableHeaderItem = ({
   onSelect,
 }) => {
   if (!isOrderKey) {
-    return <th>{label}</th>;
+    return <TableHeaderItemStyle>{label}</TableHeaderItemStyle>;
   }
 
   const onSelectOrder = () => {
@@ -207,17 +212,20 @@ export const TableHeaderItem = ({
 
   if (isSelected) {
     if (orderDirection === ORDER_DIRECTION_ASC) {
-      orderStr += ' ↑';
+      orderStr += '↑';
     } else {
-      orderStr += ' ↓';
+      orderStr += '↓';
     }
   }
 
   return (
-    <th onClick={onSelectOrder}>
-      {label}
-      {orderStr}
-    </th>
+    <TableHeaderItemStyle
+      isSelectable
+      isSelected={isSelected}
+      onClick={onSelectOrder}
+    >
+      {label}&nbsp;{orderStr}
+    </TableHeaderItemStyle>
   );
 };
 
@@ -256,7 +264,7 @@ export const TableBody = ({
   }
 
   return (
-    <tbody>
+    <TableBodyStyle>
       {results.map((item, index) => {
         const onSelectAction = (type) => {
           onSelect({
@@ -282,23 +290,27 @@ export const TableBody = ({
           </tr>
         );
       })}
-    </tbody>
+    </TableBodyStyle>
   );
 };
 
 export const TableBodyMessage = ({ children, colSpan }) => {
   return (
-    <tbody>
+    <TableBodyMessageStyle>
       <tr>
         <td colSpan={colSpan}>{children}</td>
       </tr>
-    </tbody>
+    </TableBodyMessageStyle>
   );
 };
 
 export const TableBodyItems = ({ columns, values }) => {
   return DEFAULT_HEADERS.concat(columns).map((column) => {
-    return <td key={`td-${values.id}-${column.key}`}>{values[column.key]}</td>;
+    const value = column.isDate
+      ? DateTime.fromISO(values[column.key]).toFormat('dd.MM.yyyy HH:mm')
+      : values[column.key];
+
+    return <td key={`td-${values.id}-${column.key}`}>{value}</td>;
   });
 };
 
@@ -310,9 +322,9 @@ export const TableActions = ({ actions, onSelect }) => {
     };
 
     return (
-      <button key={`action-${index}`} onClick={onSelectAction}>
+      <ButtonOutline key={`action-${index}`} onClick={onSelectAction}>
         {action.label}
-      </button>
+      </ButtonOutline>
     );
   });
 };
@@ -338,21 +350,68 @@ export const TableFooter = ({
   };
 
   return (
-    <tfoot>
+    <TableFooterStyle>
       <tr>
         <td colSpan={colSpan}>
-          <Button disabled={isPreviousDisabled} onClick={onClickPrevious}>
+          <ButtonOutline
+            disabled={isPreviousDisabled}
+            onClick={onClickPrevious}
+          >
             &lt;
-          </Button>
+          </ButtonOutline>
 
-          <Button disabled={isNextDisabled} onClick={onClickNext}>
+          <ButtonOutline disabled={isNextDisabled} onClick={onClickNext}>
             &gt;
-          </Button>
+          </ButtonOutline>
         </td>
       </tr>
-    </tfoot>
+    </TableFooterStyle>
   );
 };
+
+const TableStyle = styled.table`
+  width: 100%;
+
+  td {
+    padding: 1rem;
+
+    color: ${styles.colors.violet};
+  }
+`;
+
+const TableHeaderStyle = styled.thead``;
+
+const TableHeaderItemStyle = styled.th`
+  padding: 1rem;
+
+  border-bottom: 1.5px solid ${styles.colors.violet};
+
+  color: ${(props) =>
+    props.isSelected ? styles.colors.white : styles.colors.violet};
+
+  background-color: ${(props) =>
+    props.isSelected ? styles.colors.violet : 'transparent'};
+
+  cursor: ${(props) => (props.isSelectable ? 'pointer' : null)};
+`;
+
+const TableBodyStyle = styled.tbody`
+  tr {
+    cursor: pointer;
+
+    &:hover {
+      background-color: ${styles.colors.grayLight};
+    }
+  }
+`;
+
+const TableBodyMessageStyle = styled.tbody``;
+
+const TableFooterStyle = styled.tfoot`
+  tr {
+    margin-top: 1rem;
+  }
+`;
 
 const PropTypesAction = PropTypes.shape({
   key: PropTypes.symbol.isRequired,

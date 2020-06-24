@@ -67,7 +67,7 @@ export const ButtonIconSVGStyle = styled.div`
     return props.isIconLeft !== props.isIconFlipped
       ? 'border-right'
       : 'border-left';
-  }}: 1px solid ${styles.colors.black};
+  }}: 1.5px solid ${styles.colors.black};
 
   transform: rotate(
     ${(props) => {

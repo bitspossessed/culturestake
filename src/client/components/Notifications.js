@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
 import styles from '~/client/styles/variables';
+import { HeadingPrimaryStyle } from '~/client/styles/typography';
 import {
   NotificationsTypes,
   removeNotification,
@@ -68,7 +69,7 @@ const NotificationsItem = ({ id, lifetime, text, type }) => {
 
   return (
     <NotificationsItemStyle type={type} onClick={onRemove}>
-      {text}
+      <NotificationItemTextStyle>{text}</NotificationItemTextStyle>
     </NotificationsItemStyle>
   );
 };
@@ -76,13 +77,11 @@ const NotificationsItem = ({ id, lifetime, text, type }) => {
 const NotificationsStyle = styled.ul`
   position: fixed;
 
-  top: 10rem;
-  right: ${styles.layout.spacing};
-  left: ${styles.layout.spacing};
+  top: 0;
+  right: 0;
+  left: 0;
 
   z-index: ${styles.layers.Notifications};
-
-  max-width: ${styles.layout.maxWidth};
 
   margin: 0 auto;
   padding: 0;
@@ -91,22 +90,25 @@ const NotificationsStyle = styled.ul`
 `;
 
 const NotificationsItemStyle = styled.li`
-  padding: 1rem;
+  display: block;
 
-  border: 1.5px solid;
-  border-color: ${(props) => {
+  color: ${styles.colors.white};
+
+  background-color: ${(props) => {
     return NOTIFICATIONS_COLORS[props.type];
   }};
 
-  color: ${(props) => {
-    return NOTIFICATIONS_COLORS[props.type];
-  }};
+  text-align: center;
 
   cursor: pointer;
+`;
 
-  & + & {
-    margin-top: 1rem;
-  }
+const NotificationItemTextStyle = styled(HeadingPrimaryStyle)`
+  padding: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+
+  text-align: center;
 `;
 
 NotificationsList.propTypes = {
