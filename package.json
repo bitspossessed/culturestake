@@ -54,10 +54,10 @@
     "cross-env": "^7.0.2",
     "css-loader": "^3.6.0",
     "dotenv": "^8.2.0",
-    "eslint": "^7.3.0",
+    "eslint": "^7.3.1",
     "eslint-config-prettier": "^6.11.0",
     "eslint-loader": "^4.0.2",
-    "eslint-plugin-jest": "^23.16.0",
+    "eslint-plugin-jest": "^23.17.0",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.0",
     "file-loader": "^6.0.0",
@@ -121,6 +121,6 @@
     "styled-normalize": "^8.0.7",
     "three": "^0.117.1",
     "web3": "^1.2.9",
-    "winston": "^3.3.1"
+    "winston": "^3.3.2"
   }
 }
