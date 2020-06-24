@@ -165,23 +165,24 @@ const StickerStyle = styled.svg`
   }
 `;
 
-Sticker.propTypes = {
-  clipPathId: PropTypes.string,
-  particlePath: PropTypes.string,
-  particlePositions: PropTypes.shape({
+const particlePositions = PropTypes.arrayOf(
+  PropTypes.shape({
     x: PropTypes.number.isRequired,
     y: PropTypes.number.isRequired,
   }),
+);
+
+Sticker.propTypes = {
+  clipPathId: PropTypes.string,
+  particlePath: PropTypes.string,
+  particlePositions,
   scheme: PropTypes.string,
   src: PropTypes.string.isRequired,
 };
 
 StickerParticles.propTypes = {
   particlePath: PropTypes.string,
-  particlePositions: PropTypes.shape({
-    x: PropTypes.number.isRequired,
-    y: PropTypes.number.isRequired,
-  }),
+  particlePositions,
 };
 
 StickerImage.propTypes = {
