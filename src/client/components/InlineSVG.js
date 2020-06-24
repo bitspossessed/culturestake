@@ -9,7 +9,7 @@ const InlineSVG = (props) => {
     return (
       <svg
         dangerouslySetInnerHTML={{ __html: xml.innerHTML }}
-        viewBox={xml.attributes.viewBox.value}
+        viewBox={xml.attributes.viewBox ? xml.attributes.viewBox.value : null}
         xmlns={xml.attributes.xmlns.value}
       />
     );

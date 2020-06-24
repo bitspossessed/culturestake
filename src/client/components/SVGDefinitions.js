@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
+import InlineSVG from '~/client/components/InlineSVG';
 import styles from '~/client/styles/variables';
+
+import snugglepunks from '~/client/assets/images/snugglepunks.svg';
+
+export const CLIP_PATH_DIMENSION = 300;
+export const SNUGGLEPUNKS_COUNT = 12;
 
 export const ClipPathEllipsis = () => {
   return (
@@ -52,56 +58,75 @@ export const CLIP_PATHS = {
   'clip-path-snake': ClipPathSnake,
 };
 
-export const CLIP_PATH_DIMENSION = 300;
-
+// We need this component in the DOM so other elements can refer to it, but
+// keep it hidden from the user!
 const SVGDefinitions = () => {
   return (
-    // We need this component in the DOM so other elements can refer to it, but
-    // keep it hidden from the user!
-    <svg
-      height={CLIP_PATH_DIMENSION}
+    <div
+      aria-hidden={true}
       style={{
         position: 'absolute',
         top: -CLIP_PATH_DIMENSION,
         left: -CLIP_PATH_DIMENSION,
       }}
-      width={CLIP_PATH_DIMENSION}
     >
-      <defs>
-        {/* Clip path definitions to shape elements */}
-        {Object.keys(CLIP_PATHS).map((clipPathId) => {
-          const ClipPathDefinition = CLIP_PATHS[clipPathId];
+      <svg
+        height={CLIP_PATH_DIMENSION}
+        width={CLIP_PATH_DIMENSION}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <SVGDefinitionsClipPaths />
+          <SVGDefinitionsFilters />
+        </defs>
+      </svg>
 
-          return (
-            <clipPath id={clipPathId} key={clipPathId}>
-              <ClipPathDefinition />
-            </clipPath>
-          );
-        })}
-
-        {/* Filter definitions to manipulate element colors */}
-        {Object.keys(styles.schemes).map((schemeId) => {
-          return (
-            <filter id={`filter-${schemeId}`} key={schemeId}>
-              <feFlood
-                floodColor={styles.schemes[schemeId].foreground}
-                result="flood"
-              />
-
-              <feComposite
-                in="flood"
-                in2="SourceAlpha"
-                operator="atop"
-                result="floodMasked"
-              />
-
-              <feBlend in="SourceGraphic" in2="floodMasked" mode="screen" />
-            </filter>
-          );
-        })}
-      </defs>
-    </svg>
+      <Suspense fallback={null}>
+        <SVGDefinitionsSnugglepunks />
+      </Suspense>
+    </div>
   );
+};
+
+// Clip path definitions to shape elements
+const SVGDefinitionsClipPaths = () => {
+  return Object.keys(CLIP_PATHS).map((clipPathId) => {
+    const ClipPathDefinition = CLIP_PATHS[clipPathId];
+
+    return (
+      <clipPath id={clipPathId} key={clipPathId}>
+        <ClipPathDefinition />
+      </clipPath>
+    );
+  });
+};
+
+// Filter definitions to manipulate element colors
+const SVGDefinitionsFilters = () => {
+  return Object.keys(styles.schemes).map((schemeId) => {
+    return (
+      <filter id={`filter-${schemeId}`} key={schemeId}>
+        <feFlood
+          floodColor={styles.schemes[schemeId].foreground}
+          result="flood"
+        />
+
+        <feComposite
+          in="flood"
+          in2="SourceAlpha"
+          operator="atop"
+          result="floodMasked"
+        />
+
+        <feBlend in="SourceGraphic" in2="floodMasked" mode="screen" />
+      </filter>
+    );
+  });
+};
+
+// Snugglepunk SVG sprites
+const SVGDefinitionsSnugglepunks = () => {
+  return <InlineSVG url={snugglepunks} />;
 };
 
 export default SVGDefinitions;
