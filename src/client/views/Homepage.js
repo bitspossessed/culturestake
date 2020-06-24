@@ -9,6 +9,7 @@ import SnuggleSlider from '~/client/components/SnuggleSlider';
 import Sticker from '~/client/components/Sticker';
 import ThreeSplash from '~/client/components/ThreeSplash';
 import View from '~/client/components/View';
+import VoteCreditsBar from '~/client/components/VoteCreditsBar';
 import translate from '~/common/services/i18n';
 import { PaperContainerStyle, ContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
@@ -49,9 +50,10 @@ const Homepage = () => {
   return (
     <Fragment>
       <View>
-        <ThreeSplash />
-
         <SnuggleRain snuggleness={snuggleness} />
+        <VoteCreditsBar left={creditLeft} total={creditTotal} />
+
+        <ThreeSplash />
 
         <ColorSection>
           <ContainerStyle>
@@ -67,12 +69,6 @@ const Homepage = () => {
               similique aliquid laborum nobis maxime officiis. Quod delectus
               amet ut. Itaque similique qui excepturi sint eaque porro corrupti.
               Adipisci illum ea sint eaque.
-            </ParagraphStyle>
-
-            <HorizontalLine />
-
-            <ParagraphStyle>
-              {creditLeft} Credits left of {creditTotal}!
             </ParagraphStyle>
 
             <HorizontalLine />

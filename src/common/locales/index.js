@@ -33,6 +33,9 @@ const components = {
     buttonRemoveFile: 'Remove',
     buttonSelectFiles: 'Select files',
   },
+  VoteCreditsBar: {
+    voteCredits: 'Vote Credits',
+  },
 };
 
 const middlewares = {
