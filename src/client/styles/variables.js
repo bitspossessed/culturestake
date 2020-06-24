@@ -75,6 +75,7 @@ const layers = {
   ThreeInterfaceElement: 10000,
   VoteCreditsBar: 40000,
   SnuggleRain: 50000,
+  Notifications: 60000,
 };
 
 // Accessibility

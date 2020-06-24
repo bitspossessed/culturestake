@@ -1,8 +1,19 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useCallback } from 'react';
+import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { removeNotification } from '~/client/store/notifications/actions';
+import styles from '~/client/styles/variables';
+import {
+  NotificationsTypes,
+  removeNotification,
+} from '~/client/store/notifications/actions';
+
+const NOTIFICATIONS_COLORS = {
+  [NotificationsTypes.INFO]: styles.colors.violet,
+  [NotificationsTypes.WARNING]: styles.colors.magenta,
+  [NotificationsTypes.ERROR]: styles.colors.red,
+};
 
 const Notifications = () => {
   const { messages } = useSelector((state) => state.notifications);
@@ -12,9 +23,9 @@ const Notifications = () => {
   }
 
   return (
-    <ul>
+    <NotificationsStyle>
       <NotificationsList items={messages} />
-    </ul>
+    </NotificationsStyle>
   );
 };
 
@@ -32,7 +43,7 @@ const NotificationsList = (props) => {
   });
 };
 
-const NotificationsItem = ({ id, lifetime, text }) => {
+const NotificationsItem = ({ id, lifetime, text, type }) => {
   const dispatch = useDispatch();
 
   const onRemove = useCallback(() => {
@@ -55,8 +66,48 @@ const NotificationsItem = ({ id, lifetime, text }) => {
     };
   }, [onRemove, lifetime]);
 
-  return <li onClick={onRemove}>{text}</li>;
+  return (
+    <NotificationsItemStyle type={type} onClick={onRemove}>
+      {text}
+    </NotificationsItemStyle>
+  );
 };
+
+const NotificationsStyle = styled.ul`
+  position: fixed;
+
+  top: 10rem;
+  right: ${styles.layout.spacing};
+  left: ${styles.layout.spacing};
+
+  z-index: ${styles.layers.Notifications};
+
+  max-width: ${styles.layout.maxWidth};
+
+  margin: 0 auto;
+  padding: 0;
+
+  list-style: none;
+`;
+
+const NotificationsItemStyle = styled.li`
+  padding: 1rem;
+
+  border: 1.5px solid;
+  border-color: ${(props) => {
+    return NOTIFICATIONS_COLORS[props.type];
+  }};
+
+  color: ${(props) => {
+    return NOTIFICATIONS_COLORS[props.type];
+  }};
+
+  cursor: pointer;
+
+  & + & {
+    margin-top: 1rem;
+  }
+`;
 
 NotificationsList.propTypes = {
   items: PropTypes.arrayOf(
