@@ -85,7 +85,7 @@ const InputUploadField = ({
     form.setMeta({
       isPending,
     });
-  }, [isPending]);
+  }, [isPending, form]);
 
   // Register form field
   const { form, meta, setMeta, setValue, value } = useField(name, {

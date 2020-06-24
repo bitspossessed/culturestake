@@ -4,16 +4,17 @@ import { useLoader } from 'react-three-fiber';
 
 const InlineSVG = (props) => {
   const { xml } = useLoader(SVGLoader, props.url);
+  const { innerHTML, attributes } = xml;
 
   return useMemo(() => {
     return (
       <svg
-        dangerouslySetInnerHTML={{ __html: xml.innerHTML }}
-        viewBox={xml.attributes.viewBox ? xml.attributes.viewBox.value : null}
-        xmlns={xml.attributes.xmlns.value}
+        dangerouslySetInnerHTML={{ __html: innerHTML }}
+        viewBox={attributes.viewBox ? attributes.viewBox.value : null}
+        xmlns={attributes.xmlns.value}
       />
     );
-  }, [props.url]);
+  }, [innerHTML, attributes]);
 };
 
 export default InlineSVG;

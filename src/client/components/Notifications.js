@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { removeNotification } from '~/client/store/notifications/actions';
@@ -32,20 +32,20 @@ const NotificationsList = (props) => {
   });
 };
 
-const NotificationsItem = (props) => {
+const NotificationsItem = ({ id, lifetime, text }) => {
   const dispatch = useDispatch();
 
-  const onRemove = () => {
-    dispatch(removeNotification(props.id));
-  };
+  const onRemove = useCallback(() => {
+    dispatch(removeNotification(id));
+  }, [dispatch, id]);
 
   useEffect(() => {
     let timeout;
 
-    if (props.lifetime > 0) {
+    if (lifetime > 0) {
       timeout = window.setTimeout(() => {
         onRemove();
-      }, props.lifetime);
+      }, lifetime);
     }
 
     return () => {
@@ -53,9 +53,9 @@ const NotificationsItem = (props) => {
         window.clearTimeout(timeout);
       }
     };
-  }, []);
+  }, [onRemove, lifetime]);
 
-  return <li onClick={onRemove}>{props.text}</li>;
+  return <li onClick={onRemove}>{text}</li>;
 };
 
 NotificationsList.propTypes = {

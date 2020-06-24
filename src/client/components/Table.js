@@ -90,7 +90,15 @@ const Table = ({
         path,
       }),
     );
-  }, [pathString, pageIndex, orderKey, orderDirection]);
+  }, [
+    dispatch,
+    orderDirection,
+    orderKey,
+    pageIndex,
+    pageSize,
+    path,
+    pathString,
+  ]);
 
   const onSelectHeader = ({ key }) => {
     if (orderKey === key) {

@@ -46,7 +46,7 @@ const ThreeRotator = ({ children, ...props }) => {
 
     setOriginalRotation(initialRotation);
     setTargetRotation(initialRotation);
-  }, []);
+  }, [props.rotation]);
 
   return (
     <Suspense fallback={null}>

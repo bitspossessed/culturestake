@@ -22,7 +22,7 @@ const App = () => {
     initialize();
   };
 
-  useEffect(onAppStart, []);
+  useEffect(onAppStart, [dispatch]);
 
   return (
     <Fragment>
