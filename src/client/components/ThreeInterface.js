@@ -45,14 +45,17 @@ const ThreeInterface = (props) => {
 
   return (
     <Fragment>
-      {isShowingHome ? (
-        <ThreeInterfaceElement left top onClick={onClickLogo}>
-          <ThreeButtonLogo
-            isAlternateColor={isAlternateColor}
-            rotation={[3.5, -0.6, 0]}
-          />
-        </ThreeInterfaceElement>
-      ) : null}
+      <ThreeInterfaceElement
+        isVisible={isShowingHome}
+        left
+        top
+        onClick={onClickLogo}
+      >
+        <ThreeButtonLogo
+          isAlternateColor={isAlternateColor}
+          rotation={[3.5, -0.6, 0]}
+        />
+      </ThreeInterfaceElement>
 
       <ThreeInterfaceElement right top onClick={onClickNavigation}>
         <ThreeButtonNavigation
@@ -62,24 +65,27 @@ const ThreeInterface = (props) => {
         />
       </ThreeInterfaceElement>
 
-      {props.isShowingInfo ? (
-        <ThreeInterfaceElement bottom left onClick={onClickInfo}>
-          <ThreeButtonInfo
-            isAlternateColor={isAlternateColor}
-            isExpanded={isInfoExpanded}
-            rotation={[3, -0.5, -0.1]}
-          />
-        </ThreeInterfaceElement>
-      ) : null}
+      <ThreeInterfaceElement
+        bottom
+        isVisible={props.isShowingInfo || (false && !isExpanded)}
+        left
+        onClick={onClickInfo}
+      >
+        <ThreeButtonInfo
+          isAlternateColor={isAlternateColor}
+          isExpanded={isInfoExpanded}
+          rotation={[3, -0.5, -0.1]}
+        />
+      </ThreeInterfaceElement>
 
-      {isExpanded ? <Navigation onClickItem={onClickNavigationItem} /> : null}
+      <Navigation isExpanded={isExpanded} onClickItem={onClickNavigationItem} />
     </Fragment>
   );
 };
 
-const ThreeInterfaceElement = (props) => {
+const ThreeInterfaceElement = ({ isVisible = true, ...props }) => {
   return (
-    <ThreeInterfaceElementStyle {...props}>
+    <ThreeInterfaceElementStyle isVisible={isVisible} {...props}>
       <ThreeCanvas>
         <Suspense fallback={null}>{props.children}</Suspense>
       </ThreeCanvas>
@@ -95,6 +101,7 @@ ThreeInterface.propTypes = {
 ThreeInterfaceElement.propTypes = {
   bottom: PropTypes.bool,
   children: PropTypes.node.isRequired,
+  isVisible: PropTypes.bool,
   left: PropTypes.bool,
   offset: PropTypes.number,
   right: PropTypes.bool,
@@ -110,6 +117,8 @@ const ThreeInterfaceElementStyle = styled.div`
   left: ${(props) => (props.left ? '0' : null)};
 
   z-index: ${styles.layers.ThreeInterfaceElement};
+
+  visibility: ${(props) => (props.isVisible ? 'visible' : 'hidden')};
 
   width: 6.5rem;
   height: 6.5rem;

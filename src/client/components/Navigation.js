@@ -16,13 +16,16 @@ import {
 import { resetToken } from '~/client/store/app/actions';
 import { BackgroundAreaStyle } from '~/client/styles/layout';
 
-const Navigation = ({ onClickItem }) => {
+const Navigation = ({ onClickItem, isExpanded }) => {
   const { isAuthenticated, isAlternateColor } = useSelector(
     (state) => state.app,
   );
 
   return (
-    <NavigationStyle isAlternateColor={isAlternateColor}>
+    <NavigationStyle
+      isAlternateColor={isAlternateColor}
+      isExpanded={isExpanded}
+    >
       <ColorSection>
         <NavigationAccessibilityStyle>
           <HeadingSecondaryStyle>
@@ -128,6 +131,7 @@ const NavigationLink = (props) => {
 };
 
 Navigation.propTypes = {
+  isExpanded: PropTypes.bool.isRequired,
   onClickItem: PropTypes.func.isRequired,
 };
 
@@ -151,6 +155,8 @@ const NavigationStyle = styled(BackgroundAreaStyle)`
   left: 0;
 
   z-index: ${styles.layers.Navigation};
+
+  visibility: ${(props) => (props.isExpanded ? 'visible' : 'hidden')};
 
   overflow-x: hidden;
   overflow-y: auto;
