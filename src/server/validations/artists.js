@@ -8,6 +8,7 @@ const defaultValidation = {
   bio: Joi.string().max(2000).required(),
   consentToDataReveal: Joi.boolean(),
   images: imagesValidation.max(2),
+  artworks: Joi.array().max(10),
 };
 
 export default {

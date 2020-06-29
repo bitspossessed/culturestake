@@ -26,7 +26,11 @@ export const AnswerBelongsToProperty = Answer.belongsTo(Property, {
 
 export const ArtworkBelongsToArtist = Artwork.belongsTo(Artist);
 
-export const ArtistHasManyArtworks = Artist.hasMany(Artwork);
+export const ArtistHasManyArtworks = Artist.hasMany(Artwork, {
+  ...attachableMixin,
+  foreignKey: 'artistId',
+  as: 'artworks',
+});
 
 export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
   allowNull: true,

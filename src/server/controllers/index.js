@@ -184,6 +184,8 @@ function create(options) {
         httpStatus.CREATED,
       );
     } catch (error) {
+      console.log('caught')
+      console.log(error)
       if (error instanceof UniqueConstraintError) {
         next(new APIError(httpStatus.CONFLICT));
       } else {

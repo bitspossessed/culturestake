@@ -20,11 +20,7 @@ router.put(
   artistsController.create,
 );
 
-router.get(
-  '/',
-  validate(artistsValidation.readAll),
-  artistsController.readAll,
-);
+router.get('/', validate(artistsValidation.readAll), artistsController.readAll);
 
 router.get(
   '/:slug',
@@ -44,7 +40,7 @@ router.post(
 router.delete(
   '/:slug',
   authMiddleware,
-  validate(artworksValidation.destroy),
+  validate(artistsValidation.destroy),
   getArtistResource,
   artistsController.destroy,
 );

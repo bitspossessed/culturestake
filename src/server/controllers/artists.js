@@ -1,14 +1,14 @@
 import Artist from '~/server/models/artist';
 import baseController from '~/server/controllers';
 
-import { ArtistHasManyImages } from '~/server/database/associations';
+import { ArtistHasManyImages, ArtistHasManyArtworks } from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Artist,
-  fields: ['title'],
-  include: [ArtistHasManyImages],
+  fields: ['name', 'bio', 'consentToDataReveal', 'images', 'artworks'],
+  include: [ArtistHasManyImages, ArtistHasManyArtworks],
   associations: [
     {
       association: ArtistHasManyImages,
@@ -19,6 +19,11 @@ const options = {
         'urlThresholdThumb',
         'urlThumb',
       ],
+    },
+    {
+      association: ArtistHasManyArtworks,
+      destroyCascade: false,
+      fields: ['title', 'description'],
     },
   ],
 };

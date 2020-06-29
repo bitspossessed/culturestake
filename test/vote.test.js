@@ -17,7 +17,7 @@ import { packBooth, packVote } from '~/common/services/encoding';
 import initQuestion from './helpers/initQuestion';
 import initAnswer from './helpers/initAnswer';
 import buildVote from './helpers/buildVote';
-import { refreshNonce } from './helpers/refreshNonce';
+import { refreshNonce } from './helpers/utils';
 
 describe('API', () => {
   let authRequest;
@@ -40,13 +40,13 @@ describe('API', () => {
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
     const questionAddress = await initQuestion(
       admin,
-      'festival',
       'my question',
+      'festival',
     );
     question = getQuestionContract(questionAddress);
 
     // add answer to api
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
 
     // use chainId from api to create answer on blockchain
     answer = await initAnswer(question, 1);
