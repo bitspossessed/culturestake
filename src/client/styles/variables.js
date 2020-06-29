@@ -71,9 +71,9 @@ const layers = {
   Paper: 3000,
   PaperTicket: 3200,
   PaperStamp: 3300,
+  VoteCreditsBar: 5000,
   Navigation: 9000,
   ThreeInterfaceElement: 10000,
-  VoteCreditsBar: 40000,
   SnuggleRain: 50000,
   Notifications: 60000,
 };
