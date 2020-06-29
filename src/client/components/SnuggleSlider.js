@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import debounce from 'debounce';
 import styled from 'styled-components';
 
@@ -65,10 +65,17 @@ const SnuggleSlider = ({
     debouncedUpdateValue(event);
   };
 
+  useEffect(() => {
+    window.addEventListener('pointerup', onPointerUp);
+
+    return () => {
+      window.removeEventListener('pointerup', onPointerUp);
+    };
+  }, []);
+
   return (
     <SnuggleSliderStyle
       onClick={onClick}
-      onPointerCancel={onPointerUp}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
