@@ -15,7 +15,7 @@ const ThreeCanvas = ({ children, isDimmed, ...props }) => {
       pixelRatio={Math.min(window.devicePixelRatio, MAX_DEVICE_PIXEL_RATIO)}
       shadowMap={false}
     >
-      <AmbientLight intensity={isDimmed ? 0.5 : 0.8} />
+      <AmbientLight intensity={isDimmed ? 0.5 : 0.7} />
       <PointLight intensity={isDimmed ? 0.1 : 0.4} position={[0, 0, 100]} />
       <Group position={[0, 0, -500]}>{children}</Group>
     </Canvas>
