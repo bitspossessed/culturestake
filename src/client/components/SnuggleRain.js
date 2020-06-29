@@ -11,7 +11,7 @@ import { randomRange } from '~/common/utils/random';
 const SNUGGLEPUNK_SIZE = 8;
 
 const FRAME_RATE = 10;
-const MAX_PARTICLES = 15;
+const MAX_PARTICLES = 8;
 const VISIBLE_AREA_OFFSET = 150;
 
 const FALLING_SPEED_MAX = 30;

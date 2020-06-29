@@ -13,7 +13,7 @@ import { useUpdate } from 'react-three-fiber';
 const EXTRUDE_DEPTH = 20;
 const DEFAULT_SCALE = 0.5;
 
-const ThreeModel = ({ svg, texture, ...props }) => {
+const ThreeModel = ({ svg, texture, rotation, scale, ...props }) => {
   const [boxSize, setBoxSize] = useState([0, 0, 0]);
 
   const shapes = useMemo(() => {
@@ -48,7 +48,10 @@ const ThreeModel = ({ svg, texture, ...props }) => {
   );
 
   return (
-    <Group scale={props.scale || [DEFAULT_SCALE, DEFAULT_SCALE, DEFAULT_SCALE]}>
+    <Group
+      rotation={rotation}
+      scale={scale || [DEFAULT_SCALE, DEFAULT_SCALE, DEFAULT_SCALE]}
+    >
       <Mesh {...props} ref={ref}>
         <ExtrudeBufferGeometry args={[shapes, options]} attach="geometry" />
         <MeshStandardMaterial attach="material" map={texture} metalness={0.1} />
@@ -62,6 +65,7 @@ const ThreeModel = ({ svg, texture, ...props }) => {
 };
 
 ThreeModel.propTypes = {
+  rotation: PropTypes.arrayOf(PropTypes.number),
   scale: PropTypes.arrayOf(PropTypes.number),
   svg: PropTypes.object.isRequired,
   texture: PropTypes.object.isRequired,

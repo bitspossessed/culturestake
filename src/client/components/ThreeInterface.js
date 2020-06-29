@@ -9,7 +9,6 @@ import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeButtonNavigation from '~/client/components/ThreeButtonNavigation';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
-import ThreeRotator from '~/client/components/ThreeRotator';
 import styles from '~/client/styles/variables';
 
 const ThreeInterface = (props) => {
@@ -48,29 +47,28 @@ const ThreeInterface = (props) => {
     <Fragment>
       {isShowingHome ? (
         <ThreeInterfaceElement left top onClick={onClickLogo}>
-          <ThreeRotator rotation={[3.5, -0.6, 0]}>
-            <ThreeButtonLogo isAlternateColor={isAlternateColor} />
-          </ThreeRotator>
+          <ThreeButtonLogo
+            isAlternateColor={isAlternateColor}
+            rotation={[3.5, -0.6, 0]}
+          />
         </ThreeInterfaceElement>
       ) : null}
 
       <ThreeInterfaceElement right top onClick={onClickNavigation}>
-        <ThreeRotator rotation={[3.5, 0.3, 0]}>
-          <ThreeButtonNavigation
-            isAlternateColor={isAlternateColor}
-            isExpanded={isExpanded}
-          />
-        </ThreeRotator>
+        <ThreeButtonNavigation
+          isAlternateColor={isAlternateColor}
+          isExpanded={isExpanded}
+          rotation={[3.5, 0.3, 0]}
+        />
       </ThreeInterfaceElement>
 
       {props.isShowingInfo ? (
         <ThreeInterfaceElement bottom left onClick={onClickInfo}>
-          <ThreeRotator rotation={[3, -0.5, -0.1]}>
-            <ThreeButtonInfo
-              isAlternateColor={isAlternateColor}
-              isExpanded={isInfoExpanded}
-            />
-          </ThreeRotator>
+          <ThreeButtonInfo
+            isAlternateColor={isAlternateColor}
+            isExpanded={isInfoExpanded}
+            rotation={[3, -0.5, -0.1]}
+          />
         </ThreeInterfaceElement>
       ) : null}
 

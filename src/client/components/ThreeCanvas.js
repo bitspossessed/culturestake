@@ -3,12 +3,16 @@ import React from 'react';
 import { AmbientLight, PointLight, Group } from 'react-three-fiber/components';
 import { Canvas } from 'react-three-fiber';
 
+const MAX_DEVICE_PIXEL_RATIO = 2;
+
 const ThreeCanvas = ({ children, isDimmed, ...props }) => {
   return (
     <Canvas
       {...props}
+      invalidateFrameloop
+      noEvents
       orthographic
-      pixelRatio={window.devicePixelRatio}
+      pixelRatio={Math.min(window.devicePixelRatio, MAX_DEVICE_PIXEL_RATIO)}
       shadowMap={false}
     >
       <AmbientLight intensity={isDimmed ? 0.5 : 0.8} />

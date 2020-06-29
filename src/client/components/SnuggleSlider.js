@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { useState, useRef } from 'react';
+import debounce from 'debounce';
 import styled from 'styled-components';
 
 import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
@@ -40,6 +41,8 @@ const SnuggleSlider = ({
     });
   };
 
+  const debouncedUpdateValue = debounce(updateValue, 10);
+
   const onPointerDown = () => {
     setIsPointerDown(true);
   };
@@ -49,16 +52,23 @@ const SnuggleSlider = ({
       return;
     }
 
-    updateValue(event);
+    event.persist();
+    debouncedUpdateValue(event);
   };
 
   const onPointerUp = () => {
     setIsPointerDown(false);
   };
 
+  const onClick = (event) => {
+    event.persist();
+    debouncedUpdateValue(event);
+  };
+
   return (
     <SnuggleSliderStyle
-      onClick={updateValue}
+      onClick={onClick}
+      onPointerCancel={onPointerUp}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
