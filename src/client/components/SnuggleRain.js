@@ -30,15 +30,44 @@ const particles = new Array(MAX_PARTICLES).fill(0).map((particle, index) => ({
   swingingSpeed: 0,
   isActive: false,
   isHidden: true,
-  opacity: 0.0,
   snuggleness: 0.0,
 }));
 
 let isFirstRequest = true;
+let isCheckingElements = true;
 let isRequestingSnugglepunk = false;
 let snuggleness = 0.0;
 
-const updateParticles = (frameIndex, dimensions) => {
+function renderParticle(particle) {
+  if (isCheckingElements) {
+    particle.elem = document.getElementById(`particle-${particle.id}`);
+    particle.useElem = document.getElementById(`particle-use-${particle.id}`);
+  }
+
+  // Update element styles (outside of React for performance reasons)
+  if (particle.elem) {
+    particle.elem.style.opacity = particle.isHidden ? 0 : 1;
+    particle.elem.style.transitionDuration = particle.isHidden ? '0s' : '1s';
+    particle.elem.style.transform = `translate3d(${particle.x}px, ${particle.y}px, 0)`;
+  }
+
+  if (particle.useElem) {
+    const svgId =
+      Math.round(particle.snuggleness * (SNUGGLEPUNKS_COUNT - 1)) + 1;
+    particle.useElem.setAttribute('xlink:href', `#snugglepunk-${svgId}`);
+  }
+}
+
+function resetParticle(particle) {
+  particle.y = -VISIBLE_AREA_OFFSET;
+  particle.fallingSpeed = 0;
+  particle.swingingSpeed = 0;
+  particle.swingingDensity = 0;
+  particle.isActive = false;
+  particle.isHidden = true;
+}
+
+function updateParticles(frameIndex, dimensions) {
   particles.forEach((particle) => {
     if (!particle.isActive && isRequestingSnugglepunk) {
       // Spawn a snugglepunk!
@@ -90,23 +119,25 @@ const updateParticles = (frameIndex, dimensions) => {
       }
     }
 
-    // Update element styles (outside of React for performance reasons)
-    if (!particle.elem) {
-      particle.elem = document.getElementById(`particle-${particle.id}`);
-      particle.useElem = document.getElementById(`particle-use-${particle.id}`);
-    }
-
-    particle.elem.style.opacity = particle.isHidden ? 0 : 1;
-    particle.elem.style.transitionDuration = particle.isHidden ? '0s' : '1s';
-    particle.elem.style.transform = `translate3d(${particle.x}px, ${particle.y}px, 0)`;
-
-    const svgId =
-      Math.round(particle.snuggleness * (SNUGGLEPUNKS_COUNT - 1)) + 1;
-    particle.useElem.setAttribute('xlink:href', `#snugglepunk-${svgId}`);
+    renderParticle(particle);
   });
-};
+
+  isCheckingElements = false;
+}
 
 const SnuggleRain = (props) => {
+  useEffect(() => {
+    return () => {
+      isFirstRequest = true;
+      isCheckingElements = true;
+
+      particles.forEach((particle) => {
+        resetParticle(particle);
+        renderParticle(particle);
+      });
+    };
+  }, []);
+
   useEffect(() => {
     if (isFirstRequest) {
       isFirstRequest = false;
@@ -133,11 +164,12 @@ const SnuggleRainParticles = () => {
     };
 
     let frameIndex = 0;
+    let rafRequestId;
 
     const nextFrame = () => {
       updateParticles(frameIndex, dimensions);
       frameIndex += 1;
-      animationFrameHandler.request(nextFrame);
+      rafRequestId = animationFrameHandler.request(nextFrame);
     };
 
     nextFrame();
@@ -151,7 +183,7 @@ const SnuggleRainParticles = () => {
     resizeObserver.observe(document.body);
 
     return () => {
-      animationFrameHandler.cancel();
+      animationFrameHandler.cancel(rafRequestId);
       resizeObserver.disconnect();
     };
   }, []);
