@@ -6,7 +6,7 @@ import {
   ExtrudeBufferGeometry,
   Group,
   Mesh,
-  MeshStandardMaterial,
+  MeshLambertMaterial,
 } from 'react-three-fiber/components';
 import { useUpdate } from 'react-three-fiber';
 
@@ -54,7 +54,7 @@ const ThreeModel = ({ svg, texture, rotation, scale, ...props }) => {
     >
       <Mesh {...props} ref={ref}>
         <ExtrudeBufferGeometry args={[shapes, options]} attach="geometry" />
-        <MeshStandardMaterial attach="material" map={texture} metalness={0.1} />
+        <MeshLambertMaterial attach="material" map={texture} metalness={0.1} />
       </Mesh>
 
       <Mesh visible={false}>
