@@ -1,8 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useCallback, useState, useRef } from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
-import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
+import styles, {
+  DEFAULT_SCHEME,
+  SCHEME_ALTERNATE,
+} from '~/client/styles/variables';
 import { SNUGGLEPUNKS_COUNT } from '~/client/components/SVGDefinitions';
 
 const SNUGGLEPUNK_SIZE = 8;
@@ -22,6 +26,9 @@ const SnuggleSlider = ({
   onChange,
   scheme = DEFAULT_SCHEME,
 }) => {
+  const { isAlternateColor } = useSelector((state) => state.app);
+  const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
+
   const [isDragging, setIsDragging] = useState(false);
   const ref = useRef();
 
@@ -152,7 +159,7 @@ const SnuggleSlider = ({
       <SnuggleSliderBarStyle
         percentage={percentage}
         ref={ref}
-        scheme={scheme}
+        scheme={innerScheme}
       />
 
       <SnuggleSliderHandleContainerStyle percentage={percentage}>

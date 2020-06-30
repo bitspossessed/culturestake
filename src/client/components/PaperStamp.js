@@ -1,15 +1,19 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import Paper, { PaperStyle } from '~/client/components/Paper';
-import styles from '~/client/styles/variables';
+import styles, { SCHEME_ALTERNATE } from '~/client/styles/variables';
 
 const PaperStamp = (props) => {
+  const { isAlternateColor } = useSelector((state) => state.app);
+  const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
+
   return (
-    <PaperStampStyle scheme={props.scheme}>
+    <PaperStampStyle scheme={innerScheme}>
       <PaperStampLine position="top" />
-      <Paper scheme={props.scheme}>{props.children}</Paper>
+      <Paper scheme={innerScheme}>{props.children}</Paper>
       <PaperStampLine position="bottom" />
     </PaperStampStyle>
   );

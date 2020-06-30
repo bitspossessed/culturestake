@@ -3,12 +3,16 @@ import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { useLoader } from 'react-three-fiber';
+import { useSelector } from 'react-redux';
 
 import {
   CLIP_PATHS,
   CLIP_PATH_DIMENSION,
 } from '~/client/components/SVGDefinitions';
-import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
+import styles, {
+  DEFAULT_SCHEME,
+  SCHEME_ALTERNATE,
+} from '~/client/styles/variables';
 import star from '~/client/assets/images/star.svg';
 
 // @TODO: Extract properties from sticker generator codes
@@ -19,20 +23,27 @@ const Sticker = ({
   scheme = DEFAULT_SCHEME,
   ...props
 }) => {
+  const { isAlternateColor } = useSelector((state) => state.app);
+  const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
+
   return (
     <StickerStyle
-      color={styles.schemes[scheme].foreground}
+      color={styles.schemes[innerScheme].foreground}
       height={CLIP_PATH_DIMENSION}
       width={CLIP_PATH_DIMENSION}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <StickerImage clipPathId={clipPathId} scheme={scheme} src={props.src} />
+      <StickerImage
+        clipPathId={clipPathId}
+        scheme={innerScheme}
+        src={props.src}
+      />
 
       <Suspense fallback={null}>
         <StickerParticles
           path={particlePath}
           positions={particlePositions}
-          scheme={scheme}
+          scheme={innerScheme}
         />
       </Suspense>
 
@@ -40,7 +51,7 @@ const Sticker = ({
         <g
           fill="transparent"
           shapeRendering="crispEdges"
-          stroke={styles.schemes[scheme].foreground}
+          stroke={styles.schemes[innerScheme].foreground}
           strokeWidth="1.5"
         >
           <rect
@@ -141,7 +152,7 @@ const StickerParticles = (props) => {
 //   });
 // };
 
-const StickerStyle = styled.svg`
+export const StickerStyle = styled.svg`
   display: block;
 
   width: ${CLIP_PATH_DIMENSION}px;

@@ -92,7 +92,7 @@ const schemes = {
   [SCHEME_ALTERNATE]: {
     background: colors.black,
     foreground: colors.yellow,
-    backgroundSticker: colors.black,
+    backgroundSticker: colors.yellow,
   },
   [SCHEME_BLACK]: {
     background: colors.white,
