@@ -36,11 +36,7 @@ describe('API', () => {
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
-    const questionAddress = await initQuestion(
-      admin,
-      'festival',
-      'my question',
-    );
+    const questionAddress = await initQuestion(admin, 'festival');
     question = getQuestionContract(questionAddress);
 
     // add answer to api
