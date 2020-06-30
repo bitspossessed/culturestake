@@ -1,12 +1,19 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState, useRef } from 'react';
-import debounce from 'debounce';
+import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 
 import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
 import { SNUGGLEPUNKS_COUNT } from '~/client/components/SVGDefinitions';
 
 const SNUGGLEPUNK_SIZE = 8;
+
+function isNotTouchEvent(event) {
+  return (
+    !event.touches ||
+    event.touches.length > 1 ||
+    (event.type.toLowerCase() === 'touchend' && event.touches.length > 0)
+  );
+}
 
 const SnuggleSlider = ({
   credit,
@@ -15,7 +22,7 @@ const SnuggleSlider = ({
   onChange,
   scheme = DEFAULT_SCHEME,
 }) => {
-  const [isPointerDown, setIsPointerDown] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const ref = useRef();
 
   // Calculate slider position
@@ -28,12 +35,16 @@ const SnuggleSlider = ({
     Math.round((currentVotePower / totalVotePower) * (SNUGGLEPUNKS_COUNT - 1)) +
     1;
 
-  const updateValue = (event) => {
+  const updateValue = (position) => {
     const { x, width } = ref.current.getBoundingClientRect();
 
     const newCredit = Math.round(
-      (Math.min(Math.max(0, event.pageX - x), width) / width) * total,
+      (Math.min(Math.max(0, position - x), width) / width) * total,
     );
+
+    if (credit === newCredit) {
+      return;
+    }
 
     onChange({
       id,
@@ -41,44 +52,84 @@ const SnuggleSlider = ({
     });
   };
 
-  const debouncedUpdateValue = debounce(updateValue, 10);
+  // const debouncedUpdateValue = debounce(updateValue, 10);
 
-  const onPointerDown = () => {
-    setIsPointerDown(true);
+  const onStart = (position) => {
+    setIsDragging(true);
+    updateValue(position);
   };
 
-  const onPointerMove = (event) => {
-    if (!isPointerDown) {
+  const onMove = (position) => {
+    if (!isDragging) {
       return;
     }
 
-    event.persist();
-    debouncedUpdateValue(event);
+    updateValue(position);
   };
 
-  const onPointerUp = () => {
-    setIsPointerDown(false);
+  const onEnd = () => {
+    setIsDragging(false);
   };
 
-  const onClick = (event) => {
-    event.persist();
-    debouncedUpdateValue(event);
+  const onMouseDown = (event) => {
+    if (event.button !== 0) {
+      return;
+    }
+
+    onStart(event.pageX);
   };
 
-  useEffect(() => {
-    window.addEventListener('pointerup', onPointerUp);
+  const onMouseMove = (event) => {
+    onMove(event.pageX);
 
-    return () => {
-      window.removeEventListener('pointerup', onPointerUp);
-    };
-  }, []);
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const onMouseUp = () => {
+    onEnd();
+  };
+
+  const onTouchStart = (event) => {
+    if (isNotTouchEvent(event)) {
+      return;
+    }
+
+    onStart(event.touches[0].pageX);
+
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const onTouchMove = (event) => {
+    if (isNotTouchEvent(event)) {
+      onEnd();
+      return;
+    }
+
+    onMove(event.touches[0].pageX);
+
+    event.stopPropagation();
+    event.preventDefault();
+  };
+
+  const onTouchEnd = () => {
+    onEnd();
+  };
+
+  const onBlur = () => {
+    onEnd();
+  };
 
   return (
     <SnuggleSliderStyle
-      onClick={onClick}
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
+      onBlur={onBlur}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+      onTouchEnd={onTouchEnd}
+      onTouchMove={onTouchMove}
+      onTouchStart={onTouchStart}
     >
       <SnuggleSliderBarStyle
         percentage={percentage}
