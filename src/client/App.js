@@ -9,6 +9,7 @@ import Routes from '~/client/routes';
 import SVGDefinitions from '~/client/components/SVGDefinitions';
 import ThreeInterface from '~/client/components/ThreeInterface';
 import { initializeApp } from '~/client/store/app/actions';
+import { initializeProvider } from '~/client/store/ethereum/actions';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const App = () => {
   const onAppStart = () => {
     const initialize = async () => {
       await dispatch(initializeApp());
+      await dispatch(initializeProvider());
     };
 
     initialize();
