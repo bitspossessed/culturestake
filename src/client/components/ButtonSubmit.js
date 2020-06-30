@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Button from '~/client/components/Button';
+import ButtonIcon from '~/client/components/ButtonIcon';
 
 const ButtonSubmit = ({ children, isPending, ...rest }) => {
   return (
-    <Button type="submit" {...rest}>
+    <ButtonIcon type="submit" {...rest}>
       {isPending ? '...' : children}
-    </Button>
+    </ButtonIcon>
   );
 };
 

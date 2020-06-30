@@ -9,7 +9,7 @@ import {
 
 import translate from '~/common/services/i18n';
 
-import Button from '~/client/components/Button';
+import ButtonOutline from '~/client/components/ButtonOutline';
 import ButtonSubmitDefault from '~/client/components/ButtonSubmit';
 import {
   destroyRequest,
@@ -257,9 +257,9 @@ export const useEditForm = ({
 
   const ButtonDelete = () => {
     return (
-      <Button disabled={!canSubmit} onClick={onClickDestroy}>
+      <ButtonOutline disabled={!canSubmit} isDangerous onClick={onClickDestroy}>
         {translate('default.buttonDestroy')}
-      </Button>
+      </ButtonOutline>
     );
   };
 

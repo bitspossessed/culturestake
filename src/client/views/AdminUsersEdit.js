@@ -1,14 +1,14 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import translate from '~/common/services/i18n';
 
-import Footer from '~/client/components/Footer';
+import ButtonIcon from '~/client/components/ButtonIcon';
+import FooterAdmin from '~/client/components/FooterAdmin';
 import FormUsers from '~/client/components/FormUsers';
-import Header from '~/client/components/Header';
-import View from '~/client/components/View';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
+import ViewAdmin from '~/client/components/ViewAdmin';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -17,15 +17,8 @@ import notify, {
 const AdminUsersEdit = () => {
   return (
     <Fragment>
-      <Header>
-        <h1>{translate('AdminUsersEdit.title')}</h1>
-      </Header>
-
-      <View>
-        <AdminUsersEditForm />
-      </View>
-
-      <Footer />
+      <HeaderAdmin>{translate('AdminUsersEdit.title')}</HeaderAdmin>
+      <AdminUsersEditForm />
     </Fragment>
   );
 };
@@ -77,13 +70,19 @@ const AdminUsersEditForm = () => {
 
   return (
     <Fragment>
-      <Form>
-        <FormUsers isPasswordHidden />
-        <ButtonSubmit />
-      </Form>
+      <ViewAdmin>
+        <Form>
+          <FormUsers isPasswordHidden />
+          <ButtonDelete />
+          <ButtonSubmit />
+        </Form>
+      </ViewAdmin>
 
-      <ButtonDelete />
-      <Link to={returnUrl}>{translate('default.buttonReturnToOverview')}</Link>
+      <FooterAdmin>
+        <ButtonIcon to={returnUrl}>
+          {translate('default.buttonReturnToOverview')}
+        </ButtonIcon>
+      </FooterAdmin>
     </Fragment>
   );
 };

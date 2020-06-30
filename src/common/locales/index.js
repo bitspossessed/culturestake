@@ -19,9 +19,22 @@ const components = {
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
   },
+  Navigation: {
+    linkAdminDashboard: 'Dashboard',
+    linkAdminFestivals: 'Festivals',
+    linkAdminSignOut: '🚪',
+    linkAdminUsers: 'Users',
+    notificationSignOutSuccess: 'Your session has ended. See you soon!',
+    titleAccessibility: 'Accessibility',
+    titleAdmin: 'Admin:',
+    titleFestivals: 'Festivals:',
+  },
   InputUploadField: {
     buttonRemoveFile: 'Remove',
     buttonSelectFiles: 'Select files',
+  },
+  VoteCreditsBar: {
+    voteCredits: 'Vote Credits',
   },
 };
 
@@ -80,7 +93,7 @@ const views = {
     notificationSuccess: 'You created the festival {title}.',
   },
   Homepage: {
-    title: 'Hello, Decal!',
+    buttonViewFestivals: 'View Festivals',
   },
   NotFound: {
     title: 'Not Found',
@@ -88,6 +101,7 @@ const views = {
 };
 
 export default {
+  title: 'Future Fairness',
   default: {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',

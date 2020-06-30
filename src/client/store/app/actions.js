@@ -60,3 +60,18 @@ export function resetToken() {
     type: ActionTypes.APP_TOKEN_RESET,
   };
 }
+
+export function updateAccessibilitySettings({
+  isAlternateColor = false,
+  isAlternateFontFace = false,
+  isLargerFont = false,
+}) {
+  return {
+    type: ActionTypes.APP_ACCESSIBILITY_UPDATE,
+    meta: {
+      isAlternateColor,
+      isAlternateFontFace,
+      isLargerFont,
+    },
+  };
+}
