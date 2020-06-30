@@ -30,7 +30,9 @@ const SnuggleSlider = ({
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
 
   const [isDragging, setIsDragging] = useState(false);
-  const ref = useRef();
+
+  const refContainer = useRef();
+  const refBar = useRef();
 
   // Calculate slider position
   const percentage = (credit / total) * 100;
@@ -44,7 +46,7 @@ const SnuggleSlider = ({
 
   const updateValue = useCallback(
     (position) => {
-      const { x, width } = ref.current.getBoundingClientRect();
+      const { x, width } = refBar.current.getBoundingClientRect();
 
       const newCredit = Math.round(
         (Math.min(Math.max(0, position - x), width) / width) * total,
@@ -150,6 +152,15 @@ const SnuggleSlider = ({
     };
   }, [onMove, onEnd]);
 
+  useEffect(() => {
+    // Update styles outside of React to improve performance
+    refContainer.current.style.transform = `translate3d(${percentage}%, 0, 0)`;
+
+    const { foreground } = styles.schemes[innerScheme];
+    const gradient = `${foreground} 0%, ${foreground} ${percentage}%, transparent ${percentage}%`;
+    refBar.current.style.background = `linear-gradient(to right, ${gradient})`;
+  }, [refContainer, percentage, innerScheme]);
+
   return (
     <SnuggleSliderStyle
       onBlur={onBlur}
@@ -158,11 +169,14 @@ const SnuggleSlider = ({
     >
       <SnuggleSliderBarStyle
         percentage={percentage}
-        ref={ref}
+        ref={refBar}
         scheme={innerScheme}
       />
 
-      <SnuggleSliderHandleContainerStyle percentage={percentage}>
+      <SnuggleSliderHandleContainerStyle
+        percentage={percentage}
+        ref={refContainer}
+      >
         <SnuggleSliderHandleStyle>
           <use xlinkHref={`#snugglepunk-${snuggleness}`} />
         </SnuggleSliderHandleStyle>
@@ -180,14 +194,6 @@ const SnuggleSliderBarStyle = styled.div`
     return styles.schemes[props.scheme].foreground;
   }};
   border-radius: 10px;
-
-  background: linear-gradient(
-    to right,
-    ${(props) => {
-      const { foreground } = styles.schemes[props.scheme];
-      return `${foreground} 0%, ${foreground} ${props.percentage}%, transparent ${props.percentage}%`;
-    }}
-  );
 `;
 
 const SnuggleSliderHandleContainerStyle = styled.div`
@@ -196,8 +202,6 @@ const SnuggleSliderHandleContainerStyle = styled.div`
   top: 0;
   right: ${SNUGGLEPUNK_SIZE / 3}rem;
   left: ${SNUGGLEPUNK_SIZE / 3}rem;
-
-  transform: translate3d(${(props) => props.percentage}%, 0, 0);
 
   pointer-events: none;
 
