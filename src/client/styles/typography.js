@@ -46,9 +46,15 @@ export default createGlobalStyle`
 export const ParagraphStyle = styled.p``;
 
 export const HeadingPrimaryStyle = styled.h1`
+  margin-bottom: 1rem;
+
   font-size: 3em;
+
+  line-height: 0.9;
 `;
 
 export const HeadingSecondaryStyle = styled.h2`
   font-size: 1.5em;
+
+  line-height: 0.9;
 `;
