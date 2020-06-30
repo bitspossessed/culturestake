@@ -11,6 +11,7 @@ const defaultValidation = {
   description: Joi.string().required(),
   images: imagesValidation.max(10),
   documents: documentsValidation.max(1),
+  artworks: Joi.array().max(30),
 };
 
 export default {

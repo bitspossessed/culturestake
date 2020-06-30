@@ -3,15 +3,27 @@ import baseController from '~/server/controllers';
 import {
   FestivalHasManyImages,
   FestivalHasManyDocuments,
+  FestivalBelongsToManyArtworks,
 } from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Festival,
-  fields: ['title', 'description', 'images', 'documents', 'chainId'],
+  fields: [
+    'title',
+    'description',
+    'images',
+    'documents',
+    'chainId',
+    'artworks',
+  ],
   fieldsProtected: [],
-  include: [FestivalHasManyImages, FestivalHasManyDocuments],
+  include: [
+    FestivalHasManyImages,
+    FestivalHasManyDocuments,
+    FestivalBelongsToManyArtworks,
+  ],
   associations: [
     {
       association: FestivalHasManyImages,
@@ -27,6 +39,11 @@ const options = {
       association: FestivalHasManyDocuments,
       destroyCascade: true,
       fields: [...baseFileFields],
+    },
+    {
+      association: FestivalBelongsToManyArtworks,
+      destroyCascade: false,
+      fields: ['title', 'description', 'images'],
     },
   ],
 };

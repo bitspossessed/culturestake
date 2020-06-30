@@ -95,3 +95,17 @@ export const ArtistHasManyImages = Artist.hasMany(Image, {
   },
   as: 'images',
 });
+
+export const ArtworkBelongsToManyFestivals = Artwork.belongsToMany(Festival, {
+  through: 'Festivals2Artworks',
+  as: 'festivals',
+  foreignKey: 'artworkId',
+  otherKey: 'festivalId',
+});
+
+export const FestivalBelongsToManyArtworks = Festival.belongsToMany(Artwork, {
+  through: 'Festivals2Artworks',
+  as: 'artworks',
+  foreignKey: 'festivalId',
+  otherKey: 'artworkId',
+});

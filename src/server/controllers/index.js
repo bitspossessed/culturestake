@@ -74,14 +74,14 @@ async function handleAssociation(instance, options, items) {
 
   // Collect ids of all items to be associated to instance
   const ids = [];
+  // const knownCreations = [];
   items.forEach(item => {
     if (typeof item === 'number') {
       ids.push(item);
+    } else if (!('id' in item)) {
+      // knownCreations.push(item);
+      throw new Error('`id` missing in association items');
     } else {
-      if (!('id' in item)) {
-        throw new Error('`id` missing in association items');
-      }
-
       ids.push(item.id);
     }
   });
