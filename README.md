@@ -8,8 +8,8 @@ CultureStake democratises arts commissioning by providing communities and artist
 
 ## Requirements
 
-* NodeJS environment
-* PostgreSQL database
+- NodeJS environment
+- PostgreSQL database
 
 ## Usage
 

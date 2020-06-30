@@ -14,6 +14,7 @@ import AdminUsersNew from '~/client/views/AdminUsersNew';
 import Booth from '~/client/views/Booth';
 import Homepage from '~/client/views/Homepage';
 import NotFound from '~/client/views/NotFound';
+import Test from '~/client/views/Test';
 import Vote from '~/client/views/Vote';
 
 const SessionContainer = ({ component: Component, isTokenRequired = null }) => {
@@ -68,6 +69,11 @@ const Routes = () => (
       component={Homepage}
       exact
       path="/"
+    />
+    <PublicRoute
+      component={Test}
+      exact
+      path="/test"
     />
     <AuthenticatedRoute
       component={Admin}

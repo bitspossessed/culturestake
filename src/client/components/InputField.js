@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import styled from 'styled-components';
 
 import InputFieldset from '~/client/components/InputFieldset';
 import { useField } from '~/client/hooks/forms';
+import styles from '~/client/styles/variables';
 
 // eslint-disable-next-line react/display-name
 const InputField = React.forwardRef(
@@ -11,11 +13,27 @@ const InputField = React.forwardRef(
 
     return (
       <InputFieldset label={label} meta={meta} name={name}>
-        <input {...getInputProps({ ref, id: name, ...rest })} ref={ref} />
+        <InputFieldStyle
+          {...getInputProps({ ref, id: name, ...rest })}
+          ref={ref}
+        />
       </InputFieldset>
     );
   },
 );
+
+const InputFieldStyle = styled.input`
+  width: 100%;
+
+  padding: 1rem;
+
+  border: 1.5px solid ${styles.colors.violet};
+  border-radius: 20px;
+
+  color: ${styles.colors.violet};
+
+  background-color: transparent;
+`;
 
 InputField.propTypes = {
   label: PropTypes.string.isRequired,

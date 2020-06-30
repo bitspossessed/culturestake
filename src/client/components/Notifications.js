@@ -1,8 +1,20 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
+import styled from 'styled-components';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { removeNotification } from '~/client/store/notifications/actions';
+import styles from '~/client/styles/variables';
+import { HeadingPrimaryStyle } from '~/client/styles/typography';
+import {
+  NotificationsTypes,
+  removeNotification,
+} from '~/client/store/notifications/actions';
+
+const NOTIFICATIONS_COLORS = {
+  [NotificationsTypes.INFO]: styles.colors.violet,
+  [NotificationsTypes.WARNING]: styles.colors.magenta,
+  [NotificationsTypes.ERROR]: styles.colors.red,
+};
 
 const Notifications = () => {
   const { messages } = useSelector((state) => state.notifications);
@@ -12,9 +24,9 @@ const Notifications = () => {
   }
 
   return (
-    <ul>
+    <NotificationsStyle>
       <NotificationsList items={messages} />
-    </ul>
+    </NotificationsStyle>
   );
 };
 
@@ -32,20 +44,20 @@ const NotificationsList = (props) => {
   });
 };
 
-const NotificationsItem = (props) => {
+const NotificationsItem = ({ id, lifetime, text, type }) => {
   const dispatch = useDispatch();
 
-  const onRemove = () => {
-    dispatch(removeNotification(props.id));
-  };
+  const onRemove = useCallback(() => {
+    dispatch(removeNotification(id));
+  }, [dispatch, id]);
 
   useEffect(() => {
     let timeout;
 
-    if (props.lifetime > 0) {
+    if (lifetime > 0) {
       timeout = window.setTimeout(() => {
         onRemove();
-      }, props.lifetime);
+      }, lifetime);
     }
 
     return () => {
@@ -53,10 +65,51 @@ const NotificationsItem = (props) => {
         window.clearTimeout(timeout);
       }
     };
-  }, []);
+  }, [onRemove, lifetime]);
 
-  return <li onClick={onRemove}>{props.text}</li>;
+  return (
+    <NotificationsItemStyle type={type} onClick={onRemove}>
+      <NotificationItemTextStyle>{text}</NotificationItemTextStyle>
+    </NotificationsItemStyle>
+  );
 };
+
+const NotificationsStyle = styled.ul`
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  left: 0;
+
+  z-index: ${styles.layers.Notifications};
+
+  margin: 0 auto;
+  padding: 0;
+
+  list-style: none;
+`;
+
+const NotificationsItemStyle = styled.li`
+  display: block;
+
+  color: ${styles.colors.white};
+
+  background-color: ${(props) => {
+    return NOTIFICATIONS_COLORS[props.type];
+  }};
+
+  text-align: center;
+
+  cursor: pointer;
+`;
+
+const NotificationItemTextStyle = styled(HeadingPrimaryStyle)`
+  padding: 2rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+
+  text-align: center;
+`;
 
 NotificationsList.propTypes = {
   items: PropTypes.arrayOf(

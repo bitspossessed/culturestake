@@ -1,7 +1,7 @@
 import express from 'express';
 
 import authMiddleware from '~/server/middlewares/passport';
-import resizeImagesMiddleware from '~/server/middlewares/resizeImages';
+import convertImagesMiddleware from '~/server/middlewares/convertImages';
 import uploadFilesMiddleware from '~/server/middlewares/uploadFiles';
 import uploadsController from '~/server/controllers/uploads';
 import { getPath } from '~/server/helpers/path';
@@ -29,7 +29,7 @@ router.post(
       name: FIELD_NAME,
     },
   ]),
-  resizeImagesMiddleware([
+  convertImagesMiddleware([
     {
       name: FIELD_NAME,
       versions: [

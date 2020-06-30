@@ -1,15 +1,13 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import translate from '~/common/services/i18n';
-
-import Footer from '~/client/components/Footer';
+import ButtonIcon from '~/client/components/ButtonIcon';
+import FooterAdmin from '~/client/components/FooterAdmin';
 import FormUsers from '~/client/components/FormUsers';
-import Header from '~/client/components/Header';
-import View from '~/client/components/View';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
+import ViewAdmin from '~/client/components/ViewAdmin';
+import translate from '~/common/services/i18n';
 import { useNewForm } from '~/client/hooks/forms';
-
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
@@ -26,7 +24,7 @@ const AdminUsersNew = () => {
     onSuccess: ({ username }) => {
       dispatch(
         notify({
-          text: translate('AdminFestivalsNew.notificationSuccess', {
+          text: translate('AdminUsersNew.notificationSuccess', {
             username,
           }),
         }),
@@ -44,22 +42,20 @@ const AdminUsersNew = () => {
 
   return (
     <Fragment>
-      <Header>
-        <h1>{translate('AdminUsersNew.title')}</h1>
-      </Header>
+      <HeaderAdmin>{translate('AdminUsersNew.title')}</HeaderAdmin>
 
-      <View>
+      <ViewAdmin>
         <Form>
           <FormUsers />
           <ButtonSubmit />
         </Form>
+      </ViewAdmin>
 
-        <Link to={returnUrl}>
+      <FooterAdmin>
+        <ButtonIcon to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
-        </Link>
-      </View>
-
-      <Footer />
+        </ButtonIcon>
+      </FooterAdmin>
     </Fragment>
   );
 };

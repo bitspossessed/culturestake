@@ -16,17 +16,13 @@ export const useResource = (path, { onError, onSuccess }) => {
   } = useSelector((state) => state.resources);
 
   // Convert arrays to strings for easier comparison
-  const pathStr = path.join('');
-  const currentPathStr = currentPath.join('');
-
-  // Request the resource from the API when we don't have it yet or
-  // another resource is still in the cache
-  const isRequestedPath = () => currentPathStr === pathStr;
+  const pathStr = path.join('/');
+  const currentPathStr = currentPath.join('/');
 
   // Request the resource on every component mount
   useEffect(() => {
-    dispatch(requestResource(path));
-  }, []);
+    dispatch(requestResource(pathStr.split('/')));
+  }, [pathStr, dispatch]);
 
   useEffect(() => {
     if (isError && onError) {
@@ -34,16 +30,20 @@ export const useResource = (path, { onError, onSuccess }) => {
     } else if (isSuccess && onSuccess) {
       onSuccess();
     }
-  }, [currentPathStr, isError, isSuccess]);
+  }, [isError, isSuccess, onError, onSuccess]);
 
   // Return the resource (when given) and the loading state
   const data = useMemo(() => {
+    // Request the resource from the API when we don't have it yet or
+    // another resource is still in the cache
+    const isRequestedPath = () => currentPathStr === pathStr;
+
     if (isRequestedPath() && isSuccess) {
       return currentData;
     }
 
     return {};
-  }, [isLoading]);
+  }, [currentPathStr, pathStr, currentData, isSuccess]);
 
   return [data, isLoading];
 };

@@ -1,13 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Normalize } from 'styled-normalize';
+import { useDispatch, useSelector } from 'react-redux';
 
+import GlobalStyle from '~/client/styles';
 import Notifications from '~/client/components/Notifications';
 import Routes from '~/client/routes';
+import SVGDefinitions from '~/client/components/SVGDefinitions';
+import ThreeInterface from '~/client/components/ThreeInterface';
 import { initializeApp } from '~/client/store/app/actions';
 
 const App = () => {
   const dispatch = useDispatch();
+  const { isAlternateColor } = useSelector((state) => state.app);
 
   const onAppStart = () => {
     const initialize = async () => {
@@ -17,13 +22,20 @@ const App = () => {
     initialize();
   };
 
-  useEffect(onAppStart, []);
+  useEffect(onAppStart, [dispatch]);
 
   return (
-    <Router>
-      <Notifications />
-      <Routes />
-    </Router>
+    <Fragment>
+      <Normalize />
+      <GlobalStyle isAlternateColor={isAlternateColor} />
+      <SVGDefinitions />
+
+      <Router>
+        <Notifications />
+        <ThreeInterface />
+        <Routes />
+      </Router>
+    </Fragment>
   );
 };
 

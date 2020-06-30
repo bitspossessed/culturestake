@@ -11,20 +11,24 @@ const filesBaseValidation = {
   url: Joi.string().uri({ relativeOnly: true }).required(),
 };
 
-export const documentsValidation = Joi.array().items(
-  Joi.object({
-    ...filesBaseValidation,
-  }),
-);
+export const documentsValidation = Joi.array()
+  .required()
+  .items(
+    Joi.object({
+      ...filesBaseValidation,
+    }),
+  );
 
-export const imagesValidation = Joi.array().items(
-  Joi.object({
-    ...filesBaseValidation,
-    urlThreshold: Joi.string().uri({ relativeOnly: true }).required(),
-    urlThresholdThumb: Joi.string().uri({ relativeOnly: true }).required(),
-    urlThumb: Joi.string().uri({ relativeOnly: true }).required(),
-  }),
-);
+export const imagesValidation = Joi.array()
+  .required()
+  .items(
+    Joi.object({
+      ...filesBaseValidation,
+      urlThreshold: Joi.string().uri({ relativeOnly: true }).required(),
+      urlThresholdThumb: Joi.string().uri({ relativeOnly: true }).required(),
+      urlThumb: Joi.string().uri({ relativeOnly: true }).required(),
+    }),
+  );
 
 export const web3Validators = Joi.extend((joi) => {
   return {

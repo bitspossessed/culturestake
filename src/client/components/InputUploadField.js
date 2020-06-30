@@ -1,11 +1,14 @@
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import mime from 'mime/lite';
 import { useDispatch } from 'react-redux';
 
 import translate from '~/common/services/i18n';
 
+import ButtonOutline from '~/client/components/ButtonOutline';
 import InputFieldset from '~/client/components/InputFieldset';
+import styles from '~/client/styles/variables';
 import { imageToBase64 } from '~/client/services/images';
 import { postRequest } from '~/client/store/api/actions';
 import { useField } from '~/client/hooks/forms';
@@ -85,7 +88,7 @@ const InputUploadField = ({
     form.setMeta({
       isPending,
     });
-  }, [isPending]);
+  }, [isPending, form]);
 
   // Register form field
   const { form, meta, setMeta, setValue, value } = useField(name, {
@@ -202,40 +205,73 @@ const InputUploadField = ({
         onChange={onChangeFiles}
       />
 
-      <button disabled={form.meta.isPending} onClick={onClickUpload}>
+      <ButtonOutline disabled={form.meta.isPending} onClick={onClickUpload}>
         {translate('InputUploadField.buttonSelectFiles')}
-      </button>
+      </ButtonOutline>
     </InputFieldset>
   );
 };
 
 const InputUploadFieldItems = ({ files, onRemove }) => {
   return (
-    <ul>
+    <InputUploadFieldItemsStyle>
       {files.map(({ id, fileName, fileType, base64, urlThumb }, index) => {
         const onClickRemove = () => {
           onRemove(id);
         };
 
         return (
-          <li key={index}>
-            <span>
-              {fileName} [{fileType}]
-            </span>
-
+          <InputUploadFieldItemStyle key={index}>
             {isImage(fileType) ? (
-              <img src={base64 || urlThumb} width={50} />
+              <InputUploadFieldImageStyle src={base64 || urlThumb} width={50} />
             ) : null}
 
-            <button disabled={!id} onClick={onClickRemove}>
+            <InputUploadFieldItemTextStyle>
+              {fileName} [{fileType}]
+            </InputUploadFieldItemTextStyle>
+
+            <ButtonOutline disabled={!id} onClick={onClickRemove}>
               {translate('InputUploadField.buttonRemoveFile')}
-            </button>
-          </li>
+            </ButtonOutline>
+          </InputUploadFieldItemStyle>
         );
       })}
-    </ul>
+    </InputUploadFieldItemsStyle>
   );
 };
+
+const InputUploadFieldItemsStyle = styled.ul`
+  padding: 0;
+
+  list-style: none;
+`;
+
+const InputUploadFieldItemStyle = styled.li`
+  display: flex;
+
+  padding: 1rem;
+
+  border: 1.5px solid ${styles.colors.violet};
+  border-radius: 20px;
+
+  color: ${styles.colors.violet};
+
+  align-items: center;
+  justify-content: space-between;
+
+  & + & {
+    margin-top: 1rem;
+  }
+`;
+
+const InputUploadFieldImageStyle = styled.img`
+  width: 10rem;
+
+  border: 1.5px solid ${styles.colors.violet};
+  border-radius: 20px;
+`;
+
+const InputUploadFieldItemTextStyle = styled.span``;
 
 InputUploadField.propTypes = {
   isImageUpload: PropTypes.bool,

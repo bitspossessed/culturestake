@@ -1,13 +1,13 @@
 import React, { Fragment } from 'react';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import translate from '~/common/services/i18n';
 
-import Footer from '~/client/components/Footer';
+import ButtonIcon from '~/client/components/ButtonIcon';
+import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
-import Header from '~/client/components/Header';
-import View from '~/client/components/View';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
+import ViewAdmin from '~/client/components/ViewAdmin';
 import { useNewForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -43,22 +43,20 @@ const AdminFestivalsNew = () => {
 
   return (
     <Fragment>
-      <Header>
-        <h1>{translate('AdminFestivalsNew.title')}</h1>
-      </Header>
+      <HeaderAdmin>{translate('AdminFestivalsNew.title')}</HeaderAdmin>
 
-      <View>
+      <ViewAdmin>
         <Form>
           <FormFestivals />
           <ButtonSubmit />
         </Form>
+      </ViewAdmin>
 
-        <Link to={returnUrl}>
+      <FooterAdmin>
+        <ButtonIcon to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
-        </Link>
-      </View>
-
-      <Footer />
+        </ButtonIcon>
+      </FooterAdmin>
     </Fragment>
   );
 };
