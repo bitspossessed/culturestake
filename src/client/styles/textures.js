@@ -1,4 +1,4 @@
-import { CanvasTexture, MirroredRepeatWrapping, sRGBEncoding } from 'three';
+import { CanvasTexture, sRGBEncoding } from 'three';
 
 import styles from '~/client/styles/variables';
 
@@ -23,8 +23,6 @@ export function generateGradientTexture({
   context.fill();
 
   const texture = new CanvasTexture(canvas);
-  texture.wrapS = MirroredRepeatWrapping;
-  texture.wrapT = MirroredRepeatWrapping;
   texture.repeat.set(repeat, repeat);
 
   texture.encoding = sRGBEncoding;
