@@ -46,9 +46,10 @@ const ThreeSplash = () => {
 
 const ThreeSplashLogos = (props) => {
   const { size } = useThree();
-  const { width, height } = size;
 
   return useMemo(() => {
+    const { width, height } = size;
+
     return new Array(ICONS_COUNT).fill().map((logo, index) => {
       const randomPosition = [
         randomRange(-width / 2, width / 2),
@@ -73,7 +74,7 @@ const ThreeSplashLogos = (props) => {
         </Group>
       );
     });
-  }, [width, height, props.isAlternateColor]);
+  }, [props.isAlternateColor]); // eslint-disable-line react-hooks/exhaustive-deps
 };
 
 ThreeSplashLogos.propTypes = {
