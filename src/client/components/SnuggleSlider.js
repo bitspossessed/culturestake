@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import styled from 'styled-components';
 
 import styles, { DEFAULT_SCHEME } from '~/client/styles/variables';
@@ -35,22 +35,25 @@ const SnuggleSlider = ({
     Math.round((currentVotePower / totalVotePower) * (SNUGGLEPUNKS_COUNT - 1)) +
     1;
 
-  const updateValue = (position) => {
-    const { x, width } = ref.current.getBoundingClientRect();
+  const updateValue = useCallback(
+    (position) => {
+      const { x, width } = ref.current.getBoundingClientRect();
 
-    const newCredit = Math.round(
-      (Math.min(Math.max(0, position - x), width) / width) * total,
-    );
+      const newCredit = Math.round(
+        (Math.min(Math.max(0, position - x), width) / width) * total,
+      );
 
-    if (credit === newCredit) {
-      return;
-    }
+      if (credit === newCredit) {
+        return;
+      }
 
-    onChange({
-      id,
-      credit: newCredit,
-    });
-  };
+      onChange({
+        id,
+        credit: newCredit,
+      });
+    },
+    [id, credit, onChange, total],
+  );
 
   // const debouncedUpdateValue = debounce(updateValue, 10);
 
@@ -59,17 +62,20 @@ const SnuggleSlider = ({
     updateValue(position);
   };
 
-  const onMove = (position) => {
-    if (!isDragging) {
-      return;
-    }
+  const onMove = useCallback(
+    (position) => {
+      if (!isDragging) {
+        return;
+      }
 
-    updateValue(position);
-  };
+      updateValue(position);
+    },
+    [isDragging, updateValue],
+  );
 
-  const onEnd = () => {
+  const onEnd = useCallback(() => {
     setIsDragging(false);
-  };
+  }, []);
 
   const onMouseDown = (event) => {
     if (event.button !== 0) {
@@ -77,17 +83,6 @@ const SnuggleSlider = ({
     }
 
     onStart(event.pageX);
-  };
-
-  const onMouseMove = (event) => {
-    onMove(event.pageX);
-
-    event.stopPropagation();
-    event.preventDefault();
-  };
-
-  const onMouseUp = () => {
-    onEnd();
   };
 
   const onTouchStart = (event) => {
@@ -101,34 +96,57 @@ const SnuggleSlider = ({
     event.preventDefault();
   };
 
-  const onTouchMove = (event) => {
-    if (isNotTouchEvent(event)) {
-      onEnd();
-      return;
-    }
-
-    onMove(event.touches[0].pageX);
-
-    event.stopPropagation();
-    event.preventDefault();
-  };
-
-  const onTouchEnd = () => {
-    onEnd();
-  };
-
   const onBlur = () => {
     onEnd();
   };
+
+  useEffect(() => {
+    const onMouseMove = (event) => {
+      onMove(event.pageX);
+
+      event.stopPropagation();
+      event.preventDefault();
+    };
+
+    const onMouseUp = () => {
+      onEnd();
+    };
+
+    const onTouchMove = (event) => {
+      if (isNotTouchEvent(event)) {
+        onEnd();
+        return;
+      }
+
+      onMove(event.touches[0].pageX);
+
+      event.stopPropagation();
+      event.preventDefault();
+    };
+
+    const onTouchEnd = () => {
+      onEnd();
+    };
+
+    window.addEventListener('touchmove', onTouchMove);
+    window.addEventListener('touchend', onTouchEnd);
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+
+    return () => {
+      window.removeEventListener('touchmove', onTouchMove);
+      window.removeEventListener('touchend', onTouchEnd);
+
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+    };
+  }, [onMove, onEnd]);
 
   return (
     <SnuggleSliderStyle
       onBlur={onBlur}
       onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onTouchEnd={onTouchEnd}
-      onTouchMove={onTouchMove}
       onTouchStart={onTouchStart}
     >
       <SnuggleSliderBarStyle
@@ -169,8 +187,8 @@ const SnuggleSliderHandleContainerStyle = styled.div`
   position: absolute;
 
   top: 0;
-  right: ${SNUGGLEPUNK_SIZE / 2}rem;
-  left: ${SNUGGLEPUNK_SIZE / 2}rem;
+  right: ${SNUGGLEPUNK_SIZE / 3}rem;
+  left: ${SNUGGLEPUNK_SIZE / 3}rem;
 
   transform: translate3d(${(props) => props.percentage}%, 0, 0);
 
@@ -197,13 +215,11 @@ const SnuggleSliderStyle = styled.div`
 
   display: flex;
 
-  overflow: hidden;
-
   width: 100%;
   height: ${SNUGGLEPUNK_SIZE}rem;
 
-  padding-right: ${SNUGGLEPUNK_SIZE / 2}rem;
-  padding-left: ${SNUGGLEPUNK_SIZE / 2}rem;
+  padding-right: ${SNUGGLEPUNK_SIZE / 3}rem;
+  padding-left: ${SNUGGLEPUNK_SIZE / 3}rem;
 
   align-items: center;
 

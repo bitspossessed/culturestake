@@ -37,14 +37,15 @@ const VoteCreditsBarStyle = styled.div`
 
 const VoteCreditsBarRangeStyle = styled.div`
   @media ${styles.media.desktop} {
-    margin-left: 0;
+    margin-right: ${styles.layout.spacing};
+    margin-left: ${styles.layout.spacing};
   }
 
   display: flex;
 
   height: 3rem;
 
-  margin-left: 6rem;
+  margin-left: 7rem;
 
   border: 1.5px solid;
   border-color: ${styles.colors.violet};
