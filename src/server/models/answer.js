@@ -48,7 +48,7 @@ const Answer = db.define('answer', {
   },
 });
 
-Answer.addHook('beforeCreate', async (answer) => {
+Answer.addHook('beforeCreate', async answer => {
   let model;
   let key;
   if (answer.type == 'property') {

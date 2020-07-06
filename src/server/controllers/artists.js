@@ -1,32 +1,17 @@
-import Festival from '~/server/models/festival';
+import Artist from '~/server/models/artist';
 import baseController from '~/server/controllers';
-import {
-  FestivalHasManyImages,
-  FestivalHasManyDocuments,
-  FestivalBelongsToManyArtworks,
-} from '~/server/database/associations';
+
+import { ArtistHasManyImages, ArtistHasManyArtworks } from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
-  model: Festival,
-  fields: [
-    'title',
-    'description',
-    'images',
-    'documents',
-    'chainId',
-    'artworks',
-  ],
-  fieldsProtected: [],
-  include: [
-    FestivalHasManyImages,
-    FestivalHasManyDocuments,
-    FestivalBelongsToManyArtworks,
-  ],
+  model: Artist,
+  fields: ['name', 'bio', 'consentToDataReveal', 'images', 'artworks'],
+  include: [ArtistHasManyImages, ArtistHasManyArtworks],
   associations: [
     {
-      association: FestivalHasManyImages,
+      association: ArtistHasManyImages,
       destroyCascade: true,
       fields: [
         ...baseFileFields,
@@ -36,14 +21,9 @@ const options = {
       ],
     },
     {
-      association: FestivalHasManyDocuments,
-      destroyCascade: true,
-      fields: [...baseFileFields],
-    },
-    {
-      association: FestivalBelongsToManyArtworks,
+      association: ArtistHasManyArtworks,
       destroyCascade: false,
-      fields: ['title', 'description', 'images'],
+      fields: ['title', 'description'],
     },
   ],
 };
@@ -60,7 +40,7 @@ function read(req, res, next) {
   baseController.read(options)(req, res, next);
 }
 
-async function update(req, res, next) {
+function update(req, res, next) {
   baseController.update(options)(req, res, next);
 }
 

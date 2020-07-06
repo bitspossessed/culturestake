@@ -1,5 +1,6 @@
 import Answer from '~/server/models/answer';
 import Artwork from '~/server/models/artwork';
+import Artist from '~/server/models/artist';
 import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
 import Image from '~/server/models/image';
@@ -23,12 +24,32 @@ export const AnswerBelongsToProperty = Answer.belongsTo(Property, {
   allowNull: true,
 });
 
+export const ArtworkBelongsToArtist = Artwork.belongsTo(Artist);
+
+export const ArtistHasManyArtworks = Artist.hasMany(Artwork, {
+  ...attachableMixin,
+  foreignKey: 'artistId',
+  as: 'artworks',
+});
+
+export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
+  allowNull: true,
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE',
+});
+
+export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
+  allowNull: true,
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE',
+});
+
 export const AnswerBelongsToQuestion = Answer.belongsTo(Question);
 
 export const FestivalHasManyImages = Festival.hasMany(Image, {
   ...attachableMixin,
   scope: {
-    attachableType: 'image',
+    attachableType: 'festival',
   },
   as: 'images',
 });
@@ -36,13 +57,55 @@ export const FestivalHasManyImages = Festival.hasMany(Image, {
 export const FestivalHasManyDocuments = Festival.hasMany(Document, {
   ...attachableMixin,
   scope: {
-    attachableType: 'document',
+    attachableType: 'festival',
   },
   as: 'documents',
+});
+
+export const FestivalHasManyQuestions = Festival.hasMany(Question, {
+  ...attachableMixin,
+  foreignKey: 'festivalId',
+  as: 'questions',
+});
+
+export const ArtworkHasManyQuestions = Artwork.hasMany(Question, {
+  ...attachableMixin,
+  foreignKey: 'artworkId',
+  as: 'questions',
 });
 
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {
   ...attachableMixin,
   foreignKey: 'questionId',
   as: 'answers',
+});
+
+export const ArtworkHasManyImages = Artwork.hasMany(Image, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artwork',
+  },
+  as: 'images',
+});
+
+export const ArtistHasManyImages = Artist.hasMany(Image, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artist',
+  },
+  as: 'images',
+});
+
+export const ArtworkBelongsToManyFestivals = Artwork.belongsToMany(Festival, {
+  through: 'festivals2artworks',
+  as: 'festivals',
+  foreignKey: 'artworkId',
+  otherKey: 'festivalId',
+});
+
+export const FestivalBelongsToManyArtworks = Festival.belongsToMany(Artwork, {
+  through: 'festivals2artworks',
+  as: 'artworks',
+  foreignKey: 'festivalId',
+  otherKey: 'artworkId',
 });

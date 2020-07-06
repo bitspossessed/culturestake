@@ -18,6 +18,14 @@ const Artwork = db.define('artwork', {
     allowNull: false,
     unique: true,
   },
+  description: {
+    type: DataTypes.STRING(2000),
+    allowNull: true,
+  },
+  artistId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Artwork, {

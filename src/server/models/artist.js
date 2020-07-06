@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
 
-const Question = db.define('question', {
+const Artist = db.define('artist', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -13,26 +13,24 @@ const Question = db.define('question', {
   slug: {
     type: DataTypes.STRING,
   },
-  title: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
+    unique: true,
   },
-  address: {
-    type: DataTypes.STRING,
+  bio: {
+    type: DataTypes.STRING(2000),
+    allowNull: true,
+  },
+  consentToDataReveal: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
-  },
-  festivalId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
-  artworkId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
+    default: false,
   },
 });
 
-SequelizeSlugify.slugifyModel(Question, {
-  source: ['title'],
+SequelizeSlugify.slugifyModel(Artist, {
+  source: ['name'],
 });
 
-export default Question;
+export default Artist;
