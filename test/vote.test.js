@@ -4,6 +4,7 @@ import request from 'supertest';
 import { initializeDatabase } from './helpers/database';
 import artworksData from './data/artworks';
 import answersData from './data/answers';
+import questionsData from './data/questions';
 import festivalsData from './data/festivals';
 
 import app from '~/server';
@@ -26,7 +27,6 @@ describe('API', () => {
   let question;
   let sender;
   let booth;
-  let nonce;
   let vote;
 
   beforeAll(async () => {
@@ -40,6 +40,11 @@ describe('API', () => {
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
     const questionAddress = await initQuestion(admin, 'festival');
     question = getQuestionContract(questionAddress);
+    const questionData = {
+      ...questionsData['1'],
+      address: questionAddress,
+    }
+    await authRequest.put('/api/questions').send(questionData);
 
     // add answer to api
     await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
@@ -61,6 +66,7 @@ describe('API', () => {
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
     await authRequest.del('/api/answers/1');
+    await authRequest.del('/api/questions/1');
     await authRequest.del('/api/festivals/a-festival');
   });
 
@@ -91,6 +97,7 @@ describe('API', () => {
 
     it('should return bad request when invalid booth signature', async () => {
       const falseBooth = web3.eth.accounts.create();
+      const nonce = refreshNonce();
       vote.boothSignature = web3.eth.accounts.sign(
         packBooth([answer.id], nonce),
         falseBooth.privateKey,

@@ -15,7 +15,7 @@ const checkBooth = async (vote, question) => {
   const booth = await admin.methods.getVotingBooth(vote.booth).call();
   const festival = await question.methods.festival().call();
   vote.festival = festival;
-  if (!booth[0] || festival !== booth[1]) {
+  if (!booth[0] || festival !== booth[2]) {
     throw Error('invalid booth');
   }
 };
@@ -38,7 +38,7 @@ const checkQuestion = async (vote) => {
 };
 
 const checkFestival = async (vote) => {
-  const valid = await admin.methods.isValidFestival(vote.festival).call();
+  const valid = await admin.methods.isActiveFestival(vote.festival).call();
   if (!valid) {
     throw Error('invalid festival');
   }
@@ -115,6 +115,7 @@ export default async function (req, res, next) {
     await checkAnswers(vote, question);
     next();
   } catch (err) {
+    console.log(err)
     next(new APIError(httpStatus.BAD_REQUEST));
   }
 }
