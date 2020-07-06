@@ -17,12 +17,12 @@ describe('GET /<resource> readAll with pagination', () => {
     createdUsers = [];
 
     await Promise.all(
-      [users.hanna, users.lisa, users.petra].map(async (user) => {
+      [users.hanna, users.lisa, users.petra].map(async user => {
         return await authRequest
           .put('/api/users')
           .send(user)
           .expect(httpStatus.CREATED)
-          .then((response) => {
+          .then(response => {
             createdUsers.push(response.body.data);
           });
       }),
@@ -31,7 +31,7 @@ describe('GET /<resource> readAll with pagination', () => {
 
   afterEach(async () => {
     await Promise.all(
-      [users.hanna, users.lisa, users.petra].map(async (user) => {
+      [users.hanna, users.lisa, users.petra].map(async user => {
         return await authRequest
           .del(`/api/users/${user.username}`)
           .expect(httpStatus.NO_CONTENT);
@@ -44,7 +44,7 @@ describe('GET /<resource> readAll with pagination', () => {
       .get('/api/users')
       .query({ limit: 1, orderKey: 'username' })
       .expect(httpStatus.OK)
-      .expect((response) => {
+      .expect(response => {
         const { results, pagination } = response.body.data;
 
         expect(results.length).toBe(1);
@@ -63,7 +63,7 @@ describe('GET /<resource> readAll with pagination', () => {
         orderDirection: 'desc',
       })
       .expect(httpStatus.OK)
-      .expect((response) => {
+      .expect(response => {
         const { results, pagination } = response.body.data;
 
         expect(results.length).toBe(2);

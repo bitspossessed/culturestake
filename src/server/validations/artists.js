@@ -1,17 +1,14 @@
 import { Joi, Segments } from 'celebrate';
 
-import {
-  imagesValidation,
-  documentsValidation,
-} from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
+import { imagesValidation } from '~/common/helpers/validate';
 
 const defaultValidation = {
-  title: Joi.string().max(128).required(),
-  description: Joi.string().required(),
-  images: imagesValidation.max(10),
-  documents: documentsValidation.max(1),
-  artworks: Joi.array().max(30),
+  name: Joi.string().max(128).required(),
+  bio: Joi.string().max(2000).required(),
+  consentToDataReveal: Joi.boolean(),
+  images: imagesValidation.max(2),
+  artworks: Joi.array().max(10),
 };
 
 export default {

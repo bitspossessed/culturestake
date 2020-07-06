@@ -54,6 +54,8 @@ export const HeadingPrimaryStyle = styled.h1`
 `;
 
 export const HeadingSecondaryStyle = styled.h2`
+  margin-bottom: 1rem;
+
   font-size: 1.5em;
 
   line-height: 0.9;

@@ -7,6 +7,7 @@ import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
 import questionsRouter from '~/server/routes/questions';
 import artworksRouter from '~/server/routes/artworks';
+import artistsRouter from '~/server/routes/artists';
 import propertiesRouter from '~/server/routes/properties';
 import answersRouter from '~/server/routes/answers';
 import uploadsRouter from '~/server/routes/uploads';
@@ -34,6 +35,8 @@ router.use('/festivals', festivalsRouter);
 router.use('/questions', questionsRouter);
 
 router.use('/artworks', artworksRouter);
+
+router.use('/artists', artistsRouter);
 
 router.use('/properties', propertiesRouter);
 

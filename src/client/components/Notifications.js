@@ -68,7 +68,10 @@ const NotificationsItem = ({ id, lifetime, text, type }) => {
   }, [onRemove, lifetime]);
 
   return (
-    <NotificationsItemStyle type={type} onClick={onRemove}>
+    <NotificationsItemStyle
+      color={NOTIFICATIONS_COLORS[type]}
+      onClick={onRemove}
+    >
       <NotificationItemTextStyle>{text}</NotificationItemTextStyle>
     </NotificationsItemStyle>
   );
@@ -95,7 +98,7 @@ const NotificationsItemStyle = styled.li`
   color: ${styles.colors.white};
 
   background-color: ${(props) => {
-    return NOTIFICATIONS_COLORS[props.type];
+    return props.color;
   }};
 
   text-align: center;

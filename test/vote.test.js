@@ -4,6 +4,7 @@ import request from 'supertest';
 import { initializeDatabase } from './helpers/database';
 import artworksData from './data/artworks';
 import answersData from './data/answers';
+import festivalsData from './data/festivals';
 
 import app from '~/server';
 import web3 from '~/common/services/web3';
@@ -33,6 +34,7 @@ describe('API', () => {
     await initializeDatabase();
     authRequest = await createSupertest();
     await authRequest.put('/api/artworks').send(artworksData.davinci);
+    await authRequest.put('/api/festivals').send(festivalsData['1']);
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
@@ -40,7 +42,7 @@ describe('API', () => {
     question = getQuestionContract(questionAddress);
 
     // add answer to api
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer);
+    await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
 
     // use chainId from api to create answer on blockchain
     answer = await initAnswer(question, 1);
@@ -59,6 +61,7 @@ describe('API', () => {
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
     await authRequest.del('/api/answers/1');
+    await authRequest.del('/api/festivals/a-festival');
   });
 
   describe('POST /api/vote', () => {

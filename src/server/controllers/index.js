@@ -58,7 +58,7 @@ export function filterResponseFields(req, data, options) {
 }
 
 export function filterResponseFieldsAll(req, arr, options) {
-  return arr.map((data) => {
+  return arr.map(data => {
     return filterResponseFields(req, data, options);
   });
 }
@@ -74,14 +74,14 @@ async function handleAssociation(instance, options, items) {
 
   // Collect ids of all items to be associated to instance
   const ids = [];
-  items.forEach((item) => {
+  // const knownCreations = [];
+  items.forEach(item => {
     if (typeof item === 'number') {
       ids.push(item);
+    } else if (!('id' in item)) {
+      // knownCreations.push(item);
+      throw new Error('`id` missing in association items');
     } else {
-      if (!('id' in item)) {
-        throw new Error('`id` missing in association items');
-      }
-
       ids.push(item.id);
     }
   });
@@ -98,13 +98,13 @@ async function handleAssociation(instance, options, items) {
   // Get already existing associations of that kind
   const currentItems = await instance[`get${namePluralUppercase}`]();
 
-  const currentIds = currentItems.map((item) => {
+  const currentIds = currentItems.map(item => {
     return item.id;
   });
 
   // Check for to-be-removed associations
   const removePromises = currentItems
-    .filter((item) => {
+    .filter(item => {
       return !ids.includes(item.id);
     })
     .reduce((acc, item) => {
@@ -120,10 +120,10 @@ async function handleAssociation(instance, options, items) {
 
   // Check for to-be-added / new associations
   const addPromises = futureItems
-    .filter((futureItem) => {
+    .filter(futureItem => {
       return !currentIds.includes(futureItem.id);
     })
-    .map((item) => {
+    .map(item => {
       return instance[`add${nameUppercase}`](item);
     });
 
@@ -135,7 +135,7 @@ async function handleAssociations(instance, associations, data) {
     return;
   }
 
-  const promises = associations.map((association) => {
+  const promises = associations.map(association => {
     if (!('association' in association)) {
       throw new Error('`association` required in association');
     }
@@ -160,7 +160,7 @@ async function destroyAssociations(instance, associations) {
     return;
   }
 
-  const promises = associations.map((association) => {
+  const promises = associations.map(association => {
     if (!('association' in association)) {
       throw new Error('`association` required in association');
     }
@@ -184,6 +184,8 @@ function create(options) {
         httpStatus.CREATED,
       );
     } catch (error) {
+      console.log('caught')
+      console.log(error)
       if (error instanceof UniqueConstraintError) {
         next(new APIError(httpStatus.CONFLICT));
       } else {

@@ -5,6 +5,7 @@ import { initializeDatabase } from './helpers/database';
 import artworksData from './data/artworks';
 import answersData from './data/answers';
 import questionsData from './data/questions';
+import festivalsData from './data/festivals';
 
 import app from '~/server';
 import web3 from '~/common/services/web3';
@@ -35,6 +36,7 @@ describe('API', () => {
     await authRequest.put('/api/artworks').send(artworksData.goya);
     await authRequest.put('/api/artworks').send(artworksData.bourgeois);
     await authRequest.put('/api/artworks').send(artworksData.martin);
+    await authRequest.put('/api/festivals').send(festivalsData['1']);
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
@@ -68,11 +70,13 @@ describe('API', () => {
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
 
-    const answerIds = answers.map((a) => a.id);
+    const answerIds = answers.map(a => a.id);
     const votes = [1, 2, 3, 4, 5];
     vote = buildVote(booth, sender, question, answerIds, votes);
 
-    await request(app).post('/api/vote').send(vote);
+    await request(app)
+      .post('/api/vote')
+      .send(vote);
   });
 
   afterAll(async () => {
@@ -81,6 +85,7 @@ describe('API', () => {
     await authRequest.del('/api/artworks/saturn-devouring-his-son');
     await authRequest.del('/api/artworks/spider');
     await authRequest.del('/api/artworks/little-sister');
+    await authRequest.del('/api/festivals/a-festival');
     await authRequest.del('/api/answers/1');
     await authRequest.del('/api/answers/2');
     await authRequest.del('/api/answers/3');
@@ -95,7 +100,7 @@ describe('API', () => {
         await request(app)
           .get(`/api/vote/${question.options.address}`)
           .expect(httpStatus.OK)
-          .expect((response) => {
+          .expect(response => {
             const summary = response.body.data;
             for (const a in summary.answers) {
               if (a.votePower >= 3) {
@@ -106,23 +111,23 @@ describe('API', () => {
             }
           })
           .then(done())
-          .catch((err) => done(err));
+          .catch(err => done(err));
       }, 1000);
     });
 
-    it('should return answer info for all answers for auth request', async (done) => {
+    it('should return answer info for all answers for auth request', async done => {
       setTimeout(async () => {
         await authRequest
           .get(`/api/vote/${question.options.address}`)
           .expect(httpStatus.OK)
-          .expect((response) => {
+          .expect(response => {
             const summary = response.body.data;
             for (const a in summary.answers) {
               expect(a.artworkId).toBeDefined();
             }
           })
           .then(done())
-          .catch((err) => done(err));
+          .catch(err => done(err));
       }, 1000);
     });
   });
