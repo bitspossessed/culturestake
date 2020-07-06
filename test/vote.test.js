@@ -16,7 +16,7 @@ import { packBooth, packVote } from '~/common/services/encoding';
 import initQuestion from './helpers/initQuestion';
 import initAnswer from './helpers/initAnswer';
 import buildVote from './helpers/buildVote';
-import { refreshNonce } from './helpers/refreshNonce';
+import { refreshNonce } from './helpers/utils';
 
 describe('API', () => {
   let authRequest;
