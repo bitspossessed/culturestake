@@ -4,6 +4,7 @@ import request from 'supertest';
 import { initializeDatabase } from './helpers/database';
 import artworksData from './data/artworks';
 import answersData from './data/answers';
+import questionsData from './data/questions';
 import festivalsData from './data/festivals';
 
 import app from '~/server';
@@ -26,7 +27,6 @@ describe('API', () => {
   let question;
   let sender;
   let booth;
-  let nonce;
   let vote;
 
   beforeAll(async () => {
@@ -38,12 +38,13 @@ describe('API', () => {
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
-    const questionAddress = await initQuestion(
-      admin,
-      'my question',
-      'festival',
-    );
+    const questionAddress = await initQuestion(admin, 'festival');
     question = getQuestionContract(questionAddress);
+    const questionData = {
+      ...questionsData['1'],
+      address: questionAddress,
+    }
+    await authRequest.put('/api/questions').send(questionData);
 
     // add answer to api
     await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
@@ -65,15 +66,13 @@ describe('API', () => {
   afterAll(async () => {
     await authRequest.del('/api/artworks/mona-lisa');
     await authRequest.del('/api/answers/1');
+    await authRequest.del('/api/questions/1');
     await authRequest.del('/api/festivals/a-festival');
   });
 
   describe('POST /api/vote', () => {
     it('should succesfully vote', async () => {
-      await request(app)
-        .post('/api/vote')
-        .send(vote)
-        .expect(httpStatus.OK);
+      await request(app).post('/api/vote').send(vote).expect(httpStatus.OK);
     });
 
     it('should return bad request when answer id not in database', async () => {
@@ -98,6 +97,7 @@ describe('API', () => {
 
     it('should return bad request when invalid booth signature', async () => {
       const falseBooth = web3.eth.accounts.create();
+      const nonce = refreshNonce();
       vote.boothSignature = web3.eth.accounts.sign(
         packBooth([answer.id], nonce),
         falseBooth.privateKey,
@@ -121,9 +121,7 @@ describe('API', () => {
     });
 
     it('should return bad request when sender has already voted', async () => {
-      await request(app)
-        .post('/api/vote')
-        .send(vote);
+      await request(app).post('/api/vote').send(vote);
       vote.nonce = refreshNonce();
       await request(app)
         .post('/api/vote')
@@ -132,9 +130,7 @@ describe('API', () => {
     });
 
     it('should return bad request when nonce has already been used', async () => {
-      await request(app)
-        .post('/api/vote')
-        .send(vote);
+      await request(app).post('/api/vote').send(vote);
       sender = web3.eth.accounts.create();
       vote.signature = web3.eth.accounts.sign(
         packVote([answer.id], [1]),
