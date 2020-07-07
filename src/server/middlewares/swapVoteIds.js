@@ -12,6 +12,9 @@ export default async function (req, res, next) {
         if (!a) {
           throw Error();
         }
+        if (a.propertyId) {
+          throw Error();
+        }
         return { id: answer, chainId: a.chainId };
       }),
     );
@@ -19,6 +22,9 @@ export default async function (req, res, next) {
       vote.artworkAnswers.map(async (answer) => {
         const a = await Answers.findByPk(answer);
         if (!a) {
+          throw Error();
+        }
+        if (a.artworkId) {
           throw Error();
         }
         return { id: answer, chainId: a.chainId };

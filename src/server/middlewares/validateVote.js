@@ -7,6 +7,7 @@ import {
   getAdminContract,
 } from '~/common/services/contracts';
 import Vote from '~/server/models/vote';
+import Question from '~/server/models/question';
 import APIError from '~/server/helpers/errors';
 
 const admin = getAdminContract(process.env.ADMIN_CONTRACT);
@@ -41,6 +42,22 @@ const checkLocalHasVoted = async (vote) => {
   });
   if (localHasVotedFestival || localHasVotedArtwork) {
     throw Error('has voted');
+  }
+};
+
+const checkArtworkQuestionIsHighestVoted = async (vote) => {
+  let highestVote = Array.from(new Set(vote.festivalVoteTokens));
+  highestVote = highestVote.sort((itemA, itemB) => itemB - itemA)[0];
+  const question = await Question.findOne({
+    where: { address: vote.artworkQuestion },
+  });
+  if (!question || !question.artworkId) {
+    throw Error('invalid artwork-question');
+  }
+  const justAnswerIds = vote.festivalAnswers.map((a) => a.id);
+  const indexOfArtwork = justAnswerIds.indexOf(question.artworkId);
+  if (vote.festivalVoteTokens[indexOfArtwork] !== highestVote) {
+    throw Error('invalid artwork-question');
   }
 };
 
@@ -148,6 +165,7 @@ export default async function (req, res, next) {
     await checkLocalHasVoted(vote);
     await checkQuestions(vote);
     await checkFestival(vote);
+    await checkArtworkQuestionIsHighestVoted(vote);
     await checkAnswers(vote, festivalQuestion, artworkQuestion);
     next();
   } catch (err) {
