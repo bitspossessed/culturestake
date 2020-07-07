@@ -4,13 +4,9 @@ import { idValidation, paginationValidation } from '~/server/validations';
 import { web3Validators } from '~/server/helpers/validate';
 
 const defaultValidation = {
-  title: Joi.string()
-    .max(128)
-    .required(),
+  title: Joi.string().max(128).required(),
   address: web3Validators.web3().address(),
-  festivalId: Joi.number()
-    .integer()
-    .required(),
+  festivalId: Joi.number().integer().required(),
   artworkId: Joi.number().integer(),
   answers: Joi.array()
     .items(
