@@ -99,7 +99,7 @@ async function create(req, res, next) {
       ...vote,
       question: vote.artworkQuestion,
       answers: vote.artworkAnswers.map((a) => a.chainId),
-      voteTokens: vote.artwork,
+      voteTokens: vote.artworkVoteTokens,
     });
     await Vote.create({
       ...vote,
