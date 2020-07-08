@@ -2,6 +2,7 @@ import AdminContract from 'culturestake-contracts/build/contracts/Culturestake.j
 import QuestionContract from 'culturestake-contracts/build/contracts/Question.json';
 
 import web3 from '~/common/services/web3';
+import festivals from '~/common/services/contracts/festivals';
 
 function getContract(abi, address) {
   return new web3.eth.Contract(abi, address);
@@ -14,3 +15,9 @@ export function getAdminContract(address) {
 export function getQuestionContract(address) {
   return getContract(QuestionContract.abi, address);
 }
+
+const adminContract = getAdminContract(process.env.ADMIN_CONTRACT);
+
+export default {
+  festivalsModule: festivals(adminContract),
+};

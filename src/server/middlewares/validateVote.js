@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 
 import { isSignatureValid } from '~/server/services/crypto';
 import { packVote, packBooth } from '~/common/services/encoding';
-import {
+import contracts, {
   getQuestionContract,
   getAdminContract,
 } from '~/common/services/contracts';
@@ -74,7 +74,9 @@ const checkQuestions = async (vote) => {
 };
 
 const checkFestival = async (vote) => {
-  const valid = await admin.methods.isActiveFestival(vote.festival).call();
+  console.log(contracts.festivalsModule)
+  const valid = await contracts.festivalsModule.isActiveFestival(vote.festival);
+  console.log(valid)
   if (!valid) {
     throw Error('invalid festival');
   }
