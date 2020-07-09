@@ -29,17 +29,17 @@ export default function booths(adminContract) {
     },
 
     initializeVotingBooth: async (sender, boothAddress) => {
-      const txhash = await adminContract.methods
+      const txHash = await adminContract.methods
         .initVotingBooth(boothAddress)
         .send({ from: sender });
-      return { txhash, txMethod: INITIALIZED_BOOTH };
+      return { txHash, txMethod: INITIALIZED_BOOTH };
     },
 
     deactivateVotingBooth: async (sender, boothAddress) => {
-      const txhash = await adminContract.methods
+      const txHash = await adminContract.methods
         .deactivateVotingBooth(boothAddress)
         .send({ from: sender });
-      return { txhash, txMethod: DEACTIVATED_BOOTH };
+      return { txHash, txMethod: DEACTIVATED_BOOTH };
     },
   };
 }

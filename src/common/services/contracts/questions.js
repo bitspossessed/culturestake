@@ -8,15 +8,15 @@ export async function initializeQuestion(
   maxVoteTokens,
   festivalChainId,
 ) {
-  const txhash = await adminContract.methods
+  const txHash = await adminContract.methods
     .initQuestion(maxVoteTokens, festivalChainId)
     .send({ from: sender });
-  return { txhash, txMethod: INITIALIZED_QUESTION };
+  return { txHash, txMethod: INITIALIZED_QUESTION };
 }
 
 export async function deactivateQuestion(sender, questionAddress) {
-  const txhash = await adminContract.methods
+  const txHash = await adminContract.methods
     .deactivateQuestion(questionAddress)
     .send({ from: sender });
-  return { txhash, txMethod: DEACTIVATED_QUESTION };
+  return { txHash, txMethod: DEACTIVATED_QUESTION };
 }

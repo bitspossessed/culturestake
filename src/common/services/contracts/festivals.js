@@ -28,15 +28,15 @@ export async function getFestival(chainId) {
 }
 
 export async function initializeFestival(sender, chainId) {
-  const txhash = await adminContract.methods
+  const txHash = await adminContract.methods
     .initFestival(chainId)
     .send({ from: sender });
-  return { txhash, txMethod: INITIALIZE_FESTIVAL };
+  return { txHash, txMethod: INITIALIZE_FESTIVAL };
 }
 
 export async function deactivateFestival(sender, chainId) {
-  const txhash = await adminContract.methods
+  const txHash = await adminContract.methods
     .initFestival(chainId)
     .send({ from: sender });
-  return { txhash, txMethod: DEACTIVATE_FESTIVAL };
+  return { txHash, txMethod: DEACTIVATE_FESTIVAL };
 }
