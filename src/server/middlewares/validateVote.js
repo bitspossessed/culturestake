@@ -2,10 +2,11 @@ import httpStatus from 'http-status';
 
 import { isSignatureValid } from '~/server/services/crypto';
 import { packVote, packBooth } from '~/common/services/encoding';
-import contracts, {
+import {
   getQuestionContract,
   getAdminContract,
 } from '~/common/services/contracts';
+import { isActiveFestival } from '~/common/services/contracts/festivals';
 import Vote from '~/server/models/vote';
 import Question from '~/server/models/question';
 import APIError from '~/server/helpers/errors';
@@ -74,7 +75,7 @@ const checkQuestions = async (vote) => {
 };
 
 const checkFestival = async (vote) => {
-  const valid = await contracts.festivalsModule.isActiveFestival(vote.festival);
+  const valid = await isActiveFestival(vote.festival);
   if (!valid) {
     throw Error('invalid festival');
   }
@@ -169,6 +170,7 @@ export default async function (req, res, next) {
     await checkAnswers(vote, festivalQuestion, artworkQuestion);
     next();
   } catch (err) {
+    console.log(err)
     next(new APIError(httpStatus.BAD_REQUEST));
   }
 }
