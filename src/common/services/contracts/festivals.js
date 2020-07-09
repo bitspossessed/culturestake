@@ -1,22 +1,25 @@
+export const INITIALIZE_FESTIVAL = Symbol('INITIALIZE_FESTIVAL');
+export const DEACTIVATE_FESTIVAL = Symbol('DEACTIVATE_FESTIVAL');
+
 export default function festivals(adminContract) {
   return {
-    isFestivalInited: async (festivalHexId) => {
-      const festival = await this.getFestival(festivalHexId);
+    isFestivalInited: async (chainId) => {
+      const festival = await this.getFestival(chainId);
       return festival.inited;
     },
 
-    isFestivalDeactivated: async (festivalHexId) => {
-      const festival = await this.getFestival(festivalHexId);
+    isFestivalDeactivated: async (chainId) => {
+      const festival = await this.getFestival(chainId);
       return festival.deactivated;
     },
 
-    isActiveFestival: async (festivalHexId) => {
-      return adminContract.methods.isActiveFestival(festivalHexId).call();
+    isActiveFestival: async (chainId) => {
+      return adminContract.methods.isActiveFestival(chainId).call();
     },
 
-    getFestival: async (festivalHexId) => {
+    getFestival: async (chainId) => {
       const festival = await adminContract.methods
-        .isFestivalInited(festivalHexId)
+        .isFestivalInited(chainId)
         .call();
       return {
         inited: festival[0],
@@ -26,10 +29,18 @@ export default function festivals(adminContract) {
       };
     },
 
-    initFestival: async () => {
+    initFestival: async (sender, chainId) => {
+      const txhash = await adminContract.methods
+        .initFestival(chainId)
+        .send({ from: sender });
+      return { txhash, txMethod: INITIALIZE_FESTIVAL };
     },
 
-    deactivateFestival: async () => {
+    deactivateFestival: async (sender, chainId) => {
+      const txhash = await adminContract.methods
+        .initFestival(chainId)
+        .send({ from: sender });
+      return { txhash, txMethod: DEACTIVATE_FESTIVAL };
     },
-  }
+  };
 }

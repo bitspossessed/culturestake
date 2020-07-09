@@ -74,9 +74,7 @@ const checkQuestions = async (vote) => {
 };
 
 const checkFestival = async (vote) => {
-  console.log(contracts.festivalsModule)
   const valid = await contracts.festivalsModule.isActiveFestival(vote.festival);
-  console.log(valid)
   if (!valid) {
     throw Error('invalid festival');
   }
