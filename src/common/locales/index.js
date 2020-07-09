@@ -1,4 +1,10 @@
 const components = {
+  EthereumContainer: {
+    bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
+    bodyYourAddress: 'Your address:',
+    buttonEnable: 'Enable Ethereum wallet',
+    title: 'Smart Contracts Snuggle Panel (SCSP)',
+  },
   Table: {
     bodyEmpty: 'No entries given',
     bodyError: 'Something went wrong ...',

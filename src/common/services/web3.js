@@ -1,7 +1,11 @@
 import Web3 from 'web3';
 
 const rpcUrl = process.env.ETHEREUM_NODE_ENDPOINT_WS;
-const provider = new Web3.providers.WebsocketProvider(rpcUrl);
+
+const provider =
+  typeof window !== 'undefined' && window.ethereum
+    ? window.ethereum
+    : new Web3.providers.WebsocketProvider(rpcUrl);
 
 
 const web3 = new Web3(provider);
