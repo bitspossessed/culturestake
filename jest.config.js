@@ -1,7 +1,8 @@
 module.exports = {
   testEnvironment: 'node',
+  testTimeout: 10000,
   moduleNameMapper: {
     '^~(.*)$': '<rootDir>/src$1',
   },
-  setupFilesAfterEnv: ['./jest.setup.js'],
+  setupFilesAfterEnv: ['dotenv/config'],
 };

@@ -19,7 +19,7 @@
     "server:start": "cross-env NODE_ENV=production node ./build/index.js",
     "server:watch": "nodemon --watch ./src/server --exec cross-env NODE_ENV=development babel-node ./src/server/index.js --source-maps inline",
     "start": "npm run server:start",
-    "test": "cross-env NODE_ENV=test jest --forceExit --runInBand --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
     "test:watch": "npm run test -- --watch"
   },
   "repository": {
