@@ -9,7 +9,9 @@ export function getTransactionId(txMethod, params) {
     .sort()
     .reduce(
       (acc, key) => {
-        acc.push(params[key].toString());
+        if (params.key) {
+          acc.push(params[key].toString());
+        }
         return acc;
       },
       [txMethod.toString()],

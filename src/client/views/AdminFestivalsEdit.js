@@ -75,7 +75,7 @@ const AdminFestivalsEditForm = () => {
         <Form>
           <FormFestivals />
           <ButtonDelete />
-          <ContractsFestivals chainId={'test'} />
+          <ContractsFestivals />
           <ButtonSubmit />
         </Form>
       </ViewAdmin>
