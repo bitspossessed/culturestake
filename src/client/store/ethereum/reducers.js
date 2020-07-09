@@ -2,9 +2,17 @@ import update from 'immutability-helper';
 
 import ActionTypes from '~/client/store/ethereum/types';
 
+const initialTransactionState = {
+  isError: false,
+  isPending: false,
+  isSuccess: false,
+  txHash,
+};
+
 const initialState = {
   account: undefined,
   provider: null,
+  transactions: {},
 };
 
 const ethereumReducer = (state = initialState, action) => {
@@ -17,6 +25,29 @@ const ethereumReducer = (state = initialState, action) => {
       return update(state, {
         account: { $set: action.meta.account },
       });
+    case ActionTypes.ETHEREUM_TRANSACTIONS_ADD:
+      return update(state, {
+        transactions: {
+          [action.meta.id]: {
+            $set: Object.assign({}, initialTransactionState, {
+              txHash: action.meta.txHash,
+            }),
+          },
+        },
+      });
+    case ActionTypes.ETHEREUM_TRANSACTIONS_UPDATE: {
+      return update(state, {
+        transactions: {
+          [action.meta.id]: {
+            $set: Object.assign({}, initialTransactionState, {
+              isError: action.meta.isError,
+              isPending: action.meta.isPending,
+              isSuccess: action.meta.isSuccess,
+            }),
+          },
+        },
+      });
+    }
     default:
       return state;
   }

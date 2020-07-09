@@ -1,16 +1,16 @@
 import { useSelector } from 'react-redux';
 
-import { getQueueId } from '~/client/store/ethereum/actions';
+import { getTransactionId } from '~/client/store/ethereum/actions';
 
-export const useQueue = ({ txMethod, params = {} }) => {
+export const usePendingTransaction = ({ txMethod, params = {} }) => {
   const {
     isError = false,
     isPending = false,
     isSuccess = false,
     txHash = null,
   } = useSelector((state) => {
-    const id = getQueueId(txMethod, params);
-    return state.ethereum.transactionsQueue[id] || {};
+    const id = getTransactionId(txMethod, params);
+    return state.ethereum.transactions[id] || {};
   });
 
   return {
