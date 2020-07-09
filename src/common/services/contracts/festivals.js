@@ -1,45 +1,42 @@
-export const INITIALIZE_FESTIVAL = Symbol('INITIALIZE_FESTIVAL');
-export const DEACTIVATE_FESTIVAL = Symbol('DEACTIVATE_FESTIVAL');
+import adminContract from '~/common/services/contracts';
 
-export default function festivals(adminContract) {
+export const INITIALIZE_FESTIVAL = Symbol('TX_INITIALIZE_FESTIVAL');
+export const DEACTIVATE_FESTIVAL = Symbol('TX_DEACTIVATE_FESTIVAL');
+
+export async function isFestivalInitialized(chainId) {
+  const festival = await this.getFestival(chainId);
+  return festival.initialized;
+}
+
+export async function isFestivalDeactivated(chainId) {
+  const festival = await this.getFestival(chainId);
+  return festival.deactivated;
+}
+
+export async function isActiveFestival(chainId) {
+  return adminContract.methods.isActiveFestival(chainId).call();
+}
+
+export async function getFestival(chainId) {
+  const festival = await adminContract.methods.getFestival(chainId).call();
   return {
-    isFestivalInitialized: async (chainId) => {
-      const festival = await this.getFestival(chainId);
-      return festival.initialized;
-    },
-
-    isFestivalDeactivated: async (chainId) => {
-      const festival = await this.getFestival(chainId);
-      return festival.deactivated;
-    },
-
-    isActiveFestival: async (chainId) => {
-      console.log('called', chainId)
-      return adminContract.methods.isActiveFestival(chainId).call();
-    },
-
-    getFestival: async (chainId) => {
-      const festival = await adminContract.methods.getFestival(chainId).call();
-      return {
-        initialized: festival[0],
-        deactivated: festival[1],
-        startTime: festival[2],
-        endTime: festival[3],
-      };
-    },
-
-    initializeFestival: async (sender, chainId) => {
-      const txhash = await adminContract.methods
-        .initFestival(chainId)
-        .send({ from: sender });
-      return { txhash, txMethod: INITIALIZE_FESTIVAL };
-    },
-
-    deactivateFestival: async (sender, chainId) => {
-      const txhash = await adminContract.methods
-        .initFestival(chainId)
-        .send({ from: sender });
-      return { txhash, txMethod: DEACTIVATE_FESTIVAL };
-    },
+    initialized: festival[0],
+    deactivated: festival[1],
+    startTime: festival[2],
+    endTime: festival[3],
   };
+}
+
+export async function initializeFestival(sender, chainId) {
+  const txhash = await adminContract.methods
+    .initFestival(chainId)
+    .send({ from: sender });
+  return { txhash, txMethod: INITIALIZE_FESTIVAL };
+}
+
+export async function deactivateFestival(sender, chainId) {
+  const txhash = await adminContract.methods
+    .initFestival(chainId)
+    .send({ from: sender });
+  return { txhash, txMethod: DEACTIVATE_FESTIVAL };
 }

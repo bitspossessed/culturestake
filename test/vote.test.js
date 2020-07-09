@@ -42,6 +42,7 @@ describe('API', () => {
 
     // set up question contract
     admin = getAdminContract(process.env.ADMIN_CONTRACT);
+
     let questionAddress = await initQuestion(admin, 'festival');
     festivalQuestion = getQuestionContract(questionAddress);
     let questionData = {
@@ -123,7 +124,6 @@ describe('API', () => {
     });
 
     it('should return bad request when invalid booth signature', async () => {
-      //console.log(vote)
       const falseBooth = web3.eth.accounts.create();
       const nonce = refreshNonce();
       vote.boothSignature = web3.eth.accounts.sign(
