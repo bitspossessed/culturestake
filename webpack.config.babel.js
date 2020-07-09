@@ -7,6 +7,7 @@ import webpack from 'webpack';
 dotenv.config();
 
 const CONFIG_KEYS = [
+  'ADMIN_CONTRACT',
   'API_ENDPOINT',
   'BASE_PATH',
   'ETHEREUM_NODE_ENDPOINT_WS',
