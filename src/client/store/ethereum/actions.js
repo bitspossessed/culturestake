@@ -66,7 +66,9 @@ export function checkPendingTransactions() {
   return async (dispatch, getStore) => {
     const { ethereum } = getStore();
 
-    for (let transaction of ethereum.transactions) {
+    for (let id of Object.keys(ethereum.transactions)) {
+      const transaction = transaction[id];
+
       if (!transaction.isPending) {
         continue;
       }
@@ -83,10 +85,10 @@ export function checkPendingTransactions() {
         dispatch({
           type: ActionTypes.ETHEREUM_TRANSACTIONS_UPDATE,
           meta: {
+            id,
             isError,
             isPending,
             isSuccess: !isError && !isPending,
-            id: transaction.id,
           },
         });
       }

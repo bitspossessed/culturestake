@@ -6,7 +6,7 @@ const initialTransactionState = {
   isError: false,
   isPending: false,
   isSuccess: false,
-  txHash,
+  txHash: null,
 };
 
 const initialState = {
