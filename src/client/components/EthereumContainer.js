@@ -14,7 +14,7 @@ import {
 } from '~/client/styles/typography';
 
 const EthereumContainer = (props) => {
-  const { account, provider } = useSelector((state) => state.ethereum);
+  const { account, provider, isOwner } = useSelector((state) => state.ethereum);
   const dispatch = useDispatch();
 
   const onEnable = () => {
@@ -37,7 +37,13 @@ const EthereumContainer = (props) => {
               </ParagraphStyle>
 
               <EthereumContainerInnerStyle>
-                {props.children}
+                {isOwner ? (
+                  props.children
+                ) : (
+                  <ParagraphStyle>
+                    {translate('EthereumContainer.bodyIsNotOwner')}
+                  </ParagraphStyle>
+                )}
               </EthereumContainerInnerStyle>
             </Fragment>
           ) : (

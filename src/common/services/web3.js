@@ -7,7 +7,6 @@ const provider =
     ? window.ethereum
     : new Web3.providers.WebsocketProvider(rpcUrl);
 
-
 const web3 = new Web3(provider);
 
 export async function checkConnection() {

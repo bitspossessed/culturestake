@@ -1,6 +1,7 @@
 const components = {
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
+    bodyIsNotOwner: 'Current account is not Contract owner',
     bodyYourAddress: 'Your address:',
     buttonEnable: 'Enable Ethereum wallet',
     title: 'Smart Contracts Snuggle Panel (SCSP)',
