@@ -1,6 +1,7 @@
 import ActionTypes from '~/client/store/ethereum/types';
 import web3 from '~/common/services/web3';
 import { detectMetaMask } from '~/client/services/ethereum';
+import { isOwner } from '~/common/services/contracts/owners';
 
 // Helper method to generate string identifier for pending transactions
 export function getTransactionId(txMethod, params) {
@@ -20,11 +21,12 @@ export function initializeProvider() {
   return async (dispatch) => {
     const provider = await detectMetaMask();
 
-    provider.on('accountsChanged', (accounts) => {
+    provider.on('accountsChanged', async (accounts) => {
       dispatch({
         type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
         meta: {
           account: accounts[0],
+          isOwner: await isOwner(accounts[0]),
         },
       });
     });
@@ -47,6 +49,7 @@ export function enableAccount() {
       type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
       meta: {
         account: accounts[0],
+        isOwner: await isOwner(accounts[0]),
       },
     });
   };

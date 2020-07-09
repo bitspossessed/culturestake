@@ -1,7 +1,7 @@
-import adminContract from '~/common/services/contracts';
+import { adminContract } from '~/common/services/contracts';
 
-export const ADDED_OWNER = Symbol('TX_ADDED_OWNER');
-export const REMOVED_OWNER = Symbol('TX_REMOVED_OWNER');
+export const TX_ADDED_OWNER = Symbol('TX_ADDED_OWNER');
+export const TX_REMOVED_OWNER = Symbol('TX_REMOVED_OWNER');
 
 export async function isOwner(ownerAddress) {
   return adminContract.methods.isOwner(ownerAddress).call();
@@ -12,15 +12,15 @@ export async function getOwners(ownerAddress) {
 }
 
 export async function addOwner(sender, ownerAddress) {
-  const txhash = await adminContract.methods
+  const txHash = await adminContract.methods
     .addOwner(ownerAddress)
     .send({ from: sender });
-  return { txhash, txMethod: ADDED_OWNER };
+  return { txHash, txMethod: TX_ADDED_OWNER };
 }
 
 export async function removeOwner(sender, ownerAddress) {
-  const txhash = await adminContract.methods
+  const txHash = await adminContract.methods
     .removeOwner(ownerAddress)
     .send({ from: sender });
-  return { txhash, txMethod: REMOVED_OWNER };
+  return { txHash, txMethod: TX_REMOVED_OWNER };
 }

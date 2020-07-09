@@ -11,6 +11,7 @@ const initialTransactionState = {
 
 const initialState = {
   account: undefined,
+  isOwner: false,
   provider: null,
   transactions: {},
 };
@@ -24,6 +25,7 @@ const ethereumReducer = (state = initialState, action) => {
     case ActionTypes.ETHEREUM_ACCOUNT_CHANGED:
       return update(state, {
         account: { $set: action.meta.account },
+        isOwner: { $set: action.meta.isOwner },
       });
     case ActionTypes.ETHEREUM_TRANSACTIONS_ADD:
       return update(state, {
