@@ -3,9 +3,9 @@ export const DEACTIVATE_FESTIVAL = Symbol('DEACTIVATE_FESTIVAL');
 
 export default function festivals(adminContract) {
   return {
-    isFestivalInited: async (chainId) => {
+    isFestivalInitialized: async (chainId) => {
       const festival = await this.getFestival(chainId);
-      return festival.inited;
+      return festival.initialized;
     },
 
     isFestivalDeactivated: async (chainId) => {
@@ -18,18 +18,16 @@ export default function festivals(adminContract) {
     },
 
     getFestival: async (chainId) => {
-      const festival = await adminContract.methods
-        .isFestivalInited(chainId)
-        .call();
+      const festival = await adminContract.methods.getFestival(chainId).call();
       return {
-        inited: festival[0],
+        initialized: festival[0],
         deactivated: festival[1],
         startTime: festival[2],
         endTime: festival[3],
       };
     },
 
-    initFestival: async (sender, chainId) => {
+    initializeFestival: async (sender, chainId) => {
       const txhash = await adminContract.methods
         .initFestival(chainId)
         .send({ from: sender });
