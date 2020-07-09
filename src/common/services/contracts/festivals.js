@@ -14,6 +14,7 @@ export default function festivals(adminContract) {
     },
 
     isActiveFestival: async (chainId) => {
+      console.log('called', chainId)
       return adminContract.methods.isActiveFestival(chainId).call();
     },
 
