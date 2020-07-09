@@ -9,6 +9,7 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import ContractsFestivals from '~/client/components/ContractsFestivals';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -74,6 +75,7 @@ const AdminFestivalsEditForm = () => {
         <Form>
           <FormFestivals />
           <ButtonDelete />
+          <ContractsFestivals chainId={'test'} />
           <ButtonSubmit />
         </Form>
       </ViewAdmin>

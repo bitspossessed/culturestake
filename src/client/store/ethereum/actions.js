@@ -12,7 +12,7 @@ export function getTransactionId(txMethod, params) {
         acc.push(params[key].toString());
         return acc;
       },
-      [txMethod],
+      [txMethod.toString()],
     )
     .join('-');
 }
