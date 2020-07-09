@@ -1,6 +1,20 @@
 import ActionTypes from '~/client/store/ethereum/types';
 import { detectMetaMask } from '~/client/services/ethereum';
 
+// Helper method to generate string identifier for pending transactions
+export function getQueueId(txMethod, params) {
+  return Object.keys(params)
+    .sort()
+    .reduce(
+      (acc, key) => {
+        acc.push(params[key].toString());
+        return acc;
+      },
+      [txMethod],
+    )
+    .join('-');
+}
+
 export function initializeProvider() {
   return async (dispatch) => {
     const provider = await detectMetaMask();
