@@ -81,6 +81,7 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
+    "@metamask/detect-provider": "^1.0.1",
     "animation-frame": "^0.3.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
