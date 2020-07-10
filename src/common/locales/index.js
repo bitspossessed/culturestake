@@ -2,6 +2,11 @@ const components = {
   DangerZone: {
     title: 'Danger Zone',
   },
+  ContractsOwners: {
+    buttonAddNewOwner: 'Add new contract admin',
+    buttonRemoveOwner: 'Remove',
+    fieldOwnerAddress: 'Public address',
+  },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
     bodyIsNotOwner: 'Current account is not Contract owner',

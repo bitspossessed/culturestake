@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 
 import translate from '~/common/services/i18n';
 
-import EthereumContainer from '~/client/components/EthereumContainer';
+import ContractsOwners from '~/client/components/ContractsOwners';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 
@@ -12,7 +12,7 @@ const Admin = () => {
       <HeaderAdmin>{translate('Admin.title')}</HeaderAdmin>
 
       <ViewAdmin>
-        <EthereumContainer>Hello, Ethereum!</EthereumContainer>
+        <ContractsOwners />
       </ViewAdmin>
     </Fragment>
   );
