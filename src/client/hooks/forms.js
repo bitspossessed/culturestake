@@ -166,7 +166,7 @@ export const useEditForm = ({
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [resource, isLoadingResource] = useResource(resourcePath, {
+  const [resource, isResourceLoading] = useResource(resourcePath, {
     onError: () => {
       if (onNotFound) {
         onNotFound();
@@ -230,7 +230,9 @@ export const useEditForm = ({
     },
   });
 
-  const onClickDestroy = () => {
+  const onClickDestroy = (event) => {
+    event.preventDefault();
+
     if (!window.confirm(translate('default.areYouSure'))) {
       return;
     }
@@ -245,7 +247,7 @@ export const useEditForm = ({
     setIsLoading(true);
   };
 
-  const isDisabled = !canSubmit || isLoading || isLoadingResource;
+  const isDisabled = !canSubmit || isLoading || isResourceLoading;
 
   const ButtonSubmit = () => {
     return (
@@ -267,5 +269,7 @@ export const useEditForm = ({
     ButtonDelete,
     ButtonSubmit,
     Form,
+    isResourceLoading,
+    resource,
   };
 };
