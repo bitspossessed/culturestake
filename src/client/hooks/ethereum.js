@@ -9,6 +9,10 @@ export const usePendingTransaction = ({ txMethod, params = {} }) => {
     isSuccess = false,
     txHash = null,
   } = useSelector((state) => {
+    if (!txMethod) {
+      return {};
+    }
+
     const id = getTransactionId(txMethod, params);
     return state.ethereum.transactions[id] || {};
   });
@@ -22,9 +26,9 @@ export const usePendingTransaction = ({ txMethod, params = {} }) => {
 };
 
 export const useOwnerAddress = () => {
-  const { address } = useSelector((state) => {
+  const { account } = useSelector((state) => {
     return state.ethereum;
   });
 
-  return address;
+  return account;
 };
