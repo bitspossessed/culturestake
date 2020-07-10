@@ -38,7 +38,7 @@ const AdminFestivalsEditForm = () => {
     isResourceLoading,
     resource,
   } = useEditForm({
-    fields: ['title', 'description', 'documents', 'images'],
+    fields: ['title', 'description', 'documents', 'images', 'artworks'],
     resourcePath: ['festivals', slug],
     returnUrl,
     onNotFound: () => {
