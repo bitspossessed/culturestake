@@ -34,7 +34,9 @@ const ContractsFestivals = ({ chainId }) => {
     getInitializedStatus();
   }, [chainId, isPending]);
 
-  const onClick = async () => {
+  const onClick = async (event) => {
+    event.preventDefault();
+
     const { txHash, txMethod } = await initializeFestival(owner, chainId);
 
     dispatch(
