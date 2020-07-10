@@ -18,9 +18,18 @@ import {
   ButtonIconStyle,
 } from '~/client/components/ButtonIcon';
 import { ButtonMoreStyle } from '~/client/components/ButtonMore';
+import { ButtonOutlineStyle } from '~/client/components/ButtonOutline';
 import { FramedBoxCornerStyle } from '~/client/components/FramedBox';
 import { HorizontalLineStyle } from '~/client/components/HorizontalLine';
+import {
+  EthereumContainerStyle,
+  EthereumContainerInnerStyle,
+} from '~/client/components/EthereumContainer';
+import { InputFieldStyle } from '~/client/components/InputField';
+import { InputTextareaFieldStyle } from '~/client/components/InputTextareaField';
+import { InputFieldsetLabelStyle } from '~/client/components/InputFieldset';
 import { PaperStyle } from '~/client/components/Paper';
+import { PillStyle } from '~/client/components/Pill';
 
 const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
   const { isAlternateColor, isAlternateFontFace, isLargerFont } = useSelector(
@@ -41,10 +50,14 @@ const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
 };
 
 export const ColorSectionStyle = styled.div`
-  ${/* sc-selector */ ParagraphStyle},
   ${/* sc-selector */ ButtonIconStyle},
+  ${/* sc-selector */ EthereumContainerStyle},
   ${/* sc-selector */ HeadingPrimaryStyle},
-  ${/* sc-selector */ HeadingSecondaryStyle} {
+  ${/* sc-selector */ HeadingSecondaryStyle},
+  ${/* sc-selector */ InputFieldStyle},
+  ${/* sc-selector */ InputFieldsetLabelStyle},
+  ${/* sc-selector */ InputTextareaFieldStyle},
+  ${/* sc-selector */ ParagraphStyle} {
     color: ${(props) => {
       const { foreground, background } = styles.schemes[props.scheme];
       return props.isInverted ? background : foreground;
@@ -58,6 +71,10 @@ export const ColorSectionStyle = styled.div`
   }
 
   ${/* sc-selector */ ButtonIconStyle},
+  ${/* sc-selector */ ButtonOutlineStyle},
+  ${/* sc-selector */ InputFieldStyle},
+  ${/* sc-selector */ InputFieldsetLabelStyle},
+  ${/* sc-selector */ InputTextareaFieldStyle},
   ${/* sc-selector */ ParagraphStyle} {
     font-size: ${(props) => {
       return props.isLargerFont ? '1.5em' : null;
@@ -83,7 +100,8 @@ export const ColorSectionStyle = styled.div`
     }};
   }
 
-  ${/* sc-selector */ PaperStyle} {
+  ${/* sc-selector */ PaperStyle},
+  ${/* sc-selector */ PillStyle} {
     background-color: ${(props) => {
       const { background } = styles.schemes[props.scheme];
       return props.isAlternateColor ? background : null;
@@ -110,8 +128,13 @@ export const ColorSectionStyle = styled.div`
     }
   }
 
+  ${/* sc-selector */ ButtonIconSVGStyle},
   ${/* sc-selector */ ButtonIconStyle},
-  ${/* sc-selector */ ButtonIconSVGStyle} {
+  ${/* sc-selector */ EthereumContainerInnerStyle},
+  ${/* sc-selector */ EthereumContainerStyle},
+  ${/* sc-selector */ InputFieldStyle},
+  ${/* sc-selector */ InputTextareaFieldStyle},
+  ${/* sc-selector */ PillStyle} {
     border-color: ${(props) => {
       const { foreground, background } = styles.schemes[props.scheme];
       return props.isInverted ? background : foreground;

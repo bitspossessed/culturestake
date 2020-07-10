@@ -76,7 +76,7 @@ EthereumContainer.propTypes = {
   isPending: PropTypes.bool,
 };
 
-const EthereumContainerStyle = styled.section`
+export const EthereumContainerStyle = styled.section`
   position: relative;
 
   margin-top: 2rem;
@@ -100,7 +100,7 @@ const EthereumContainerSpinnerStyle = styled.div`
   padding: 1rem;
 `;
 
-const EthereumContainerInnerStyle = styled.div`
+export const EthereumContainerInnerStyle = styled.div`
   margin-top: 1rem;
   padding-top: 1rem;
 

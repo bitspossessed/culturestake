@@ -29,7 +29,7 @@ const InputFieldsetStyle = styled.fieldset`
   }
 `;
 
-const InputFieldsetLabelStyle = styled.label`
+export const InputFieldsetLabelStyle = styled.label`
   display: block;
 
   margin-bottom: 1rem;

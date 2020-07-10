@@ -1,18 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import styles from '~/client/styles/variables';
 
 const Pill = (props) => {
-  return <PillStyle>{props.children}</PillStyle>;
+  const { isAlternateColor } = useSelector((state) => state.app);
+
+  return (
+    <PillStyle isAlternateColor={isAlternateColor}>{props.children}</PillStyle>
+  );
 };
 
 Pill.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const PillStyle = styled.span`
+export const PillStyle = styled.span`
   padding: 0.2rem;
   padding-right: 0.5rem;
   padding-left: 0.5rem;
@@ -20,7 +25,8 @@ const PillStyle = styled.span`
   border: 1.5px solid ${styles.colors.violet};
   border-radius: 15px;
 
-  color: ${styles.colors.white};
+  color: ${(props) =>
+    props.isAlternateColor ? styles.colors.yellow : styles.colors.white};
 
   background-color: ${styles.colors.violet};
 `;

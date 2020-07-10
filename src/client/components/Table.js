@@ -34,13 +34,13 @@ const DEFAULT_HEADERS = [
     isOrderKey: true,
     isDate: true,
     key: 'createdAt',
-    label: 'Created at', // @TODO: I18n
+    label: translate('Table.columnCreatedAt'),
   },
   {
     isOrderKey: true,
     isDate: true,
     key: 'updatedAt',
-    label: 'Updated at', // @TODO: I18n
+    label: translate('Table.columnUpdatedAt'),
   },
 ];
 

@@ -19,6 +19,8 @@ const components = {
     bodyEmpty: 'No entries given',
     bodyError: 'Something went wrong ...',
     bodyLoading: 'Loading ...',
+    columnCreatedAt: 'Created at',
+    columnUpdatedAt: 'Updated at',
   },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
