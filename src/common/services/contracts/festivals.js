@@ -1,7 +1,7 @@
 import { adminContract } from '~/common/services/contracts';
 
-export const INITIALIZE_FESTIVAL = Symbol('TX_INITIALIZE_FESTIVAL');
-export const DEACTIVATE_FESTIVAL = Symbol('TX_DEACTIVATE_FESTIVAL');
+export const TX_INITIALIZE_FESTIVAL = Symbol('TX_INITIALIZE_FESTIVAL');
+export const TX_DEACTIVATE_FESTIVAL = Symbol('TX_DEACTIVATE_FESTIVAL');
 
 export async function isFestivalInitialized(chainId) {
   const festival = await getFestival(chainId);
@@ -31,12 +31,12 @@ export async function initializeFestival(sender, chainId, startTime, endTime) {
   const txHash = await adminContract.methods
     .initFestival(chainId, startTime, endTime)
     .send({ from: sender });
-  return { txHash, txMethod: INITIALIZE_FESTIVAL };
+  return { txHash, txMethod: TX_INITIALIZE_FESTIVAL };
 }
 
 export async function deactivateFestival(sender, chainId) {
   const txHash = await adminContract.methods
     .initFestival(chainId)
     .send({ from: sender });
-  return { txHash, txMethod: DEACTIVATE_FESTIVAL };
+  return { txHash, txMethod: TX_DEACTIVATE_FESTIVAL };
 }

@@ -8,7 +8,7 @@ import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import {
   isFestivalInitialized,
   initializeFestival,
-  INITIALIZE_FESTIVAL,
+  TX_INITIALIZE_FESTIVAL,
 } from '~/common/services/contracts/festivals';
 import {
   usePendingTransaction,
@@ -22,7 +22,7 @@ const ContractsFestivals = () => {
   const [resource, isLoadingResource] = useResource(['festivals', slug], {});
 
   const { isPending } = usePendingTransaction({
-    txMethod: INITIALIZE_FESTIVAL,
+    txMethod: TX_INITIALIZE_FESTIVAL,
     params: { chainId: resource.chainId },
   });
   const owner = useOwnerAddress();
