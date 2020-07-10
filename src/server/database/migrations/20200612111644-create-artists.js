@@ -33,7 +33,7 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface.dropTable('artists');
   },
 };

@@ -170,7 +170,6 @@ export default async function (req, res, next) {
     await checkAnswers(vote, festivalQuestion, artworkQuestion);
     next();
   } catch (err) {
-    console.log(err)
     next(new APIError(httpStatus.BAD_REQUEST));
   }
 }

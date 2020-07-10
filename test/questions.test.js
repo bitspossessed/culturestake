@@ -47,7 +47,7 @@ describe('Answers', () => {
       await request(app)
         .get('/api/questions/1')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { title, answers } = response.body.data;
           expect(title).toBe(questions['1'].title);
           expect(answers).toMatchObject([answer.body.data]);
@@ -56,9 +56,7 @@ describe('Answers', () => {
 
     it('can get question that has no answers', async () => {
       await authRequest.put('/api/questions').send(questions['2']);
-      await request(app)
-        .get('/api/questions/2')
-        .expect(httpStatus.OK);
+      await request(app).get('/api/questions/2').expect(httpStatus.OK);
     });
   });
 });

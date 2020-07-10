@@ -47,7 +47,7 @@ describe('Festivals', () => {
       await request(app)
         .get('/api/festivals/a-festival')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { title, artworks } = response.body.data;
           expect(title).toBe(festivalsData['1'].title);
           expect(artworks[0].title).toBe(artworksData.davinci.title);

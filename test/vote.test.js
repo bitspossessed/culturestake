@@ -218,7 +218,7 @@ describe('API', () => {
           [festivalAnswer.id, festivalAnswer.id],
           vote.voteTokens,
           [artworkAnswer.id],
-          [1]
+          [1],
         ),
         sender.privateKey,
       ).signature;
