@@ -1,4 +1,7 @@
 const components = {
+  DangerZone: {
+    title: 'Danger Zone',
+  },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
     bodyIsNotOwner: 'Current account is not Contract owner',
