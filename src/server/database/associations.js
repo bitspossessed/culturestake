@@ -1,8 +1,9 @@
 import Answer from '~/server/models/answer';
-import Artwork from '~/server/models/artwork';
 import Artist from '~/server/models/artist';
+import Artwork from '~/server/models/artwork';
 import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
+import FestivalArtwork from '~/server/models/festivalArtwork';
 import Image from '~/server/models/image';
 import Property from '~/server/models/property';
 import Question from '~/server/models/question';
@@ -12,9 +13,36 @@ const attachableMixin = {
   constraints: false,
 };
 
+// Artwork
+
 export const ArtworkHasManyAnswers = Artwork.hasMany(Answer);
 
-export const PropertyHasManyAnswers = Property.hasMany(Answer);
+export const ArtworkBelongsToArtist = Artwork.belongsTo(Artist);
+
+export const ArtworkHasManyQuestions = Artwork.hasMany(Question, {
+  ...attachableMixin,
+  foreignKey: 'artworkId',
+  as: 'questions',
+});
+
+export const ArtworkBelongsToManyFestivals = Artwork.belongsToMany(Festival, {
+  through: FestivalArtwork,
+  as: 'festivals',
+  foreignKey: 'artworkId',
+  otherKey: 'festivalId',
+});
+
+export const ArtworkHasManyImages = Artwork.hasMany(Image, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artwork',
+  },
+  as: 'images',
+});
+
+// Answer
+
+export const AnswerBelongsToQuestion = Answer.belongsTo(Question);
 
 export const AnswerBelongsToArtwork = Answer.belongsTo(Artwork, {
   allowNull: true,
@@ -24,7 +52,7 @@ export const AnswerBelongsToProperty = Answer.belongsTo(Property, {
   allowNull: true,
 });
 
-export const ArtworkBelongsToArtist = Artwork.belongsTo(Artist);
+// Artist
 
 export const ArtistHasManyArtworks = Artist.hasMany(Artwork, {
   ...attachableMixin,
@@ -32,19 +60,15 @@ export const ArtistHasManyArtworks = Artist.hasMany(Artwork, {
   as: 'artworks',
 });
 
-export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
-  allowNull: true,
-  onDelete: 'SET NULL',
-  onUpdate: 'CASCADE',
+export const ArtistHasManyImages = Artist.hasMany(Image, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artist',
+  },
+  as: 'images',
 });
 
-export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
-  allowNull: true,
-  onDelete: 'SET NULL',
-  onUpdate: 'CASCADE',
-});
-
-export const AnswerBelongsToQuestion = Answer.belongsTo(Question);
+// Festival
 
 export const FestivalHasManyImages = Festival.hasMany(Image, {
   ...attachableMixin,
@@ -68,44 +92,33 @@ export const FestivalHasManyQuestions = Festival.hasMany(Question, {
   as: 'questions',
 });
 
-export const ArtworkHasManyQuestions = Artwork.hasMany(Question, {
-  ...attachableMixin,
-  foreignKey: 'artworkId',
-  as: 'questions',
+export const FestivalBelongsToManyArtworks = Festival.belongsToMany(Artwork, {
+  through: FestivalArtwork,
+  as: 'artworks',
+  foreignKey: 'festivalId',
+  otherKey: 'artworkId',
+});
+
+// Property
+
+export const PropertyHasManyAnswers = Property.hasMany(Answer);
+
+// Question
+
+export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
+  allowNull: true,
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE',
+});
+
+export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
+  allowNull: true,
+  onDelete: 'SET NULL',
+  onUpdate: 'CASCADE',
 });
 
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {
   ...attachableMixin,
   foreignKey: 'questionId',
   as: 'answers',
-});
-
-export const ArtworkHasManyImages = Artwork.hasMany(Image, {
-  ...attachableMixin,
-  scope: {
-    attachableType: 'artwork',
-  },
-  as: 'images',
-});
-
-export const ArtistHasManyImages = Artist.hasMany(Image, {
-  ...attachableMixin,
-  scope: {
-    attachableType: 'artist',
-  },
-  as: 'images',
-});
-
-export const ArtworkBelongsToManyFestivals = Artwork.belongsToMany(Festival, {
-  through: 'festivals2artworks',
-  as: 'festivals',
-  foreignKey: 'artworkId',
-  otherKey: 'festivalId',
-});
-
-export const FestivalBelongsToManyArtworks = Festival.belongsToMany(Artwork, {
-  through: 'festivals2artworks',
-  as: 'artworks',
-  foreignKey: 'festivalId',
-  otherKey: 'artworkId',
 });
