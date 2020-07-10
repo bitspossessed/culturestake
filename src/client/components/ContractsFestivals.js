@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonOutline from '~/client/components/ButtonOutline';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import {
@@ -48,9 +48,9 @@ const ContractsFestivals = ({ chainId }) => {
 
   return (
     <EthereumContainer>
-      <ButtonIcon disabled={isInitialized} onClick={onClick}>
+      <ButtonOutline disabled={isInitialized} onClick={onClick}>
         Initialize Festival
-      </ButtonIcon>
+      </ButtonOutline>
     </EthereumContainer>
   );
 };
