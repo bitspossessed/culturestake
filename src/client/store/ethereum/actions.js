@@ -21,7 +21,7 @@ export function getTransactionId(txMethod, params) {
     .sort()
     .reduce(
       (acc, key) => {
-        if (params.key) {
+        if (params[key]) {
           acc.push(params[key].toString());
         }
         return acc;
@@ -80,7 +80,7 @@ export function checkPendingTransactions() {
     const { ethereum } = getStore();
 
     for (let id of Object.keys(ethereum.transactions)) {
-      const transaction = transaction[id];
+      const transaction = ethereum.transactions[id];
 
       if (!transaction.isPending) {
         continue;

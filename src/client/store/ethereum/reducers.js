@@ -4,7 +4,7 @@ import ActionTypes from '~/client/store/ethereum/types';
 
 const initialTransactionState = {
   isError: false,
-  isPending: false,
+  isPending: true,
   isSuccess: false,
   txHash: null,
 };
