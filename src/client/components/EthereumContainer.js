@@ -17,7 +17,8 @@ const EthereumContainer = (props) => {
   const { account, provider, isOwner } = useSelector((state) => state.ethereum);
   const dispatch = useDispatch();
 
-  const onEnable = () => {
+  const onEnable = (event) => {
+    event.preventDefault();
     dispatch(enableAccount());
   };
 
@@ -68,6 +69,8 @@ EthereumContainer.propTypes = {
 };
 
 const ContractOwnerContainerStyle = styled.section`
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   padding: 1rem;
 
   border: 1.5px solid
