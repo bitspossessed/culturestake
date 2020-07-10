@@ -14,7 +14,7 @@ import {
   checkPendingTransactions,
 } from '~/client/store/ethereum/actions';
 
-const CHECK_FREQUENCY = 5000;
+const CHECK_FREQUENCY = 1000;
 
 let checkInterval;
 

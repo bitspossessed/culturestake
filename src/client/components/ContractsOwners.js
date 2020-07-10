@@ -36,14 +36,10 @@ const ContractsOwners = () => {
   });
 
   const [owners, setOwners] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
 
   const updateOwnersList = async () => {
-    setIsLoading(true);
-
     const response = await ownersModule.getOwners();
     setOwners(response);
-    setIsLoading(false);
   };
 
   const onClickRemove = useCallback(
@@ -67,7 +63,7 @@ const ContractsOwners = () => {
     updateOwnersList();
   }, [isAddPending, isRemovePending]);
 
-  const isPending = isAddPending || isRemovePending || isLoading;
+  const isPending = isAddPending || isRemovePending;
 
   return (
     <EthereumContainer isPending={isPending}>
@@ -75,7 +71,7 @@ const ContractsOwners = () => {
 
       {owners.length > 0 && (
         <ContractsOwnersList
-          isDisabled={isPending}
+          isDisabled={isRemovePending}
           owners={owners}
           onRemove={onClickRemove}
         />
