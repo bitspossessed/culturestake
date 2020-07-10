@@ -3,7 +3,9 @@ import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
-import ButtonOutline from '~/client/components/ButtonOutline';
+import ButtonOutline, {
+  ButtonOutlineStyle,
+} from '~/client/components/ButtonOutline';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import InputField from '~/client/components/InputField';
@@ -168,7 +170,13 @@ const ContractsOwnersStyle = styled.ul`
   padding-left: 2rem;
 `;
 
-const ContractsOwnersItemStyle = styled.li``;
+const ContractsOwnersItemStyle = styled.li`
+  margin-top: 0.5rem;
+
+  ${ButtonOutlineStyle} {
+    margin: 0;
+  }
+`;
 
 const ContractsOwnersAddressStyle = styled.span`
   padding-right: 1rem;
