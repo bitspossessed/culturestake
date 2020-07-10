@@ -1,6 +1,6 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 import EthereumContainer from '~/client/components/EthereumContainer';
@@ -14,16 +14,13 @@ import {
   usePendingTransaction,
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
-import { useResource } from '~/client/hooks/resources';
 
-const ContractsFestivals = () => {
+const ContractsFestivals = ({ chainId }) => {
   const dispatch = useDispatch();
-  const { slug } = useParams();
-  const [resource, isLoadingResource] = useResource(['festivals', slug], {});
 
   const { isPending } = usePendingTransaction({
     txMethod: TX_INITIALIZE_FESTIVAL,
-    params: { chainId: resource.chainId },
+    params: { chainId },
   });
   const owner = useOwnerAddress();
 
@@ -31,35 +28,35 @@ const ContractsFestivals = () => {
 
   useEffect(() => {
     const getInitializedStatus = async () => {
-      const state = await isFestivalInitialized(resource.chainId);
+      const state = await isFestivalInitialized(chainId);
       setIsInitialized(state);
     };
     getInitializedStatus();
-  }, [resource, isPending]);
+  }, [chainId, isPending]);
 
   const onClick = async () => {
-    const { txHash, txMethod } = await initializeFestival(
-      owner,
-      resource.chainId,
-    );
+    const { txHash, txMethod } = await initializeFestival(owner, chainId);
+
     dispatch(
       addPendingTransaction({
         txHash,
         txMethod,
-        params: { chainId: resource.chainId },
+        params: { chainId },
       }),
     );
   };
 
   return (
     <EthereumContainer>
-      {!isLoadingResource ? (
-        <ButtonIcon disabled={isInitialized} onClick={onClick}>
-          Initialize Festival
-        </ButtonIcon>
-      ) : null}
+      <ButtonIcon disabled={isInitialized} onClick={onClick}>
+        Initialize Festival
+      </ButtonIcon>
     </EthereumContainer>
   );
+};
+
+ContractsFestivals.propTypes = {
+  chainId: PropTypes.string.isRequired,
 };
 
 export default ContractsFestivals;

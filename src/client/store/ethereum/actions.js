@@ -46,12 +46,13 @@ export function enableAccount() {
   return async (dispatch, getStore) => {
     const { ethereum } = getStore();
     const accounts = await ethereum.provider.enable();
+    const ownerStatus = await isOwner(accounts[0]);
 
     dispatch({
       type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
       meta: {
         account: accounts[0],
-        isOwner: await isOwner(accounts[0]),
+        isOwner: ownerStatus,
       },
     });
   };
