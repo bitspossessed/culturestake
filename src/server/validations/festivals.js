@@ -7,11 +7,11 @@ import {
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
-  title: Joi.string().max(128).required(),
+  artworks: Joi.array().required().max(30),
   description: Joi.string().required(),
-  images: imagesValidation.max(10),
   documents: documentsValidation.max(1),
-  artworks: Joi.array().max(30),
+  images: imagesValidation.max(10),
+  title: Joi.string().max(128).required(),
 };
 
 export default {
