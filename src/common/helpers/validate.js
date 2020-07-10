@@ -1,4 +1,4 @@
-import { celebrate, Joi } from 'celebrate';
+import { Joi } from 'celebrate';
 
 import web3 from '~/common/services/web3';
 
@@ -60,12 +60,3 @@ export const web3Validators = Joi.extend((joi) => {
     },
   };
 });
-
-export default function validate(schema) {
-  const joiOptions = {
-    abortEarly: false,
-    debug: process.env.NODE_ENV !== 'production',
-  };
-
-  return celebrate(schema, joiOptions);
-}

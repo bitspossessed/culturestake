@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { web3Validators } from '~/server/helpers/validate';
+import { web3Validators } from '~/common/helpers/validate';
 
 export const paramValidation = {
   questionAddress: web3Validators.web3().address(),

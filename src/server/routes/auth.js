@@ -1,9 +1,8 @@
 import express from 'express';
 
-import validate from '~/common/helpers/validate';
-
 import authController from '~/server/controllers/auth';
 import authValidation from '~/server/validations/auth';
+import validate from '~/server/services/validate';
 import { authLocalMiddleware } from '~/server/middlewares/passport';
 
 const router = express.Router();

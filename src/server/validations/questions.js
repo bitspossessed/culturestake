@@ -1,7 +1,7 @@
 import { Joi, Segments } from 'celebrate';
 
 import { idValidation, paginationValidation } from '~/server/validations';
-import { web3Validators } from '~/server/helpers/validate';
+import { web3Validators } from '~/common/helpers/validate';
 
 const defaultValidation = {
   title: Joi.string().max(128).required(),

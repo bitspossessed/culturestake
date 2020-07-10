@@ -7,7 +7,7 @@ import authMiddleware, {
 import answersController from '~/server/controllers/answers';
 import answersValidation from '~/server/validations/answers';
 import resourcesMiddleware from '~/server/middlewares/resources';
-import validate from '~/server/helpers/validate';
+import validate from '~/server/services/validate';
 
 const router = express.Router();
 

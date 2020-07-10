@@ -1,11 +1,10 @@
 import express from 'express';
 
-import validate from '~/common/helpers/validate';
-
 import User from '~/server/models/user';
 import resourcesMiddleware from '~/server/middlewares/resources';
 import usersController from '~/server/controllers/users';
 import usersValidation from '~/server/validations/users';
+import validate from '~/server/services/validate';
 
 const router = express.Router();
 
