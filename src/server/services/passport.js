@@ -6,7 +6,7 @@ import { Strategy as StrategyLocal } from 'passport-local';
 import User from '~/server/models/user';
 
 const JWT_ALGORITHM = 'HS512';
-const JWT_EXPIRATION = '1h';
+const JWT_EXPIRATION = '12h';
 
 passport.use(
   new StrategyLocal(
