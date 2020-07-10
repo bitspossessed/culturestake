@@ -3,6 +3,7 @@ const components = {
     title: 'Danger Zone',
   },
   ContractsOwners: {
+    title: 'Contract admins',
     buttonAddNewOwner: 'Add new contract admin',
     buttonRemoveOwner: 'Remove',
     fieldOwnerAddress: 'Public address',

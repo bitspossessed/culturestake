@@ -19,6 +19,7 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 import { web3Validators } from '~/common/helpers/validate';
+import { ParagraphStyle } from '~/client/styles/typography';
 
 const ownerAddressSchema = web3Validators.web3().address().required();
 
@@ -70,6 +71,8 @@ const ContractsOwners = () => {
 
   return (
     <EthereumContainer isPending={isPending}>
+      <ParagraphStyle>{translate('ContractsOwners.title')}</ParagraphStyle>
+
       {owners.length > 0 && (
         <ContractsOwnersList
           isDisabled={isPending}
