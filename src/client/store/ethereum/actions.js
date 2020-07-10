@@ -1,7 +1,19 @@
 import ActionTypes from '~/client/store/ethereum/types';
+import ownersModule from '~/common/services/contracts/owners';
 import web3 from '~/common/services/web3';
 import { detectMetaMask } from '~/client/services/ethereum';
-import { isOwner } from '~/common/services/contracts/owners';
+
+async function handleAccountChange(accounts) {
+  const isOwner = await ownersModule.isOwner(accounts[0]);
+
+  return {
+    type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
+    meta: {
+      account: accounts[0],
+      isOwner,
+    },
+  };
+}
 
 // Helper method to generate string identifier for pending transactions
 export function getTransactionId(txMethod, params) {
@@ -24,14 +36,17 @@ export function initializeProvider() {
     const provider = await detectMetaMask();
 
     provider.on('accountsChanged', async (accounts) => {
-      dispatch({
-        type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
-        meta: {
-          account: accounts[0],
-          isOwner: await isOwner(accounts[0]),
-        },
-      });
+      dispatch(await handleAccountChange(accounts));
     });
+
+    provider
+      .request({ method: 'eth_accounts' })
+      .then(async (accounts) => {
+        dispatch(await handleAccountChange(accounts));
+      })
+      .catch(() => {
+        // Do nothing ..
+      });
 
     dispatch({
       type: ActionTypes.ETHEREUM_INITIALIZE,
@@ -46,15 +61,7 @@ export function enableAccount() {
   return async (dispatch, getStore) => {
     const { ethereum } = getStore();
     const accounts = await ethereum.provider.enable();
-    const ownerStatus = await isOwner(accounts[0]);
-
-    dispatch({
-      type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
-      meta: {
-        account: accounts[0],
-        isOwner: ownerStatus,
-      },
-    });
+    dispatch(await handleAccountChange(accounts));
   };
 }
 
