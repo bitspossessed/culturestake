@@ -86,7 +86,7 @@ const ContractsOwnersForm = () => {
   const dispatch = useDispatch();
   const senderAddress = useOwnerAddress();
 
-  const { Form, meta } = useContractsForm({
+  const { Form, meta, reset } = useContractsForm({
     onSubmit: async ({ ownerAddress }) => {
       const result = await ownersModule.addOwner(senderAddress, ownerAddress);
 
@@ -96,6 +96,8 @@ const ContractsOwnersForm = () => {
           txMethod: TX_ADDED_OWNER,
         }),
       );
+
+      reset();
 
       return result;
     },
