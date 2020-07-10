@@ -205,7 +205,7 @@ const InputUploadField = ({
         onChange={onChangeFiles}
       />
 
-      <ButtonOutline disabled={form.meta.isPending} onClick={onClickUpload}>
+      <ButtonOutline disabled={isPending} onClick={onClickUpload}>
         {translate('InputUploadField.buttonSelectFiles')}
       </ButtonOutline>
     </InputFieldset>

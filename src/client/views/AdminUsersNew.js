@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormUsers from '~/client/components/FormUsers';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
@@ -17,7 +18,7 @@ const AdminUsersNew = () => {
 
   const returnUrl = '/admin/users';
 
-  const { ButtonSubmit, Form } = useNewForm({
+  const { Form } = useNewForm({
     fields: ['email', 'password', 'username'],
     resourcePath: ['users'],
     returnUrl,

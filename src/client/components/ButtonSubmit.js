@@ -1,19 +1,25 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import translate from '~/common/services/i18n';
+import { useFormContext } from 'react-form';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 
-const ButtonSubmit = ({ children, isPending, ...rest }) => {
+const ButtonSubmit = ({ children, disabled, ...rest }) => {
+  const { meta } = useFormContext();
+
   return (
-    <ButtonIcon type="submit" {...rest}>
-      {isPending ? '...' : children}
+    <ButtonIcon disabled={disabled || !meta.canSubmit} type="submit" {...rest}>
+      {meta.isSubmitting
+        ? '...'
+        : children || translate('default.buttonSubmitEdit')}
     </ButtonIcon>
   );
 };
 
 ButtonSubmit.propTypes = {
-  children: PropTypes.node.isRequired,
-  isPending: PropTypes.bool.isRequired,
+  children: PropTypes.node,
+  disabled: PropTypes.bool,
 };
 
 export default ButtonSubmit;

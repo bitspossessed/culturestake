@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import translate from '~/common/services/i18n';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
 import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
@@ -31,13 +32,7 @@ const AdminFestivalsEditForm = () => {
 
   const returnUrl = '/admin/festivals';
 
-  const {
-    ButtonDelete,
-    ButtonSubmit,
-    Form,
-    isResourceLoading,
-    resource,
-  } = useEditForm({
+  const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
     fields: ['title', 'description', 'documents', 'images', 'artworks'],
     resourcePath: ['festivals', slug],
     returnUrl,

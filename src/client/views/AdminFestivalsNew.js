@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import translate from '~/common/services/i18n';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
@@ -18,7 +19,7 @@ const AdminFestivalsNew = () => {
 
   const returnUrl = '/admin/festivals';
 
-  const { ButtonSubmit, Form } = useNewForm({
+  const { Form } = useNewForm({
     fields: ['description', 'documents', 'images', 'title'],
     resourcePath: ['festivals'],
     returnUrl,
