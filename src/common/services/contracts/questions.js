@@ -1,4 +1,4 @@
-import adminContract from '~/common/services/contracts';
+import { adminContract } from '~/common/services/contracts';
 
 export const TX_INITIALIZED_QUESTION = Symbol('TX_INITIALIZED_QUESTION');
 export const TX_DEACTIVATED_QUESTION = Symbol('TX_DEACTIVATED_QUESTION');
