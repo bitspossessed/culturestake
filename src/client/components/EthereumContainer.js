@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import ButtonOutline from '~/client/components/ButtonOutline';
 import Pill from '~/client/components/Pill';
+import Spinner from '~/client/components/Spinner';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { enableAccount } from '~/client/store/ethereum/actions';
@@ -23,10 +24,16 @@ const EthereumContainer = (props) => {
   };
 
   return (
-    <ContractOwnerContainerStyle disabled={!provider}>
+    <EthereumContainerStyle disabled={!provider}>
       <HeadingSecondaryStyle>
         {translate('EthereumContainer.title')}
       </HeadingSecondaryStyle>
+
+      {props.isPending && (
+        <EthereumContainerSpinnerStyle>
+          <Spinner />
+        </EthereumContainerSpinnerStyle>
+      )}
 
       {provider ? (
         <Fragment>
@@ -60,15 +67,18 @@ const EthereumContainer = (props) => {
           {translate('EthereumContainer.bodyInstallMetamask')}
         </ParagraphStyle>
       )}
-    </ContractOwnerContainerStyle>
+    </EthereumContainerStyle>
   );
 };
 
 EthereumContainer.propTypes = {
   children: PropTypes.node.isRequired,
+  isPending: PropTypes.bool,
 };
 
-const ContractOwnerContainerStyle = styled.section`
+const EthereumContainerStyle = styled.section`
+  position: relative;
+
   margin-top: 2rem;
   margin-bottom: 2rem;
   padding: 1rem;
@@ -79,6 +89,15 @@ const ContractOwnerContainerStyle = styled.section`
 
   color: ${(props) =>
     props.disabled ? styles.colors.gray : styles.colors.violet};
+`;
+
+const EthereumContainerSpinnerStyle = styled.div`
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  padding: 1rem;
 `;
 
 const EthereumContainerInnerStyle = styled.div`
