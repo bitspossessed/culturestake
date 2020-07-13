@@ -47,19 +47,14 @@ const InitializeFestival = ({ chainId, owner }) => {
     );
   };
 
-  const onChangeStartTime = async (datetime) => {
-    setFestivalStartTime(datetime);
-  };
-
-  const onChangeEndTime = async (datetime) => {
-    setFestivalEndTime(datetime);
-  };
-
   return (
     <div>
       <ButtonOutline onClick={onClick}>Initialize Festival</ButtonOutline>
-      <DateTimePicker value={festivalStartTime} onChange={onChangeStartTime} />
-      <DateTimePicker value={festivalEndTime} onChange={onChangeEndTime} />
+      <DateTimePicker
+        value={festivalStartTime}
+        onChange={setFestivalStartTime}
+      />
+      <DateTimePicker value={festivalEndTime} onChange={setFestivalEndTime} />
     </div>
   );
 };
