@@ -39,15 +39,6 @@ export function initializeProvider() {
       provider.on('accountsChanged', async (accounts) => {
         dispatch(await handleAccountChange(accounts));
       });
-
-      // provider
-      //   .request({ method: 'eth_accounts' })
-      //   .then(async (accounts) => {
-      //     dispatch(await handleAccountChange(accounts));
-      //   })
-      //   .catch(() => {
-      //     // Do nothing ..
-      //   });
     }
 
     dispatch({
