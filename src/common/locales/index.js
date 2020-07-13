@@ -31,6 +31,7 @@ const components = {
     fieldDocuments: 'Documents:',
     fieldImages: 'Images:',
     fieldTitle: 'Title:',
+    fieldArtworks: 'Artworks:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',

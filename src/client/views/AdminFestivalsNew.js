@@ -20,7 +20,7 @@ const AdminFestivalsNew = () => {
   const returnUrl = '/admin/festivals';
 
   const { Form } = useNewForm({
-    fields: ['description', 'documents', 'images', 'title'],
+    fields: ['description', 'documents', 'images', 'title', 'artworks'],
     resourcePath: ['festivals'],
     returnUrl,
     onSuccess: ({ title }) => {

@@ -33,21 +33,21 @@ export function getTransactionId(txMethod, params) {
 
 export function initializeProvider() {
   return async (dispatch) => {
-    const provider = await detectMetaMask();
+    let provider = await detectMetaMask();
 
     if (provider) {
       provider.on('accountsChanged', async (accounts) => {
         dispatch(await handleAccountChange(accounts));
       });
 
-      provider
-        .request({ method: 'eth_accounts' })
-        .then(async (accounts) => {
-          dispatch(await handleAccountChange(accounts));
-        })
-        .catch(() => {
-          // Do nothing ..
-        });
+      // provider
+      //   .request({ method: 'eth_accounts' })
+      //   .then(async (accounts) => {
+      //     dispatch(await handleAccountChange(accounts));
+      //   })
+      //   .catch(() => {
+      //     // Do nothing ..
+      //   });
     }
 
     dispatch({
@@ -62,6 +62,8 @@ export function initializeProvider() {
 export function enableAccount() {
   return async (dispatch, getStore) => {
     const { ethereum } = getStore();
+    // eslint-disable-next-line
+    console.log(ethereum)
     const accounts = await ethereum.provider.enable();
     dispatch(await handleAccountChange(accounts));
   };

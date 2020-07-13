@@ -50,6 +50,12 @@ const FormFestivals = () => {
         name="documents"
         validate={schema.documents}
       />
+
+      <InputField
+        label={translate('FormFestivals.fieldArtworks')}
+        name="artworks"
+        validate={schema.artworks}
+      />
     </Fragment>
   );
 };
