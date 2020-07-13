@@ -73,6 +73,12 @@ const FormFestivals = () => {
         name="sticker"
         validate={schema.sticker}
       />
+      
+      <InputField
+        label={translate('FormFestivals.fieldArtworks')}
+        name="artworks"
+        validate={schema.artworks}
+      />
     </Fragment>
   );
 };
