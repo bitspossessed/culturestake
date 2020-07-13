@@ -5,7 +5,7 @@ import authMiddleware from '~/server/middlewares/passport';
 import propertiesController from '~/server/controllers/properties';
 import propertiesValidation from '~/server/validations/properties';
 import resourcesMiddleware from '~/server/middlewares/resources';
-import validate from '~/server/helpers/validate';
+import validate from '~/server/services/validate';
 
 const router = express.Router();
 

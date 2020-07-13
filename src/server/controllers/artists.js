@@ -1,7 +1,9 @@
 import Artist from '~/server/models/artist';
 import baseController from '~/server/controllers';
-
-import { ArtistHasManyImages, ArtistHasManyArtworks } from '~/server/database/associations';
+import {
+  ArtistHasManyArtworks,
+  ArtistHasManyImages,
+} from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
 

@@ -13,14 +13,12 @@ const DEFAULT_LIMIT = 20;
 const DEFAULT_ORDER_DIRECTION = 'asc';
 const DEFAULT_ORDER_KEY = 'id';
 
-// The base controller handles basic CRUD requests for all
-// types of resources. It manages API responses (what is
-// publicly visible and what not), errors, pagination, and
-// updates associations accordingly. All of this can be
+// The base controller handles basic CRUD requests for all types of resources.
+// It manages API responses (what is publicly visible and what not), errors,
+// pagination, and updates associations accordingly. All of this can be
 // configured via the `options` object.
 
-// Filters the response accordingly to only expose certain
-// fields to the public API
+// Filters response accordingly to only expose certain fields to the public API
 export function filterResponseFields(req, data, options) {
   // Filter association responses as well
   if (options.associations) {
@@ -58,13 +56,13 @@ export function filterResponseFields(req, data, options) {
 }
 
 export function filterResponseFieldsAll(req, arr, options) {
-  return arr.map(data => {
+  return arr.map((data) => {
     return filterResponseFields(req, data, options);
   });
 }
 
-// Helper method to handle associations of resources,
-// removing or adding them when needed
+// Helper method to handle associations of resources, removing or adding them
+// when needed
 async function handleAssociation(instance, options, items) {
   // Prepare names for different operations
   const name = singularize(options.association.target.name);
@@ -74,12 +72,10 @@ async function handleAssociation(instance, options, items) {
 
   // Collect ids of all items to be associated to instance
   const ids = [];
-  // const knownCreations = [];
-  items.forEach(item => {
+  items.forEach((item) => {
     if (typeof item === 'number') {
       ids.push(item);
     } else if (!('id' in item)) {
-      // knownCreations.push(item);
       throw new Error('`id` missing in association items');
     } else {
       ids.push(item.id);
@@ -98,13 +94,13 @@ async function handleAssociation(instance, options, items) {
   // Get already existing associations of that kind
   const currentItems = await instance[`get${namePluralUppercase}`]();
 
-  const currentIds = currentItems.map(item => {
+  const currentIds = currentItems.map((item) => {
     return item.id;
   });
 
   // Check for to-be-removed associations
   const removePromises = currentItems
-    .filter(item => {
+    .filter((item) => {
       return !ids.includes(item.id);
     })
     .reduce((acc, item) => {
@@ -120,10 +116,10 @@ async function handleAssociation(instance, options, items) {
 
   // Check for to-be-added / new associations
   const addPromises = futureItems
-    .filter(futureItem => {
+    .filter((futureItem) => {
       return !currentIds.includes(futureItem.id);
     })
-    .map(item => {
+    .map((item) => {
       return instance[`add${nameUppercase}`](item);
     });
 
@@ -135,7 +131,7 @@ async function handleAssociations(instance, associations, data) {
     return;
   }
 
-  const promises = associations.map(association => {
+  const promises = associations.map((association) => {
     if (!('association' in association)) {
       throw new Error('`association` required in association');
     }
@@ -160,7 +156,7 @@ async function destroyAssociations(instance, associations) {
     return;
   }
 
-  const promises = associations.map(association => {
+  const promises = associations.map((association) => {
     if (!('association' in association)) {
       throw new Error('`association` required in association');
     }
@@ -184,8 +180,6 @@ function create(options) {
         httpStatus.CREATED,
       );
     } catch (error) {
-      console.log('caught')
-      console.log(error)
       if (error instanceof UniqueConstraintError) {
         next(new APIError(httpStatus.CONFLICT));
       } else {

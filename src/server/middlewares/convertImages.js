@@ -43,7 +43,7 @@ export default function convertImages(fields) {
           return acc;
         }
 
-        field.versions.forEach(version => {
+        field.versions.forEach((version) => {
           const {
             quality = DEFAULT_QUALITY,
             width = DEFAULT_WIDTH,

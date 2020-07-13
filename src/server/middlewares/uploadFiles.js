@@ -32,7 +32,7 @@ export default function uploadFiles(fields) {
     const {
       maxFileSize = DEFAULT_FILE_MAX_SIZE,
       allowedFileTypes = DEFAULT_FILE_TYPES,
-    } = fields.find(field => field.name === file.fieldname);
+    } = fields.find((field) => field.name === file.fieldname);
 
     if (!allowedFileTypes.includes(ext)) {
       cb(
@@ -59,7 +59,7 @@ export default function uploadFiles(fields) {
   }).fields(fields);
 
   return (req, res, next) => {
-    uploadViaMulter(req, res, error => {
+    uploadViaMulter(req, res, (error) => {
       if (error instanceof MulterError) {
         next(new APIError(error.message, httpStatus.BAD_REQUEST));
       } else if (error) {

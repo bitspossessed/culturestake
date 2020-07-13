@@ -91,11 +91,20 @@ async function create(req, res, next) {
   try {
     await dispatch({
       ...vote,
-      answers: vote.answers.map((a) => a.chainId),
+      question: vote.festivalQuestion,
+      answers: vote.festivalAnswers.map((a) => a.chainId),
+      voteTokens: vote.festivalVoteTokens,
+    });
+    await dispatch({
+      ...vote,
+      question: vote.artworkQuestion,
+      answers: vote.artworkAnswers.map((a) => a.chainId),
+      voteTokens: vote.artworkVoteTokens,
     });
     await Vote.create({
       ...vote,
-      answers: vote.answers.map((a) => a.id),
+      festivalAnswers: vote.festivalAnswers.map((a) => a.chainId),
+      artworkAnswers: vote.artworkAnswers.map((a) => a.chainId),
     });
     respondWithSuccess(res);
   } catch (error) {

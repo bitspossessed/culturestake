@@ -64,7 +64,7 @@ describe('Authentication', () => {
           password: users.lisa.password,
         })
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { data } = response.body;
           token = data.token;
 

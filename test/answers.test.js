@@ -52,7 +52,7 @@ describe('Answers', () => {
       await authRequest
         .get('/api/answers/1')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const answer = response.body.data;
           expect(answer.chainId).toBeDefined();
           expect(answer.type).toBe(answersData.artworkAnswer1.type);
@@ -64,7 +64,7 @@ describe('Answers', () => {
       await request(app)
         .get('/api/answers/1')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const answer = response.body.data;
           expect(answer.chainId).toBeUndefined();
           expect(answer.type).toBe(answersData.artworkAnswer1.type);

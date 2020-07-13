@@ -5,10 +5,13 @@ import { useParams } from 'react-router-dom';
 import translate from '~/common/services/i18n';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
+import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import ContractsFestivals from '~/client/components/ContractsFestivals';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -29,8 +32,8 @@ const AdminFestivalsEditForm = () => {
 
   const returnUrl = '/admin/festivals';
 
-  const { Form, ButtonSubmit, ButtonDelete } = useEditForm({
-    fields: ['title', 'description', 'documents', 'images'],
+  const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
+    fields: ['title', 'description', 'documents', 'images', 'artworks'],
     resourcePath: ['festivals', slug],
     returnUrl,
     onNotFound: () => {
@@ -73,7 +76,15 @@ const AdminFestivalsEditForm = () => {
       <ViewAdmin>
         <Form>
           <FormFestivals />
-          <ButtonDelete />
+
+          <DangerZone>
+            <ButtonDelete />
+          </DangerZone>
+
+          {!isResourceLoading && resource.chainId && (
+            <ContractsFestivals chainId={resource.chainId} />
+          )}
+
           <ButtonSubmit />
         </Form>
       </ViewAdmin>

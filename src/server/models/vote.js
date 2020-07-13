@@ -39,13 +39,13 @@ const Vote = db.define('vote', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  question: {
+  festivalQuestion: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  answers: {
+  festivalAnswers: {
     type: DataTypes.STRING,
     get: function () {
       return JSON.parse(this.getDataValue('answers'));
@@ -54,7 +54,31 @@ const Vote = db.define('vote', {
       return this.setDataValue('answers', JSON.stringify(val));
     },
   },
-  voteTokens: {
+  festivalVoteTokens: {
+    type: DataTypes.STRING,
+    get: function () {
+      return JSON.parse(this.getDataValue('voteTokens'));
+    },
+    set: function (val) {
+      return this.setDataValue('voteTokens', JSON.stringify(val));
+    },
+  },
+  artworkQuestion: {
+    type: DataTypes.STRING,
+    validate: {
+      isAlphanumeric: true,
+    },
+  },
+  artworkAnswers: {
+    type: DataTypes.STRING,
+    get: function () {
+      return JSON.parse(this.getDataValue('answers'));
+    },
+    set: function (val) {
+      return this.setDataValue('answers', JSON.stringify(val));
+    },
+  },
+  artworkVoteTokens: {
     type: DataTypes.STRING,
     get: function () {
       return JSON.parse(this.getDataValue('voteTokens'));

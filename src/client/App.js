@@ -9,20 +9,35 @@ import Routes from '~/client/routes';
 import SVGDefinitions from '~/client/components/SVGDefinitions';
 import ThreeInterface from '~/client/components/ThreeInterface';
 import { initializeApp } from '~/client/store/app/actions';
+import {
+  initializeProvider,
+  checkPendingTransactions,
+} from '~/client/store/ethereum/actions';
+
+const CHECK_FREQUENCY = 1000;
+
+let checkInterval;
 
 const App = () => {
   const dispatch = useDispatch();
   const { isAlternateColor } = useSelector((state) => state.app);
 
-  const onAppStart = () => {
-    const initialize = async () => {
-      await dispatch(initializeApp());
+  useEffect(() => {
+    const initialize = () => {
+      dispatch(initializeApp());
+      dispatch(initializeProvider());
     };
 
-    initialize();
-  };
+    checkInterval = window.setInterval(() => {
+      dispatch(checkPendingTransactions());
+    }, CHECK_FREQUENCY);
 
-  useEffect(onAppStart, [dispatch]);
+    initialize();
+  }, [dispatch]);
+
+  window.addEventListener('unload', () => {
+    window.clearInterval(checkInterval);
+  });
 
   return (
     <Fragment>

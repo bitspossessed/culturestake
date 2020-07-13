@@ -1,8 +1,26 @@
 const components = {
+  DangerZone: {
+    title: 'Danger Zone',
+  },
+  ContractsOwners: {
+    title: 'Contract admins:',
+    buttonAddNewOwner: 'Add',
+    buttonRemoveOwner: 'Remove',
+    fieldOwnerAddress: 'Add new address:',
+  },
+  EthereumContainer: {
+    bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
+    bodyIsNotOwner: 'Current account is not Contract owner',
+    bodyYourAddress: 'Your address:',
+    buttonEnable: 'Enable Ethereum wallet',
+    title: 'Smart Contracts Snuggle Panel (SCSP)',
+  },
   Table: {
     bodyEmpty: 'No entries given',
     bodyError: 'Something went wrong ...',
     bodyLoading: 'Loading ...',
+    columnCreatedAt: 'Created at',
+    columnUpdatedAt: 'Updated at',
   },
   FormLogin: {
     fieldEmail: 'Your Email-address:',

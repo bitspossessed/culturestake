@@ -8,6 +8,10 @@ export default async function requestGraph(query, variables) {
   return graphQLClient.request(query, variables);
 }
 
+export const answers = () => `{
+    answers { id voteTokens votePower votes active question { id } }
+  }`;
+
 export const answersByQuestion = (question) => `{
     answers
     (
@@ -16,3 +20,5 @@ export const answersByQuestion = (question) => `{
       orderDirection: desc
     ) { id voteTokens votePower votes active question { id } }
   }`;
+
+export const admins = () => `{ admins() { id } }`;

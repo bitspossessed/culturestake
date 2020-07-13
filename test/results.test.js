@@ -70,13 +70,11 @@ describe('API', () => {
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
 
-    const answerIds = answers.map(a => a.id);
+    const answerIds = answers.map((a) => a.id);
     const votes = [1, 2, 3, 4, 5];
     vote = buildVote(booth, sender, question, answerIds, votes);
 
-    await request(app)
-      .post('/api/vote')
-      .send(vote);
+    await request(app).post('/api/vote').send(vote);
   });
 
   afterAll(async () => {
@@ -100,7 +98,7 @@ describe('API', () => {
         await request(app)
           .get(`/api/vote/${question.options.address}`)
           .expect(httpStatus.OK)
-          .expect(response => {
+          .expect((response) => {
             const summary = response.body.data;
             for (const a in summary.answers) {
               if (a.votePower >= 3) {
@@ -111,23 +109,23 @@ describe('API', () => {
             }
           })
           .then(done())
-          .catch(err => done(err));
+          .catch((err) => done(err));
       }, 1000);
     });
 
-    it('should return answer info for all answers for auth request', async done => {
+    it('should return answer info for all answers for auth request', async (done) => {
       setTimeout(async () => {
         await authRequest
           .get(`/api/vote/${question.options.address}`)
           .expect(httpStatus.OK)
-          .expect(response => {
+          .expect((response) => {
             const summary = response.body.data;
             for (const a in summary.answers) {
               expect(a.artworkId).toBeDefined();
             }
           })
           .then(done())
-          .catch(err => done(err));
+          .catch((err) => done(err));
       }, 1000);
     });
   });

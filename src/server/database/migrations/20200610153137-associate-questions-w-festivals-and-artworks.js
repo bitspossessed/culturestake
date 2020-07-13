@@ -24,7 +24,7 @@ module.exports = {
         });
       });
   },
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface
       .removeColumn('questions', 'festivalId')
       .then(queryInterface.removeColumn('questions', 'artworkId'));

@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { web3Validators } from '~/server/helpers/validate';
+import { web3Validators } from '~/common/helpers/validate';
 
 export const paramValidation = {
   questionAddress: web3Validators.web3().address(),
@@ -12,9 +12,12 @@ const defaultValidation = {
   booth: web3Validators.web3().address(),
   boothSignature: Joi.string().max(132).required(),
   nonce: Joi.number().required(),
-  question: web3Validators.web3().address(),
-  answers: Joi.array().items(Joi.number().positive()).required(),
-  voteTokens: Joi.array().items(Joi.number().positive()),
+  festivalQuestion: web3Validators.web3().address(),
+  festivalAnswers: Joi.array().items(Joi.number().positive()).required(),
+  festivalVoteTokens: Joi.array().items(Joi.number().positive()),
+  artworkQuestion: web3Validators.web3().address(),
+  artworkAnswers: Joi.array().items(Joi.number().positive()).required(),
+  artworkVoteTokens: Joi.array().items(Joi.number().positive()),
 };
 
 export default {

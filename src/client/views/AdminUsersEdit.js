@@ -5,6 +5,8 @@ import { useParams } from 'react-router-dom';
 import translate from '~/common/services/i18n';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
+import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormUsers from '~/client/components/FormUsers';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
@@ -29,7 +31,7 @@ const AdminUsersEditForm = () => {
 
   const returnUrl = '/admin/users';
 
-  const { Form, ButtonSubmit, ButtonDelete } = useEditForm({
+  const { Form, ButtonDelete } = useEditForm({
     fields: ['email', 'username'],
     resourcePath: ['users', slug],
     returnUrl,
@@ -73,7 +75,11 @@ const AdminUsersEditForm = () => {
       <ViewAdmin>
         <Form>
           <FormUsers isPasswordHidden />
-          <ButtonDelete />
+
+          <DangerZone>
+            <ButtonDelete />
+          </DangerZone>
+
           <ButtonSubmit />
         </Form>
       </ViewAdmin>

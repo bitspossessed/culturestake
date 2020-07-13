@@ -1,11 +1,11 @@
 import express from 'express';
 
 import Artwork from '~/server/models/artwork';
-import authMiddleware from '~/server/middlewares/passport';
 import artworksController from '~/server/controllers/artworks';
 import artworksValidation from '~/server/validations/artworks';
+import authMiddleware from '~/server/middlewares/passport';
 import resourcesMiddleware from '~/server/middlewares/resources';
-import validate from '~/server/helpers/validate';
+import validate from '~/server/services/validate';
 
 const router = express.Router();
 

@@ -22,7 +22,7 @@ const InputField = React.forwardRef(
   },
 );
 
-const InputFieldStyle = styled.input`
+export const InputFieldStyle = styled.input`
   width: 100%;
 
   padding: 1rem;

@@ -4,7 +4,6 @@ import { generateHashSecret } from '~/server/services/crypto';
 
 import db from '~/server/database';
 
-
 const Festival = db.define('festival', {
   id: {
     type: DataTypes.INTEGER,
@@ -36,7 +35,7 @@ SequelizeSlugify.slugifyModel(Festival, {
   source: ['title'],
 });
 
-Festival.addHook('beforeCreate', async festival => {
+Festival.addHook('beforeCreate', async (festival) => {
   const { hash } = generateHashSecret(festival.title);
   festival.chainId = hash;
 });

@@ -14,3 +14,5 @@ export function getAdminContract(address) {
 export function getQuestionContract(address) {
   return getContract(QuestionContract.abi, address);
 }
+
+export const adminContract = getAdminContract(process.env.ADMIN_CONTRACT);

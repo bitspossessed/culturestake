@@ -18,7 +18,7 @@ module.exports = {
         });
       });
   },
-  down: queryInterface => {
+  down: (queryInterface) => {
     return queryInterface
       .removeColumn('artworks', 'description')
       .then(queryInterface.removeColumn('artworks', 'artistId'));

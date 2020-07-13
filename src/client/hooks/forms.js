@@ -8,14 +8,14 @@ import {
 } from 'react-form';
 
 import translate from '~/common/services/i18n';
-
 import ButtonOutline from '~/client/components/ButtonOutline';
-import ButtonSubmitDefault from '~/client/components/ButtonSubmit';
 import {
   destroyRequest,
   postRequest,
   putRequest,
 } from '~/client/store/api/actions';
+import { addPendingTransaction } from '~/client/store/ethereum/actions';
+import { usePendingTransaction } from '~/client/hooks/ethereum';
 import { useRequestId, useRequest } from '~/client/hooks/requests';
 import { useResource } from '~/client/hooks/resources';
 
@@ -46,7 +46,18 @@ export const useField = (fieldName, { validate: schema, ...fieldOptions }) => {
   );
 };
 
-export const useForm = ({
+const useForm = ({ onSubmit, schema, ...rest }) => {
+  // Wrap our custom validation method around react-form API
+  return useReactForm({
+    ...rest,
+    onSubmit: async (values, instance) => {
+      const { value: sanitizedValues } = Joi.object(schema).validate(values);
+      await onSubmit(sanitizedValues, instance);
+    },
+  });
+};
+
+export const useRequestForm = ({
   onError,
   onSubmit,
   onSuccess,
@@ -54,13 +65,10 @@ export const useForm = ({
   schema,
   ...rest
 }) => {
-  // Wrap our custom validation method around react-form API
-  const formApi = useReactForm({
+  const formApi = useForm({
     ...rest,
-    onSubmit: async (values, instance) => {
-      const { value: sanitizedValues } = Joi.object(schema).validate(values);
-      onSubmit(sanitizedValues, instance);
-    },
+    onSubmit,
+    schema,
   });
 
   // Check for state of the current request
@@ -73,17 +81,11 @@ export const useForm = ({
     },
   });
 
-  // Give option to manually set isPending state in meta if
-  // we need to indicate that something is loading before we
-  // can submit
-  const isPending = 'isPending' in formApi.meta && formApi.meta.isPending;
-
   // Handle callbacks for request state changes
   return {
     ...formApi,
     meta: {
       ...formApi.meta,
-      canSubmit: formApi.meta.canSubmit && !request.isPending && !isPending,
       request,
     },
   };
@@ -100,13 +102,7 @@ export const useNewForm = ({
   const history = useHistory();
   const requestId = useRequestId();
 
-  const {
-    Form,
-    meta: {
-      canSubmit,
-      request: { isPending },
-    },
-  } = useForm({
+  const { Form } = useRequestForm({
     requestId,
     onSubmit: (values) => {
       dispatch(
@@ -134,16 +130,7 @@ export const useNewForm = ({
     },
   });
 
-  const ButtonSubmit = () => {
-    return (
-      <ButtonSubmitDefault disabled={!canSubmit} isPending={isPending}>
-        {translate('default.buttonSubmitNew')}
-      </ButtonSubmitDefault>
-    );
-  };
-
   return {
-    ButtonSubmit,
     Form,
   };
 };
@@ -164,9 +151,7 @@ export const useEditForm = ({
   const requestId = useRequestId();
   const requestIdDelete = useRequestId();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const [resource, isLoadingResource] = useResource(resourcePath, {
+  const [resource, isResourceLoading] = useResource(resourcePath, {
     onError: () => {
       if (onNotFound) {
         onNotFound();
@@ -178,11 +163,8 @@ export const useEditForm = ({
 
   const {
     Form,
-    meta: {
-      canSubmit,
-      request: { isPending },
-    },
-  } = useForm({
+    meta: { canSubmit },
+  } = useRequestForm({
     requestId,
     defaultValues: resource,
     onSubmit: (values) => {
@@ -217,20 +199,18 @@ export const useEditForm = ({
         onDeleteSuccess(resource);
       }
 
-      setIsLoading(false);
-
       history.push(returnUrl);
     },
     onError: () => {
       if (onDeleteError) {
         onDeleteError(resource);
       }
-
-      setIsLoading(false);
     },
   });
 
-  const onClickDestroy = () => {
+  const onClickDestroy = (event) => {
+    event.preventDefault();
+
     if (!window.confirm(translate('default.areYouSure'))) {
       return;
     }
@@ -240,18 +220,6 @@ export const useEditForm = ({
         id: requestIdDelete,
         path: resourcePath,
       }),
-    );
-
-    setIsLoading(true);
-  };
-
-  const isDisabled = !canSubmit || isLoading || isLoadingResource;
-
-  const ButtonSubmit = () => {
-    return (
-      <ButtonSubmitDefault disabled={isDisabled} isPending={isPending}>
-        {translate('default.buttonSubmitEdit')}
-      </ButtonSubmitDefault>
     );
   };
 
@@ -265,7 +233,49 @@ export const useEditForm = ({
 
   return {
     ButtonDelete,
-    ButtonSubmit,
     Form,
+    isResourceLoading,
+    resource,
+  };
+};
+
+export const useContractsForm = ({ onSubmit }) => {
+  const dispatch = useDispatch();
+  const [txMethod, setTxMethod] = useState();
+  const [txParams, setTxParams] = useState({});
+
+  const formApi = useForm({
+    onSubmit: async (params) => {
+      // Execute transaction ...\
+      try {
+        const result = await onSubmit(params);
+
+        // ... and add to pending transactions list
+        dispatch(
+          addPendingTransaction({
+            txMethod: result.txMethod,
+            txHash: result.txHash,
+            params,
+          }),
+        );
+
+        setTxMethod(result.txMethod);
+        setTxParams(params);
+      } catch {
+        // Do nothing ...
+      }
+    },
+  });
+
+  // Get current transaction state
+  const request = usePendingTransaction({ txMethod, params: txParams });
+
+  // Handle callbacks for request state changes
+  return {
+    ...formApi,
+    meta: {
+      ...formApi.meta,
+      request,
+    },
   };
 };

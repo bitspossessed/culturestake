@@ -46,7 +46,7 @@ describe('Answers', () => {
       await request(app)
         .get('/api/artists/matthew-barney')
         .expect(httpStatus.OK)
-        .expect(response => {
+        .expect((response) => {
           const { name, artworks } = response.body.data;
           expect(name).toBe(artistsData.me.name);
           expect(artworks[0].title).toBe(artworksData.davinci.title);

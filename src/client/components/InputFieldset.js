@@ -19,7 +19,7 @@ const InputFieldset = ({ children, name, label, meta }) => {
 };
 
 const InputFieldsetStyle = styled.fieldset`
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   padding: 0;
 
   border: 0;
@@ -29,7 +29,7 @@ const InputFieldsetStyle = styled.fieldset`
   }
 `;
 
-const InputFieldsetLabelStyle = styled.label`
+export const InputFieldsetLabelStyle = styled.label`
   display: block;
 
   margin-bottom: 1rem;

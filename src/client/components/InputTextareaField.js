@@ -12,15 +12,18 @@ const InputTextareaField = React.forwardRef(
     const { meta, getInputProps } = useField(name, { validate });
     return (
       <InputFieldset label={label} meta={meta} name={name}>
-        <TextareaStyle {...getInputProps({ ref, id: name, ...rest })} ref={ref}>
+        <InputTextareaFieldStyle
+          {...getInputProps({ ref, id: name, ...rest })}
+          ref={ref}
+        >
           {value}
-        </TextareaStyle>
+        </InputTextareaFieldStyle>
       </InputFieldset>
     );
   },
 );
 
-const TextareaStyle = styled.textarea`
+export const InputTextareaFieldStyle = styled.textarea`
   width: 100%;
   min-width: 100%;
   max-width: 100%;
