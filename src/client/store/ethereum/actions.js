@@ -35,18 +35,20 @@ export function initializeProvider() {
   return async (dispatch) => {
     const provider = await detectMetaMask();
 
-    provider.on('accountsChanged', async (accounts) => {
-      dispatch(await handleAccountChange(accounts));
-    });
-
-    provider
-      .request({ method: 'eth_accounts' })
-      .then(async (accounts) => {
+    if (provider) {
+      provider.on('accountsChanged', async (accounts) => {
         dispatch(await handleAccountChange(accounts));
-      })
-      .catch(() => {
-        // Do nothing ..
       });
+
+      provider
+        .request({ method: 'eth_accounts' })
+        .then(async (accounts) => {
+          dispatch(await handleAccountChange(accounts));
+        })
+        .catch(() => {
+          // Do nothing ..
+        });
+    }
 
     dispatch({
       type: ActionTypes.ETHEREUM_INITIALIZE,
