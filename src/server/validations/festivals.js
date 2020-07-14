@@ -1,8 +1,9 @@
 import { Joi, Segments } from 'celebrate';
 
 import {
-  imagesValidation,
   documentsValidation,
+  imagesValidation,
+  stickerValidation,
 } from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
@@ -11,6 +12,8 @@ const defaultValidation = {
   description: Joi.string().required(),
   documents: documentsValidation.max(1),
   images: imagesValidation.max(10),
+  sticker: stickerValidation.required(),
+  subtitle: Joi.string().max(255).required(),
   title: Joi.string().max(128).required(),
 };
 
