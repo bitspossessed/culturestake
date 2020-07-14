@@ -1,28 +1,45 @@
 import PropTypes from 'prop-types';
-import React, { Suspense } from 'react';
+import React, { Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { useLoader } from 'react-three-fiber';
 import { useSelector } from 'react-redux';
 
-import {
-  CLIP_PATHS,
-  CLIP_PATH_DIMENSION,
-} from '~/client/components/SVGDefinitions';
+import rectangle from '~/client/assets/images/rectangle.svg';
+import star from '~/client/assets/images/star.svg';
 import styles, {
   DEFAULT_SCHEME,
   SCHEME_ALTERNATE,
 } from '~/client/styles/variables';
-import star from '~/client/assets/images/star.svg';
+import swirl from '~/client/assets/images/swirl.svg';
+import { decodeSticker } from '~/common/services/sticker';
+import {
+  CLIP_PATHS,
+  CLIP_PATH_DIMENSION,
+} from '~/client/components/SVGDefinitions';
 
-// @TODO: Extract properties from sticker generator codes
-const Sticker = ({
-  clipPathId = Object.keys(CLIP_PATHS)[0],
-  particlePositions = [],
-  particlePath = star,
-  scheme = DEFAULT_SCHEME,
-  ...props
-}) => {
+const PARTICLE_PATHS = {
+  rectangle,
+  star,
+  swirl,
+};
+
+const Sticker = (props) => {
+  // Extract Sticker properties from code
+  const {
+    scheme = DEFAULT_SCHEME,
+    clipShapeId = 'clip-path-corners',
+    particleShapeId = 'star',
+    particlePositions = [],
+  } = useMemo(() => {
+    try {
+      return decodeSticker(props.code);
+    } catch {
+      // Silently fail when code was wrong ..
+      return {};
+    }
+  }, [props.code]);
+
   const { isAlternateColor } = useSelector((state) => state.app);
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
 
@@ -34,20 +51,20 @@ const Sticker = ({
       xmlns="http://www.w3.org/2000/svg"
     >
       <StickerImage
-        clipPathId={clipPathId}
+        clipShapeId={clipShapeId}
         scheme={innerScheme}
-        src={props.src}
+        src={props.imagePath}
       />
 
       <Suspense fallback={null}>
         <StickerParticles
-          path={particlePath}
+          path={PARTICLE_PATHS[particleShapeId]}
           positions={particlePositions}
           scheme={innerScheme}
         />
       </Suspense>
 
-      {clipPathId === 'clip-path-corners' ? (
+      {clipShapeId === 'clip-path-corners' ? (
         <g
           fill="transparent"
           shapeRendering="crispEdges"
@@ -67,21 +84,23 @@ const Sticker = ({
 };
 
 const StickerImage = ({ offset = 30, ...props }) => {
-  const StickerImageBorderShape = CLIP_PATHS[props.clipPathId];
+  const StickerImageBorderShape = CLIP_PATHS[props.clipShapeId];
 
   return (
     <g
-      clipPath={`url(#${props.clipPathId})`}
+      clipPath={`url(#${props.clipShapeId})`}
       height={CLIP_PATH_DIMENSION}
       width={CLIP_PATH_DIMENSION}
     >
-      <image
-        filter={`url(#filter-${props.scheme})`}
-        height={CLIP_PATH_DIMENSION + offset * 2}
-        href={props.src}
-        transform={`translate(-${offset}, -${offset})`}
-        width={CLIP_PATH_DIMENSION + offset * 2}
-      />
+      {props.src && (
+        <image
+          filter={`url(#filter-${props.scheme})`}
+          height={CLIP_PATH_DIMENSION + offset * 2}
+          href={props.src}
+          transform={`translate(-${offset}, -${offset})`}
+          width={CLIP_PATH_DIMENSION + offset * 2}
+        />
+      )}
 
       <g
         fill="transparent"
@@ -110,47 +129,6 @@ const StickerParticles = (props) => {
     );
   });
 };
-
-// @TODO: Move this later to a Sticker Generator component
-// const StickerParticles = ({ offset = 30, ...props }) => {
-//   const { xml } = useLoader(SVGLoader, props.path);
-
-//   return new Array(props.count).fill(0).map((item, index) => {
-//     const side = randomFromArray(['top', 'right', 'bottom', 'left']);
-
-//     let x = randomRange(offset, offset * 2);
-//     let y = randomRange(offset, offset * 2);
-
-//     if (side === 'top') {
-//       x = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-//     } else if (side === 'right') {
-//       x = randomRange(
-//         CLIP_PATH_DIMENSION - offset * 2,
-//         CLIP_PATH_DIMENSION - offset,
-//       );
-//       y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-//     } else if (side === 'bottom') {
-//       x = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-//       y = randomRange(
-//         CLIP_PATH_DIMENSION - offset * 2,
-//         CLIP_PATH_DIMENSION - offset,
-//       );
-//     } else if (side === 'left') {
-//       y = randomRange(offset, CLIP_PATH_DIMENSION - offset);
-//     }
-
-//     // Make elements smaller
-//     xml.firstChild.setAttribute('transform', 'scale(0.7)');
-
-//     return (
-//       <g
-//         dangerouslySetInnerHTML={{ __html: xml.innerHTML }}
-//         key={index}
-//         transform={`translate(${x}, ${y})`}
-//       />
-//     );
-//   });
-// };
 
 export const StickerStyle = styled.svg`
   display: block;
@@ -184,11 +162,8 @@ const particlePositions = PropTypes.arrayOf(
 );
 
 Sticker.propTypes = {
-  clipPathId: PropTypes.string,
-  particlePath: PropTypes.string,
-  particlePositions,
-  scheme: PropTypes.string,
-  src: PropTypes.string.isRequired,
+  code: PropTypes.string.isRequired,
+  imagePath: PropTypes.string.isRequired,
 };
 
 StickerParticles.propTypes = {
@@ -197,7 +172,7 @@ StickerParticles.propTypes = {
 };
 
 StickerImage.propTypes = {
-  clipPathId: PropTypes.string.isRequired,
+  clipShapeId: PropTypes.string.isRequired,
   offset: PropTypes.number,
   scheme: PropTypes.string.isRequired,
   src: PropTypes.string.isRequired,
