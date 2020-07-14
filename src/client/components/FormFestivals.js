@@ -4,12 +4,14 @@ import React, { Fragment } from 'react';
 
 import translate from '~/common/services/i18n';
 import {
-  imagesValidation,
   documentsValidation,
+  imagesValidation,
+  stickerValidation,
 } from '~/common/helpers/validate';
 import InputField from '~/client/components/InputField';
-import InputUploadField from '~/client/components/InputUploadField';
+import InputStickerField from '~/client/components/InputStickerField';
 import InputTextareaField from '~/client/components/InputTextareaField';
+import InputUploadField from '~/client/components/InputUploadField';
 
 const FormFestivals = () => {
   const schema = {
@@ -17,7 +19,9 @@ const FormFestivals = () => {
     description: Joi.string().required(),
     documents: documentsValidation.required().max(1),
     images: imagesValidation.required().max(10),
+    subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
+    sticker: stickerValidation.required(),
   };
 
   return (
@@ -27,6 +31,13 @@ const FormFestivals = () => {
         name="title"
         type="text"
         validate={schema.title}
+      />
+
+      <InputField
+        label={translate('FormFestivals.fieldSubtitle')}
+        name="subtitle"
+        type="text"
+        validate={schema.subtitle}
       />
 
       <InputTextareaField
@@ -49,6 +60,12 @@ const FormFestivals = () => {
         maxFileCount={1}
         name="documents"
         validate={schema.documents}
+      />
+
+      <InputStickerField
+        label={translate('FormFestivals.fieldSticker')}
+        name="sticker"
+        validate={schema.sticker}
       />
     </Fragment>
   );

@@ -30,6 +30,7 @@ const components = {
     fieldDescription: 'Description:',
     fieldDocuments: 'Documents:',
     fieldImages: 'Images:',
+    fieldSubtitle: 'Subtitle:',
     fieldTitle: 'Title:',
   },
   FormUsers: {
