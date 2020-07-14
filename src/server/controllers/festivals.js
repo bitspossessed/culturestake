@@ -1,9 +1,9 @@
 import Festival from '~/server/models/festival';
 import baseController from '~/server/controllers';
 import {
-  FestivalHasManyImages,
-  FestivalHasManyDocuments,
   FestivalBelongsToManyArtworks,
+  FestivalHasManyDocuments,
+  FestivalHasManyImages,
 } from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
@@ -11,18 +11,20 @@ const baseFileFields = ['fileName', 'fileType', 'url'];
 const options = {
   model: Festival,
   fields: [
-    'title',
-    'description',
-    'images',
-    'documents',
-    'chainId',
     'artworks',
+    'chainId',
+    'description',
+    'documents',
+    'images',
+    'sticker',
+    'subtitle',
+    'title',
   ],
   fieldsProtected: [],
   include: [
-    FestivalHasManyImages,
-    FestivalHasManyDocuments,
     FestivalBelongsToManyArtworks,
+    FestivalHasManyDocuments,
+    FestivalHasManyImages,
   ],
   associations: [
     {
