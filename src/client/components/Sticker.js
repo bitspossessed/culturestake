@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Suspense, useMemo } from 'react';
+import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { useLoader } from 'react-three-fiber';
@@ -7,16 +7,13 @@ import { useSelector } from 'react-redux';
 
 import rectangle from '~/client/assets/images/rectangle.svg';
 import star from '~/client/assets/images/star.svg';
-import styles, {
-  DEFAULT_SCHEME,
-  SCHEME_ALTERNATE,
-} from '~/client/styles/variables';
+import styles, { SCHEME_ALTERNATE } from '~/client/styles/variables';
 import swirl from '~/client/assets/images/swirl.svg';
-import { decodeSticker } from '~/common/services/sticker';
 import {
   CLIP_PATHS,
   CLIP_PATH_DIMENSION,
 } from '~/client/components/SVGDefinitions';
+import { useSticker } from '~/client/hooks/sticker';
 
 const PARTICLE_PATHS = {
   rectangle,
@@ -25,20 +22,12 @@ const PARTICLE_PATHS = {
 };
 
 const Sticker = (props) => {
-  // Extract Sticker properties from code
   const {
-    scheme = DEFAULT_SCHEME,
-    clipShapeId = 'clip-path-corners',
-    particleShapeId = 'star',
-    particlePositions = [],
-  } = useMemo(() => {
-    try {
-      return decodeSticker(props.code);
-    } catch {
-      // Silently fail when code was wrong ..
-      return {};
-    }
-  }, [props.code]);
+    clipShapeId,
+    particlePositions,
+    particleShapeId,
+    scheme,
+  } = useSticker(props.code);
 
   const { isAlternateColor } = useSelector((state) => state.app);
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
