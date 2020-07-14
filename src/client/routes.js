@@ -13,6 +13,7 @@ import AdminUsersEdit from '~/client/views/AdminUsersEdit';
 import AdminUsersNew from '~/client/views/AdminUsersNew';
 import Booth from '~/client/views/Booth';
 import Festivals from '~/client/views/Festivals';
+import FestivalsProfile from '~/client/views/FestivalsProfile';
 import Homepage from '~/client/views/Homepage';
 import NotFound from '~/client/views/NotFound';
 import Vote from '~/client/views/Vote';
@@ -69,6 +70,11 @@ const Routes = () => (
       component={Homepage}
       exact
       path="/"
+    />
+    <PublicRoute
+      component={FestivalsProfile}
+      exact
+      path="/festivals/:slug"
     />
     <PublicRoute
       component={Festivals}

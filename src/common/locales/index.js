@@ -39,6 +39,9 @@ const components = {
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
   },
+  Loading: {
+    bodyLoading: 'Loading ...',
+  },
   Navigation: {
     linkAdminDashboard: 'Dashboard',
     linkAdminFestivals: 'Festivals',

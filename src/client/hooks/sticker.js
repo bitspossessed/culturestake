@@ -26,3 +26,20 @@ export const useSticker = (code) => {
     scheme,
   };
 };
+
+export const useStickerImage = (images) => {
+  if (
+    images &&
+    Array.isArray(images) &&
+    images.length > 0 &&
+    'urlThresholdThumb' in images[0]
+  ) {
+    return images[0].urlThresholdThumb;
+  }
+
+  if (typeof images === 'string') {
+    return images;
+  }
+
+  return null;
+};
