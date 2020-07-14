@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { useFormContext } from 'react-form';
 
-import InputFieldset from '~/client/components/InputFieldset';
+import InputFieldsetRounded from '~/client/components/InputFieldsetRounded';
 import Sticker from '~/client/components/Sticker';
 import { CLIP_PATH_DIMENSION } from '~/client/components/SVGDefinitions';
 import {
@@ -12,6 +12,7 @@ import {
   decodeSticker,
   encodeSticker,
 } from '~/common/services/sticker';
+import { InputFieldStyle } from '~/client/components/InputField';
 import { randomFromArray, randomRange } from '~/common/utils/random';
 import { useField } from '~/client/hooks/forms';
 
@@ -105,10 +106,10 @@ const InputStickerField = ({ label, name, validate }) => {
   }, [formInstance.values]);
 
   return (
-    <InputFieldset label={label} meta={meta} name={name}>
+    <InputFieldsetRounded label={label} meta={meta} name={name}>
       <Sticker code={value} imagePath={stickerImagePath} />
 
-      <input readOnly value={value} />
+      <InputFieldStyle readOnly value={`Code: ${value}`} />
 
       <select
         name="scheme"
@@ -153,7 +154,7 @@ const InputStickerField = ({ label, name, validate }) => {
       </select>
 
       <button onClick={onClickGenerate}>Generate</button>
-    </InputFieldset>
+    </InputFieldsetRounded>
   );
 };
 

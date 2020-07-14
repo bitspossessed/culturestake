@@ -163,7 +163,7 @@ const particlePositions = PropTypes.arrayOf(
 
 Sticker.propTypes = {
   code: PropTypes.string.isRequired,
-  imagePath: PropTypes.string.isRequired,
+  imagePath: PropTypes.string,
 };
 
 StickerParticles.propTypes = {
@@ -175,7 +175,7 @@ StickerImage.propTypes = {
   clipShapeId: PropTypes.string.isRequired,
   offset: PropTypes.number,
   scheme: PropTypes.string.isRequired,
-  src: PropTypes.string.isRequired,
+  src: PropTypes.string,
 };
 
 export default Sticker;
