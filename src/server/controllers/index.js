@@ -204,6 +204,7 @@ function readAll(options) {
         offset,
         order: [[orderKey, orderDirection.toUpperCase()]],
         include: options.include,
+        distinct: true,
       });
 
       respondWithSuccess(res, {
