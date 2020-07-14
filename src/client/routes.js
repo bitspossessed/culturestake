@@ -12,9 +12,10 @@ import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
 import AdminUsersNew from '~/client/views/AdminUsersNew';
 import Booth from '~/client/views/Booth';
+import Festivals from '~/client/views/Festivals';
+import FestivalsProfile from '~/client/views/FestivalsProfile';
 import Homepage from '~/client/views/Homepage';
 import NotFound from '~/client/views/NotFound';
-import Test from '~/client/views/Test';
 import Vote from '~/client/views/Vote';
 
 const SessionContainer = ({ component: Component, isTokenRequired = null }) => {
@@ -71,9 +72,14 @@ const Routes = () => (
       path="/"
     />
     <PublicRoute
-      component={Test}
+      component={FestivalsProfile}
       exact
-      path="/test"
+      path="/festivals/:slug"
+    />
+    <PublicRoute
+      component={Festivals}
+      exact
+      path="/festivals"
     />
     <AuthenticatedRoute
       component={Admin}

@@ -2,6 +2,8 @@ import { Joi } from 'celebrate';
 
 import web3 from '~/common/services/web3';
 
+// Attachements validations
+
 const filesBaseValidation = {
   id: Joi.number().required(),
   createdAt: Joi.date().iso().required(),
@@ -19,16 +21,24 @@ export const documentsValidation = Joi.array()
     }),
   );
 
-export const imagesValidation = Joi.array()
-  .required()
-  .items(
-    Joi.object({
-      ...filesBaseValidation,
-      urlThreshold: Joi.string().uri({ relativeOnly: true }).required(),
-      urlThresholdThumb: Joi.string().uri({ relativeOnly: true }).required(),
-      urlThumb: Joi.string().uri({ relativeOnly: true }).required(),
-    }),
-  );
+export const imageValidation = Joi.object({
+  ...filesBaseValidation,
+  urlThreshold: Joi.string().uri({ relativeOnly: true }).required(),
+  urlThresholdThumb: Joi.string().uri({ relativeOnly: true }).required(),
+  urlThumb: Joi.string().uri({ relativeOnly: true }).required(),
+});
+
+export const imagesValidation = Joi.array().required().items(imageValidation);
+
+// Sticker validations
+
+export const stickerValidation = Joi.string().pattern(
+  new RegExp(
+    '[|_[/]{3}(?:[1-9][0-9]{1,2}|[1-9][0-9]{1,2}/)*[1-9][0-9]{1,2}|[1-9][0-9]{1,2}',
+  ),
+);
+
+// Web3 validations
 
 export const web3Validators = Joi.extend((joi) => {
   return {

@@ -28,14 +28,19 @@ const components = {
   },
   FormFestivals: {
     fieldDescription: 'Description:',
-    fieldDocuments: 'Documents:',
-    fieldImages: 'Images:',
+    fieldDocuments: 'Documents',
+    fieldImages: 'Images',
+    fieldSticker: 'Sticker',
+    fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
+  },
+  Loading: {
+    bodyLoading: 'Loading ...',
   },
   Navigation: {
     linkAdminDashboard: 'Dashboard',
@@ -50,6 +55,9 @@ const components = {
   InputUploadField: {
     buttonRemoveFile: 'Remove',
     buttonSelectFiles: 'Select files',
+  },
+  InputStickerField: {
+    buttonGenerateParticles: 'Generate particles',
   },
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
@@ -111,6 +119,13 @@ const views = {
     notificationSuccess: 'You created the festival {title}.',
   },
   Homepage: {
+    bodyIntroduction:
+      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+    bodyIntroductionSecondary:
+      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+    bodyStatisticsArtists: 'Artist',
+    bodyStatisticsArtworks: 'Artworks',
+    bodyStatisticsFestivals: 'Festivals',
     buttonViewFestivals: 'View Festivals',
   },
   NotFound: {
@@ -123,6 +138,7 @@ export default {
   default: {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',
+    buttonLoadMore: 'Load more',
     buttonReturnToOverview: 'Return to overview',
     buttonSubmitEdit: 'Save',
     buttonSubmitNew: 'Create',

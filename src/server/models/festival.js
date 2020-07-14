@@ -11,6 +11,13 @@ const Festival = db.define('festival', {
     primaryKey: true,
     autoIncrement: true,
   },
+  chainId: {
+    type: DataTypes.STRING,
+    unique: true,
+    validate: {
+      isAlphanumeric: true,
+    },
+  },
   slug: {
     type: DataTypes.STRING,
   },
@@ -18,16 +25,15 @@ const Festival = db.define('festival', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  subtitle: {
+    type: DataTypes.STRING,
+  },
   description: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  chainId: {
+  sticker: {
     type: DataTypes.STRING,
-    unique: true,
-    validate: {
-      isAlphanumeric: true,
-    },
   },
 });
 

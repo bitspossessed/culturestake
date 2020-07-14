@@ -1,6 +1,7 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import apiRequest from '~/client/services/api';
 import { requestResource } from '~/client/store/resources/actions';
 
 export const useResource = (path, { onError, onSuccess }) => {
@@ -46,4 +47,30 @@ export const useResource = (path, { onError, onSuccess }) => {
   }, [currentPathStr, pathStr, currentData, isSuccess]);
 
   return [data, isLoading];
+};
+
+export const usePaginatedResource = (path, body = { orderKey: 'title' }) => {
+  const [resources, setResources] = useState([]);
+  const [hasMore, setHasMore] = useState(false);
+  const [offset, setOffset] = useState(0);
+
+  const loadMoreResources = useCallback(async () => {
+    const { results, pagination } = await apiRequest({
+      path,
+      body: {
+        offset,
+        ...body,
+      },
+    });
+
+    setResources((resources) => resources.concat(results));
+    setHasMore(pagination.offset + pagination.limit < pagination.total);
+    setOffset((offset) => offset + pagination.limit);
+  }, [offset, body, path]);
+
+  useEffect(() => {
+    loadMoreResources();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return [resources, loadMoreResources, hasMore];
 };
