@@ -1,9 +1,13 @@
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import { useFormContext } from 'react-form';
 
+import ButtonOutline from '~/client/components/ButtonOutline';
 import InputFieldsetRounded from '~/client/components/InputFieldsetRounded';
+import Paper from '~/client/components/Paper';
 import Sticker from '~/client/components/Sticker';
+import translate from '~/common/services/i18n';
 import { CLIP_PATH_DIMENSION } from '~/client/components/SVGDefinitions';
 import {
   STICKER_CLIP_SHAPE_IDS,
@@ -12,7 +16,10 @@ import {
   decodeSticker,
   encodeSticker,
 } from '~/common/services/sticker';
-import { InputFieldStyle } from '~/client/components/InputField';
+import {
+  InputSelectFieldInnerStyle,
+  InputSelectFieldStyle,
+} from '~/client/components/InputSelectField';
 import { randomFromArray, randomRange } from '~/common/utils/random';
 import { useField } from '~/client/hooks/forms';
 
@@ -29,23 +36,32 @@ const defaultSticker = {
 
 const InputStickerField = ({ label, name, validate }) => {
   const formInstance = useFormContext();
+  const [stickerParameters, setStickerParameters] = useState(defaultSticker);
 
   const { meta, setValue, value } = useField(name, {
     validate,
     defaultValue: encodeSticker(defaultSticker),
   });
 
-  const setStickerParameter = (name, stickerValue) => {
-    const sticker = value ? decodeSticker(value) : defaultSticker;
+  const setStickerParameter = useCallback(
+    (name, stickerValue) => {
+      const sticker = value ? decodeSticker(value) : defaultSticker;
+      const code = encodeSticker(
+        Object.assign({}, defaultSticker, sticker, {
+          [name]: stickerValue,
+        }),
+      );
 
-    const code = encodeSticker(
-      Object.assign({}, defaultSticker, sticker, {
-        [name]: stickerValue,
-      }),
-    );
+      setValue(code);
+    },
+    [setValue, value],
+  );
 
-    setValue(code);
-  };
+  useEffect(() => {
+    if (value) {
+      setStickerParameters(decodeSticker(value));
+    }
+  }, [setStickerParameter, value]);
 
   const onChange = (event) => {
     event.preventDefault();
@@ -107,56 +123,85 @@ const InputStickerField = ({ label, name, validate }) => {
 
   return (
     <InputFieldsetRounded label={label} meta={meta} name={name}>
-      <Sticker code={value} imagePath={stickerImagePath} />
+      <InputStickerFieldStyle>
+        <Paper>
+          <Sticker code={value} imagePath={stickerImagePath} />
+        </Paper>
 
-      <InputFieldStyle readOnly value={`Code: ${value}`} />
+        <InputStickerFieldControlStyle>
+          <InputSelectFieldStyle>
+            <InputSelectFieldInnerStyle
+              name="scheme"
+              value={stickerParameters.scheme}
+              onChange={onChange}
+            >
+              {Object.values(STICKER_SCHEMES).map((value) => {
+                return (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                );
+              })}
+            </InputSelectFieldInnerStyle>
+          </InputSelectFieldStyle>
 
-      <select
-        name="scheme"
-        value={value ? value.scheme : null}
-        onChange={onChange}
-      >
-        {Object.values(STICKER_SCHEMES).map((value) => {
-          return (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          );
-        })}
-      </select>
+          <InputSelectFieldStyle>
+            <InputSelectFieldInnerStyle
+              name="clipShapeId"
+              value={stickerParameters.clipShapeId}
+              onChange={onChange}
+            >
+              {Object.values(STICKER_CLIP_SHAPE_IDS).map((value) => {
+                return (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                );
+              })}
+            </InputSelectFieldInnerStyle>
+          </InputSelectFieldStyle>
 
-      <select
-        name="clipShapeId"
-        value={value ? value.clipPathId : null}
-        onChange={onChange}
-      >
-        {Object.values(STICKER_CLIP_SHAPE_IDS).map((value) => {
-          return (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          );
-        })}
-      </select>
+          <InputSelectFieldStyle>
+            <InputSelectFieldInnerStyle
+              name="particleShapeId"
+              value={stickerParameters.particleShapeId}
+              onChange={onChange}
+            >
+              {Object.values(STICKER_PARTICLE_SHAPE_IDS).map((value) => {
+                return (
+                  <option key={value} value={value}>
+                    {value}
+                  </option>
+                );
+              })}
+            </InputSelectFieldInnerStyle>
+          </InputSelectFieldStyle>
 
-      <select
-        name="particleShapeId"
-        value={value ? value.particleShapeId : null}
-        onChange={onChange}
-      >
-        {Object.values(STICKER_PARTICLE_SHAPE_IDS).map((value) => {
-          return (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          );
-        })}
-      </select>
-
-      <button onClick={onClickGenerate}>Generate</button>
+          <ButtonOutline onClick={onClickGenerate}>
+            {translate('InputStickerField.buttonGenerateParticles')}
+          </ButtonOutline>
+        </InputStickerFieldControlStyle>
+      </InputStickerFieldStyle>
     </InputFieldsetRounded>
   );
 };
+
+export const InputStickerFieldStyle = styled.div`
+  padding: 1rem;
+`;
+
+export const InputStickerFieldControlStyle = styled.div`
+  display: flex;
+
+  margin-top: 2rem;
+
+  flex-wrap: wrap;
+  justify-content: center;
+
+  & > * {
+    margin: 0.5rem;
+  }
+`;
 
 InputStickerField.propTypes = {
   label: PropTypes.string.isRequired,

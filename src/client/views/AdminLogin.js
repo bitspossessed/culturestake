@@ -1,12 +1,11 @@
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 
-import translate from '~/common/services/i18n';
-
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FormLogin from '~/client/components/FormLogin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import translate from '~/common/services/i18n';
 import { requestToken, TOKEN_REQUEST_ID } from '~/client/store/app/actions';
 import { useRequestForm } from '~/client/hooks/forms';
 

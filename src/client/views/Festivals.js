@@ -60,7 +60,9 @@ const FestivalsList = () => {
       <PaperContainerStyle>
         {festivals.map((festival) => {
           const stickerImagePath =
-            festival.images.length > 0 && festival.images[0].urlThresholdThumb;
+            festival.images.length > 0
+              ? festival.images[0].urlThresholdThumb
+              : null;
 
           return (
             <Suspense fallback={null} key={festival.id}>
@@ -88,9 +90,11 @@ const FestivalsList = () => {
         })}
       </PaperContainerStyle>
 
-      <ContainerStyle>
-        {hasMore && <ButtonIcon onClick={loadMoreFestivals}>More</ButtonIcon>}
-      </ContainerStyle>
+      {hasMore && (
+        <ContainerStyle>
+          <ButtonIcon onClick={loadMoreFestivals}>More</ButtonIcon>
+        </ContainerStyle>
+      )}
     </Fragment>
   );
 };

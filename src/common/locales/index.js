@@ -28,9 +28,10 @@ const components = {
   },
   FormFestivals: {
     fieldDescription: 'Description:',
-    fieldDocuments: 'Documents:',
-    fieldImages: 'Images:',
-    fieldSubtitle: 'Subtitle:',
+    fieldDocuments: 'Documents',
+    fieldImages: 'Images',
+    fieldSticker: 'Sticker',
+    fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
   },
   FormUsers: {
@@ -51,6 +52,9 @@ const components = {
   InputUploadField: {
     buttonRemoveFile: 'Remove',
     buttonSelectFiles: 'Select files',
+  },
+  InputStickerField: {
+    buttonGenerateParticles: 'Generate particles',
   },
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',

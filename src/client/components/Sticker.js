@@ -162,7 +162,7 @@ const particlePositions = PropTypes.arrayOf(
 );
 
 Sticker.propTypes = {
-  code: PropTypes.string.isRequired,
+  code: PropTypes.string,
   imagePath: PropTypes.string,
 };
 

@@ -141,7 +141,7 @@ const HomepageStatisticsItemStyle = styled.div`
 
 HomepageStatisticsItem.propTypes = {
   label: PropTypes.string.isRequired,
-  number: PropTypes.number.isRequired,
+  number: PropTypes.number,
 };
 
 export default Homepage;
