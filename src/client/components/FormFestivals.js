@@ -74,7 +74,7 @@ const FormFestivals = () => {
         validate={schema.sticker}
       />
       
-      <InputField
+      <InputUploadField
         label={translate('FormFestivals.fieldArtworks')}
         name="artworks"
         validate={schema.artworks}
