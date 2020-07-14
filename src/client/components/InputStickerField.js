@@ -24,8 +24,8 @@ import { randomFromArray, randomRange } from '~/common/utils/random';
 import { useField } from '~/client/hooks/forms';
 
 const PARTICLES_OFFSET = 30;
-const PARTICLES_MIN = 2;
-const PARTICLES_MAX = 7;
+const PARTICLES_MIN = 3;
+const PARTICLES_MAX = 10;
 
 const defaultSticker = {
   clipShapeId: Object.values(STICKER_CLIP_SHAPE_IDS)[0],
