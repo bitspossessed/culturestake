@@ -135,6 +135,7 @@ export default {
   default: {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',
+    buttonLoadMore: 'Load more',
     buttonReturnToOverview: 'Return to overview',
     buttonSubmitEdit: 'Save',
     buttonSubmitNew: 'Create',
