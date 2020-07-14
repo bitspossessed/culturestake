@@ -5,7 +5,6 @@ import { detectMetaMask } from '~/client/services/ethereum';
 
 async function handleAccountChange(accounts) {
   const isOwner = await ownersModule.isOwner(accounts[0]);
-
   return {
     type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
     meta: {

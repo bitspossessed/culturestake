@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import DateTimePicker from 'react-datetime-picker';
+import styled from 'styled-components';
 
+import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import ButtonOutline from '~/client/components/ButtonOutline';
 import EthereumContainer from '~/client/components/EthereumContainer';
@@ -20,13 +22,34 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 
-const ContractsFestivalsInitialize = ({ chainId, owner }) => {
+const ContractsFestivalsInitialize = ({ chainId }) => {
   const dispatch = useDispatch();
+  const owner = useOwnerAddress();
 
   const [festivalStartTime, setFestivalStartTime] = useState(
     new Date(Date.now()),
   );
   const [festivalEndTime, setFestivalEndTime] = useState(new Date(Date.now()));
+
+  const StyledDateTimePicker = styled(DateTimePicker)`
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+
+    border: 1.5px solid ${styles.colors.violet};
+
+    color: ${styles.colors.violet};
+
+    .react-datetime-picker__wrapper {
+      border: none;
+    }
+
+    .react-datetime-picker__inputGroup__leadingZero {
+      color: black;
+    }
+  `;
 
   const onClick = async (event) => {
     event.preventDefault();
@@ -49,18 +72,24 @@ const ContractsFestivalsInitialize = ({ chainId, owner }) => {
 
   return (
     <div>
-      <ButtonOutline onClick={onClick}>Initialize Festival</ButtonOutline>
-      <DateTimePicker
+      <ButtonOutline onClick={onClick}>
+        {translate('ContractsFestivals.buttonInitializeFestival')}
+      </ButtonOutline>
+      <StyledDateTimePicker
         value={festivalStartTime}
         onChange={setFestivalStartTime}
       />
-      <DateTimePicker value={festivalEndTime} onChange={setFestivalEndTime} />
+      <StyledDateTimePicker
+        value={festivalEndTime}
+        onChange={setFestivalEndTime}
+      />
     </div>
   );
 };
 
-const ContractsFestivalsDeactivate = ({ chainId, owner }) => {
+const ContractsFestivalsDeactivate = ({ chainId }) => {
   const dispatch = useDispatch();
+  const owner = useOwnerAddress();
 
   const onClick = async (event) => {
     event.preventDefault();
@@ -78,7 +107,9 @@ const ContractsFestivalsDeactivate = ({ chainId, owner }) => {
 
   return (
     <div>
-      <ButtonOutline onClick={onClick}>Deactivate Festival</ButtonOutline>
+      <ButtonOutline isDangerous={true} onClick={onClick}>
+        {translate('ContractsFestivals.buttonDeactivateFestival')}
+      </ButtonOutline>
     </div>
   );
 };
@@ -128,12 +159,10 @@ const ContractsFestivals = ({ chainId }) => {
 
 ContractsFestivalsDeactivate.propTypes = {
   chainId: PropTypes.string.isRequired,
-  owner: PropTypes.string.isRequired,
 };
 
 ContractsFestivalsInitialize.propTypes = {
   chainId: PropTypes.string.isRequired,
-  owner: PropTypes.string.isRequired,
 };
 
 ContractsFestivals.propTypes = {

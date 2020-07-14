@@ -9,8 +9,8 @@ const components = {
     fieldOwnerAddress: 'Add new address:',
   },
   ContractsFestivals: {
-    buttonInitializeFestival: 'Initialize',
-    buttonDeactivateFestival: 'Deactivate',
+    buttonInitializeFestival: 'Initialize Festival',
+    buttonDeactivateFestival: 'Deactivate Festival',
     notificationAlreadyDeactivated: 'This festival is deactivated',
   },
   EthereumContainer: {
