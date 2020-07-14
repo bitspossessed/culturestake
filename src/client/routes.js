@@ -7,6 +7,8 @@ import Admin from '~/client/views/Admin';
 import AdminFestivals from '~/client/views/AdminFestivals';
 import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
+import AdminQuestions from '~/client/views/AdminQuestions';
+import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
@@ -115,6 +117,16 @@ const Routes = () => (
       component={AdminFestivalsEdit}
       exact
       path="/admin/festivals/:slug/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminQuestions}
+      exact
+      path="/admin/questions"
+    />
+    <AuthenticatedRoute
+      component={AdminQuestionsNew}
+      exact
+      path="/admin/questions/new"
     />
     <UnauthenticatedRoute
       component={AdminLogin}

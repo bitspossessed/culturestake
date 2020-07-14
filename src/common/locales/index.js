@@ -40,6 +40,10 @@ const components = {
     fieldTitle: 'Title:',
     fieldArtworks: 'Artworks:',
   },
+  FormQuestions: {
+    fieldFestival: 'Festival Id:',
+    fieldTitle: 'Question text:',
+  },
   FormUsers: {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
@@ -123,6 +127,16 @@ const views = {
   AdminFestivalsNew: {
     title: 'Create new festival',
     notificationSuccess: 'You created the festival {title}.',
+  },
+  AdminQuestions: {
+    buttonNewQuestion: 'Create new question',
+    fieldTitle: 'Title',
+    fieldDescription: 'Description',
+    title: 'Questions',
+  },
+  AdminQuestionsNew: {
+    title: 'Create new question',
+    notificationSuccess: 'You created the question {title}.',
   },
   Homepage: {
     bodyIntroduction:
