@@ -34,7 +34,7 @@ export const imagesValidation = Joi.array().required().items(imageValidation);
 
 export const stickerValidation = Joi.string().pattern(
   new RegExp(
-    '[|_[/]{3}(?:[1-9][0-9]{1,2}|[1-9][0-9]{1,2}/)*[1-9][0-9]{1,2}|[1-9][0-9]{1,2}',
+    '[|_[/]{3}(?:(?:[1-9][0-9]{1,2}|[1-9][0-9]{1,2}/)*[1-9][0-9]{1,2}|[1-9][0-9]{1,2})?',
   ),
 );
 
