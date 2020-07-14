@@ -20,7 +20,7 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 
-const InitializeFestival = ({ chainId, owner }) => {
+const ContractsFestivalsInitialize = ({ chainId, owner }) => {
   const dispatch = useDispatch();
 
   const [festivalStartTime, setFestivalStartTime] = useState(
@@ -59,7 +59,7 @@ const InitializeFestival = ({ chainId, owner }) => {
   );
 };
 
-const DeactivateFestival = ({ chainId, owner }) => {
+const ContractsFestivalsDeactivate = ({ chainId, owner }) => {
   const dispatch = useDispatch();
 
   const onClick = async (event) => {
@@ -118,20 +118,20 @@ const ContractsFestivals = ({ chainId }) => {
       {isDeactivated ? (
         translate('ContractsFestivals.notificationAlreadyDeactivated')
       ) : !isInitialized ? (
-        <InitializeFestival chainId={chainId} owner={owner} />
+        <ContractsFestivalsInitialize chainId={chainId} owner={owner} />
       ) : (
-        <DeactivateFestival chainId={chainId} owner={owner} />
+        <ContractsFestivalsDeactivate chainId={chainId} owner={owner} />
       )}
     </EthereumContainer>
   );
 };
 
-DeactivateFestival.propTypes = {
+ContractsFestivalsDeactivate.propTypes = {
   chainId: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
 };
 
-InitializeFestival.propTypes = {
+ContractsFestivalsInitialize.propTypes = {
   chainId: PropTypes.string.isRequired,
   owner: PropTypes.string.isRequired,
 };
