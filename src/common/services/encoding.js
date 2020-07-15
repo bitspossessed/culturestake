@@ -4,25 +4,24 @@ export const boothTypes = ['uint256[]', 'uint256'];
 
 export const voteTypes = ['uint256[]', 'uint256[]', 'uint256[]', 'uint256[]'];
 
-export function packBooth(answers, nonce) {
-  return pack(boothTypes, [answers, nonce]);
+export function packBooth(answerIds, nonce) {
+  return pack(boothTypes, [answerIds, nonce]);
 }
 
 export function packVote(
-  festivalAnswers,
-  festivalVotes,
-  artworkAnswers,
-  artworkVotes,
+  festivalAnswerIds,
+  festivalVoteTokens,
+  artworkAnswerIds,
+  artworkVoteTokens,
 ) {
   return pack(voteTypes, [
-    festivalAnswers,
-    festivalVotes,
-    artworkAnswers,
-    artworkVotes,
+    festivalAnswerIds,
+    festivalVoteTokens,
+    artworkAnswerIds,
+    artworkVoteTokens,
   ]);
 }
 
 export function pack(types, args) {
-  let encoded = web3.eth.abi.encodeParameters(types, args);
-  return `0x${encoded.toString('hex')}`;
+  return web3.eth.abi.encodeParameters(types, args).toString('hex');
 }
