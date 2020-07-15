@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Festival from '~/server/models/festival';
 import baseController from '~/server/controllers';
 import {
@@ -46,7 +47,18 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  baseController.readAll(options)(req, res, next);
+  // console.log(req.query)
+  let where = {};
+  if (req.query.query) {
+    const query = JSON.parse(req.query.query);
+    Object.keys(query).map((key) => {
+      where[key] = { [Op.iLike]: `%${query.key}%` };
+    });
+  }
+  baseController.readAll({
+    ...options,
+    where,
+  })(req, res, next);
 }
 
 function read(req, res, next) {

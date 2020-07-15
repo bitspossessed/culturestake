@@ -27,15 +27,20 @@ export default async function request(customOptions) {
   // Format the body depending on our request method
   let paramsStr = '';
 
+  console.log(path); // eslint-disable-line
+
   if (body) {
     if (options.method === 'GET') {
       paramsStr = parameterize(body);
+      console.log(paramsStr); // eslint-disable-line
     } else if (body instanceof FormData) {
       options.body = body;
     } else {
       options.body = JSON.stringify(body);
     }
   }
+
+  console.log(body); // eslint-disable-line
 
   // Prepare the request url and add an trailing slash when necessary
   const slash = isTrailingSlash ? '/' : '';
