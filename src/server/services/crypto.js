@@ -39,7 +39,7 @@ export function generateRandomString(len) {
   return web3.utils.randomHex(len / 2).slice(2);
 }
 
-export function isSignatureValid(payload, signature, claimed) {
-  const recovered = web3.eth.accounts.recover(payload, signature);
-  return claimed === recovered;
+export function isSignatureValid(payload, signature, claimedAddress) {
+  const recoveredAddress = web3.eth.accounts.recover(payload, signature);
+  return claimedAddress === recoveredAddress;
 }
