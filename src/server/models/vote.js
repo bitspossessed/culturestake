@@ -9,20 +9,20 @@ const Vote = db.define('vote', {
     primaryKey: true,
     autoIncrement: true,
   },
-  signature: {
+  senderSignature: {
     type: DataTypes.STRING,
     unique: true,
     validate: {
       isAlphanumeric: true,
     },
   },
-  sender: {
+  senderAddress: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  booth: {
+  boothAddress: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
@@ -39,52 +39,64 @@ const Vote = db.define('vote', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  festivalQuestion: {
+  festivalQuestionAddress: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  festivalAnswers: {
+  festivalAnswerChainIds: {
     type: DataTypes.STRING,
     get: function () {
-      return JSON.parse(this.getDataValue('answers'));
+      return JSON.parse(this.getDataValue('festivalAnswerChainIds'));
     },
-    set: function (val) {
-      return this.setDataValue('answers', JSON.stringify(val));
+    set: function (festivalAnswerChainIds) {
+      return this.setDataValue(
+        'festivalAnswerChainIds',
+        JSON.stringify(festivalAnswerChainIds),
+      );
     },
   },
   festivalVoteTokens: {
     type: DataTypes.STRING,
     get: function () {
-      return JSON.parse(this.getDataValue('voteTokens'));
+      return JSON.parse(this.getDataValue('festivalVoteTokens'));
     },
-    set: function (val) {
-      return this.setDataValue('voteTokens', JSON.stringify(val));
+    set: function (festivalVoteTokens) {
+      return this.setDataValue(
+        'festivalVoteTokens',
+        JSON.stringify(festivalVoteTokens),
+      );
     },
   },
-  artworkQuestion: {
+  artworkQuestionAddress: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  artworkAnswers: {
+  artworkAnswerChainIds: {
     type: DataTypes.STRING,
     get: function () {
-      return JSON.parse(this.getDataValue('answers'));
+      return JSON.parse(this.getDataValue('artworkAnswerChainIds'));
     },
-    set: function (val) {
-      return this.setDataValue('answers', JSON.stringify(val));
+    set: function (artworkAnswerChainIds) {
+      return this.setDataValue(
+        'artworkAnswerChainIds',
+        JSON.stringify(artworkAnswerChainIds),
+      );
     },
   },
   artworkVoteTokens: {
     type: DataTypes.STRING,
     get: function () {
-      return JSON.parse(this.getDataValue('voteTokens'));
+      return JSON.parse(this.getDataValue('artworkVoteTokens'));
     },
-    set: function (val) {
-      return this.setDataValue('voteTokens', JSON.stringify(val));
+    set: function (artworkVoteTokens) {
+      return this.setDataValue(
+        'artworkVoteTokens',
+        JSON.stringify(artworkVoteTokens),
+      );
     },
   },
 });
