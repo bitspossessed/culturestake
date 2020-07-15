@@ -9,16 +9,36 @@ export default async function requestGraph(query, variables) {
 }
 
 export const answers = () => `{
-    answers { id voteTokens votePower votes active question { id } }
-  }`;
+  answers {
+    id
+    voteTokens
+    votePower
+    votes
+    active
+    question { id }
+  }
+}`;
 
-export const answersByQuestion = (question) => `{
-    answers
-    (
-      where: {question: "${question.toLowerCase()}"}
-      orderBy: votePower
-      orderDirection: desc
-    ) { id voteTokens votePower votes active question { id } }
-  }`;
+export const answersByQuestion = (questionAddress) => `{
+  answers
+  (
+    where: {
+      question: "${questionAddress.toLowerCase()}"
+    },
+    orderBy: votePower,
+    orderDirection: desc
+  ) {
+    id
+    voteTokens
+    votePower
+    votes
+    active
+    question { id }
+  }
+}`;
 
-export const admins = () => `{ admins() { id } }`;
+export const admins = () => `{
+  admins() {
+    id
+  }
+}`;
