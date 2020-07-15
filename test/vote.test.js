@@ -1,231 +1,332 @@
 import httpStatus from 'http-status';
 import request from 'supertest';
 
-import { initializeDatabase } from './helpers/database';
-import artworksData from './data/artworks';
-import answersData from './data/answers';
-import propertiesData from './data/properties';
-import questionsData from './data/questions';
-import festivalsData from './data/festivals';
-
 import app from '~/server';
 import web3 from '~/common/services/web3';
 import {
   getAdminContract,
   getQuestionContract,
 } from '~/common/services/contracts';
-import createSupertest from './helpers/supertest';
 import { packBooth, packVote } from '~/common/services/encoding';
-import initQuestion from './helpers/initQuestion';
-import initAnswer from './helpers/initAnswer';
-import buildVote from './helpers/buildVote';
-import { refreshNonce } from './helpers/utils';
 
-describe('API', () => {
-  let authRequest;
-  let festivalAnswer;
-  let artworkAnswer;
-  let admin;
-  let festivalQuestion;
-  let artworkQuestion;
-  let sender;
+import artworksData from './data/artworks';
+import buildVote from './helpers/buildVote';
+import createSupertest from './helpers/supertest';
+import festivalsData from './data/festivals';
+import getAccount from './helpers/getAccount';
+import propertiesData from './data/properties';
+import { initAnswer, initQuestion } from './helpers/transactions';
+import { initializeDatabase } from './helpers/database';
+import { refreshNonce } from './helpers/nonce';
+
+async function put(path, body) {
+  const authRequest = await createSupertest();
+  const response = await authRequest.put(path).send(body);
+  return response.body.data;
+}
+
+describe('Vote', () => {
+  let adminContract;
+  let anotherSender;
+  let artworkData;
+  let artworkQuestionContract;
   let booth;
+  let festivalAnswerData;
+  let festivalData;
+  let festivalQuestionContract;
+  let propertyAnswerData;
+  let propertyData;
+  let sender;
   let vote;
 
   beforeAll(async () => {
-    // add test data
     await initializeDatabase();
-    authRequest = await createSupertest();
-    await authRequest.put('/api/artworks').send(artworksData.davinci);
-    await authRequest.put('/api/festivals').send(festivalsData['1']);
-    await authRequest.put('/api/properties').send(propertiesData.aProperty);
 
-    // set up question contract
-    admin = getAdminContract(process.env.ADMIN_CONTRACT);
-
-    let questionAddress = await initQuestion(admin, 'festival');
-    festivalQuestion = getQuestionContract(questionAddress);
-    let questionData = {
-      ...questionsData['1'],
-      address: questionAddress,
-    };
-    await authRequest.put('/api/questions').send(questionData);
-
-    // set up second question contract
-    questionAddress = await initQuestion(admin, 'festival');
-    artworkQuestion = getQuestionContract(questionAddress);
-    questionData = {
-      ...questionsData['2'],
-      address: questionAddress,
-    };
-    await authRequest.put('/api/questions').send(questionData);
-
-    // add answers to api
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
-    await authRequest.put('/api/answers').send(answersData.propertyAnswer);
-
-    // use chainId from api to create answer on blockchain
-    festivalAnswer = await initAnswer(festivalQuestion, 1);
-    artworkAnswer = await initAnswer(artworkQuestion, 2);
-
-    // accounts for voting
-    sender = web3.eth.accounts.create();
+    // Accounts for voting
+    sender = getAccount(1);
+    anotherSender = getAccount(2);
     booth = web3.eth.accounts.privateKeyToAccount(
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
 
-    const festivalAnswers = [festivalAnswer.id];
-    const artworkAnswers = [artworkAnswer.id];
-    const festivalVoteTokens = [1];
-    const artworkVoteTokens = [1];
-    vote = buildVote(booth, sender, {
-      festivalQuestion,
-      festivalAnswers,
-      festivalVoteTokens,
-      artworkQuestion,
-      artworkAnswers,
-      artworkVoteTokens,
-    });
+    // Set up admin contract
+    adminContract = getAdminContract(process.env.ADMIN_CONTRACT);
+
+    // Add test data
+    artworkData = await put('/api/artworks', artworksData.davinci);
+    propertyData = await put('/api/properties', propertiesData.aProperty);
+    festivalData = await put('/api/festivals', festivalsData.barbeque);
+
+    // Use chainId from contract migrations
+    festivalData.chainId = web3.utils.sha3('festival');
   });
 
-  afterAll(async () => {
-    await authRequest.del('/api/artworks/mona-lisa');
-    await authRequest.del('/api/properties/is-blue');
-    await authRequest.del('/api/answers/1');
-    await authRequest.del('/api/answers/2');
-    await authRequest.del('/api/questions/1');
-    await authRequest.del('/api/questions/2');
-    await authRequest.del('/api/festivals/a-festival');
-  });
+  describe('POST /api/votes', () => {
+    beforeEach(async () => {
+      // Set up first question contract for artwork answers on an festival
+      const festivalQuestionAddress = await initQuestion(
+        adminContract,
+        festivalData.chainId,
+      );
+      const festivalQuestionData = await put('/api/questions', {
+        title: 'What was your favorite artwork of this festival?',
+        festivalId: festivalData.id,
+        address: festivalQuestionAddress,
+      });
+      festivalQuestionContract = getQuestionContract(festivalQuestionAddress);
 
-  describe('POST /api/vote', () => {
-    it('should succesfully vote', async () => {
-      await request(app).post('/api/vote').send(vote).expect(httpStatus.OK);
+      // Set up second question contract for property answers on an artwork
+      const artworkQuestionAddress = await initQuestion(
+        adminContract,
+        festivalData.chainId,
+      );
+      const artworkQuestionData = await put('/api/questions', {
+        title: 'What aspect of this artwork did you like and how much?',
+        festivalId: festivalData.id,
+        artworkId: artworkData.id,
+        address: artworkQuestionAddress,
+      });
+      artworkQuestionContract = getQuestionContract(artworkQuestionAddress);
+
+      // Add possible answers to API
+      festivalAnswerData = await put('/api/answers', {
+        type: 'artwork',
+        artworkId: artworkData.id,
+        questionId: festivalQuestionData.id,
+      });
+      propertyAnswerData = await put('/api/answers', {
+        type: 'property',
+        propertyId: propertyData.id,
+        questionId: artworkQuestionData.id,
+      });
+
+      // Use chainId from API to create answer on blockchain
+      await initAnswer(festivalQuestionContract, festivalAnswerData.chainId);
+      await initAnswer(artworkQuestionContract, propertyAnswerData.chainId);
+
+      // Create the actual vote of an user
+      const festivalAnswerIds = [festivalAnswerData.id];
+      const artworkAnswerIds = [propertyAnswerData.id];
+      const festivalVoteTokens = [1];
+      const artworkVoteTokens = [1];
+
+      vote = buildVote(booth, sender, {
+        festivalQuestionContract,
+        festivalAnswerIds,
+        festivalVoteTokens,
+        artworkQuestionContract,
+        artworkAnswerIds,
+        artworkVoteTokens,
+      });
     });
 
-    it('should return bad request when answer id not in database', async () => {
-      vote.signature = web3.eth.accounts.sign(
-        packVote([3], [1], [2], [2]),
+    it('should successfully vote', async () => {
+      await request(app).post('/api/votes').send(vote).expect(httpStatus.OK);
+    });
+
+    it('should fail when answer id not in database', async () => {
+      vote.senderSignature = web3.eth.accounts.sign(
+        packVote([31234], [1], [2], [2]),
         sender.privateKey,
       ).signature;
-      vote.festivalAnswers = [3];
+
+      vote.festivalAnswerIds = [31234];
+
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Could not find answer 31234 in database',
+        });
     });
 
-    it('should return bad request when invalid booth', async () => {
-      vote.booth = sender.address;
+    it('should fail with invalid booth address', async () => {
+      vote.boothAddress = sender.address;
+      vote.boothSignature = web3.eth.accounts.sign(
+        packBooth([festivalAnswerData.id], vote.nonce),
+        sender.privateKey,
+      ).signature;
+
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Invalid booth address',
+        });
     });
 
-    it('should return bad request when invalid booth signature', async () => {
+    it('should fail with invalid booth signature', async () => {
       const falseBooth = web3.eth.accounts.create();
       const nonce = refreshNonce();
+
       vote.boothSignature = web3.eth.accounts.sign(
-        packBooth([festivalAnswer.id], nonce),
+        packBooth([festivalAnswerData.id], nonce),
         falseBooth.privateKey,
       ).signature;
+
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Invalid booth signature',
+        });
     });
 
-    it('should return bad request when invalid sender signature', async () => {
+    it('should fail with invalid sender signature', async () => {
       const falseSender = web3.eth.accounts.create();
-      vote.signature = web3.eth.accounts.sign(
-        packVote([festivalAnswer.id], [1], [artworkAnswer.id], [1]),
+
+      vote.senderSignature = web3.eth.accounts.sign(
+        packVote([festivalAnswerData.id], [1], [propertyAnswerData.id], [1]),
         falseSender.privateKey,
       ).signature;
+
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Invalid sender signature',
+        });
     });
 
-    it('should return bad request when sender has already voted', async () => {
-      await request(app).post('/api/vote').send(vote);
+    it('should fail when sender has already voted', async () => {
+      // Send first request
+      await request(app).post('/api/votes').send(vote).expect(httpStatus.OK);
+
+      // Get a new nonce but keep the rest
       vote.nonce = refreshNonce();
-      await request(app)
-        .post('/api/vote')
-        .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
-    });
-
-    it('should return bad request when nonce has already been used', async () => {
-      await request(app).post('/api/vote').send(vote);
-      sender = web3.eth.accounts.create();
-      vote.signature = web3.eth.accounts.sign(
-        packVote([festivalAnswer.id], [1], [artworkAnswer.id], [1]),
-        sender.privateKey,
+      vote.boothSignature = web3.eth.accounts.sign(
+        packBooth([festivalAnswerData.id], vote.nonce),
+        booth.privateKey,
       ).signature;
-      vote.sender = sender.address;
+
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Duplicate vote in database',
+        });
     });
 
-    it('should return bad request when invalid question', async () => {
-      vote.question = web3.eth.accounts.create().address;
-      await request(app)
-        .post('/api/vote')
-        .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
-    });
+    it('should fail when nonce has already been used', async () => {
+      // Send first request
+      await request(app).post('/api/votes').send(vote).expect(httpStatus.OK);
 
-    it('should return bad request when invalid festival', async () => {
-      vote.festival = web3.utils.sha3('not a valid festival');
-      await request(app)
-        .post('/api/vote')
-        .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
-    });
-
-    it('should return bad request when sending too many votes', async () => {
-      vote.voteTokens = [1000];
-      vote.signature = web3.eth.accounts.sign(
-        packVote([festivalAnswer.id], vote.voteTokens, [artworkAnswer.id], [1]),
-        sender.privateKey,
+      // Repeat request (same nonce) but with different sender
+      vote.senderSignature = web3.eth.accounts.sign(
+        packVote([festivalAnswerData.id], [1], [propertyAnswerData.id], [1]),
+        anotherSender.privateKey,
       ).signature;
+      vote.senderAddress = anotherSender.address;
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Invalid nonce',
+        });
     });
 
-    it('should return bad request when sending too many vote items', async () => {
-      vote.voteTokens = [1, 1];
-      vote.signature = web3.eth.accounts.sign(
-        packVote([festivalAnswer.id], vote.voteTokens, [artworkAnswer.id], [1]),
-        sender.privateKey,
-      ).signature;
-      await request(app)
-        .post('/api/vote')
-        .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
-    });
+    // @TODO: Implement this test
+    // it('should fail when invalid question', async () => {
+    //   const question = web3.eth.accounts.create().address;
+    //   await request(app)
+    //     .post('/api/votes')
+    //     .send(vote)
+    //     .expect(httpStatus.UNPROCESSABLE_ENTITY);
+    // });
 
-    it('should return bad request when sending duplicates in answers array', async () => {
-      vote.voteTokens = [1, 1];
-      vote.signature = web3.eth.accounts.sign(
+    // @TODO: Implement this test
+    // it('should fail when invalid festival', async () => {
+    //   const festival = web3.utils.sha3('not a valid festival');
+    //   await request(app)
+    //     .post('/api/votes')
+    //     .send(vote)
+    //     .expect(httpStatus.UNPROCESSABLE_ENTITY);
+    // });
+
+    it('should fail when sending too many votes', async () => {
+      const voteTokens = [101];
+
+      vote.senderSignature = web3.eth.accounts.sign(
         packVote(
-          [festivalAnswer.id, festivalAnswer.id],
-          vote.voteTokens,
-          [artworkAnswer.id],
+          [festivalAnswerData.id],
+          voteTokens,
+          [propertyAnswerData.id],
           [1],
         ),
         sender.privateKey,
       ).signature;
+      vote.festivalVoteTokens = voteTokens;
+
       await request(app)
-        .post('/api/vote')
+        .post('/api/votes')
         .send(vote)
-        .expect(httpStatus.BAD_REQUEST);
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Too many votes',
+        });
+    });
+
+    it('should fail when sending too many vote items', async () => {
+      const voteTokens = [1, 1];
+
+      vote.senderSignature = web3.eth.accounts.sign(
+        packVote(
+          [festivalAnswerData.id],
+          voteTokens,
+          [propertyAnswerData.id],
+          [1],
+        ),
+        sender.privateKey,
+      ).signature;
+      vote.festivalVoteTokens = voteTokens;
+
+      await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Wrong festival answer length',
+        });
+    });
+
+    it('should fail when sending duplicates in answers array', async () => {
+      const voteTokens = [1, 1];
+      const voteAnswerIds = [festivalAnswerData.id, festivalAnswerData.id];
+
+      vote.senderSignature = web3.eth.accounts.sign(
+        packVote(voteAnswerIds, voteTokens, [propertyAnswerData.id], [1]),
+        sender.privateKey,
+      ).signature;
+      vote.festivalAnswerIds = voteAnswerIds;
+      vote.festivalVoteTokens = voteTokens;
+
+      vote.boothSignature = web3.eth.accounts.sign(
+        packBooth(voteAnswerIds, vote.nonce),
+        booth.privateKey,
+      ).signature;
+
+      await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.UNPROCESSABLE_ENTITY, {
+          status: 'error',
+          code: 422,
+          message: 'Duplicate answer',
+        });
     });
   });
 });
