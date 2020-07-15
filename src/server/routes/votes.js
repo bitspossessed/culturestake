@@ -1,14 +1,14 @@
 import express from 'express';
 
-import { answersByQuestion } from '~/common/services/subgraph';
+import Question from '~/server/models/question';
+import fetchFromGraph from '~/server/middlewares/fetchFromGraph';
+import resolveChainIdsMiddleware from '~/server/middlewares/resolveChainIds';
+import resourcesMiddleware from '~/server/middlewares/resources';
+import validate from '~/server/services/validate';
+import validateVoteMiddleware from '~/server/middlewares/validateVote';
 import voteController from '~/server/controllers/votes';
 import voteValidation from '~/server/validations/votes';
-import validate from '~/server/services/validate';
-import swapVoteIds from '~/server/middlewares/swapVoteIds';
-import validateVote from '~/server/middlewares/validateVote';
-import fetchFromGraph from '~/server/middlewares/fetchFromGraph';
-import Question from '~/server/models/question';
-import resourcesMiddleware from '~/server/middlewares/resources';
+import { answersByQuestion } from '~/common/services/subgraph';
 
 const router = express.Router();
 
@@ -29,8 +29,8 @@ router.get(
 router.post(
   '/',
   validate(voteValidation.create),
-  swapVoteIds,
-  validateVote,
+  resolveChainIdsMiddleware,
+  validateVoteMiddleware,
   voteController.create,
 );
 

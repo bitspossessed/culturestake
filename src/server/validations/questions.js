@@ -5,16 +5,9 @@ import { web3Validators } from '~/common/helpers/validate';
 
 const defaultValidation = {
   title: Joi.string().max(128).required(),
-  address: web3Validators.web3().address(),
+  address: web3Validators.web3().address().required(),
   festivalId: Joi.number().integer().required(),
   artworkId: Joi.number().integer(),
-  answers: Joi.array()
-    .items(
-      Joi.object().keys({
-        id: Joi.number().positive(),
-      }),
-    )
-    .max(10),
 };
 
 export default {

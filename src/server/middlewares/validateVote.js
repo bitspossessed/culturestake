@@ -1,175 +1,260 @@
 import httpStatus from 'http-status';
 
-import { isSignatureValid } from '~/server/services/crypto';
-import { packVote, packBooth } from '~/common/services/encoding';
+import APIError from '~/server/helpers/errors';
+import Answer from '~/server/models/answer';
+import Question from '~/server/models/question';
+import Vote from '~/server/models/vote';
+import logger from '~/server/helpers/logger';
 import {
   getQuestionContract,
   getAdminContract,
 } from '~/common/services/contracts';
 import { isActiveFestival } from '~/common/services/contracts/festivals';
-import Vote from '~/server/models/vote';
-import Question from '~/server/models/question';
-import APIError from '~/server/helpers/errors';
+import { isSignatureValid } from '~/server/services/crypto';
+import { packVote, packBooth } from '~/common/services/encoding';
 
-const admin = getAdminContract(process.env.ADMIN_CONTRACT);
+const adminContract = getAdminContract(process.env.ADMIN_CONTRACT);
 
-const checkBooth = async (vote, question) => {
-  const booth = await admin.methods.getVotingBooth(vote.booth).call();
-  const festival = await question.methods.festival().call();
-  vote.festival = festival;
-  if (!booth[0] || festival !== booth[2]) {
-    throw Error('invalid booth');
+async function checkBooth(vote, questionContract) {
+  const result = await adminContract.methods
+    .getVotingBooth(vote.boothAddress)
+    .call();
+  const isInitialized = result[0];
+  const isDeactivated = result[1];
+  const festivalId = result[2];
+
+  const festivalChainId = await questionContract.methods.festival().call();
+
+  // Check if ..
+  // 1. Festival is active
+  // 2. Voting booth is actually connected to this festival
+  if (!isInitialized || isDeactivated || festivalChainId !== festivalId) {
+    throw Error('Invalid booth address');
   }
-};
+}
 
-const checkChainHasVoted = async (vote, festivalQuestion, artworkQuestion) => {
-  const hasVotedFestival = await festivalQuestion.methods
-    .hasVoted(vote.sender)
+async function checkHasVoted(
+  vote,
+  festivalQuestionContract,
+  artworkQuestionContract,
+) {
+  const hasVotedFestival = await festivalQuestionContract.methods
+    .hasVoted(vote.senderAddress)
     .call();
-  const hasVotedArtwork = await artworkQuestion.methods
-    .hasVoted(vote.sender)
+
+  const hasVotedArtwork = await artworkQuestionContract.methods
+    .hasVoted(vote.senderAddress)
     .call();
+
   if (hasVotedFestival || hasVotedArtwork) {
-    throw Error('has voted');
+    throw Error('Sender voted already');
   }
-};
+}
 
-const checkLocalHasVoted = async (vote) => {
+async function checkLocalHasVoted({
+  senderAddress,
+  festivalQuestionAddress,
+  artworkQuestionAddress,
+}) {
   const localHasVotedFestival = await Vote.findOne({
-    where: { sender: vote.sender, festivalQuestion: vote.festivalQuestion },
+    where: {
+      senderAddress,
+      festivalQuestionAddress,
+    },
   });
+
   const localHasVotedArtwork = await Vote.findOne({
-    where: { sender: vote.sender, artworkQuestion: vote.artworkQuestion },
+    where: {
+      senderAddress,
+      artworkQuestionAddress,
+    },
   });
+
   if (localHasVotedFestival || localHasVotedArtwork) {
-    throw Error('has voted');
+    throw Error('Duplicate vote in database');
   }
-};
+}
 
-const checkArtworkQuestionIsHighestVoted = async (vote) => {
-  let highestVote = Array.from(new Set(vote.festivalVoteTokens));
-  highestVote = highestVote.sort((itemA, itemB) => itemB - itemA)[0];
+async function checkArtworkQuestionIsHighestVoted(vote) {
+  // Question does not exist or is not for artworks
   const question = await Question.findOne({
-    where: { address: vote.artworkQuestion },
+    where: {
+      address: vote.artworkQuestionAddress,
+    },
   });
+
   if (!question || !question.artworkId) {
-    throw Error('invalid artwork-question');
+    throw Error('Question is not for artwork answers');
   }
-  const justAnswerIds = vote.festivalAnswers.map((a) => a.id);
-  const indexOfArtwork = justAnswerIds.indexOf(question.artworkId);
-  if (vote.festivalVoteTokens[indexOfArtwork] !== highestVote) {
-    throw Error('invalid artwork-question');
-  }
-};
 
-const checkQuestions = async (vote) => {
-  const activeFestivalQuestion = await admin.methods
-    .questions(vote.festivalQuestion)
+  // We can only vote on properties of an artwork with the highest score of the
+  // previous vote
+  const highestAnswer = vote.festivalVoteTokens
+    .map((tokens, index) => {
+      return {
+        tokens,
+        index,
+      };
+    })
+    .sort((itemA, itemB) => itemB.tokens - itemA.tokens)[0];
+
+  const highestAnswerId = vote.festivalAnswerIds[highestAnswer.index];
+
+  const answer = await Answer.findOne({
+    where: {
+      id: highestAnswerId,
+    },
+  });
+
+  if (question.artworkId !== answer.artworkId) {
+    throw Error('Artwork is not the strongest festival answer');
+  }
+}
+
+async function checkQuestions(vote) {
+  const activeFestivalQuestion = await adminContract.methods
+    .questions(vote.festivalQuestionAddress)
     .call();
-  const activeArtworkQuestion = await admin.methods
-    .questions(vote.artworkQuestion)
+
+  const activeArtworkQuestion = await adminContract.methods
+    .questions(vote.artworkQuestionAddress)
     .call();
+
   if (!activeFestivalQuestion || !activeArtworkQuestion) {
-    throw Error('inactive question');
+    throw Error('Inactive question');
   }
-};
+}
 
-const checkFestival = async (vote) => {
-  const valid = await isActiveFestival(vote.festival);
-  if (!valid) {
-    throw Error('invalid festival');
+async function checkFestival(vote, questionContract) {
+  const festivalChainId = await questionContract.methods.festival().call();
+  const isValid = await isActiveFestival(festivalChainId);
+
+  if (!isValid) {
+    throw Error('Invalid festival');
   }
-};
+}
 
-const checkNonce = async (vote) => {
-  const isValidNonce = await admin.methods
-    .isValidVotingNonce(vote.booth, vote.nonce)
+async function checkNonce(vote) {
+  const isValidNonce = await adminContract.methods
+    .isValidVotingNonce(vote.boothAddress, vote.nonce)
     .call();
-  if (!isValidNonce) {
-    throw Error('invalid nonce');
-  }
-};
 
-const checkSigs = async (vote) => {
+  if (!isValidNonce) {
+    throw Error('Invalid nonce');
+  }
+}
+
+async function checkSignatures(vote) {
   if (
     !isSignatureValid(
       packVote(
-        vote.festivalAnswers.map((a) => a.id),
+        vote.festivalAnswerIds,
         vote.festivalVoteTokens,
-        vote.artworkAnswers.map((a) => a.id),
+        vote.artworkAnswerIds,
         vote.artworkVoteTokens,
       ),
-      vote.signature,
-      vote.sender,
-    ) ||
-    !isSignatureValid(
-      packBooth(
-        vote.festivalAnswers.map((a) => a.id),
-        vote.nonce,
-      ),
-      vote.boothSignature,
-      vote.booth,
+      vote.senderSignature,
+      vote.senderAddress,
     )
   ) {
-    throw Error('invalid sig');
+    throw Error('Invalid sender signature');
   }
-};
 
-const checkMaxVotes = async (answers, votes, question) => {
+  if (
+    !isSignatureValid(
+      packBooth(vote.festivalAnswerIds, vote.nonce),
+      vote.boothSignature,
+      vote.boothAddress,
+    )
+  ) {
+    throw Error('Invalid booth signature');
+  }
+}
+
+async function checkMaxVotes(
+  answerIds,
+  answerChainIds,
+  voteTokens,
+  questionContract,
+) {
+  const maxVoteTokens = await questionContract.methods.maxVoteTokens().call();
   const seen = {};
-  const maxVoteTokens = await question.methods.maxVoteTokens().call();
   let sum = 0;
-  await Promise.all(
-    answers.map(async (answer) => {
-      if (seen[answer.id]) {
-        throw Error('repeated answer');
-      }
-      seen[answer.id] = true;
-      sum += votes;
 
-      const a = await question.methods.getAnswer(answer.chainId).call();
-      if (a[0] !== true) {
-        throw Error('invalid answer');
+  await Promise.all(
+    answerIds.map(async (answerId, index) => {
+      if (answerId in seen) {
+        throw Error('Duplicate answer');
+      }
+
+      seen[answerId] = true;
+      sum += voteTokens[index];
+
+      const result = await questionContract.methods
+        .getAnswer(answerChainIds[index])
+        .call();
+      const isInitialized = result[0];
+
+      if (!isInitialized) {
+        throw Error('Invalid answer');
       }
     }),
   );
-  if (sum > maxVoteTokens * answers.length) {
-    throw Error('too many votes');
-  }
-};
 
-const checkAnswers = async (vote, festivalQuestion, artworkQuestion) => {
-  if (vote.festivalAnswers.length !== vote.festivalVoteTokens.length) {
-    throw Error('wrong array length');
+  if (sum > maxVoteTokens) {
+    throw Error('Too many votes');
   }
-  if (vote.artworkAnswers.length !== vote.artworkVoteTokens.length) {
-    throw Error('wrong array length');
+}
+
+async function checkAnswers(
+  vote,
+  festivalQuestionContract,
+  artworkQuestionContract,
+) {
+  if (vote.festivalAnswerIds.length !== vote.festivalVoteTokens.length) {
+    throw Error('Wrong festival answer length');
   }
+
+  if (vote.artworkAnswerIds.length !== vote.artworkVoteTokens.length) {
+    throw Error('Wrong artwork answer length');
+  }
+
   await checkMaxVotes(
-    vote.festivalAnswers,
-    vote.festivalVotes,
-    festivalQuestion,
+    vote.festivalAnswerIds,
+    vote.festivalAnswerChainIds,
+    vote.festivalVoteTokens,
+    festivalQuestionContract,
   );
-  await checkMaxVotes(vote.artworkAnswers, vote.artworkVotes, artworkQuestion);
-};
 
-export default async function (req, res, next) {
-  const vote = req.body;
-  const festivalQuestion = getQuestionContract(vote.festivalQuestion);
-  const artworkQuestion = getQuestionContract(vote.artworkQuestion);
+  await checkMaxVotes(
+    vote.artworkAnswerIds,
+    vote.artworkAnswerChainIds,
+    vote.artworkVoteTokens,
+    artworkQuestionContract,
+  );
+}
+
+export default async function validateVoteMiddleware(req, res, next) {
+  const { vote } = req.locals;
+
+  const festivalContract = getQuestionContract(vote.festivalQuestionAddress);
+  const artworkContract = getQuestionContract(vote.artworkQuestionAddress);
+
   try {
-    await checkSigs(vote);
-    await checkBooth(vote, festivalQuestion);
-    await checkBooth(vote, artworkQuestion);
+    await checkSignatures(vote);
+    await checkBooth(vote, festivalContract);
+    await checkBooth(vote, artworkContract);
     await checkNonce(vote);
-    await checkChainHasVoted(vote, festivalQuestion, artworkQuestion);
+    await checkHasVoted(vote, festivalContract, artworkContract);
     await checkLocalHasVoted(vote);
     await checkQuestions(vote);
-    await checkFestival(vote);
+    await checkFestival(vote, festivalContract);
     await checkArtworkQuestionIsHighestVoted(vote);
-    await checkAnswers(vote, festivalQuestion, artworkQuestion);
+    await checkAnswers(vote, festivalContract, artworkContract);
+
     next();
-  } catch (err) {
-    next(new APIError(httpStatus.BAD_REQUEST));
+  } catch (error) {
+    logger.verbose(error);
+    next(new APIError(httpStatus.UNPROCESSABLE_ENTITY, error.message));
   }
 }
