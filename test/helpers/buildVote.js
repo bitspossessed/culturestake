@@ -1,28 +1,37 @@
 import web3 from '~/common/services/web3';
-import { refreshNonce } from './utils';
 import { packBooth, packVote } from '~/common/services/encoding';
 
-export default (booth, sender, votedata) => {
+import { refreshNonce } from './nonce';
+
+export default (booth, sender, voteData) => {
   const nonce = refreshNonce();
+
+  const senderSignature = web3.eth.accounts.sign(
+    packVote(
+      voteData.festivalAnswerIds,
+      voteData.festivalVoteTokens,
+      voteData.artworkAnswerIds,
+      voteData.artworkVoteTokens,
+    ),
+    sender.privateKey,
+  ).signature;
+
+  const boothSignature = web3.eth.accounts.sign(
+    packBooth(voteData.festivalAnswerIds, nonce),
+    booth.privateKey,
+  ).signature;
+
   return {
-    ...votedata,
-    signature: web3.eth.accounts.sign(
-      packVote(
-        votedata.festivalAnswers,
-        votedata.festivalVoteTokens,
-        votedata.artworkAnswers,
-        votedata.artworkVoteTokens,
-      ),
-      sender.privateKey,
-    ).signature,
-    sender: sender.address,
-    booth: booth.address,
-    boothSignature: web3.eth.accounts.sign(
-      packBooth(votedata.festivalAnswers, nonce),
-      booth.privateKey,
-    ).signature,
+    artworkAnswerIds: voteData.artworkAnswerIds,
+    artworkQuestionAddress: voteData.artworkQuestionContract.options.address,
+    artworkVoteTokens: voteData.artworkVoteTokens,
+    festivalAnswerIds: voteData.festivalAnswerIds,
+    festivalQuestionAddress: voteData.festivalQuestionContract.options.address,
+    festivalVoteTokens: voteData.festivalVoteTokens,
+    boothAddress: booth.address,
+    boothSignature,
+    senderAddress: sender.address,
+    senderSignature,
     nonce,
-    festivalQuestion: votedata.festivalQuestion.options.address,
-    artworkQuestion: votedata.artworkQuestion.options.address,
   };
 };
