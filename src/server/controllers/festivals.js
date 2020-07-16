@@ -47,7 +47,6 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  // console.log(req.query)
   let where = {};
   if (req.query.query) {
     const query = JSON.parse(req.query.query);
