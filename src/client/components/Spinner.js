@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 
@@ -12,7 +13,7 @@ const rotate = keyframes`
   }
 `;
 
-const Spinner = () => {
+const Spinner = (props) => {
   const [snuggleness, setSnuggleness] = useState(0);
 
   const randomSnuggleness = () => {
@@ -25,7 +26,7 @@ const Spinner = () => {
 
   return (
     <SpinnerStyle onClick={randomSnuggleness}>
-      <SpinnerInnerStyle>
+      <SpinnerInnerStyle isLarge={props.isLarge}>
         <use xlinkHref={`#snugglepunk-${snuggleness}`} />
       </SpinnerInnerStyle>
     </SpinnerStyle>
@@ -37,13 +38,15 @@ const SpinnerStyle = styled.div`
 `;
 
 const SpinnerInnerStyle = styled.svg`
-  position: relative;
-
-  width: 4rem;
-  height: 4rem;
+  width: ${(props) => (props.isLarge ? '10rem' : '4rem')};
+  height: ${(props) => (props.isLarge ? '10rem' : '4rem')};
 
   animation: ${rotate} 2s linear infinite;
   animation-direction: reverse;
 `;
+
+Spinner.propTypes = {
+  isLarge: PropTypes.bool,
+};
 
 export default Spinner;

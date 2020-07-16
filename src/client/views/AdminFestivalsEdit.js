@@ -33,7 +33,15 @@ const AdminFestivalsEditForm = () => {
   const returnUrl = '/admin/festivals';
 
   const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
-    fields: ['title', 'description', 'documents', 'images', 'artworks'],
+    fields: [
+      'artworks',
+      'description',
+      'documents',
+      'images',
+      'sticker',
+      'subtitle',
+      'title',
+    ],
     resourcePath: ['festivals', slug],
     returnUrl,
     onNotFound: () => {

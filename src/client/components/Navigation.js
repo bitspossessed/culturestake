@@ -6,20 +6,23 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import AccessibilitySettings from '~/client/components/AccessibilitySettings';
 import ColorSection from '~/client/components/ColorSection';
-import styles from '~/client/styles/variables';
 import notify from '~/client/store/notifications/actions';
+import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
+import { BackgroundAreaStyle } from '~/client/styles/layout';
 import {
   ParagraphStyle,
   HeadingSecondaryStyle,
 } from '~/client/styles/typography';
 import { resetToken } from '~/client/store/app/actions';
-import { BackgroundAreaStyle } from '~/client/styles/layout';
+import { usePaginatedResource } from '~/client/hooks/resources';
 
 const Navigation = ({ onClickItem, isExpanded }) => {
   const { isAuthenticated, isAlternateColor } = useSelector(
     (state) => state.app,
   );
+
+  const [festivals] = usePaginatedResource(['festivals']);
 
   return (
     <NavigationStyle
@@ -44,10 +47,19 @@ const Navigation = ({ onClickItem, isExpanded }) => {
             </HeadingSecondaryStyle>
           </NavigationMenuItemStyle>
 
-          <NavigationMenuItemStyle>
-            {/* @TODO: Fetch festivals and display them here */}
-            <ParagraphStyle>%</ParagraphStyle>
-          </NavigationMenuItemStyle>
+          {festivals &&
+            festivals.map((festival) => {
+              return (
+                <NavigationMenuItemStyle key={festival.id}>
+                  <NavigationLink
+                    to={`/festivals/${festival.slug}`}
+                    onClick={onClickItem}
+                  >
+                    <ParagraphStyle>{festival.title}</ParagraphStyle>
+                  </NavigationLink>
+                </NavigationMenuItemStyle>
+              );
+            })}
         </NavigationMenuStyle>
 
         {isAuthenticated ? (

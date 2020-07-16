@@ -4,16 +4,14 @@ import React, { useState, useEffect } from 'react';
 import mime from 'mime/lite';
 import { useDispatch } from 'react-redux';
 
-import translate from '~/common/services/i18n';
-
 import ButtonOutline from '~/client/components/ButtonOutline';
-import InputFieldset from '~/client/components/InputFieldset';
+import InputFieldsetRounded from '~/client/components/InputFieldsetRounded';
 import styles from '~/client/styles/variables';
+import translate from '~/common/services/i18n';
 import { imageToBase64 } from '~/client/services/images';
 import { postRequest } from '~/client/store/api/actions';
 import { useField } from '~/client/hooks/forms';
 import { useRequest, useRequestId } from '~/client/hooks/requests';
-
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
@@ -193,7 +191,7 @@ const InputUploadField = ({
     .join(',');
 
   return (
-    <InputFieldset label={label} meta={meta} name={name}>
+    <InputFieldsetRounded label={label} meta={meta} name={name}>
       <InputUploadFieldItems files={filesData} onRemove={onRemove} />
 
       <input
@@ -208,7 +206,7 @@ const InputUploadField = ({
       <ButtonOutline disabled={isPending} onClick={onClickUpload}>
         {translate('InputUploadField.buttonSelectFiles')}
       </ButtonOutline>
-    </InputFieldset>
+    </InputFieldsetRounded>
   );
 };
 

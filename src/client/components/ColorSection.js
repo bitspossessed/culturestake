@@ -25,9 +25,13 @@ import {
   EthereumContainerStyle,
   EthereumContainerInnerStyle,
 } from '~/client/components/EthereumContainer';
+import {
+  BoxRoundedStyle,
+  BoxRoundedInnerStyle,
+} from '~/client/components/BoxRounded';
 import { InputFieldStyle } from '~/client/components/InputField';
-import { InputTextareaFieldStyle } from '~/client/components/InputTextareaField';
 import { InputFieldsetLabelStyle } from '~/client/components/InputFieldset';
+import { InputTextareaFieldStyle } from '~/client/components/InputTextareaField';
 import { PaperStyle } from '~/client/components/Paper';
 import { PillStyle } from '~/client/components/Pill';
 
@@ -50,6 +54,8 @@ const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
 };
 
 export const ColorSectionStyle = styled.div`
+  ${/* sc-selector */ BoxRoundedInnerStyle},
+  ${/* sc-selector */ BoxRoundedStyle},
   ${/* sc-selector */ ButtonIconStyle},
   ${/* sc-selector */ EthereumContainerStyle},
   ${/* sc-selector */ HeadingPrimaryStyle},
@@ -128,6 +134,8 @@ export const ColorSectionStyle = styled.div`
     }
   }
 
+  ${/* sc-selector */ BoxRoundedInnerStyle},
+  ${/* sc-selector */ BoxRoundedStyle},
   ${/* sc-selector */ ButtonIconSVGStyle},
   ${/* sc-selector */ ButtonIconStyle},
   ${/* sc-selector */ EthereumContainerInnerStyle},
