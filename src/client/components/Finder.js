@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
+import { useFormContext } from 'react-form';
 
 // import debounce from '~/client/utils/debounce';
 import apiRequest from '~/client/services/api';
@@ -9,13 +10,9 @@ import Spinner from '~/client/components/Spinner';
 // import { getRequest } from '~/client/store/api/actions';
 // import ActionTypes from '~/client/store/tables/types';
 
-import InputField from '~/client/components/InputField';
+import InputFieldset from '~/client/components/InputFieldset';
 // import { SpacingStyle } from '~/styles/Layout';
-
-const SpacingStyle = styled.div`
-  margin-top: '5rem';
-  margin-bottom: '5rem';
-`;
+import styles from '~/client/styles/variables';
 
 const MAX_SEARCH_RESULTS = 5;
 
@@ -24,6 +21,8 @@ const Finder = (props) => {
   const [isQueryEmpty, setIsQueryEmpty] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
   const [query, setQuery] = useState('');
+  const [selectedTitle, setSelectedTitle] = useState('');
+  const { meta } = useFormContext();
 
   const onInputChange = (event) => {
     event.preventDefault();
@@ -33,6 +32,8 @@ const Finder = (props) => {
   };
 
   const onSelect = (item) => {
+    setSelectedTitle(item.title);
+    setSearchResults([]);
     props.onSelect(item);
   };
 
@@ -75,15 +76,16 @@ const Finder = (props) => {
 
   return (
     <Fragment>
-      <InputField
-        label={'festivalId'}
-        name={'festivalId'}
-        placeholder={'text'}
-        type="text"
-        validate={props.validate}
-        value={props.id}
-        onChange={onInputChange}
-      />
+      <InputFieldset label={'festival'} meta={meta} name={'festival'}>
+        <InputFieldStyle
+          label={'festival'}
+          name={'festival'}
+          placeholder={'choose a festival'}
+          type="text"
+          value={selectedTitle}
+          onChange={onInputChange}
+        />
+      </InputFieldset>
 
       <SpacingStyle>
         <ListStyle>
@@ -135,7 +137,6 @@ Finder.propTypes = {
   onInputChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
   queryPath: PropTypes.string.isRequired,
-  validate: PropTypes.object.isRequired,
 };
 
 FinderResult.propTypes = {
@@ -154,6 +155,24 @@ const ListStyle = styled.ul`
 const ItemStyle = styled.li`
   margin-top: 1rem;
   margin-bottom: 1rem;
+`;
+
+export const InputFieldStyle = styled.input`
+  width: 100%;
+
+  padding: 1rem;
+
+  border: 1.5px solid ${styles.colors.violet};
+  border-radius: 20px;
+
+  color: ${styles.colors.violet};
+
+  background-color: transparent;
+`;
+
+const SpacingStyle = styled.div`
+  margin-top: '5rem';
+  margin-bottom: '5rem';
 `;
 
 export default Finder;

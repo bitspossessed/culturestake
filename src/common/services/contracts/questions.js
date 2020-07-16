@@ -1,7 +1,14 @@
 import { adminContract } from '~/common/services/contracts';
 
-export const TX_INITIALIZED_QUESTION = Symbol('TX_INITIALIZED_QUESTION');
-export const TX_DEACTIVATED_QUESTION = Symbol('TX_DEACTIVATED_QUESTION');
+export const TX_INITIALIZE_QUESTION = Symbol('TX_INITIALIZE_QUESTION');
+export const TX_DEACTIVATE_QUESTION = Symbol('TX_DEACTIVATE_QUESTION');
+
+export async function isQuestionInitialized(questionAddress) {
+  const question = await adminContract.methods
+    .questions(questionAddress)
+    .call();
+  return question;
+}
 
 export async function initializeQuestion(
   sender,
@@ -11,12 +18,12 @@ export async function initializeQuestion(
   const txHash = await adminContract.methods
     .initQuestion(maxVoteTokens, festivalChainId)
     .send({ from: sender });
-  return { txHash, txMethod: TX_INITIALIZED_QUESTION };
+  return { txHash, txMethod: TX_INITIALIZE_QUESTION };
 }
 
 export async function deactivateQuestion(sender, questionAddress) {
   const txHash = await adminContract.methods
     .deactivateQuestion(questionAddress)
     .send({ from: sender });
-  return { txHash, txMethod: TX_DEACTIVATED_QUESTION };
+  return { txHash, txMethod: TX_DEACTIVATE_QUESTION };
 }
