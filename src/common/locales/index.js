@@ -8,6 +8,11 @@ const components = {
     buttonRemoveOwner: 'Remove',
     fieldOwnerAddress: 'Add new address:',
   },
+  ContractsFestivals: {
+    buttonInitializeFestival: 'Initialize Festival',
+    buttonDeactivateFestival: 'Deactivate Festival',
+    notificationAlreadyDeactivated: 'This festival is deactivated',
+  },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
     bodyIsNotOwner: 'Current account is not Contract owner',
@@ -33,6 +38,7 @@ const components = {
     fieldSticker: 'Sticker',
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
+    fieldArtworks: 'Artworks:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',

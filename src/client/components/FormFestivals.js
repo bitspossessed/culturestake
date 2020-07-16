@@ -62,6 +62,12 @@ const FormFestivals = () => {
         validate={schema.documents}
       />
 
+      <InputUploadField
+        label={translate('FormFestivals.fieldArtworks')}
+        name="artworks"
+        validate={schema.artworks}
+      />
+
       <InputStickerField
         label={translate('FormFestivals.fieldSticker')}
         name="sticker"

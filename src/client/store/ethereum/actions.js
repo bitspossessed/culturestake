@@ -5,7 +5,6 @@ import { detectMetaMask } from '~/client/services/ethereum';
 
 async function handleAccountChange(accounts) {
   const isOwner = await ownersModule.isOwner(accounts[0]);
-
   return {
     type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
     meta: {
@@ -39,15 +38,6 @@ export function initializeProvider() {
       provider.on('accountsChanged', async (accounts) => {
         dispatch(await handleAccountChange(accounts));
       });
-
-      provider
-        .request({ method: 'eth_accounts' })
-        .then(async (accounts) => {
-          dispatch(await handleAccountChange(accounts));
-        })
-        .catch(() => {
-          // Do nothing ..
-        });
     }
 
     dispatch({
