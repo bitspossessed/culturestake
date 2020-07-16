@@ -34,8 +34,6 @@ export const useField = (fieldName, { validate: schema, ...fieldOptions }) => {
 
       // Validate via Joi schema and take ValidationError message from it
       validate: (value) => {
-        console.log(value); // eslint-disable-line
-
         const { error } = schema.validate(value, joiOptions);
 
         if (error) {

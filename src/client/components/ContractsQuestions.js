@@ -1,9 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-// import styled from 'styled-components';
 
-// import styles from '~/client/styles/variables';
+import { MAX_VOTE_TOKENS } from '~/common/utils/constants';
 import translate from '~/common/services/i18n';
 import Finder from '~/client/components/Finder';
 import ButtonOutline from '~/client/components/ButtonOutline';
@@ -35,22 +34,19 @@ const ContractsQuestions = ({ questionAddress }) => {
 
   useEffect(() => {
     const getInitializedStatus = async () => {
-      const state = await isQuestionInitialized(questionAddress);
-      setIsInitialized(state);
+      if (questionAddress !== '') {
+        const state = await isQuestionInitialized(questionAddress);
+        setIsInitialized(state);
+      }
     };
     getInitializedStatus();
   }, [questionAddress, isPending]);
 
   const onInputChange = (value) => {
-    console.log('onInputChange in forms questions'); // eslint-disable-line
-    console.log(value); // eslint-disable-line
     setFestival(value);
   };
 
   const onSelect = (value) => {
-    // console.log('onInputChange in forms questions'); // eslint-disable-line
-    console.log(value); // eslint-disable-line
-    onInputChange(value);
     setFestival(value);
   };
 
@@ -59,6 +55,7 @@ const ContractsQuestions = ({ questionAddress }) => {
 
     const { txHash, txMethod } = await initializeQuestion(
       owner,
+      MAX_VOTE_TOKENS,
       festival.chainId,
     );
 
@@ -75,34 +72,23 @@ const ContractsQuestions = ({ questionAddress }) => {
     <EthereumContainer>
       {!isInitialized ? (
         <div>
-          <ButtonOutline onClick={onClick}>
-            {translate('ContractsFestivals.buttonInitializeFestival')}
-          </ButtonOutline>
           <Finder
-            id={festival.id ? festival.id : 0}
-            input={''}
-            label={translate('FormQuestions.fieldFestival')}
-            name="festival Id"
+            label={translate('ContractsQuestions.fieldFestival')}
+            name="festival"
+            placeholder={translate('ContractsQuestions.fieldPlaceholder')}
             queryPath={'festivals'}
-            type="text"
-            value={''}
             onInputChange={onInputChange}
             onSelect={onSelect}
           />
+          <ButtonOutline onClick={onClick}>
+            {translate('ContractsQuestions.buttonInitializeQuestion')}
+          </ButtonOutline>
         </div>
       ) : (
         <br />
       )}
     </EthereumContainer>
   );
-
-  // return (
-  //   <EthereumContainer>
-  //     <ButtonOutline onClick={onClick}>
-  //       {translate('ContractsFestivals.buttonInitializeFestival')}
-  //     </ButtonOutline>
-  //   </EthereumContainer>
-  // );
 };
 
 ContractsQuestions.propTypes = {

@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 
 import translate from '~/common/services/i18n';
 import InputField from '~/client/components/InputField';
-// import Finder from '~/client/components/Finder';
 
 const FormQuestions = () => {
   const schema = {

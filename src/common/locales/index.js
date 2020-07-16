@@ -13,6 +13,12 @@ const components = {
     buttonDeactivateFestival: 'Deactivate Festival',
     notificationAlreadyDeactivated: 'This festival is deactivated',
   },
+  ContractsQuestions: {
+    fieldFestival: 'Festival Name:',
+    fieldTitle: 'Question text:',
+    fieldPlaceholder: 'Choose a festival',
+    buttonInitializeQuestion: 'Initialize Question',
+  },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
     bodyIsNotOwner: 'Current account is not Contract owner',
@@ -39,10 +45,6 @@ const components = {
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
     fieldArtworks: 'Artworks:',
-  },
-  FormQuestions: {
-    fieldFestival: 'Festival Id:',
-    fieldTitle: 'Question text:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',

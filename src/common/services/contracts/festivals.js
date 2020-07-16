@@ -31,7 +31,7 @@ export async function getFestival(chainId) {
 export async function initializeFestival(sender, chainId, startTime, endTime) {
   const txHash = await adminContract.methods
     .initFestival(chainId, dateToTimestamp(startTime), dateToTimestamp(endTime))
-    .send({ from: sender });
+    .send({ from: sender, gas: '0x753000' });
   return { txHash, txMethod: TX_INITIALIZE_FESTIVAL };
 }
 

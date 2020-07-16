@@ -3,15 +3,9 @@ import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { useFormContext } from 'react-form';
 
-// import debounce from '~/client/utils/debounce';
 import apiRequest from '~/client/services/api';
-import Pill from '~/client/components/Pill';
 import Spinner from '~/client/components/Spinner';
-// import { getRequest } from '~/client/store/api/actions';
-// import ActionTypes from '~/client/store/tables/types';
-
 import InputFieldset from '~/client/components/InputFieldset';
-// import { SpacingStyle } from '~/styles/Layout';
 import styles from '~/client/styles/variables';
 
 const MAX_SEARCH_RESULTS = 5;
@@ -26,7 +20,7 @@ const Finder = (props) => {
 
   const onInputChange = (event) => {
     event.preventDefault();
-    console.log('onInputChange'); // eslint-disable-line
+    setSelectedTitle(event.target.value);
     props.onInputChange(event.target.value);
     setQuery(event.target.value);
   };
@@ -39,14 +33,11 @@ const Finder = (props) => {
 
   const debouncedSearch = useCallback(
     async (query) => {
-      // debounce(async (query) => {
-      console.log('making req'); // eslint-disable-line
-
+      setIsLoading(true);
       const response = await apiRequest({
         path: [`${props.queryPath}`],
         body: { title: `${query}` },
       });
-      console.log(response.results); // eslint-disable-line
 
       const result = response.results
         .sort((itemA, itemB) => {
@@ -76,11 +67,11 @@ const Finder = (props) => {
 
   return (
     <Fragment>
-      <InputFieldset label={'festival'} meta={meta} name={'festival'}>
+      <InputFieldset label={props.label} meta={meta} name={props.name}>
         <InputFieldStyle
-          label={'festival'}
-          name={'festival'}
-          placeholder={'choose a festival'}
+          label={props.label}
+          name={props.name}
+          placeholder={props.placeholder}
           type="text"
           value={selectedTitle}
           onChange={onInputChange}
@@ -106,10 +97,6 @@ const FinderResult = (props) => {
     props.onClick(item);
   };
 
-  if (!props.isQueryEmpty && props.items.length === 0 && !props.isLoading) {
-    return <Pill>{'idk what should this say'}</Pill>;
-  }
-
   if (props.isLoading) {
     return <Spinner />;
   }
@@ -119,23 +106,24 @@ const FinderResult = (props) => {
   }
 
   return props.items.map((item, index) => {
-    return <FinderItem key={index} user={item} onClick={onClick} />;
+    return <FinderItem key={index} selected={item} onClick={onClick} />;
   });
 };
 
 const FinderItem = (props) => {
   const onClick = () => {
-    props.onClick(props.user);
+    props.onClick(props.selected);
   };
 
-  return <ItemStyle onClick={onClick}>{props.user.title}</ItemStyle>;
+  return <ItemStyle onClick={onClick}>{props.selected.title}</ItemStyle>;
 };
 
 Finder.propTypes = {
-  id: PropTypes.number.isRequired,
-  input: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onSelect: PropTypes.func.isRequired,
+  placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.string.isRequired,
 };
 
@@ -145,7 +133,7 @@ FinderResult.propTypes = {
 
 FinderItem.propTypes = {
   onClick: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
+  selected: PropTypes.object.isRequired,
 };
 
 const ListStyle = styled.ul`
