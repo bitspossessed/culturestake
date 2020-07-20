@@ -26,7 +26,7 @@ async function checkBooth(vote, questionContract) {
   const festivalChainId = await questionContract.methods.festival().call();
 
   // Check if ..
-  // 1. Festival is active
+  // 1. Voting booth is active
   // 2. Voting booth is actually connected to this festival
   if (!isInitialized || isDeactivated || festivalChainId !== festivalId) {
     throw Error('Invalid booth address');
