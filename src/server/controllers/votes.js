@@ -2,11 +2,13 @@ import Question from '~/server/models/question';
 import Vote from '~/server/models/vote';
 import baseController from '~/server/controllers';
 import dispatchVote from '~/server/services/dispatcher';
+import httpStatus from 'http-status';
 import { QuestionHasManyAnswers } from '~/server/database/associations';
 import {
   filterResponseFieldsAll,
   filterResponseFields,
 } from '~/server/controllers';
+import { getQuestion } from '~/common/services/contracts';
 import { respondWithSuccess } from '~/server/helpers/respond';
 
 const topThreeFilter = (req, data, options) => {
@@ -100,26 +102,33 @@ const findTopThree = (array, matchingKey) => {
 async function create(req, res, next) {
   const { vote } = req.locals;
 
+  const { address: festivalQuestionAddress } = await getQuestion(
+    vote.festivalQuestionChainId,
+  );
+  const { address: artworkQuestionAddress } = await getQuestion(
+    vote.artworkQuestionChainId,
+  );
+
   try {
     // Vote on the blockchain
     await dispatchVote({
       ...vote,
       answerChainIds: vote.festivalAnswerChainIds,
-      questionAddress: vote.festivalQuestionAddress,
+      questionAddress: festivalQuestionAddress,
       voteTokens: vote.festivalVoteTokens,
     });
 
     await dispatchVote({
       ...vote,
       answerChainIds: vote.artworkAnswerChainIds,
-      questionAddress: vote.artworkQuestionAddress,
+      questionAddress: artworkQuestionAddress,
       voteTokens: vote.artworkVoteTokens,
     });
 
     // ... and store it locally on database as well
     await Vote.create(vote);
 
-    respondWithSuccess(res);
+    respondWithSuccess(res, null, httpStatus.CREATED);
   } catch (error) {
     return next(error);
   }

@@ -39,7 +39,7 @@ const Vote = db.define('vote', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  festivalQuestionAddress: {
+  festivalQuestionChainId: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
@@ -69,7 +69,7 @@ const Vote = db.define('vote', {
       );
     },
   },
-  artworkQuestionAddress: {
+  artworkQuestionChainId: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,

@@ -3,15 +3,16 @@ import { Joi, Segments } from 'celebrate';
 import { web3Validators } from '~/common/helpers/validate';
 
 export const paramValidation = {
+  // @TODO: Refactor
   questionAddress: web3Validators.web3().address().required(),
 };
 
 const defaultValidation = {
   artworkAnswerIds: Joi.array().items(Joi.number().positive()),
-  artworkQuestionAddress: web3Validators.web3().address().required(),
+  artworkQuestionId: Joi.number().positive().required(),
   artworkVoteTokens: Joi.array().items(Joi.number().positive()),
   festivalAnswerIds: Joi.array().items(Joi.number().positive()),
-  festivalQuestionAddress: web3Validators.web3().address().required(),
+  festivalQuestionId: Joi.number().positive().required(),
   festivalVoteTokens: Joi.array().items(Joi.number().positive()),
   boothAddress: web3Validators.web3().address().required(),
   boothSignature: Joi.string().length(132).required(),

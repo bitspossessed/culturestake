@@ -64,28 +64,28 @@ describe('Vote', () => {
   describe('POST /api/votes', () => {
     beforeEach(async () => {
       // Set up first question contract for artwork answers on an festival
-      const festivalQuestionAddress = await initQuestion(
-        adminContract,
-        festivalData.chainId,
-      );
       const festivalQuestionData = await put('/api/questions', {
         title: 'What was your favorite artwork of this festival?',
         festivalId: festivalData.id,
-        address: festivalQuestionAddress,
       });
+      const festivalQuestionAddress = await initQuestion(
+        adminContract,
+        festivalQuestionData.chainId,
+        festivalData.chainId,
+      );
       festivalQuestionContract = getQuestionContract(festivalQuestionAddress);
 
       // Set up second question contract for property answers on an artwork
-      const artworkQuestionAddress = await initQuestion(
-        adminContract,
-        festivalData.chainId,
-      );
       const artworkQuestionData = await put('/api/questions', {
         title: 'What aspect of this artwork did you like and how much?',
         festivalId: festivalData.id,
         artworkId: artworkData.id,
-        address: artworkQuestionAddress,
       });
+      const artworkQuestionAddress = await initQuestion(
+        adminContract,
+        artworkQuestionData.chainId,
+        festivalData.chainId,
+      );
       artworkQuestionContract = getQuestionContract(artworkQuestionAddress);
 
       // Add possible answers to API
@@ -105,23 +105,28 @@ describe('Vote', () => {
       await initAnswer(artworkQuestionContract, propertyAnswerData.chainId);
 
       // Create the actual vote of an user
+      const festivalQuestionId = festivalQuestionData.id;
       const festivalAnswerIds = [festivalAnswerData.id];
-      const artworkAnswerIds = [propertyAnswerData.id];
       const festivalVoteTokens = [1];
+      const artworkQuestionId = artworkQuestionData.id;
+      const artworkAnswerIds = [propertyAnswerData.id];
       const artworkVoteTokens = [1];
 
       vote = buildVote(booth, sender, {
-        festivalQuestionContract,
+        festivalQuestionId,
         festivalAnswerIds,
         festivalVoteTokens,
-        artworkQuestionContract,
+        artworkQuestionId,
         artworkAnswerIds,
         artworkVoteTokens,
       });
     });
 
     it('should successfully vote', async () => {
-      await request(app).post('/api/votes').send(vote).expect(httpStatus.OK);
+      await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
     });
 
     it('should fail when answer id not in database', async () => {
@@ -198,7 +203,10 @@ describe('Vote', () => {
 
     it('should fail when sender has already voted', async () => {
       // Send first request
-      await request(app).post('/api/votes').send(vote).expect(httpStatus.OK);
+      await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
 
       // Get a new nonce but keep the rest
       vote.nonce = refreshNonce();
@@ -219,7 +227,10 @@ describe('Vote', () => {
 
     it('should fail when nonce has already been used', async () => {
       // Send first request
-      await request(app).post('/api/votes').send(vote).expect(httpStatus.OK);
+      await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
 
       // Repeat request (same nonce) but with different sender
       vote.senderSignature = web3.eth.accounts.sign(

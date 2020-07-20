@@ -1,8 +1,8 @@
 import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
-import { generateHashSecret } from '~/server/services/crypto';
 
 import db from '~/server/database';
+import { generateHashSecret } from '~/server/services/crypto';
 
 const Festival = db.define('festival', {
   id: {
@@ -12,6 +12,13 @@ const Festival = db.define('festival', {
     autoIncrement: true,
   },
   chainId: {
+    type: DataTypes.STRING,
+    unique: true,
+    validate: {
+      isAlphanumeric: true,
+    },
+  },
+  secret: {
     type: DataTypes.STRING,
     unique: true,
     validate: {
@@ -42,8 +49,9 @@ SequelizeSlugify.slugifyModel(Festival, {
 });
 
 Festival.addHook('beforeCreate', async (festival) => {
-  const { hash } = generateHashSecret(festival.title);
+  const { hash, secret } = generateHashSecret(festival.title);
   festival.chainId = hash;
+  festival.secret = secret;
 });
 
 export default Festival;

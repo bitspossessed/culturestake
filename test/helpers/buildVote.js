@@ -22,12 +22,7 @@ export default (booth, sender, voteData) => {
   ).signature;
 
   return {
-    artworkAnswerIds: voteData.artworkAnswerIds,
-    artworkQuestionAddress: voteData.artworkQuestionContract.options.address,
-    artworkVoteTokens: voteData.artworkVoteTokens,
-    festivalAnswerIds: voteData.festivalAnswerIds,
-    festivalQuestionAddress: voteData.festivalQuestionContract.options.address,
-    festivalVoteTokens: voteData.festivalVoteTokens,
+    ...voteData,
     boothAddress: booth.address,
     boothSignature,
     senderAddress: sender.address,

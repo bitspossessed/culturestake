@@ -46,11 +46,12 @@ export async function initVotingBooth(
 export async function initQuestion(
   adminContract,
   chainId,
+  festivalChainId,
   maxVoteTokens = 100,
 ) {
   // Deploy question contract
   const txData = adminContract.methods
-    .initQuestion(maxVoteTokens, chainId)
+    .initQuestion(chainId, maxVoteTokens, festivalChainId)
     .encodeABI();
   await sendTransaction(adminContract, txData);
 

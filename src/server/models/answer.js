@@ -1,9 +1,8 @@
 import { DataTypes } from 'sequelize';
 
-import db from '~/server/database';
-
-import Property from '~/server/models/property';
 import Artwork from '~/server/models/artwork';
+import Property from '~/server/models/property';
+import db from '~/server/database';
 import { generateHashSecret } from '~/server/services/crypto';
 
 export const ANSWER_TYPES = ['property', 'artwork'];
@@ -58,6 +57,7 @@ Answer.addHook('beforeCreate', async (answer) => {
     model = Artwork;
     key = answer.artworkId;
   }
+
   const link = await model.findByPk(key);
   const { hash, secret } = generateHashSecret(link.title);
   answer.chainId = hash;
