@@ -9,7 +9,6 @@ import {
   getQuestionContract,
   getAdminContract,
 } from '~/common/services/contracts';
-import { isActiveFestival } from '~/common/services/contracts/festivals';
 import { isSignatureValid } from '~/server/services/crypto';
 import { packVote, packBooth } from '~/common/services/encoding';
 
@@ -122,15 +121,6 @@ async function checkQuestions(vote) {
 
   if (!activeFestivalQuestion || !activeArtworkQuestion) {
     throw Error('Inactive question');
-  }
-}
-
-async function checkFestival(vote, questionContract) {
-  const festivalChainId = await questionContract.methods.festival().call();
-  const isValid = await isActiveFestival(festivalChainId);
-
-  if (!isValid) {
-    throw Error('Invalid festival');
   }
 }
 
@@ -248,7 +238,6 @@ export default async function validateVoteMiddleware(req, res, next) {
     await checkHasVoted(vote, festivalContract, artworkContract);
     await checkLocalHasVoted(vote);
     await checkQuestions(vote);
-    await checkFestival(vote, festivalContract);
     await checkArtworkQuestionIsHighestVoted(vote);
     await checkAnswers(vote, festivalContract, artworkContract);
 
