@@ -9,6 +9,7 @@ import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
 import AdminQuestions from '~/client/views/AdminQuestions';
 import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
+import AdminQuestionsEdit from '~/client/views/AdminQuestionsEdit';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
@@ -127,6 +128,11 @@ const Routes = () => (
       component={AdminQuestionsNew}
       exact
       path="/admin/questions/new"
+    />
+    <AuthenticatedRoute
+      component={AdminQuestionsEdit}
+      exact
+      path="/admin/questions/:address/edit"
     />
     <UnauthenticatedRoute
       component={AdminLogin}
