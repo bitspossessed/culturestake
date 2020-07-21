@@ -4,8 +4,8 @@ import { QuestionHasManyAnswers } from '~/server/database/associations';
 
 const options = {
   model: Question,
-  fields: ['title', 'slug', 'answers'],
-  fieldsProtected: ['chainId', 'artworkId', 'festivalId'],
+  fields: ['title', 'slug', 'chainId', 'answers'],
+  fieldsProtected: ['artworkId', 'festivalId'],
 };
 
 const optionsRead = {
