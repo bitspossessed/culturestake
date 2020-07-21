@@ -1,8 +1,8 @@
 import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
+import { generateHashSecret } from '~/server/services/crypto';
 
 import db from '~/server/database';
-import { generateHashSecret } from '~/server/services/crypto';
 
 const Question = db.define('question', {
   id: {
@@ -30,7 +30,10 @@ const Question = db.define('question', {
   },
   title: {
     type: DataTypes.STRING,
-    allowNull: false,
+    unique: true,
+    validate: {
+      isAlphanumeric: true,
+    },
   },
   festivalId: {
     type: DataTypes.INTEGER,
