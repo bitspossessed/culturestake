@@ -297,10 +297,10 @@ export default async function validateVoteMiddleware(req, res, next) {
   } catch (error) {
     logger.verbose(error);
 
-    if (process.env === 'development') {
-      next(new APIError(httpStatus.UNPROCESSABLE_ENTITY, error.message));
-    } else {
+    if (process.env.NODE_ENV === 'production') {
       next(new APIError(httpStatus.UNPROCESSABLE_ENTITY));
+    } else {
+      next(new APIError(httpStatus.UNPROCESSABLE_ENTITY, error.message));
     }
   }
 }
