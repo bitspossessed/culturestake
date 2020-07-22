@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment } from 'react';
 import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import apiRequest from '~/client/services/api';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
