@@ -1,11 +1,7 @@
 import { Joi, Segments } from 'celebrate';
 
+import { slugValidation } from '~/server/validations';
 import { web3Validators } from '~/common/helpers/validate';
-
-export const paramValidation = {
-  // @TODO: Refactor
-  questionAddress: web3Validators.web3().address().required(),
-};
 
 const defaultValidation = {
   artworkAnswerIds: Joi.array().items(Joi.number().positive()),
@@ -29,7 +25,7 @@ export default {
   },
   read: {
     [Segments.PARAMS]: {
-      ...paramValidation,
+      ...slugValidation,
     },
   },
 };

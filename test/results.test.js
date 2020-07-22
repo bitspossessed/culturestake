@@ -1,132 +1,180 @@
-import request from 'supertest';
 import httpStatus from 'http-status';
+import request from 'supertest';
 
-import { initializeDatabase } from './helpers/database';
 import artworksData from './data/artworks';
-import answersData from './data/answers';
-import questionsData from './data/questions';
+import buildVote from './helpers/buildVote';
+import createSupertest from './helpers/supertest';
 import festivalsData from './data/festivals';
+import getAccount from './helpers/getAccount';
+import propertyData from './data/properties';
+import { initAnswer, initQuestion } from './helpers/transactions';
+import { initializeDatabase } from './helpers/database';
+import { put } from './helpers/requests';
 
 import app from '~/server';
 import web3 from '~/common/services/web3';
 import {
-  getAdminContract,
+  adminContract,
   getQuestionContract,
 } from '~/common/services/contracts';
-import createSupertest from './helpers/supertest';
-import initQuestion from './helpers/initQuestion';
-import initAnswer from './helpers/initAnswer';
-import buildVote from './helpers/buildVote';
 
-describe('API', () => {
-  let authRequest;
-  let answers;
-  let admin;
-  let question;
-  let sender;
-  let booth;
+describe('Vote results', () => {
   let vote;
+  let festivalQuestionData;
+  let artworkQuestionData;
+  let authRequest;
 
   beforeAll(async () => {
-    // add test data
     await initializeDatabase();
     authRequest = await createSupertest();
-    await authRequest.put('/api/artworks').send(artworksData.davinci);
-    await authRequest.put('/api/artworks').send(artworksData.rothko);
-    await authRequest.put('/api/artworks').send(artworksData.goya);
-    await authRequest.put('/api/artworks').send(artworksData.bourgeois);
-    await authRequest.put('/api/artworks').send(artworksData.martin);
-    await authRequest.put('/api/festivals').send(festivalsData['1']);
 
-    // set up question contract
-    admin = getAdminContract(process.env.ADMIN_CONTRACT);
-    const questionAddress = await initQuestion(admin, 'festival');
-    question = getQuestionContract(questionAddress);
+    // Add test data
+    const artworkIds = await Promise.all(
+      [
+        artworksData.davinci,
+        artworksData.rothko,
+        artworksData.goya,
+        artworksData.bourgeois,
+      ].map(async (artwork) => {
+        const data = await put('/api/artworks', artwork);
+        return data.id;
+      }),
+    );
 
-    // add question to api
-    await authRequest.put('/api/questions').send({
-      ...questionsData['1'],
-      address: question.options.address,
+    const propertyIds = await Promise.all(
+      [propertyData.aProperty, propertyData.anotherProperty].map(
+        async (property) => {
+          const data = await put('/api/properties', property);
+          return data.id;
+        },
+      ),
+    );
+
+    const festivalData = await put('/api/festivals', festivalsData.barbeque);
+    // Use chainId from contract migrations
+    festivalData.chainId = web3.utils.sha3('festival');
+
+    // Set up question contracts
+    festivalQuestionData = await put('/api/questions', {
+      title: 'What do you think about frogs?',
+      festivalId: festivalData.id,
     });
+    const festivalQuestionAddress = await initQuestion(
+      adminContract,
+      festivalQuestionData.chainId,
+      festivalData.chainId,
+    );
+    const festivalQuestionContract = getQuestionContract(
+      festivalQuestionAddress,
+    );
 
-    // add answers to api
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer2);
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer3);
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer4);
-    await authRequest.put('/api/answers').send(answersData.artworkAnswer5);
+    // Set up question contract
+    artworkQuestionData = await put('/api/questions', {
+      title: 'What aspect of this frogwork did you like and how much?',
+      festivalId: festivalData.id,
+      artworkId: artworkIds[0], // Create artwork question for Davinci
+    });
+    const artworkQuestionAddress = await initQuestion(
+      adminContract,
+      artworkQuestionData.chainId,
+      festivalData.chainId,
+    );
+    const artworkQuestionContract = getQuestionContract(artworkQuestionAddress);
 
-    // use chainId from api to create answer on blockchain
-    const answer1 = await initAnswer(question, 1);
-    const answer2 = await initAnswer(question, 2);
-    const answer3 = await initAnswer(question, 3);
-    const answer4 = await initAnswer(question, 4);
-    const answer5 = await initAnswer(question, 5);
-    answers = [answer1, answer2, answer3, answer4, answer5];
+    // Add answers to API
+    const festivalAnswerIds = [];
+    for await (let artworkId of artworkIds) {
+      // Create answer in local database
+      const answerData = await put('/api/answers', {
+        type: 'artwork',
+        artworkId,
+        questionId: festivalQuestionData.id,
+      });
 
-    // create accounts for voting
-    sender = web3.eth.accounts.create();
-    booth = web3.eth.accounts.privateKeyToAccount(
+      // Use chainId from api to create answer on blockchain
+      await initAnswer(festivalQuestionContract, answerData.chainId);
+
+      // Store answer id
+      festivalAnswerIds.push(answerData.id);
+    }
+
+    const artworkAnswerIds = [];
+    for await (let propertyId of propertyIds) {
+      // Create answer in local database
+      const answerData = await put('/api/answers', {
+        type: 'property',
+        propertyId,
+        questionId: artworkQuestionData.id,
+      });
+
+      // Use chainId from api to create answer on blockchain
+      await initAnswer(artworkQuestionContract, answerData.chainId);
+
+      // Store answer id
+      artworkAnswerIds.push(answerData.id);
+    }
+
+    // Create accounts for voting
+    const sender = getAccount(1);
+    const booth = web3.eth.accounts.privateKeyToAccount(
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
 
-    const answerIds = answers.map((a) => a.id);
-    const votes = [1, 2, 3, 4, 5];
-    vote = buildVote(booth, sender, question, answerIds, votes);
-
-    await request(app).post('/api/vote').send(vote);
-  });
-
-  afterAll(async () => {
-    await authRequest.del('/api/artworks/mona-lisa');
-    await authRequest.del('/api/artworks/untitled-black-and-grey');
-    await authRequest.del('/api/artworks/saturn-devouring-his-son');
-    await authRequest.del('/api/artworks/spider');
-    await authRequest.del('/api/artworks/little-sister');
-    await authRequest.del('/api/festivals/a-festival');
-    await authRequest.del('/api/answers/1');
-    await authRequest.del('/api/answers/2');
-    await authRequest.del('/api/answers/3');
-    await authRequest.del('/api/answers/4');
-    await authRequest.del('/api/answers/5');
-    await authRequest.del('/api/questions/1');
-  });
-
-  describe('GET /api/vote', () => {
-    it('should return answer info for top three answers for public request', async (done) => {
-      setTimeout(async () => {
-        await request(app)
-          .get(`/api/vote/${question.options.address}`)
-          .expect(httpStatus.OK)
-          .expect((response) => {
-            const summary = response.body.data;
-            for (const a in summary.answers) {
-              if (a.votePower >= 3) {
-                expect(a.artworkId).toBeDefined();
-              } else {
-                expect(a.artworkId).toBeUndefined();
-              }
-            }
-          })
-          .then(done())
-          .catch((err) => done(err));
-      }, 1000);
+    // Create the actual vote of an user
+    vote = buildVote(booth, sender, {
+      festivalQuestionId: festivalQuestionData.id,
+      festivalAnswerIds,
+      festivalVoteTokens: [11, 2, 3, 4], // Davinci wins!
+      artworkQuestionId: artworkQuestionData.id,
+      artworkAnswerIds,
+      artworkVoteTokens: [9, 10],
     });
 
-    it('should return answer info for all answers for auth request', async (done) => {
-      setTimeout(async () => {
-        await authRequest
-          .get(`/api/vote/${question.options.address}`)
-          .expect(httpStatus.OK)
-          .expect((response) => {
-            const summary = response.body.data;
-            for (const a in summary.answers) {
-              expect(a.artworkId).toBeDefined();
+    await request(app).post('/api/votes').send(vote).expect(httpStatus.CREATED);
+
+    // ... wait a little bit for changes to propagate
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
+
+  describe('GET /api/votes', () => {
+    it('should return answer info for top three answers for public request', async () => {
+      await request(app)
+        .get(`/api/votes/${festivalQuestionData.slug}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const { data } = response.body;
+
+          // Secret is not leaked
+          expect(data.secret).toBeUndefined();
+
+          // Show all answers, also the anonymized ones
+          expect(data.answers.length).toBe(4);
+
+          data.answers.forEach((answer) => {
+            // Secret is not leaked
+            expect(answer.secret).toBeUndefined();
+
+            // Check if the correct answers are anonymized (non top 3)
+            if (answer.votePower >= 3) {
+              expect(answer.artworkId).toBeDefined();
+            } else {
+              expect(answer.artworkId).toBeUndefined();
             }
-          })
-          .then(done())
-          .catch((err) => done(err));
-      }, 1000);
+          });
+        });
+    });
+
+    it('should return answer info for all answers for auth request', async () => {
+      await authRequest
+        .get(`/api/votes/${festivalQuestionData.slug}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          // Authenticated users should see sensitive vote data as well
+          const { answers } = response.body.data;
+          answers.forEach((answer) => {
+            expect(answer.artworkId).toBeDefined();
+          });
+        });
     });
   });
 });

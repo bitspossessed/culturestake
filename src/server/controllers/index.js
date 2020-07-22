@@ -238,10 +238,9 @@ function read(options) {
         ? options.customFilter
         : filterResponseFields;
 
-      // @TODO: Rename this?
-      const test = filter(req, instance, options);
+      const filteredResults = filter(req, instance, options);
 
-      respondWithSuccess(res, test);
+      respondWithSuccess(res, filteredResults);
     } catch (error) {
       next(error);
     }

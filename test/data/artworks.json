@@ -1,6 +1,6 @@
 {
   "davinci": {
-    "title": "mona lisa",
+    "title": "Mona Lisa",
     "images": []
   },
   "rothko": {
@@ -8,23 +8,23 @@
     "images": []
   },
   "goya": {
-    "title": "saturn devouring his son",
+    "title": "Saturn devouring his son",
     "images": []
   },
   "bourgeois": {
-    "title": "spider",
+    "title": "Spider",
     "images": []
   },
   "martin": {
-    "title": "little sister",
+    "title": "Little sister",
     "images": []
   },
   "duchamp": {
-    "title": "fountain",
+    "title": "Fountain",
     "images": []
   },
   "o'keefe": {
-    "title": "pelvis iv",
+    "title": "Pelvis IV",
     "images": []
   }
 }

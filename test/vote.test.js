@@ -4,29 +4,22 @@ import request from 'supertest';
 import app from '~/server';
 import web3 from '~/common/services/web3';
 import {
-  getAdminContract,
+  adminContract,
   getQuestionContract,
 } from '~/common/services/contracts';
 import { packBooth, packVote } from '~/common/services/encoding';
 
 import artworksData from './data/artworks';
 import buildVote from './helpers/buildVote';
-import createSupertest from './helpers/supertest';
 import festivalsData from './data/festivals';
 import getAccount from './helpers/getAccount';
 import propertiesData from './data/properties';
 import { initAnswer, initQuestion } from './helpers/transactions';
 import { initializeDatabase } from './helpers/database';
+import { put } from './helpers/requests';
 import { refreshNonce } from './helpers/nonce';
 
-async function put(path, body) {
-  const authRequest = await createSupertest();
-  const response = await authRequest.put(path).send(body);
-  return response.body.data;
-}
-
 describe('Vote', () => {
-  let adminContract;
   let anotherSender;
   let artworkData;
   let artworkQuestionContract;
@@ -48,9 +41,6 @@ describe('Vote', () => {
     booth = web3.eth.accounts.privateKeyToAccount(
       `0x${process.env.BOOTH_PRIV_KEY}`,
     );
-
-    // Set up admin contract
-    adminContract = getAdminContract(process.env.ADMIN_CONTRACT);
 
     // Add test data
     artworkData = await put('/api/artworks', artworksData.davinci);
@@ -105,20 +95,13 @@ describe('Vote', () => {
       await initAnswer(artworkQuestionContract, propertyAnswerData.chainId);
 
       // Create the actual vote of an user
-      const festivalQuestionId = festivalQuestionData.id;
-      const festivalAnswerIds = [festivalAnswerData.id];
-      const festivalVoteTokens = [1];
-      const artworkQuestionId = artworkQuestionData.id;
-      const artworkAnswerIds = [propertyAnswerData.id];
-      const artworkVoteTokens = [1];
-
       vote = buildVote(booth, sender, {
-        festivalQuestionId,
-        festivalAnswerIds,
-        festivalVoteTokens,
-        artworkQuestionId,
-        artworkAnswerIds,
-        artworkVoteTokens,
+        festivalQuestionId: festivalQuestionData.id,
+        festivalAnswerIds: [festivalAnswerData.id],
+        festivalVoteTokens: [1],
+        artworkQuestionId: artworkQuestionData.id,
+        artworkAnswerIds: [propertyAnswerData.id],
+        artworkVoteTokens: [1],
       });
     });
 

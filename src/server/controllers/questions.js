@@ -6,7 +6,7 @@ const answerFields = ['type', 'artworkId', 'propertyId'];
 
 const options = {
   model: Question,
-  fields: ['title', 'chainId', 'answers'],
+  fields: ['title', 'slug', 'chainId', 'answers'],
   fieldsProtected: [],
 };
 

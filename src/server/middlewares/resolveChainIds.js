@@ -70,6 +70,11 @@ export default async function resolveChainIdsMiddleware(req, res, next) {
     next();
   } catch (error) {
     logger.verbose(error);
-    next(new APIError(httpStatus.UNPROCESSABLE_ENTITY, error.message));
+
+    if (process.env === 'development') {
+      next(new APIError(httpStatus.UNPROCESSABLE_ENTITY, error.message));
+    } else {
+      next(new APIError(httpStatus.UNPROCESSABLE_ENTITY));
+    }
   }
 }
