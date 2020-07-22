@@ -115,6 +115,8 @@ export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
   allowNull: true,
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
+  as: 'festival',
+  // foreignKey: 'festivalId',
 });
 
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {

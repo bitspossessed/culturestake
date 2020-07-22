@@ -29,8 +29,8 @@ const table = {
 const AdminQuestions = () => {
   const history = useHistory();
 
-  const onSelect = ({ item: { slug } }) => {
-    history.push(`/admin/questions/${slug}/edit`);
+  const onSelect = ({ item: { id } }) => {
+    history.push(`/admin/questions/${id}/edit`);
   };
 
   return (

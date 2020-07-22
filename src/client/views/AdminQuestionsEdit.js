@@ -65,14 +65,21 @@ const AdminQuestionsEdit = () => {
 
   useEffect(() => {
     const getFestival = async () => {
-      const state = await await apiRequest({
-        path: ['festivals', id],
-      });
-      setFestival(state);
-      setIsFestivalLoading(false);
+      if (!isResourceLoading) {
+        const state = await await apiRequest({
+          path: ['festivals', resource.festivalId],
+        });
+        setFestival(state);
+        setIsFestivalLoading(false);
+      }
     };
     getFestival();
-  }, [id, setFestival, setIsFestivalLoading]);
+  }, [
+    isResourceLoading,
+    resource.festivalId,
+    setFestival,
+    setIsFestivalLoading,
+  ]);
 
   return (
     <Fragment>

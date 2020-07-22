@@ -1,6 +1,9 @@
 import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
-import { QuestionHasManyAnswers } from '~/server/database/associations';
+import {
+  QuestionHasManyAnswers,
+  QuestionBelongsToFestival,
+} from '~/server/database/associations';
 
 const options = {
   model: Question,
@@ -8,14 +11,28 @@ const options = {
   fieldsProtected: ['artworkId', 'festivalId'],
 };
 
+const answerFields = ['type', 'artworkId', 'propertyId'];
+const festivalfields = [
+  'chainId',
+  'description',
+  'sticker',
+  'subtitle',
+  'title',
+];
+
 const optionsRead = {
   ...options,
-  include: [QuestionHasManyAnswers],
+  include: [QuestionHasManyAnswers, QuestionBelongsToFestival],
   associations: [
     {
       association: QuestionHasManyAnswers,
-      fields: ['type'],
-      fieldsProtected: ['chainId', 'artworkId', 'propertyId'],
+      destroyCascade: true,
+      fields: [...answerFields],
+    },
+    {
+      association: QuestionBelongsToFestival,
+      destroyCascade: false,
+      fields: [...festivalfields],
     },
   ],
 };

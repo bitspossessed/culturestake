@@ -132,7 +132,7 @@ const Routes = () => (
     <AuthenticatedRoute
       component={AdminQuestionsEdit}
       exact
-      path="/admin/questions/:address/edit"
+      path="/admin/questions/:id/edit"
     />
     <UnauthenticatedRoute
       component={AdminLogin}

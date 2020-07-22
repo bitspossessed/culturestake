@@ -27,16 +27,24 @@ export function filterResponseFields(req, data, options) {
         const { as } = association;
 
         if (as in data) {
-          const newData = data[as].reduce((acc, item) => {
-            acc.push(
-              filterResponseFields(req, item, {
-                fields,
-                fieldsProtected,
-              }),
-            );
+          let newData;
+          if (data[as] instanceof Array) {
+            newData = data[as].reduce((acc, item) => {
+              acc.push(
+                filterResponseFields(req, item, {
+                  fields,
+                  fieldsProtected,
+                }),
+              );
 
-            return acc;
-          }, []);
+              return acc;
+            }, []);
+          } else {
+            newData = filterResponseFields(req, data[as], {
+              fields,
+              fieldsProtected,
+            });
+          }
 
           data.set(as, newData, {
             raw: true,
