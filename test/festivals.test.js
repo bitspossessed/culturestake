@@ -36,13 +36,13 @@ describe('Festivals', () => {
         .send({
           artworks: [artworkData],
           description: festivalData.description,
-          documents: festivalData.documents,
-          images: festivalData.images,
+          documents: [],
+          images: [],
           sticker: festivalData.sticker,
           title: festivalData.title,
           subtitle: festivalData.subtitle,
         })
-        .expect(httpStatus.BAD_REQUEST, {});
+        .expect(httpStatus.OK);
     });
   });
 
