@@ -46,28 +46,10 @@ const Vote = db.define('vote', {
     },
   },
   festivalAnswerChainIds: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('festivalAnswerChainIds'));
-    },
-    set: function (festivalAnswerChainIds) {
-      return this.setDataValue(
-        'festivalAnswerChainIds',
-        JSON.stringify(festivalAnswerChainIds),
-      );
-    },
+    type: DataTypes.JSONB,
   },
   festivalVoteTokens: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('festivalVoteTokens'));
-    },
-    set: function (festivalVoteTokens) {
-      return this.setDataValue(
-        'festivalVoteTokens',
-        JSON.stringify(festivalVoteTokens),
-      );
-    },
+    type: DataTypes.JSONB,
   },
   artworkQuestionChainId: {
     type: DataTypes.STRING,
@@ -76,28 +58,10 @@ const Vote = db.define('vote', {
     },
   },
   artworkAnswerChainIds: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('artworkAnswerChainIds'));
-    },
-    set: function (artworkAnswerChainIds) {
-      return this.setDataValue(
-        'artworkAnswerChainIds',
-        JSON.stringify(artworkAnswerChainIds),
-      );
-    },
+    type: DataTypes.JSONB,
   },
   artworkVoteTokens: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('artworkVoteTokens'));
-    },
-    set: function (artworkVoteTokens) {
-      return this.setDataValue(
-        'artworkVoteTokens',
-        JSON.stringify(artworkVoteTokens),
-      );
-    },
+    type: DataTypes.JSONB,
   },
 });
 
