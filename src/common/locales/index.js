@@ -139,7 +139,7 @@ const views = {
   AdminQuestionsNew: {
     title: 'Create new question',
     fieldFestival: 'Festival',
-    fieldPlaceholder: 'Choose a fesitval',
+    fieldPlaceholder: 'Choose a festival',
     notificationSuccess: 'You created the question {title}.',
   },
   Homepage: {
