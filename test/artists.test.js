@@ -23,7 +23,7 @@ describe('Answers', () => {
   });
 
   describe('PUT /api/artists', () => {
-    it('should succeeed creating an artist', async () => {
+    it('should succeed creating an artist', async () => {
       await authRequest
         .put('/api/artists')
         .send(artistsData.me)

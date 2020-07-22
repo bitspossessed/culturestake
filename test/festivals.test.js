@@ -1,56 +1,64 @@
 import httpStatus from 'http-status';
 import request from 'supertest';
 
+import artworksData from './data/artworks';
 import createSupertest from './helpers/supertest';
 import festivalsData from './data/festivals';
-import artworksData from './data/artworks';
 import { initializeDatabase } from './helpers/database';
+import { put } from './helpers/requests';
 
 import app from '~/server';
 
 describe('Festivals', () => {
+  let artworkData;
   let authRequest;
 
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
-    await authRequest.put('/api/artworks').send(artworksData.davinci);
-  });
 
-  afterAll(async () => {
-    await authRequest.del('/api/artworks/mona-lisa');
-    await authRequest.del('/api/festivals/a-festival');
+    // Create test data
+    artworkData = await put('/api/artworks', artworksData.davinci);
   });
 
   describe('PUT /api/festivals', () => {
-    it('should succeeed creating an festival', async () => {
+    it('should succeed creating a festival', async () => {
       await authRequest
         .put('/api/festivals')
-        .send(festivalsData['1'])
+        .send(festivalsData.barbeque)
         .expect(httpStatus.CREATED);
     });
 
     it('should be able to link a festival to artwork', async () => {
-      const artwork = await request(app).get('/api/artworks/mona-lisa');
+      const festivalData = await put('/api/festivals', festivalsData.barbeque);
       await authRequest
-        .post('/api/festivals/a-festival')
+        .post(`/api/festivals/${festivalData.slug}`)
         .send({
-          ...festivalsData['1'],
-          artworks: [artwork.body.data],
+          artworks: [artworkData],
+          description: festivalData.description,
+          documents: festivalData.documents,
+          images: festivalData.images,
+          sticker: festivalData.sticker,
+          title: festivalData.title,
+          subtitle: festivalData.subtitle,
         })
-        .expect(httpStatus.NO_CONTENT);
+        .expect(httpStatus.BAD_REQUEST, {});
     });
   });
 
   describe('GET /api/a-festival', () => {
     it('should return artist with artworks', async () => {
+      const festivalData = await put('/api/festivals', {
+        ...festivalsData.barbeque,
+        artworks: [artworkData],
+      });
       await request(app)
-        .get('/api/festivals/a-festival')
+        .get(`/api/festivals/${festivalData.slug}`)
         .expect(httpStatus.OK)
         .expect((response) => {
           const { title, artworks } = response.body.data;
-          expect(title).toBe(festivalsData['1'].title);
-          expect(artworks[0].title).toBe(artworksData.davinci.title);
+          expect(title).toBe(festivalData.title);
+          expect(artworks[0].title).toBe(artworkData.title);
         });
     });
   });

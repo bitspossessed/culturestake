@@ -27,7 +27,7 @@ describe('Users', () => {
         .expect(httpStatus.BAD_REQUEST);
     });
 
-    it('should succeeed creating a new user', async () => {
+    it('should succeed creating a new user', async () => {
       await authRequest
         .put('/api/users')
         .send(users.lisa)

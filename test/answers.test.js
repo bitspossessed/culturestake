@@ -1,74 +1,101 @@
 import httpStatus from 'http-status';
 import request from 'supertest';
 
-import createSupertest from './helpers/supertest';
 import artworksData from './data/artworks';
-import answersData from './data/answers';
+import createSupertest from './helpers/supertest';
 import festivalsData from './data/festivals';
-import questionsData from './data/questions';
 import properties from './data/properties';
 import { initializeDatabase } from './helpers/database';
+import { put } from './helpers/requests';
 
 import app from '~/server';
 
 describe('Answers', () => {
+  let artworkData;
   let authRequest;
+  let festivalData;
+  let propertyData;
+  let questionData1;
+  let questionData2;
 
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
-    await authRequest.put('/api/artworks').send(artworksData.davinci);
-    await authRequest.put('/api/properties').send(properties.aProperty);
-    await authRequest.put('/api/festivals').send(festivalsData['1']);
-    await authRequest.put('/api/questions').send(questionsData['1']);
-    await authRequest.put('/api/questions').send(questionsData['2']);
-  });
 
-  afterAll(async () => {
-    await authRequest.del('/api/artworks/mona-lisa');
-    await authRequest.del('/api/properties/is-blue');
-    await authRequest.del('/api/questions/1');
-    await authRequest.del('/api/questions/2');
+    // Create test data
+    festivalData = await put('/api/festivals', festivalsData.barbeque);
+
+    artworkData = await put('/api/artworks', artworksData.davinci);
+    propertyData = await put('/api/properties', properties.aProperty);
+
+    questionData1 = await put('/api/questions', {
+      title: 'Why is this necessary?',
+      festivalId: festivalData.id,
+    });
+
+    questionData2 = await put('/api/questions', {
+      title: 'How many?',
+      artworkId: artworkData.id,
+      festivalId: festivalData.id,
+    });
   });
 
   describe('PUT /api/artworks', () => {
-    it('should succeeed creating a new answer for an artwork', async () => {
+    it('should succeed creating a new answer for an artwork', async () => {
       await authRequest
         .put('/api/answers')
-        .send(answersData.artworkAnswer1)
+        .send({
+          type: 'artwork',
+          artworkId: artworkData.id,
+          questionId: questionData1.id,
+        })
         .expect(httpStatus.CREATED);
     });
 
-    it('should succeeed creating a new answer for a property', async () => {
+    it('should succeed creating a new answer for a property', async () => {
       await authRequest
         .put('/api/answers')
-        .send(answersData.propertyAnswer)
+        .send({
+          type: 'property',
+          propertyId: propertyData.id,
+          questionId: questionData2.id,
+        })
         .expect(httpStatus.CREATED);
     });
   });
 
   describe('GET /api/artworks', () => {
+    let answerData;
+
+    beforeAll(async () => {
+      answerData = await put('/api/answers', {
+        type: 'property',
+        propertyId: propertyData.id,
+        questionId: questionData2.id,
+      });
+    });
+
     it('should return chainId when request is authenticated', async () => {
       await authRequest
-        .get('/api/answers/1')
+        .get(`/api/answers/${answerData.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
           const answer = response.body.data;
           expect(answer.chainId).toBeDefined();
-          expect(answer.type).toBe(answersData.artworkAnswer1.type);
-          expect(answer.artworkId).toBe(answersData.artworkAnswer1.artworkId);
+          expect(answer.type).toBe(answerData.type);
+          expect(answer.artworkId).toBe(answerData.artworkId);
         });
     });
 
     it('should not return chainId when request is unauthenticated', async () => {
       await request(app)
-        .get('/api/answers/1')
+        .get(`/api/answers/${answerData.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
           const answer = response.body.data;
           expect(answer.chainId).toBeUndefined();
-          expect(answer.type).toBe(answersData.artworkAnswer1.type);
-          expect(answer.artworkId).toBe(answersData.artworkAnswer1.artworkId);
+          expect(answer.type).toBe(answerData.type);
+          expect(answer.artworkId).toBe(answerData.artworkId);
         });
     });
   });

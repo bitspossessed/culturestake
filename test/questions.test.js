@@ -1,62 +1,69 @@
 import httpStatus from 'http-status';
 import request from 'supertest';
 
-import createSupertest from './helpers/supertest';
 import artworks from './data/artworks';
+import createSupertest from './helpers/supertest';
 import festivals from './data/festivals';
-import questions from './data/questions';
-import answersData from './data/answers';
 import { initializeDatabase } from './helpers/database';
+import { put } from './helpers/requests';
 
 import app from '~/server';
 
-describe('Answers', () => {
+describe('Questions', () => {
   let authRequest;
+  let festivalData;
+  let artworkData;
 
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
-    await authRequest.put('/api/festivals').send(festivals['1']);
-    await authRequest.put('/api/artworks').send(artworks.davinci);
-  });
 
-  afterAll(async () => {
-    await authRequest.del('/api/artworks/mona-lisa');
-    await authRequest.del('/api/festivals/a-festival');
-    await authRequest.del('/api/answers/1');
-    await authRequest.del('/api/questions/1');
-    await authRequest.del('/api/questions/2');
+    // Create test data
+    festivalData = await put('/api/festivals', festivals.barbeque);
+    artworkData = await put('/api/artworks', artworks.davinci);
   });
 
   describe('PUT /api/questions', () => {
-    it('should succeeed creating a question', async () => {
+    it('should succeed creating a question', async () => {
       await authRequest
         .put('/api/questions')
-        .send(questions['1'])
+        .send({
+          title: 'What was your favorite artwork of this festival?',
+          festivalId: festivalData.id,
+        })
         .expect(httpStatus.CREATED);
     });
   });
 
   describe('GET /api/questions', () => {
+    let questionData;
+    let answerData;
+
     beforeAll(async () => {
-      await authRequest.put('/api/answers').send(answersData.artworkAnswer1);
+      questionData = await put('/api/questions', {
+        title: 'What is your favorite color?',
+        festivalId: festivalData.id,
+      });
+
+      answerData = await put('/api/answers', {
+        type: 'artwork',
+        artworkId: artworkData.id,
+        questionId: questionData.id,
+      });
     });
 
     it('should return the question and answer', async () => {
-      const answer = await request(app).get('/api/answers/1');
       await request(app)
-        .get('/api/questions/1')
+        .get(`/api/questions/${questionData.slug}`)
         .expect(httpStatus.OK)
         .expect((response) => {
-          const { title, answers } = response.body.data;
-          expect(title).toBe(questions['1'].title);
-          expect(answers).toMatchObject([answer.body.data]);
+          const { chainId, title, answers } = response.body.data;
+          expect(title).toBe(questionData.title);
+          expect(chainId).toBeUndefined();
+          expect(answers.length).toBe(1);
+          expect(answers[0].id).toBe(answerData.id);
+          expect(answers[0].chainId).toBeUndefined();
         });
-    });
-
-    it('can get question that has no answers', async () => {
-      await authRequest.put('/api/questions').send(questions['2']);
-      await request(app).get('/api/questions/2').expect(httpStatus.OK);
     });
   });
 });

@@ -20,7 +20,7 @@ const answerAssociation = {
 
 const options = {
   model: Question,
-  fields: ['answers', 'title'],
+  fields: ['answers', 'chainId', 'title'],
   fieldsProtected: ['artworkId', 'festivalId'],
   include: [QuestionHasManyAnswers],
   associations: [answerAssociation],
