@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { MAX_VOTE_TOKENS } from '~/common/utils/constants';
 import translate from '~/common/services/i18n';
-import Finder from '~/client/components/Finder';
 import ButtonOutline from '~/client/components/ButtonOutline';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
@@ -18,14 +17,12 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 
-const ContractsQuestions = ({ questionAddress }) => {
+const ContractsQuestions = ({ questionAddress, festivalChainId }) => {
   const dispatch = useDispatch();
-
-  const [festival, setFestival] = useState({});
 
   const { isPending } = usePendingTransaction({
     txMethod: TX_INITIALIZE_QUESTION,
-    params: { festivalChainId: festival.chainId },
+    params: { festivalChainId },
   });
 
   const owner = useOwnerAddress();
@@ -42,28 +39,20 @@ const ContractsQuestions = ({ questionAddress }) => {
     getInitializedStatus();
   }, [questionAddress, isPending]);
 
-  const onInputChange = (value) => {
-    setFestival(value);
-  };
-
-  const onSelect = (value) => {
-    setFestival(value);
-  };
-
   const onClick = async (event) => {
     event.preventDefault();
 
     const { txHash, txMethod } = await initializeQuestion(
       owner,
       MAX_VOTE_TOKENS,
-      festival.chainId,
+      festivalChainId,
     );
 
     dispatch(
       addPendingTransaction({
         txHash,
         txMethod,
-        params: { festivalChainId: festival.chainId },
+        params: { festivalChainId },
       }),
     );
   };
@@ -72,14 +61,6 @@ const ContractsQuestions = ({ questionAddress }) => {
     <EthereumContainer>
       {!isInitialized ? (
         <div>
-          <Finder
-            label={translate('ContractsQuestions.fieldFestival')}
-            name="festival"
-            placeholder={translate('ContractsQuestions.fieldPlaceholder')}
-            queryPath={'festivals'}
-            onInputChange={onInputChange}
-            onSelect={onSelect}
-          />
           <ButtonOutline onClick={onClick}>
             {translate('ContractsQuestions.buttonInitializeQuestion')}
           </ButtonOutline>
@@ -92,6 +73,7 @@ const ContractsQuestions = ({ questionAddress }) => {
 };
 
 ContractsQuestions.propTypes = {
+  festivalChainId: PropTypes.string.isRequired,
   questionAddress: PropTypes.string.isRequired,
 };
 

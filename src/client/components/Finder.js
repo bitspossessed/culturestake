@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { useFormContext } from 'react-form';
+import { useField } from 'react-form';
 
 import apiRequest from '~/client/services/api';
 import Spinner from '~/client/components/Spinner';
@@ -16,22 +16,21 @@ const Finder = (props) => {
   const [searchResults, setSearchResults] = useState([]);
   const [query, setQuery] = useState('');
   const [selectedTitle, setSelectedTitle] = useState('');
-  const { meta } = useFormContext();
+  const { meta, setValue } = useField(props.name);
 
   const onInputChange = (event) => {
     event.preventDefault();
     setSelectedTitle(event.target.value);
-    props.onInputChange(event.target.value);
     setQuery(event.target.value);
   };
 
   const onSelect = (item) => {
     setSelectedTitle(item.title);
+    setValue(item.id);
     setSearchResults([]);
-    props.onSelect(item);
   };
 
-  const debouncedSearch = useCallback(
+  const search = useCallback(
     async (query) => {
       setIsLoading(true);
       const response = await apiRequest({
@@ -62,8 +61,8 @@ const Finder = (props) => {
     }
 
     setIsLoading(true);
-    debouncedSearch(query);
-  }, [query, debouncedSearch]);
+    search(query);
+  }, [query, search]);
 
   return (
     <Fragment>
@@ -121,8 +120,6 @@ const FinderItem = (props) => {
 Finder.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  onInputChange: PropTypes.func.isRequired,
-  onSelect: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.string.isRequired,
 };

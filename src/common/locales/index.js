@@ -14,9 +14,6 @@ const components = {
     notificationAlreadyDeactivated: 'This festival is deactivated',
   },
   ContractsQuestions: {
-    fieldFestival: 'Festival Name:',
-    fieldTitle: 'Question text:',
-    fieldPlaceholder: 'Choose a festival',
     buttonInitializeQuestion: 'Initialize Question',
   },
   EthereumContainer: {
@@ -50,6 +47,9 @@ const components = {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
+  },
+  FormQuestions: {
+    fieldTitle: 'Question text:',
   },
   Loading: {
     bodyLoading: 'Loading ...',
@@ -138,6 +138,8 @@ const views = {
   },
   AdminQuestionsNew: {
     title: 'Create new question',
+    fieldFestival: 'Festival',
+    fieldPlaceholder: 'Choose a fesitval',
     notificationSuccess: 'You created the question {title}.',
   },
   Homepage: {
