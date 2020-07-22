@@ -21,8 +21,6 @@ const AdminQuestionsEdit = () => {
   const returnUrl = '/admin/questions';
   const { id } = useParams();
   const dispatch = useDispatch();
-  const [isFestivalLoading, setIsFestivalLoading] = useState(true);
-  const [festival, setFestival] = useState({});
 
   const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
     fields: ['chainId', 'festivalId', 'title'],
@@ -63,24 +61,6 @@ const AdminQuestionsEdit = () => {
     },
   });
 
-  useEffect(() => {
-    const getFestival = async () => {
-      if (!isResourceLoading) {
-        const state = await await apiRequest({
-          path: ['festivals', resource.festivalId],
-        });
-        setFestival(state);
-        setIsFestivalLoading(false);
-      }
-    };
-    getFestival();
-  }, [
-    isResourceLoading,
-    resource.festivalId,
-    setFestival,
-    setIsFestivalLoading,
-  ]);
-
   return (
     <Fragment>
       <HeaderAdmin>{translate('AdminQuestionsNew.title')}</HeaderAdmin>
@@ -93,15 +73,12 @@ const AdminQuestionsEdit = () => {
             <ButtonDelete />
           </DangerZone>
 
-          {!isResourceLoading &&
-            resource.chainId &&
-            !isFestivalLoading &&
-            festival.chainId && (
-              <ContractsQuestions
-                festivalChainId={festival.chainId}
-                questionChainId={resource.chainId}
-              />
-            )}
+          {!isResourceLoading && resource.chainId && (
+            <ContractsQuestions
+              festivalChainId={resource.festival.chainId}
+              questionChainId={resource.chainId}
+            />
+          )}
 
           <ButtonSubmit />
         </Form>
