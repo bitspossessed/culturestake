@@ -1,44 +1,35 @@
-import { GraphQLClient } from 'graphql-request';
+import { request } from 'graphql-request';
 
-const endpoint = `${process.env.GRAPH_NODE_ENDPOINT}subgraphs/name/${process.env.SUBGRAPH_NAME}`;
-
-export const graphQLClient = new GraphQLClient(endpoint, { headers: {} });
+const endpoint = `${process.env.GRAPH_NODE_ENDPOINT}/subgraphs/name/${process.env.SUBGRAPH_NAME}`;
 
 export default async function requestGraph(query, variables) {
-  return graphQLClient.request(query, variables);
+  return await request(endpoint, query, variables);
 }
 
-export const answers = () => `{
+export const answersQuery = () => `{
   answers {
     id
     voteTokens
     votePower
     votes
-    active
     question { id }
   }
 }`;
 
-export const answersByQuestion = (questionAddress) => `{
-  answers
-  (
-    where: {
-      question: "${questionAddress.toLowerCase()}"
-    },
-    orderBy: votePower,
-    orderDirection: desc
-  ) {
+export const questionQuery = ({ id }) => `{
+  question (id: "${id}") {
     id
-    voteTokens
-    votePower
-    votes
-    active
-    question { id }
+    answers {
+      id
+      voteTokens
+      votePower
+      votes
+    }
   }
 }`;
 
-export const admins = () => `{
-  admins() {
+export const adminsQuery = () => `{
+  admins {
     id
   }
 }`;
