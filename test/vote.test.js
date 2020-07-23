@@ -231,24 +231,6 @@ describe('Vote', () => {
         });
     });
 
-    // @TODO: Implement this test
-    // it('should fail when invalid question', async () => {
-    //   const question = web3.eth.accounts.create().address;
-    //   await request(app)
-    //     .post('/api/votes')
-    //     .send(vote)
-    //     .expect(httpStatus.UNPROCESSABLE_ENTITY);
-    // });
-
-    // @TODO: Implement this test
-    // it('should fail when invalid festival', async () => {
-    //   const festival = web3.utils.sha3('not a valid festival');
-    //   await request(app)
-    //     .post('/api/votes')
-    //     .send(vote)
-    //     .expect(httpStatus.UNPROCESSABLE_ENTITY);
-    // });
-
     it('should fail when sending too many votes', async () => {
       const voteTokens = [101];
 
