@@ -23,18 +23,36 @@ describe('Vote results', () => {
   let festivalQuestionData;
   let artworkQuestionData;
   let authRequest;
+  let artistDataRevealed;
+  let artistDataUnrevealed;
 
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
 
     // Add test data
+    artistDataRevealed = await put('/api/artists', {
+      name: 'MC Bubu',
+      bio: '"The best in town", extroverted',
+      consentToDataReveal: true,
+      images: [],
+      artworks: [],
+    });
+
+    artistDataUnrevealed = await put('/api/artists', {
+      name: 'PJ Lala II',
+      bio: 'Favorite color is blue, introverted',
+      consentToDataReveal: false,
+      images: [],
+      artworks: [],
+    });
+
     const artworkIds = await Promise.all(
       [
-        artworksData.davinci,
-        artworksData.rothko,
-        artworksData.goya,
-        artworksData.bourgeois,
+        { ...artworksData.davinci, artistId: artistDataRevealed.id },
+        { ...artworksData.rothko, artistId: artistDataRevealed.id },
+        { ...artworksData.goya, artistId: artistDataRevealed.id },
+        { ...artworksData.bourgeois, artistId: artistDataUnrevealed.id },
       ].map(async (artwork) => {
         const data = await put('/api/artworks', artwork);
         return data.id;
