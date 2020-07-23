@@ -38,7 +38,7 @@ const ContractsQuestionsInitialize = ({ questionChainId, festivalChainId }) => {
       addPendingTransaction({
         txHash,
         txMethod,
-        params: { festivalChainId },
+        params: { questionChainId },
       }),
     );
   };
@@ -46,7 +46,7 @@ const ContractsQuestionsInitialize = ({ questionChainId, festivalChainId }) => {
   return (
     <div>
       <ButtonOutline onClick={onClick}>
-        {translate('ContractsFestivals.buttonInitializeFestival')}
+        {translate('ContractsQuestions.buttonInitializeQuestion')}
       </ButtonOutline>
     </div>
   );
@@ -76,7 +76,7 @@ const ContractsQuestionsDeactivate = ({ questionChainId }) => {
   return (
     <div>
       <ButtonOutline isDangerous={true} onClick={onClick}>
-        {translate('ContractsQuestions.buttonDeactivateFestival')}
+        {translate('ContractsQuestions.buttonDeactivateQuestion')}
       </ButtonOutline>
     </div>
   );
@@ -116,7 +116,7 @@ const ContractsQuestions = ({ questionChainId, festivalChainId }) => {
   return (
     <EthereumContainer>
       {isDeactivated ? (
-        translate('ContractsFestivals.notificationAlreadyDeactivated')
+        translate('ContractsQuestions.notificationAlreadyDeactivated')
       ) : !isInitialized ? (
         <ContractsQuestionsInitialize
           festivalChainId={festivalChainId}

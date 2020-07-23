@@ -15,6 +15,8 @@ const components = {
   },
   ContractsQuestions: {
     buttonInitializeQuestion: 'Initialize Question',
+    buttonDeactivateQuestion: 'Deactivate Question',
+    notificationAlreadyDeactivated: 'This question is deactivated',
   },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
@@ -141,6 +143,12 @@ const views = {
     fieldFestival: 'Festival',
     fieldPlaceholder: 'Choose a festival',
     notificationSuccess: 'You created the question {title}.',
+  },
+  AdminQuestionsEdit: {
+    errorNotFound: 'This question does not exist.',
+    notificationDestroySuccess: 'You deleted the question {title}.',
+    notificationSuccess: 'You updated the question {title}.',
+    title: 'Edit question',
   },
   Homepage: {
     bodyIntroduction:

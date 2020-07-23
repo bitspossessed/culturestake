@@ -28,14 +28,14 @@ const AdminQuestionsEdit = () => {
     onNotFound: () => {
       dispatch(
         notify({
-          text: translate('AdminFestivalsEdit.errorNotFound'),
+          text: translate('AdminQuestionsEdit.errorNotFound'),
         }),
       );
     },
     onDeleteSuccess: ({ title }) => {
       dispatch(
         notify({
-          text: translate('AdminFestivalsEdit.notificationDestroySuccess', {
+          text: translate('AdminQuestionsEdit.notificationDestroySuccess', {
             title,
           }),
         }),
@@ -44,7 +44,7 @@ const AdminQuestionsEdit = () => {
     onUpdateSuccess: ({ title }) => {
       dispatch(
         notify({
-          text: translate('AdminFestivalsEdit.notificationSuccess', {
+          text: translate('AdminQuestionsEdit.notificationSuccess', {
             title,
           }),
         }),
@@ -62,7 +62,7 @@ const AdminQuestionsEdit = () => {
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminQuestionsNew.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('AdminQuestionsEdit.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>
