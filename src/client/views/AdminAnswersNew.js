@@ -1,8 +1,7 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import Joi from '@hapi/joi';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 import FooterAdmin from '~/client/components/FooterAdmin';
@@ -14,21 +13,14 @@ import { useNewForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
-import {
-  InputSelectFieldInnerStyle,
-  InputSelectFieldStyle,
-} from '~/client/components/InputSelectField';
+import InputSelectAnswerTypeField from '~/client/components/InputSelectAnswerTypeField';
 
 const AdminAnswersNew = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [type, setType] = useState('artwork');
+  // const [type, setType] = useState('artwork');
 
-  const schema = {
-    type: Joi.string().valid('artwork'),
-  };
-
-  const possibleTypes = ['artwork', 'property'];
+  // const possibleTypes = ['artwork', 'property'];
 
   const returnUrl = `/admin/questions/${id}`;
 
@@ -55,33 +47,13 @@ const AdminAnswersNew = () => {
     },
   });
 
-  const onChange = (event) => {
-    event.preventDefault();
-    console.log(event.target.value)
-    setType(event.target.name, event.target.value);
-  };
-
   return (
     <Fragment>
       <HeaderAdmin>{translate('AdminQuestionsNew.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>
-          <InputSelectFieldStyle name="type" validate={schema.type}>
-            <InputSelectFieldInnerStyle
-              name="type"
-              value={type}
-              onChange={onChange}
-            >
-              {possibleTypes.map((value) => {
-                return (
-                  <option key={value} value={value}>
-                    {value}
-                  </option>
-                );
-              })}
-            </InputSelectFieldInnerStyle>
-          </InputSelectFieldStyle>
+          <InputSelectAnswerTypeField label={"type"} name={"type"} />
 
           <Finder
             label={translate('AdminQuestionsNew.fieldFestival')}
