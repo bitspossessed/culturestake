@@ -116,13 +116,13 @@ const Routes = () => (
       exact
       path="/admin/festivals/:slug/edit"
     />
+    <AuthenticatedRoute
+      component={Booth}
+      path="/booth"
+    />
     <UnauthenticatedRoute
       component={AdminLogin}
       path="/login"
-    />
-    <PublicRoute
-      component={Booth}
-      path="/booth"
     />
     <PublicRoute
       component={Vote}

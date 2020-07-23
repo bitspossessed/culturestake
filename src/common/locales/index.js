@@ -1,4 +1,12 @@
 const components = {
+  BoothContainer: {
+    bodyBoothIsDeactivated: 'Booth was deactivated and is not valid anymore',
+    bodyPendingInitialization: 'Waiting for initialization by admin ...',
+    bodyYourAddress: 'Address:',
+    buttonInitializeBooth: 'Create booth account',
+    buttonBurnBooth: 'Remove booth account',
+    title: 'Voting booth setup',
+  },
   DangerZone: {
     title: 'Danger Zone',
   },
