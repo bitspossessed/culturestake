@@ -206,6 +206,8 @@ function readAll(options) {
       orderKey = DEFAULT_ORDER_KEY,
     } = req.query;
 
+    const where = options.isSearchable ? req.locals.query : {};
+
     try {
       const response = await options.model.findAndCountAll({
         limit,
@@ -213,6 +215,7 @@ function readAll(options) {
         order: [[orderKey, orderDirection.toUpperCase()]],
         include: options.include,
         distinct: true,
+        where,
       });
 
       respondWithSuccess(res, {

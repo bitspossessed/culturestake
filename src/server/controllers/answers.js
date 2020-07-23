@@ -3,7 +3,7 @@ import baseController from '~/server/controllers';
 
 const options = {
   model: Answer,
-  fields: ['type', 'artworkId', 'propertyId'],
+  fields: ['type', 'artworkId', 'propertyId', 'questionId'],
   fieldsProtected: ['chainId'],
 };
 

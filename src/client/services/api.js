@@ -18,6 +18,7 @@ export default async function apiRequest({
   const response = await request({
     body,
     endpoint: process.env.API_ENDPOINT,
+    // isTrailingSlash: false,
     headers,
     method,
     path,

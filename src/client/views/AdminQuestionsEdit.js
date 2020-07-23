@@ -68,6 +68,10 @@ const AdminQuestionsEdit = () => {
         <Form>
           <FormQuestions />
 
+          <ButtonIcon to={`/admin/questions/${id}/answers/new`}>
+            {translate('AdminQuestionsEdit.buttonNewAnswer')}
+          </ButtonIcon>
+
           <DangerZone>
             <ButtonDelete />
           </DangerZone>

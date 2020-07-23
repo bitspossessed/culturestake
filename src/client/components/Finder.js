@@ -15,17 +15,17 @@ const Finder = (props) => {
   const [isQueryEmpty, setIsQueryEmpty] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
   const [query, setQuery] = useState('');
-  const [selectedTitle, setSelectedTitle] = useState('');
+  const [selectedSearchParam, setSelectedSearchParam] = useState('');
   const { meta, setValue } = useField(props.name);
 
   const onInputChange = (event) => {
     event.preventDefault();
-    setSelectedTitle(event.target.value);
+    setSelectedSearchParam(event.target.value);
     setQuery(event.target.value);
   };
 
   const onSelect = (item) => {
-    setSelectedTitle(item.title);
+    setSelectedSearchParam(item[props.searchParam]);
     setValue(item.id);
     setSearchResults([]);
   };
@@ -33,23 +33,25 @@ const Finder = (props) => {
   const search = useCallback(
     async (query) => {
       setIsLoading(true);
+      const body = { ...props.defaultQuery };
+      body[props.searchParam] = `${query}`;
       const response = await apiRequest({
         path: [`${props.queryPath}`],
-        body: { title: `${query}` },
+        body,
       });
 
       const result = response.results
         .sort((itemA, itemB) => {
-          return itemA.title
+          return itemA[props.searchParam]
             .toLowerCase()
-            .localeCompare(itemB.title.toLowerCase());
+            .localeCompare(itemB[props.searchParam].toLowerCase());
         })
         .slice(0, MAX_SEARCH_RESULTS);
 
       setSearchResults(result);
       setIsLoading(false);
     },
-    [props.queryPath],
+    [props.queryPath, props.searchParam, props.defaultQuery],
   );
 
   useEffect(() => {
@@ -72,7 +74,7 @@ const Finder = (props) => {
           name={props.name}
           placeholder={props.placeholder}
           type="text"
-          value={selectedTitle}
+          value={selectedSearchParam}
           onChange={onInputChange}
         />
       </InputFieldset>
@@ -83,6 +85,7 @@ const Finder = (props) => {
             isLoading={isLoading}
             isQueryEmpty={isQueryEmpty}
             items={searchResults}
+            searchParam={props.searchParam}
             onClick={onSelect}
           />
         </ListStyle>
@@ -105,7 +108,14 @@ const FinderResult = (props) => {
   }
 
   return props.items.map((item, index) => {
-    return <FinderItem key={index} selected={item} onClick={onClick} />;
+    return (
+      <FinderItem
+        key={index}
+        searchParam={props.searchParam}
+        selected={item}
+        onClick={onClick}
+      />
+    );
   });
 };
 
@@ -114,22 +124,28 @@ const FinderItem = (props) => {
     props.onClick(props.selected);
   };
 
-  return <ItemStyle onClick={onClick}>{props.selected.title}</ItemStyle>;
+  return (
+    <ItemStyle onClick={onClick}>{props.selected[props.searchParam]}</ItemStyle>
+  );
 };
 
 Finder.propTypes = {
+  defaultQuery: PropTypes.object,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.string.isRequired,
+  searchParam: PropTypes.string.isRequired,
 };
 
 FinderResult.propTypes = {
   onClick: PropTypes.func.isRequired,
+  searchParam: PropTypes.string.isRequired,
 };
 
 FinderItem.propTypes = {
   onClick: PropTypes.func.isRequired,
+  searchParam: PropTypes.string.isRequired,
   selected: PropTypes.object.isRequired,
 };
 

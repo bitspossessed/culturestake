@@ -149,6 +149,7 @@ const views = {
     notificationDestroySuccess: 'You deleted the question {title}.',
     notificationSuccess: 'You updated the question {title}.',
     title: 'Edit question',
+    buttonNewAnswer: 'Add a new answer to this question',
   },
   Homepage: {
     bodyIntroduction:
