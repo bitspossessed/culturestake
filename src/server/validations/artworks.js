@@ -4,10 +4,10 @@ import { imagesValidation } from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
-  title: Joi.string().max(128).required(),
-  description: Joi.string().max(2000),
   artistId: Joi.number().integer().positive(),
+  description: Joi.string().max(2000).required(),
   images: imagesValidation.max(10),
+  title: Joi.string().max(128).required(),
 };
 
 export default {
