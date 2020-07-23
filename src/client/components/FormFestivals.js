@@ -17,8 +17,8 @@ const FormFestivals = () => {
   const schema = {
     artworks: Joi.array().required(),
     description: Joi.string().required(),
-    documents: documentsValidation.required().max(1),
-    images: imagesValidation.required().max(10),
+    documents: documentsValidation.max(1),
+    images: imagesValidation.max(10),
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
     sticker: stickerValidation.required(),

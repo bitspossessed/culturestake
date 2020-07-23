@@ -42,7 +42,7 @@ describe('Festivals', () => {
           title: festivalData.title,
           subtitle: festivalData.subtitle,
         })
-        .expect(httpStatus.OK);
+        .expect(httpStatus.NO_CONTENT);
     });
   });
 
