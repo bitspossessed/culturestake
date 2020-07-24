@@ -4,7 +4,7 @@ import ActionTypes from '~/client/store/booth/types';
 
 const initialState = {
   address: null,
-  festivalAddress: null,
+  festivalChainId: null,
   isDeactivated: false,
   isInitialized: false,
 };
@@ -17,7 +17,7 @@ const boothReducer = (state = initialState, action) => {
       });
     case ActionTypes.BOOTH_UPDATE_STATUS:
       return update(state, {
-        festivalAddress: { $set: action.meta.festivalAddress },
+        festivalChainId: { $set: action.meta.festivalChainId },
         isDeactivated: { $set: action.meta.isDeactivated },
         isInitialized: { $set: action.meta.isInitialized },
       });

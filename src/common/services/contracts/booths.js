@@ -12,13 +12,17 @@ export async function getVotingBooth(boothAddress) {
   return {
     isInitialized: booth[0],
     isDeactivated: booth[1],
-    festivalAddress: booth[2],
+    festivalChainId: booth[2],
   };
 }
 
-export async function initializeVotingBooth(sender, boothAddress) {
+export async function initializeVotingBooth(
+  sender,
+  festivalChainId,
+  boothAddress,
+) {
   const txHash = await adminContract.methods
-    .initVotingBooth(boothAddress)
+    .initVotingBooth(festivalChainId, boothAddress)
     .send({ from: sender });
   return { txHash, txMethod: TX_INITIALIZE_BOOTH };
 }

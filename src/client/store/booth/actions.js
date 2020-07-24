@@ -22,7 +22,7 @@ export function checkBoothStatus() {
     }
 
     const {
-      festivalAddress,
+      festivalChainId,
       isDeactivated,
       isInitialized,
     } = await getVotingBooth(booth.address);
@@ -34,7 +34,7 @@ export function checkBoothStatus() {
       dispatch({
         type: ActionTypes.BOOTH_UPDATE_STATUS,
         meta: {
-          festivalAddress,
+          festivalChainId,
           isDeactivated,
           isInitialized,
         },

@@ -22,7 +22,7 @@ const VoteSessionCreator = () => {
   const [isAdminVisible, setIsAdminVisible] = useState(false);
   const [isManual, setIsManual] = useState(false);
 
-  const [artworks, isLoading] = useResource(['booths', booth.festivalAddress], {
+  const [artworks, isLoading] = useResource(['booths', booth.festivalChainId], {
     isCollection: true,
   });
 
@@ -64,8 +64,8 @@ const VoteSessionCreator = () => {
             </ParagraphStyle>
 
             <ParagraphStyle>
-              {translate('VoteSessionCreator.bodyFestivalAddress')}{' '}
-              <Pill>{booth.festivalAddress}</Pill>
+              {translate('VoteSessionCreator.bodyFestivalChainId')}{' '}
+              <Pill>{booth.festivalChainId}</Pill>
             </ParagraphStyle>
 
             <ButtonOutline disabled={isManual} onClick={onManualOverride}>
