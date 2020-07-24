@@ -10,7 +10,7 @@ const table = {
     {
       isOrderKey: true,
       key: 'title',
-      label: translate('AdminAnswers.fieldTitle'),
+      label: translate('AnswersTable.fieldTitle'),
     },
   ],
   actions: [

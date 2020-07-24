@@ -1,4 +1,7 @@
 const components = {
+  AnswersTable: {
+    fieldTitle: 'Answer name',
+  },
   DangerZone: {
     title: 'Danger Zone',
   },
