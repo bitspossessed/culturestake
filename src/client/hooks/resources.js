@@ -4,7 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import apiRequest from '~/client/services/api';
 import { requestResource } from '~/client/store/resources/actions';
 
-export const useResource = (path, { onError, onSuccess }) => {
+export const useResource = (
+  path,
+  { onError, onSuccess, isCollection = false },
+) => {
   const dispatch = useDispatch();
 
   // Check the redux store for the current caching state
@@ -43,8 +46,8 @@ export const useResource = (path, { onError, onSuccess }) => {
       return currentData;
     }
 
-    return {};
-  }, [currentPathStr, pathStr, currentData, isSuccess]);
+    return isCollection ? [] : {};
+  }, [currentPathStr, pathStr, currentData, isSuccess, isCollection]);
 
   return [data, isLoading];
 };
