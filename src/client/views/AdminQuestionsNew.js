@@ -54,6 +54,7 @@ const AdminQuestionsNew = () => {
             name="festivalId"
             placeholder={translate('AdminQuestionsNew.fieldPlaceholder')}
             queryPath={'festivals'}
+            searchParam={'title'}
           />
           <ButtonSubmit />
         </Form>

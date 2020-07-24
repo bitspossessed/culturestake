@@ -33,6 +33,7 @@ const AnswersTable = () => {
       actions={table.actions}
       columns={table.columns}
       path={table.path}
+      searchParams={{ questionId }}
       onSelect={onSelect}
     />
   );

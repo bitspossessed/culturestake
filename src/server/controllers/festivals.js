@@ -47,16 +47,9 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  let where = {};
-  if (req.query.query) {
-    const query = JSON.parse(req.query.query);
-    Object.keys(query).map((key) => {
-      where[key] = { [Op.iLike]: `%${query.key}%` };
-    });
-  }
   baseController.readAll({
     ...options,
-    where,
+    isSearchable: true,
   })(req, res, next);
 }
 

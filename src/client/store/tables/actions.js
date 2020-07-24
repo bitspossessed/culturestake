@@ -14,16 +14,24 @@ export function requestTable({
   pageIndex = 0,
   orderDirection = DEFAULT_ORDER_DIRECTION,
   orderKey = DEFAULT_ORDER_KEY,
+  searchParams = null,
 }) {
+  let params = {
+    limit: pageSize,
+    offset: pageIndex * pageSize,
+    orderDirection,
+    orderKey,
+  };
+  if (searchParams) {
+    params = {
+      ...params,
+      query: searchParams,
+    };
+  }
   return getRequest(
     {
       path,
-      params: {
-        limit: pageSize,
-        offset: pageIndex * pageSize,
-        orderDirection,
-        orderKey,
-      },
+      params,
     },
     {
       request: {

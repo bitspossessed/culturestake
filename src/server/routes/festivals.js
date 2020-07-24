@@ -5,6 +5,7 @@ import authMiddleware from '~/server/middlewares/passport';
 import festivalsController from '~/server/controllers/festivals';
 import festivalsValidation from '~/server/validations/festivals';
 import resourcesMiddleware from '~/server/middlewares/resources';
+import isSearchableMiddleware from '~/server/middlewares/isSearchable';
 import validate from '~/server/services/validate';
 
 const router = express.Router();
@@ -23,6 +24,7 @@ router.put(
 router.get(
   '/',
   validate(festivalsValidation.readAll),
+  isSearchableMiddleware,
   festivalsController.readAll,
 );
 

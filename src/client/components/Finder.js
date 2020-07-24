@@ -33,8 +33,12 @@ const Finder = (props) => {
   const search = useCallback(
     async (query) => {
       setIsLoading(true);
-      const body = { ...props.defaultQuery };
-      body[props.searchParam] = `${query}`;
+      const queryObject = {};
+      queryObject[props.searchParam] = `${query}`;
+      const body = {
+        ...props.defaultQuery,
+        query: JSON.stringify(queryObject),
+      };
       const response = await apiRequest({
         path: [`${props.queryPath}`],
         body,

@@ -19,12 +19,12 @@ import AnswersTable from '~/client/components/AnswersTable';
 
 const AdminQuestionsEdit = () => {
   const returnUrl = '/admin/questions';
-  const { id } = useParams();
+  const { questionId } = useParams();
   const dispatch = useDispatch();
 
   const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
     fields: ['chainId', 'festivalId', 'title'],
-    resourcePath: ['questions', id],
+    resourcePath: ['questions', questionId],
     returnUrl,
     onNotFound: () => {
       dispatch(
@@ -71,7 +71,7 @@ const AdminQuestionsEdit = () => {
 
           <AnswersTable />
 
-          <ButtonIcon to={`/admin/questions/${id}/answers/new`}>
+          <ButtonIcon to={`/admin/questions/${questionId}/answers/new`}>
             {translate('AdminQuestionsEdit.buttonNewAnswer')}
           </ButtonIcon>
 

@@ -206,7 +206,12 @@ function readAll(options) {
       orderKey = DEFAULT_ORDER_KEY,
     } = req.query;
 
-    const where = options.isSearchable ? req.locals.query : {};
+    const where =
+      options.isSearchable && req.locals && req.locals.query
+        ? req.locals.query
+        : {};
+
+    console.log(where)
 
     try {
       const response = await options.model.findAndCountAll({
