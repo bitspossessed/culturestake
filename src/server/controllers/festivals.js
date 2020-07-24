@@ -21,9 +21,7 @@ const options = {
     {
       association: FestivalHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...imageFileFields,
-      ],
+      fields: [...imageFileFields],
     },
     {
       association: FestivalHasManyDocuments,
