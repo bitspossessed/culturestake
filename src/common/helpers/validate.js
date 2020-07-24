@@ -47,6 +47,8 @@ export const web3Validators = Joi.extend((joi) => {
     messages: {
       'web3.address': 'is invalid Ethereum address',
       'web3.addressChecksum': 'is invalid Ethereum address checksum',
+      'web3.sha3': 'is invalid SHA3 hash',
+      'web3.signature': 'is invalid Ethereum signature',
     },
     rules: {
       address: {
@@ -62,6 +64,28 @@ export const web3Validators = Joi.extend((joi) => {
         validate(value, helpers) {
           if (!value || !web3.utils.checkAddressChecksum(value)) {
             return helpers.error('web3.addressChecksum');
+          }
+
+          return value;
+        },
+      },
+      sha3: {
+        validate(value, helpers) {
+          if (!value || !web3.utils.isHexStrict(value) || value.length !== 66) {
+            return helpers.error('web3.sha3');
+          }
+
+          return value;
+        },
+      },
+      signature: {
+        validate(value, helpers) {
+          if (
+            !value ||
+            !web3.utils.isHexStrict(value) ||
+            value.length !== 132
+          ) {
+            return helpers.error('web3.signature');
           }
 
           return value;
