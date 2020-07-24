@@ -1,6 +1,7 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import React, { Fragment, useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import BoxRounded from '~/client/components/BoxRounded';
 import ButtonOutline from '~/client/components/ButtonOutline';
@@ -15,25 +16,60 @@ import { useResource } from '~/client/hooks/resources';
 const ADMIN_KEY = 77; // Key [M] (+ [SHIFT])
 
 const VoteSessionCreator = () => {
-  const dispatch = useDispatch();
   const booth = useSelector((state) => state.booth);
 
   const [festivalAnswerIds, setFestivalAnswerIds] = useState([]);
   const [isAdminVisible, setIsAdminVisible] = useState(false);
   const [isManual, setIsManual] = useState(false);
 
-  const [artworks, isLoading] = useResource(['booths', booth.festivalChainId], {
-    isCollection: true,
-  });
+  const [data, isLoading] = useResource(['booths', booth.festivalChainId]);
+
+  const artworks = useMemo(() => {
+    if (!isLoading) {
+      return [];
+    }
+
+    return data.questions.reduce((acc, question) => {
+      // Combine answerId with artwork
+      question.answers.forEach((answer) => {
+        if (answer.artwork) {
+          acc.push({
+            ...answer.artwork,
+            answerId: answer.id,
+          });
+        }
+      });
+
+      return acc;
+    }, []);
+  }, [isLoading, data]);
 
   const onBarcodeScanned = (barcode) => {
-    // @TODO: Resolve and add answer id
-    // const answerId = ...
-    // setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
+    const { answerId } = artworks.find((artwork) => {
+      return artwork.barcode === barcode;
+    });
+
+    if (!answerId) {
+      return;
+    }
+
+    setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
   };
 
   const onManualOverride = () => {
     setIsManual(true);
+  };
+
+  const onManualToggle = (answerId) => {
+    if (!isManual) {
+      return;
+    }
+
+    if (festivalAnswerIds.includes(answerId)) {
+      setFestivalAnswerIds(festivalAnswerIds.filter((id) => id !== answerId));
+    } else {
+      setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
+    }
   };
 
   const onCreateVoteSession = () => {
@@ -94,13 +130,37 @@ const VoteSessionCreator = () => {
 
           <VoteSessionCreatorArtworksStyle>
             {artworks.map((artwork) => {
-              // @TODO
-              return <div key={artwork.id} />;
+              return (
+                <VoteSessionCreatorArtwork
+                  answerId={artwork.answerId}
+                  artistName={artwork.artist.name}
+                  isSelected={festivalAnswerIds.includes(artwork.answerId)}
+                  key={artwork.id}
+                  title={artwork.title}
+                  onToggle={onManualToggle}
+                />
+              );
             })}
           </VoteSessionCreatorArtworksStyle>
         </Fragment>
       )}
     </VoteSessionCreatorStyle>
+  );
+};
+
+const VoteSessionCreatorArtwork = (props) => {
+  const onToggle = () => {
+    props.onToggle(props.answerId);
+  };
+
+  return (
+    <VoteSessionCreatorArtworkItemStyle
+      isSelected={props.isSelected}
+      onClick={onToggle}
+    >
+      {props.title}
+      {props.artistName}
+    </VoteSessionCreatorArtworkItemStyle>
   );
 };
 
@@ -112,9 +172,9 @@ const VoteSessionCreatorAdminStyle = styled.div`
   top: ${styles.layout.spacing};
   right: ${styles.layout.spacing};
 
-  width: 30rem;
-
   z-index: ${styles.layers.VoteSessionCreatorAdmin};
+
+  width: 30rem;
 `;
 
 const VoteSessionCreatorScannerStyle = styled.div`
@@ -129,12 +189,22 @@ const VoteSessionCreatorScannerStyle = styled.div`
 
   display: flex;
 
-  justify-content: center;
-  align-items: center;
-
   background-color: rgba(255, 255, 255, 0.3);
+
+  align-items: center;
+  justify-content: center;
 `;
 
-const VoteSessionCreatorArtworksStyle = styled.div``;
+const VoteSessionCreatorArtworksStyle = styled.ul``;
+
+const VoteSessionCreatorArtworkItemStyle = styled.li``;
+
+VoteSessionCreatorArtwork.propTypes = {
+  answerId: PropTypes.number.isRequired,
+  artistName: PropTypes.string.isRequired,
+  isSelected: PropTypes.bool.isRequired,
+  onToggle: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+};
 
 export default VoteSessionCreator;
