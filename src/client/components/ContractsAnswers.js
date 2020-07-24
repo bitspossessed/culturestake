@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { MAX_VOTE_TOKENS } from '~/common/utils/constants';
 import translate from '~/common/services/i18n';
 import ButtonOutline from '~/client/components/ButtonOutline';
 import EthereumContainer from '~/client/components/EthereumContainer';
@@ -20,25 +19,24 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 
-const ContractsQuestionsInitialize = ({ questionChainId, festivalChainId }) => {
+const ContractsAnswersInitialize = ({ questionChainId, answerChainId }) => {
   const dispatch = useDispatch();
   const owner = useOwnerAddress();
 
   const onClick = async (event) => {
     event.preventDefault();
 
-    const { txHash, txMethod } = await initializeQuestion(
+    const { txHash, txMethod } = await initializeAnswer(
       owner,
       questionChainId,
-      MAX_VOTE_TOKENS,
-      festivalChainId,
+      answerChainId,
     );
 
     dispatch(
       addPendingTransaction({
         txHash,
         txMethod,
-        params: { questionChainId },
+        params: { answerChainId },
       }),
     );
   };
@@ -52,23 +50,24 @@ const ContractsQuestionsInitialize = ({ questionChainId, festivalChainId }) => {
   );
 };
 
-const ContractsQuestionsDeactivate = ({ questionChainId }) => {
+const ContractsAnswersDeactivate = ({ questionChainId, answerChainId }) => {
   const dispatch = useDispatch();
   const owner = useOwnerAddress();
 
   const onClick = async (event) => {
     event.preventDefault();
 
-    const { txHash, txMethod } = await deactivateQuestion(
+    const { txHash, txMethod } = await deactivateAnswer(
       owner,
       questionChainId,
+      answerChainId,
     );
 
     dispatch(
       addPendingTransaction({
         txHash,
         txMethod,
-        params: { questionChainId },
+        params: { answerChainId },
       }),
     );
   };
@@ -82,14 +81,14 @@ const ContractsQuestionsDeactivate = ({ questionChainId }) => {
   );
 };
 
-const ContractsQuestions = ({ questionChainId, festivalChainId }) => {
+const ContractsAnswers = ({ questionChainId, answerChainId }) => {
   const initializeTx = usePendingTransaction({
-    txMethod: TX_INITIALIZE_QUESTION,
-    params: { questionChainId },
+    txMethod: TX_INITIALIZE_ANSWER,
+    params: { answerChainId },
   });
   const deactivateTx = usePendingTransaction({
-    txMethod: TX_DEACTIVATE_QUESTION,
-    params: { questionChainId },
+    txMethod: TX_DEACTIVATE_ANSWER,
+    params: { answerChainId },
   });
 
   const [isInitialized, setIsInitialized] = useState(false);
@@ -98,49 +97,53 @@ const ContractsQuestions = ({ questionChainId, festivalChainId }) => {
   useEffect(() => {
     const getInitializedStatus = async () => {
       if (questionChainId !== '') {
-        const state = await isQuestionInitialized(questionChainId);
+        const state = await isAnswerInitialized(questionChainId, answerChainId);
         setIsInitialized(state);
       }
     };
     getInitializedStatus();
-  }, [questionChainId, initializeTx.isPending]);
+  }, [questionChainId, answerChainId, initializeTx.isPending]);
 
   useEffect(() => {
     const getDeactivatedStatus = async () => {
-      const state = await isQuestionDeactivated(questionChainId);
+      const state = await isAnswerDeactivated(questionChainId, answerChainId);
       setIsDeactivated(state);
     };
     getDeactivatedStatus();
-  }, [questionChainId, deactivateTx.isPending]);
+  }, [questionChainId, answerChainId, deactivateTx.isPending]);
 
   return (
     <EthereumContainer>
       {isDeactivated ? (
         translate('ContractsQuestions.notificationAlreadyDeactivated')
       ) : !isInitialized ? (
-        <ContractsQuestionsInitialize
-          festivalChainId={festivalChainId}
+        <ContractsAnswersInitialize
+          answerChainId={answerChainId}
           questionChainId={questionChainId}
         />
       ) : (
-        <ContractsQuestionsDeactivate questionChainId={questionChainId} />
+        <ContractsAnswersDeactivate
+          answerChainId={answerChainId}
+          questionChainId={questionChainId}
+        />
       )}
     </EthereumContainer>
   );
 };
 
-ContractsQuestionsInitialize.propTypes = {
-  festivalChainId: PropTypes.string.isRequired,
+ContractsAnswersInitialize.propTypes = {
+  answerChainId: PropTypes.string.isRequired,
   questionChainId: PropTypes.string.isRequired,
 };
 
-ContractsQuestionsDeactivate.propTypes = {
+ContractsAnswersDeactivate.propTypes = {
+  answerChainId: PropTypes.string.isRequired,
   questionChainId: PropTypes.string.isRequired,
 };
 
-ContractsQuestions.propTypes = {
-  festivalChainId: PropTypes.string.isRequired,
+ContractsAnswers.propTypes = {
+  answerChainId: PropTypes.string.isRequired,
   questionChainId: PropTypes.string.isRequired,
 };
 
-export default ContractsQuestions;
+export default ContractsAnswers;

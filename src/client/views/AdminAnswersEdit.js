@@ -2,6 +2,7 @@ import React, { Fragment, useState, useEffect } from 'react';
 import translate from '~/common/services/i18n';
 import { useParams } from 'react-router-dom';
 
+import apiRequest from '~/client/services/api';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
@@ -38,7 +39,7 @@ const AdminQuestionsEdit = () => {
 
       <ViewAdmin>
         <Form>
-          {!isResourceLoading && resource.chainId && (
+          {!isLoading && !isResourceLoading && resource.chainId && (
             <ContractsAnswers
               answerChainId={resource.chainId}
               questionChainId={question.chainId}

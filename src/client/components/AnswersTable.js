@@ -1,6 +1,6 @@
 import React from 'react';
 import translate from '~/common/services/i18n';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import Table, { ACTION_EDIT } from '~/client/components/Table';
 
@@ -23,6 +23,7 @@ const table = {
 
 const AnswersTable = () => {
   const { questionId } = useParams();
+  const history = useHistory();
 
   const onSelect = ({ item: { id } }) => {
     history.push(`/admin/questions/${questionId}/answers/${id}/edit`);

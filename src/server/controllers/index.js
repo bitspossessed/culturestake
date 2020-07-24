@@ -211,8 +211,6 @@ function readAll(options) {
         ? req.locals.query
         : {};
 
-    console.log(where)
-
     try {
       const response = await options.model.findAndCountAll({
         limit,

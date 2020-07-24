@@ -1,7 +1,4 @@
-import {
-  adminContract,
-  getQuestionContract
-} from '~/common/services/contracts';
+import { getQuestionContract } from '~/common/services/contracts';
 import { getQuestion } from '~/common/services/contracts/questions';
 
 export const TX_INITIALIZE_ANSWER = Symbol('TX_INITIALIZE_ANSWER');
@@ -17,7 +14,7 @@ export async function isAnswerInitialized(questionChainId, answerChainId) {
   return answer.initialized;
 }
 
-export async function isQuestionDeactivated(questionChainId, answerChainId) {
+export async function isAnswerDeactivated(questionChainId, answerChainId) {
   const answer = await getAnswer(questionChainId, answerChainId);
   return answer.deactivated;
 }

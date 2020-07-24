@@ -11,6 +11,7 @@ import AdminQuestions from '~/client/views/AdminQuestions';
 import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
 import AdminQuestionsEdit from '~/client/views/AdminQuestionsEdit';
 import AdminAnswersNew from '~/client/views/AdminAnswersNew';
+import AdminAnswersEdit from '~/client/views/AdminAnswersEdit';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
@@ -139,6 +140,11 @@ const Routes = () => (
       component={AdminAnswersNew}
       exact
       path="/admin/questions/:questionId/answers/new"
+    />
+    <AuthenticatedRoute
+      component={AdminAnswersEdit}
+      exact
+      path="/admin/questions/:questionId/answers/:answerId/edit"
     />
     <UnauthenticatedRoute
       component={AdminLogin}
