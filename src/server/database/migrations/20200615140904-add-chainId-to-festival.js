@@ -7,9 +7,9 @@ module.exports = {
       })
       .then(
         queryInterface.sequelize.query(`
-          update festivals
-          set "chainId" =
-            cast((select floor(random() * 10000) + 1 where festivals.id = festivals.id)
+          UPDATE festivals
+          SET "chainId" =
+            cast((select floor(random() * 10000) + 1 WHERE festivals.id = festivals.id)
             as text);`),
       )
       .then(
