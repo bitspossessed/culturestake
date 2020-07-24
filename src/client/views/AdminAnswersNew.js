@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import apiRequest from '~/client/services/api';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
@@ -13,16 +14,27 @@ import { useNewForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
-import InputSelectAnswerTypeField from '~/client/components/InputSelectAnswerTypeField';
+import InputHiddenField from '~/client/components/InputHiddenField';
 
 const AdminAnswersNew = () => {
   const dispatch = useDispatch();
-  const { id } = useParams();
-  // const [type, setType] = useState('artwork');
+  const { questionId } = useParams();
 
-  // const possibleTypes = ['artwork', 'property'];
+  const [isLoading, setIsLoading] = useState(true);
+  const [question, setQuestion] = useState({});
 
-  const returnUrl = `/admin/questions/${id}`;
+  const returnUrl = `/admin/questions/${questionId}/edit`;
+
+  useEffect(() => {
+    const getQuestion = async () => {
+      const response = await apiRequest({
+        path: ['questions', questionId],
+      });
+      setQuestion(response);
+      setIsLoading(false);
+    };
+    getQuestion();
+  }, [setQuestion, setIsLoading, questionId]);
 
   const { Form } = useNewForm({
     fields: ['type', 'questionId', 'artworkId'],
@@ -53,16 +65,25 @@ const AdminAnswersNew = () => {
 
       <ViewAdmin>
         <Form>
-          <InputSelectAnswerTypeField label={"type"} name={"type"} />
-
-          <Finder
-            label={translate('AdminQuestionsNew.fieldFestival')}
-            name="artworkId"
-            placeholder={translate('AdminQuestionsNew.fieldPlaceholder')}
-            queryPath={'artworks'}
-            searchParam={'title'}
-          />
-          <ButtonSubmit />
+          {!isLoading ? (
+            <Fragment>
+              <InputHiddenField
+                label={'questionId'}
+                name={'questionId'}
+                value={{ value: questionId }}
+              />
+              {question && !question.artworkId ? (
+                <Finder
+                  label={translate('AdminQuestionsNew.fieldFestival')}
+                  name="artworkId"
+                  placeholder={translate('AdminQuestionsNew.fieldPlaceholder')}
+                  queryPath={'artworks'}
+                  searchParam={'title'}
+                />
+              ) : null}
+              <ButtonSubmit />
+            </Fragment>
+          ) : null}
         </Form>
       </ViewAdmin>
 
