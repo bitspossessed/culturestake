@@ -82,6 +82,7 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.1.0",
+    "@zxing/library": "^0.17.0",
     "animation-frame": "^0.3.0",
     "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
