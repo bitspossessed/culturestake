@@ -18,7 +18,6 @@ const Artwork = db.define('artwork', {
   },
   barcode: {
     type: DataTypes.STRING,
-    allowNull: false,
     unique: true,
   },
   title: {
