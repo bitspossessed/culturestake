@@ -14,9 +14,7 @@ const options = {
     {
       association: ArtworkHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...imageFileFields,
-      ],
+      fields: [...imageFileFields],
     },
   ],
 };
