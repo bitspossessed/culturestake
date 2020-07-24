@@ -1,10 +1,9 @@
 import React, { Fragment } from 'react';
 
-import translate from '~/common/services/i18n';
-
 import ContractsOwners from '~/client/components/ContractsOwners';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import translate from '~/common/services/i18n';
 
 const Admin = () => {
   return (

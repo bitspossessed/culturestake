@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { useSelector } from 'react-redux';
 
 import BoothContainer from '~/client/components/BoothContainer';
 import ColorSection from '~/client/components/ColorSection';
