@@ -7,6 +7,7 @@ import artistsRouter from '~/server/routes/artists';
 import artworksRouter from '~/server/routes/artworks';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
+import boothsRouter from '~/server/routes/booths';
 import festivalsRouter from '~/server/routes/festivals';
 import propertiesRouter from '~/server/routes/properties';
 import questionsRouter from '~/server/routes/questions';
@@ -40,6 +41,8 @@ router.use('/artists', artistsRouter);
 router.use('/properties', propertiesRouter);
 
 router.use('/answers', answersRouter);
+
+router.use('/booths', boothsRouter);
 
 router.use(() => {
   throw new APIError(httpStatus.NOT_FOUND);
