@@ -15,6 +15,7 @@ import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import AnswersTable from '~/client/components/AnswersTable';
 
 const AdminQuestionsEdit = () => {
   const returnUrl = '/admin/questions';
@@ -67,6 +68,8 @@ const AdminQuestionsEdit = () => {
       <ViewAdmin>
         <Form>
           <FormQuestions />
+
+          <AnswersTable />
 
           <ButtonIcon to={`/admin/questions/${id}/answers/new`}>
             {translate('AdminQuestionsEdit.buttonNewAnswer')}

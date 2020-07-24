@@ -144,6 +144,12 @@ const views = {
     fieldPlaceholder: 'Choose a festival',
     notificationSuccess: 'You created the question {title}.',
   },
+  AdminAnswersNew: {
+    title: 'Create new answer',
+    fieldArtwork: 'Artwork',
+    fieldArtworkPlaceholder: 'Choose an artwork',
+    notificationSuccess: 'You created a new answer.',
+  },
   AdminQuestionsEdit: {
     errorNotFound: 'This question does not exist.',
     notificationDestroySuccess: 'You deleted the question {title}.',

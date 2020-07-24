@@ -43,7 +43,7 @@ const AdminAnswersNew = () => {
     onSuccess: ({ title }) => {
       dispatch(
         notify({
-          text: translate('AdminQuestionsNew.notificationSuccess', {
+          text: translate('AdminAnswersNew.notificationSuccess', {
             title,
           }),
         }),
@@ -61,7 +61,7 @@ const AdminAnswersNew = () => {
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminQuestionsNew.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('AdminAnswersNew.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>
@@ -74,9 +74,11 @@ const AdminAnswersNew = () => {
               />
               {question && !question.artworkId ? (
                 <Finder
-                  label={translate('AdminQuestionsNew.fieldFestival')}
+                  label={translate('AdminAnswersNew.fieldArtwork')}
                   name="artworkId"
-                  placeholder={translate('AdminQuestionsNew.fieldPlaceholder')}
+                  placeholder={translate(
+                    'AdminAnswersNew.fieldArtworkPlaceholder',
+                  )}
                   queryPath={'artworks'}
                   searchParam={'title'}
                 />
