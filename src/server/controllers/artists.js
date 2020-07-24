@@ -3,9 +3,8 @@ import baseController from '~/server/controllers';
 import {
   ArtistHasManyArtworks,
   ArtistHasManyImages,
+  imageFileFields,
 } from '~/server/database/associations';
-
-const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Artist,
@@ -16,10 +15,7 @@ const options = {
       association: ArtistHasManyImages,
       destroyCascade: true,
       fields: [
-        ...baseFileFields,
-        'urlThreshold',
-        'urlThresholdThumb',
-        'urlThumb',
+        ...imageFileFields,
       ],
     },
     {
