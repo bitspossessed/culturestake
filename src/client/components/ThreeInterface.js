@@ -20,7 +20,8 @@ const ThreeInterface = (props) => {
   const history = useHistory();
 
   const isShowingHome = location.pathname === '/';
-  const isShowingBooth = location.pathname === '/booth';
+  const isShowingBooth = location.pathname.includes('/booth');
+  const isShowingVote = location.pathname.includes('/vote');
 
   const onClickLogo = () => {
     setIsExpanded(false);
@@ -47,7 +48,7 @@ const ThreeInterface = (props) => {
   return (
     <Fragment>
       <ThreeInterfaceElement
-        isVisible={!isShowingHome && !isShowingBooth}
+        isVisible={!isShowingHome && !isShowingBooth && !isShowingVote}
         left
         top
         onClick={onClickLogo}
@@ -59,7 +60,7 @@ const ThreeInterface = (props) => {
       </ThreeInterfaceElement>
 
       <ThreeInterfaceElement
-        isVisible={!isShowingBooth}
+        isVisible={!isShowingBooth && !isShowingVote}
         right
         top
         onClick={onClickNavigation}
