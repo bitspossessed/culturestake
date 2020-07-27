@@ -23,7 +23,7 @@ const table = {
   ],
 };
 
-const AnswersTable = ({ isArtworkQuestion }) => {
+const AnswersTable = ({ isArtworkQuestion, isInitialized }) => {
   const { questionId } = useParams();
   const history = useHistory();
   const { isOwner } = useSelector((state) => state.ethereum);
@@ -50,17 +50,18 @@ const AnswersTable = ({ isArtworkQuestion }) => {
 
   return (
     <Table
-      actions={isOwner ? table.actions : []}
+      actions={isOwner && isInitialized ? table.actions : []}
       columns={columns}
       path={table.path}
       searchParams={{ questionId }}
-      onSelect={isOwner ? onSelect : () => {}}
+      onSelect={isOwner && isInitialized ? onSelect : () => {}}
     />
   );
 };
 
 AnswersTable.propTypes = {
   isArtworkQuestion: PropTypes.bool.isRequired,
+  isInitialized: PropTypes.bool.isRequired,
 };
 
 export default AnswersTable;

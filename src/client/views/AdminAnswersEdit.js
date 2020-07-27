@@ -22,8 +22,6 @@ const AdminQuestionsEdit = () => {
     returnUrl,
   });
 
-  // make sure question is active or don't display
-
   useEffect(() => {
     const getQuestion = async () => {
       const response = await apiRequest({

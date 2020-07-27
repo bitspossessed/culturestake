@@ -320,7 +320,7 @@ function getNestedColumn(values, path) {
   path = path.split('.');
   let value = values;
   for (var i = 0; i < path.length; i++) {
-    value = value[path[i]];
+    value = value ? value[path[i]] : value;
   }
   return value;
 }
@@ -448,7 +448,7 @@ Table.propTypes = {
   onSelect: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
   path: PropTypes.arrayOf(PropTypes.string).isRequired,
-  searchParams: PropTypes.obj,
+  searchParams: PropTypes.object,
 };
 
 TableBody.propTypes = {

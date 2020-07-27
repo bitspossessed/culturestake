@@ -16,19 +16,6 @@ const options = {
     'property',
   ],
   fieldsProtected: ['chainId'],
-  include: [AnswerBelongsToProperty, AnswerBelongsToArtwork],
-  associations: [
-    {
-      association: AnswerBelongsToProperty,
-      destroyCascade: false,
-      fields: ['title'],
-    },
-    {
-      association: AnswerBelongsToArtwork,
-      destroyCascade: false,
-      fields: ['title'],
-    },
-  ],
 };
 
 function create(req, res, next) {
@@ -39,6 +26,19 @@ function readAll(req, res, next) {
   baseController.readAll({
     ...options,
     isSearchable: true,
+    include: [AnswerBelongsToProperty, AnswerBelongsToArtwork],
+    associations: [
+      {
+        association: AnswerBelongsToProperty,
+        destroyCascade: false,
+        fields: ['title'],
+      },
+      {
+        association: AnswerBelongsToArtwork,
+        destroyCascade: false,
+        fields: ['title'],
+      },
+    ],
   })(req, res, next);
 }
 

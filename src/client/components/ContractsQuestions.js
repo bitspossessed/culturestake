@@ -82,7 +82,12 @@ const ContractsQuestionsDeactivate = ({ questionChainId }) => {
   );
 };
 
-const ContractsQuestions = ({ questionChainId, festivalChainId }) => {
+const ContractsQuestions = ({
+  questionChainId,
+  festivalChainId,
+  isInitialized,
+  setIsInitialized,
+}) => {
   const initializeTx = usePendingTransaction({
     txMethod: TX_INITIALIZE_QUESTION,
     params: { questionChainId },
@@ -92,7 +97,6 @@ const ContractsQuestions = ({ questionChainId, festivalChainId }) => {
     params: { questionChainId },
   });
 
-  const [isInitialized, setIsInitialized] = useState(false);
   const [isDeactivated, setIsDeactivated] = useState(false);
 
   useEffect(() => {
@@ -103,7 +107,7 @@ const ContractsQuestions = ({ questionChainId, festivalChainId }) => {
       }
     };
     getInitializedStatus();
-  }, [questionChainId, initializeTx.isPending]);
+  }, [questionChainId, initializeTx.isPending, setIsInitialized]);
 
   useEffect(() => {
     const getDeactivatedStatus = async () => {
@@ -140,7 +144,9 @@ ContractsQuestionsDeactivate.propTypes = {
 
 ContractsQuestions.propTypes = {
   festivalChainId: PropTypes.string.isRequired,
+  isInitialized: PropTypes.bool.isRequired,
   questionChainId: PropTypes.string.isRequired,
+  setIsInitialized: PropTypes.func.isRequired,
 };
 
 export default ContractsQuestions;

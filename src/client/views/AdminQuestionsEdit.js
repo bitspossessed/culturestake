@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -21,6 +21,7 @@ const AdminQuestionsEdit = () => {
   const returnUrl = '/admin/questions';
   const { questionId } = useParams();
   const dispatch = useDispatch();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
     fields: ['chainId', 'festivalId', 'title'],
@@ -69,7 +70,10 @@ const AdminQuestionsEdit = () => {
         <Form>
           <FormQuestions />
 
-          <AnswersTable isArtworkQuestion={resource.artworkId ? true : false} />
+          <AnswersTable
+            isArtworkQuestion={resource.artworkId ? true : false}
+            isInitialized={isInitialized}
+          />
 
           <ButtonIcon to={`/admin/questions/${questionId}/answers/new`}>
             {translate('AdminQuestionsEdit.buttonNewAnswer')}
@@ -82,7 +86,9 @@ const AdminQuestionsEdit = () => {
           {!isResourceLoading && resource.chainId && (
             <ContractsQuestions
               festivalChainId={resource.festival.chainId}
+              isInitialized={isInitialized}
               questionChainId={resource.chainId}
+              setIsInitialized={setIsInitialized}
             />
           )}
 
