@@ -11,7 +11,7 @@ const PaperStamp = (props) => {
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
 
   return (
-    <PaperStampStyle scheme={innerScheme}>
+    <PaperStampStyle isDisabled={props.isDisabled} scheme={innerScheme}>
       <PaperStampLine position="top" />
       <Paper scheme={innerScheme}>{props.children}</Paper>
       <PaperStampLine position="bottom" />
@@ -109,6 +109,8 @@ const PaperStampDotsItemStyle = styled.div`
 const PaperStampStyle = styled.div`
   position: relative;
 
+  opacity: ${(props) => (props.isDisabled ? 0.8 : 1)};
+
   & + & {
     ${/* sc-selector */ PaperStampLineStyle}:first-child {
       display: none;
@@ -142,6 +144,7 @@ const PaperStampStyle = styled.div`
 
 PaperStamp.propTypes = {
   children: PropTypes.node,
+  isDisabled: PropTypes.bool,
   scheme: PropTypes.string,
 };
 

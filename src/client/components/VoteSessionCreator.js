@@ -1,17 +1,23 @@
 import PropTypes from 'prop-types';
-import React, { Fragment, useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
 import BoxRounded from '~/client/components/BoxRounded';
 import ButtonOutline from '~/client/components/ButtonOutline';
+import ColorSection from '~/client/components/ColorSection';
+import PaperStamp from '~/client/components/PaperStamp';
 import Pill from '~/client/components/Pill';
 import Scanner from '~/client/components/Scanner';
 import Spinner from '~/client/components/Spinner';
+import Sticker from '~/client/components/Sticker';
+import StickerHeading from '~/client/components/StickerHeading';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
+import { PaperContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 import { useResource } from '~/client/hooks/resources';
+import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const ADMIN_KEY = 77; // Key [M] (+ [SHIFT])
 
@@ -127,46 +133,57 @@ const VoteSessionCreator = () => {
       {isLoading ? (
         <Spinner isLarge />
       ) : (
-        <Fragment>
+        <ColorSection>
           {!isManual && (
             <VoteSessionCreatorScannerStyle>
               <Scanner onDetected={onBarcodeScanned} />
             </VoteSessionCreatorScannerStyle>
           )}
 
-          <VoteSessionCreatorArtworksStyle>
+          <PaperContainerStyle>
             {artworks.map((artwork) => {
               return (
                 <VoteSessionCreatorArtwork
                   answerId={artwork.answerId}
                   artistName={artwork.artist.name}
+                  images={artwork.images}
                   isSelected={festivalAnswerIds.includes(artwork.answerId)}
                   key={artwork.id}
+                  stickerCode={artwork.sticker}
                   title={artwork.title}
                   onToggle={onManualToggle}
                 />
               );
             })}
-          </VoteSessionCreatorArtworksStyle>
-        </Fragment>
+          </PaperContainerStyle>
+        </ColorSection>
       )}
     </VoteSessionCreatorStyle>
   );
 };
 
 const VoteSessionCreatorArtwork = (props) => {
+  const stickerImagePath = useStickerImage(props.images);
+  const { scheme } = useSticker(props.stickerCode);
+
   const onToggle = () => {
     props.onToggle(props.answerId);
   };
 
   return (
-    <VoteSessionCreatorArtworkItemStyle
-      isSelected={props.isSelected}
+    <PaperStamp
+      isDisabled={!props.isSelected}
+      scheme={scheme}
       onClick={onToggle}
     >
-      {props.title}
-      {props.artistName}
-    </VoteSessionCreatorArtworkItemStyle>
+      <Sticker code={props.stickerCode} imagePath={stickerImagePath} />
+
+      <StickerHeading
+        scheme={scheme}
+        subtitle={props.artistName}
+        title={props.title}
+      />
+    </PaperStamp>
   );
 };
 
@@ -201,15 +218,13 @@ const VoteSessionCreatorScannerStyle = styled.div`
   justify-content: center;
 `;
 
-const VoteSessionCreatorArtworksStyle = styled.ul``;
-
-const VoteSessionCreatorArtworkItemStyle = styled.li``;
-
 VoteSessionCreatorArtwork.propTypes = {
   answerId: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
+  images: PropTypes.array.isRequired,
   isSelected: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
+  stickerCode: PropTypes.string,
   title: PropTypes.string.isRequired,
 };
 
