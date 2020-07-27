@@ -49,7 +49,13 @@ const VoteSessionCreator = () => {
       return artwork.barcode === barcode;
     });
 
+    // Connected answer was not found / Barcode was invalid
     if (!answerId) {
+      return;
+    }
+
+    // Barcode was already scanned
+    if (festivalAnswerIds.includes(answerId)) {
       return;
     }
 
