@@ -22,6 +22,9 @@ const AdminQuestionsEdit = () => {
     returnUrl,
   });
 
+  // make sure question is active or don't display
+  // nothing to display if not an owner
+
   useEffect(() => {
     const getQuestion = async () => {
       const response = await apiRequest({
