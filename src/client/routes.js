@@ -126,7 +126,7 @@ const Routes = () => (
     />
     <PublicRoute
       component={Vote}
-      path="/vote"
+      path="/vote/:data"
     />
     <Route
       component={NotFound}

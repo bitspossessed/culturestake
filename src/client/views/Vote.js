@@ -1,19 +1,40 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
-import Header from '~/client/components/Header';
-import Footer from '~/client/components/Footer';
 import View from '~/client/components/View';
+import { decodeVoteData } from '~/common/services/vote';
 
 const Vote = () => {
+  const { data } = useParams();
+
+  const {
+    festivalAnswerIds,
+    festivalQuestionId,
+    isDataValid,
+    nonce,
+    signature,
+  } = useMemo(() => {
+    try {
+      return {
+        ...decodeVoteData(data),
+        isDataValid: true,
+      };
+    } catch {
+      return {
+        isDataValid: false,
+      };
+    }
+  }, [data]);
+
   return (
     <Fragment>
-      <Header />
-
       <View>
-        <h1>Vote</h1>
+        {isDataValid}
+        {festivalAnswerIds}
+        {festivalQuestionId}
+        {nonce}
+        {signature}
       </View>
-
-      <Footer />
     </Fragment>
   );
 };
