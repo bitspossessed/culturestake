@@ -8,7 +8,7 @@ import {
 
 const options = {
   model: Artwork,
-  fields: ['title', 'description', 'barcode', 'artistId'],
+  fields: ['title', 'description', 'barcode', 'artistId', 'sticker'],
   include: [ArtworkHasManyImages],
   associations: [
     {

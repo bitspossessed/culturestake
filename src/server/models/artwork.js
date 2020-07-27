@@ -33,6 +33,9 @@ const Artwork = db.define('artwork', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  sticker: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Artwork, {

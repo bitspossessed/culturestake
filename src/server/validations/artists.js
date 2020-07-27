@@ -4,6 +4,7 @@ import { imagesValidation } from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
+  // @TODO: This does not validate artworks yet (alternative: remove the possibility to change artworks via artists at all)
   artworks: Joi.array().required().max(10),
   bio: Joi.string().max(2000).required(),
   consentToDataReveal: Joi.boolean().required(),

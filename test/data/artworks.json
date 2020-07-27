@@ -2,36 +2,43 @@
   "davinci": {
     "title": "Mona Lisa",
     "description": "by L. Davinci",
-    "images": []
+    "images": [],
+    "sticker": "|||"
   },
   "rothko": {
     "title": "untitled (black and grey)",
     "description": "by Rothko",
-    "images": []
+    "images": [],
+    "sticker": "|/|"
   },
   "goya": {
     "title": "Saturn devouring his son",
     "description": "by Goya",
-    "images": []
+    "images": [],
+    "sticker": "//|"
   },
   "bourgeois": {
     "title": "Spider",
     "description": "by L. Bourgeois",
-    "images": []
+    "images": [],
+    "sticker": "[/|"
   },
   "martin": {
     "title": "Little sister",
     "description": "by Martin",
-    "images": []
+    "images": [],
+    "sticker": "|||"
   },
   "duchamp": {
     "title": "Fountain",
     "description": "by Duchamp",
-    "images": []
+    "images": [],
+    "sticker": "[[/"
   },
   "o'keefe": {
     "title": "Pelvis IV",
     "description": "by O'keefe",
-    "images": []
+    "images": [],
+    "sticker": "|_|"
   }
 }
