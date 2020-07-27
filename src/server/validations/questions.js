@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { slugValidation, paginationValidation } from '~/server/validations';
+import { idValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
   title: Joi.string().max(128).required(),
@@ -22,12 +22,12 @@ export default {
   },
   read: {
     [Segments.PARAMS]: {
-      ...slugValidation,
+      ...idValidation,
     },
   },
   update: {
     [Segments.PARAMS]: {
-      ...slugValidation,
+      ...idValidation,
     },
     [Segments.BODY]: {
       ...defaultValidation,
@@ -35,7 +35,7 @@ export default {
   },
   destroy: {
     [Segments.PARAMS]: {
-      ...slugValidation,
+      ...idValidation,
     },
   },
 };

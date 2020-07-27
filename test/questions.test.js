@@ -54,7 +54,7 @@ describe('Questions', () => {
 
     it('should return the question and answer', async () => {
       await request(app)
-        .get(`/api/questions/${questionData.slug}`)
+        .get(`/api/questions/${questionData.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
           const { chainId, title, answers } = response.body.data;

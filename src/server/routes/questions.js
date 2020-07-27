@@ -11,6 +11,8 @@ const router = express.Router();
 
 const getQuestionResource = resourcesMiddleware({
   model: Question,
+  modelKey: 'id',
+  paramsKey: 'id',
 });
 
 router.put(
@@ -27,14 +29,14 @@ router.get(
 );
 
 router.get(
-  '/:slug',
+  '/:id',
   validate(questionsValidation.read),
   getQuestionResource,
   questionsController.read,
 );
 
 router.post(
-  '/:slug',
+  '/:id',
   authMiddleware,
   validate(questionsValidation.update),
   getQuestionResource,
@@ -42,7 +44,7 @@ router.post(
 );
 
 router.delete(
-  '/:slug',
+  '/:id',
   authMiddleware,
   validate(questionsValidation.destroy),
   getQuestionResource,
