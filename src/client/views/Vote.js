@@ -29,7 +29,7 @@ const Vote = () => {
   return (
     <Fragment>
       <View>
-        {isDataValid}
+        {isDataValid ? 'Valid vote' : 'Invalid vote'}
         {festivalAnswerIds}
         {festivalQuestionId}
         {nonce}

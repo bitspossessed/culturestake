@@ -1,14 +1,17 @@
 import ActionTypes from '~/client/store/booth/types';
 import { getAccount, removePrivateKey } from '~/client/services/wallet';
+import { getNonce } from '~/client/services/nonce';
 import { getVotingBooth } from '~/common/services/contracts/booths';
 
 export function initializeBooth() {
+  const nonce = getNonce();
   const { address } = getAccount();
 
   return {
     type: ActionTypes.BOOTH_INITIALIZE,
     meta: {
       address,
+      nonce,
     },
   };
 }

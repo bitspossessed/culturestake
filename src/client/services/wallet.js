@@ -36,8 +36,8 @@ export function removePrivateKey() {
   removeItem(STORAGE_NAME);
 }
 
-// Always returns a wallet, when it does not exist yet it will create one
-// automatically
+// Always returns a wallet, when it does not exist yet it
+// will create one automatically
 export function getAccount() {
   const privateKey = getPrivateKey();
   return web3.eth.accounts.privateKeyToAccount(privateKey);

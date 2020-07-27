@@ -17,11 +17,7 @@ import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { PaperContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
-import {
-  encodeVoteData,
-  getBoothNonce,
-  signBooth,
-} from '~/common/services/vote';
+import { encodeVoteData, signBooth } from '~/common/services/vote';
 import { useResource } from '~/client/hooks/resources';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
@@ -113,7 +109,7 @@ const VoteSessionCreator = () => {
   const onCreateVoteSession = async () => {
     setIsLoading(true);
 
-    const nonce = await getBoothNonce();
+    const { nonce } = booth;
 
     const signature = signBooth({
       festivalAnswerIds,

@@ -4,10 +4,6 @@ import { packVote, packBooth } from '~/common/services/encoding';
 const VOTE_DATA_FESTIVAL_TOKEN = '|';
 const VOTE_DATA_SEPARATOR = '/';
 
-export async function getBoothNonce() {
-  // @TODO
-}
-
 export function signBooth({ festivalAnswerIds, privateKey, nonce }) {
   return web3.eth.accounts.sign(packBooth(festivalAnswerIds, nonce), privateKey)
     .signature;

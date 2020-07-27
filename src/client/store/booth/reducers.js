@@ -7,6 +7,7 @@ const initialState = {
   festivalChainId: null,
   isDeactivated: false,
   isInitialized: false,
+  nonce: 0,
 };
 
 const boothReducer = (state = initialState, action) => {
@@ -14,6 +15,7 @@ const boothReducer = (state = initialState, action) => {
     case ActionTypes.BOOTH_INITIALIZE:
       return update(state, {
         address: { $set: action.meta.address },
+        nonce: { $set: action.meta.nonce },
       });
     case ActionTypes.BOOTH_UPDATE_STATUS:
       return update(state, {
