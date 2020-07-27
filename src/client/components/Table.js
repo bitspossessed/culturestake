@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { DateTime } from 'luxon';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -136,6 +136,7 @@ const Table = ({
   return (
     <TableStyle>
       <TableHeader
+        actions={actions}
         columns={columns}
         orderDirection={tables.orderDirection}
         orderKey={tables.orderKey}
@@ -170,6 +171,7 @@ export const TableHeader = ({
   orderDirection,
   orderKey,
   onSelect,
+  actions,
 }) => {
   return (
     <TableHeaderStyle>
@@ -188,7 +190,9 @@ export const TableHeader = ({
             />
           );
         })}
-        <TableHeaderItemStyle>Actions</TableHeaderItemStyle>
+        {actions.length !== 0 ? (
+          <TableHeaderItemStyle>Actions</TableHeaderItemStyle>
+        ) : null}
       </tr>
     </TableHeaderStyle>
   );
@@ -269,7 +273,7 @@ export const TableBody = ({
   }
 
   return (
-    <TableBodyStyle>
+    <Fragment>
       {results.map((item, index) => {
         const onSelectAction = (type) => {
           onSelect({
@@ -290,12 +294,14 @@ export const TableBody = ({
             <td>{index + offset + 1}</td>
             <TableBodyItems columns={columns} values={item} />
             <td>
-              <TableActions actions={actions} onSelect={onSelectAction} />
+              {actions.length !== 0 ? (
+                <TableActions actions={actions} onSelect={onSelectAction} />
+              ) : null}
             </td>
           </tr>
         );
       })}
-    </TableBodyStyle>
+    </Fragment>
   );
 };
 
@@ -309,11 +315,21 @@ export const TableBodyMessage = ({ children, colSpan }) => {
   );
 };
 
+// support using associations as column
+function getNestedColumn(values, path) {
+  path = path.split('.');
+  let value = values;
+  for (var i = 0; i < path.length; i++) {
+    value = value[path[i]];
+  }
+  return value;
+}
+
 export const TableBodyItems = ({ columns, values }) => {
   return DEFAULT_HEADERS.concat(columns).map((column) => {
     const value = column.isDate
       ? DateTime.fromISO(values[column.key]).toFormat('dd.MM.yyyy HH:mm')
-      : values[column.key];
+      : getNestedColumn(values, column.key);
 
     return <td key={`td-${values.id}-${column.key}`}>{value}</td>;
   });
@@ -400,16 +416,6 @@ const TableHeaderItemStyle = styled.th`
   cursor: ${(props) => (props.isSelectable ? 'pointer' : null)};
 `;
 
-const TableBodyStyle = styled.tbody`
-  tr {
-    cursor: pointer;
-
-    &:hover {
-      background-color: ${styles.colors.grayLight};
-    }
-  }
-`;
-
 const TableBodyMessageStyle = styled.tbody``;
 
 const TableFooterStyle = styled.tfoot`
@@ -462,6 +468,7 @@ TableBodyMessage.propTypes = {
 };
 
 TableHeader.propTypes = {
+  actions: PropTypes.arrayOf(PropTypesAction).isRequired,
   columns: PropTypes.arrayOf(PropTypesColumn).isRequired,
   onSelect: PropTypes.func.isRequired,
   orderDirection: PropTypesOrderDirections.isRequired,

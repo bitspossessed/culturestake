@@ -1,6 +1,7 @@
 const components = {
   AnswersTable: {
     fieldTitle: 'Answer name',
+    buttonEdit: 'See Snuggle panel',
   },
   DangerZone: {
     title: 'Danger Zone',
@@ -20,6 +21,11 @@ const components = {
     buttonInitializeQuestion: 'Initialize Question',
     buttonDeactivateQuestion: 'Deactivate Question',
     notificationAlreadyDeactivated: 'This question is deactivated',
+  },
+  ContractsAnswers: {
+    buttonInitializeAnswer: 'Initialize Answer',
+    buttonDeactivateAnswer: 'Deactivate Answer',
+    notificationAlreadyDeactivated: 'This answer is deactivated',
   },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
@@ -152,6 +158,9 @@ const views = {
     fieldArtwork: 'Artwork',
     fieldArtworkPlaceholder: 'Choose an artwork',
     notificationSuccess: 'You created a new answer.',
+  },
+  AdminAnswersEdit: {
+    title: 'Edit question',
   },
   AdminQuestionsEdit: {
     errorNotFound: 'This question does not exist.',

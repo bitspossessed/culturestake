@@ -44,7 +44,7 @@ const ContractsAnswersInitialize = ({ questionChainId, answerChainId }) => {
   return (
     <div>
       <ButtonOutline onClick={onClick}>
-        {translate('ContractsQuestions.buttonInitializeQuestion')}
+        {translate('ContractsAnswers.buttonInitializeAnswer')}
       </ButtonOutline>
     </div>
   );
@@ -75,7 +75,7 @@ const ContractsAnswersDeactivate = ({ questionChainId, answerChainId }) => {
   return (
     <div>
       <ButtonOutline isDangerous={true} onClick={onClick}>
-        {translate('ContractsQuestions.buttonDeactivateQuestion')}
+        {translate('ContractsAnswers.buttonDeactivateAnswer')}
       </ButtonOutline>
     </div>
   );
@@ -115,7 +115,7 @@ const ContractsAnswers = ({ questionChainId, answerChainId }) => {
   return (
     <EthereumContainer>
       {isDeactivated ? (
-        translate('ContractsQuestions.notificationAlreadyDeactivated')
+        translate('ContractsAnswers.notificationAlreadyDeactivated')
       ) : !isInitialized ? (
         <ContractsAnswersInitialize
           answerChainId={answerChainId}

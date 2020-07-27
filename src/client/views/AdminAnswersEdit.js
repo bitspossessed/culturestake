@@ -23,7 +23,6 @@ const AdminQuestionsEdit = () => {
   });
 
   // make sure question is active or don't display
-  // nothing to display if not an owner
 
   useEffect(() => {
     const getQuestion = async () => {
@@ -38,7 +37,7 @@ const AdminQuestionsEdit = () => {
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminQuestionsEdit.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('AdminAnswersEdit.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>

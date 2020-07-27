@@ -69,7 +69,7 @@ const AdminQuestionsEdit = () => {
         <Form>
           <FormQuestions />
 
-          <AnswersTable />
+          <AnswersTable isArtworkQuestion={resource.artworkId ? true : false} />
 
           <ButtonIcon to={`/admin/questions/${questionId}/answers/new`}>
             {translate('AdminQuestionsEdit.buttonNewAnswer')}
