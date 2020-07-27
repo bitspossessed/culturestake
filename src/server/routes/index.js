@@ -2,18 +2,17 @@ import express from 'express';
 import httpStatus from 'http-status';
 
 import APIError from '~/server/helpers/errors';
+import answersRouter from '~/server/routes/answers';
+import artistsRouter from '~/server/routes/artists';
+import artworksRouter from '~/server/routes/artworks';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
-import questionsRouter from '~/server/routes/questions';
-import artworksRouter from '~/server/routes/artworks';
-import artistsRouter from '~/server/routes/artists';
 import propertiesRouter from '~/server/routes/properties';
-import answersRouter from '~/server/routes/answers';
+import questionsRouter from '~/server/routes/questions';
 import uploadsRouter from '~/server/routes/uploads';
 import usersRouter from '~/server/routes/users';
-import voteRouter from '~/server/routes/vote';
-
+import votesRouter from '~/server/routes/votes';
 import { respondWithSuccess } from '~/server/helpers/respond';
 
 const router = express.Router();
@@ -28,7 +27,7 @@ router.use('/uploads', uploadsRouter);
 
 router.use('/users', authMiddleware, usersRouter);
 
-router.use('/vote', voteRouter);
+router.use('/votes', votesRouter);
 
 router.use('/festivals', festivalsRouter);
 

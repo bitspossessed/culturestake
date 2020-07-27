@@ -10,17 +10,8 @@ const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Festival,
-  fields: [
-    'artworks',
-    'chainId',
-    'description',
-    'documents',
-    'images',
-    'sticker',
-    'subtitle',
-    'title',
-  ],
-  fieldsProtected: [],
+  fields: ['artworks', 'description', 'images', 'sticker', 'subtitle', 'title'],
+  fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
@@ -62,7 +53,7 @@ function read(req, res, next) {
   baseController.read(options)(req, res, next);
 }
 
-async function update(req, res, next) {
+function update(req, res, next) {
   baseController.update(options)(req, res, next);
 }
 

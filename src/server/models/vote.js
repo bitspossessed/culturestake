@@ -9,20 +9,20 @@ const Vote = db.define('vote', {
     primaryKey: true,
     autoIncrement: true,
   },
-  signature: {
+  senderSignature: {
     type: DataTypes.STRING,
     unique: true,
     validate: {
       isAlphanumeric: true,
     },
   },
-  sender: {
+  senderAddress: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  booth: {
+  boothAddress: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
@@ -39,53 +39,29 @@ const Vote = db.define('vote', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  festivalQuestion: {
+  festivalQuestionChainId: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  festivalAnswers: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('answers'));
-    },
-    set: function (val) {
-      return this.setDataValue('answers', JSON.stringify(val));
-    },
+  festivalAnswerChainIds: {
+    type: DataTypes.JSONB,
   },
   festivalVoteTokens: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('voteTokens'));
-    },
-    set: function (val) {
-      return this.setDataValue('voteTokens', JSON.stringify(val));
-    },
+    type: DataTypes.JSONB,
   },
-  artworkQuestion: {
+  artworkQuestionChainId: {
     type: DataTypes.STRING,
     validate: {
       isAlphanumeric: true,
     },
   },
-  artworkAnswers: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('answers'));
-    },
-    set: function (val) {
-      return this.setDataValue('answers', JSON.stringify(val));
-    },
+  artworkAnswerChainIds: {
+    type: DataTypes.JSONB,
   },
   artworkVoteTokens: {
-    type: DataTypes.STRING,
-    get: function () {
-      return JSON.parse(this.getDataValue('voteTokens'));
-    },
-    set: function (val) {
-      return this.setDataValue('voteTokens', JSON.stringify(val));
-    },
+    type: DataTypes.JSONB,
   },
 });
 

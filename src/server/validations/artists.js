@@ -1,14 +1,14 @@
 import { Joi, Segments } from 'celebrate';
 
-import { slugValidation, paginationValidation } from '~/server/validations';
 import { imagesValidation } from '~/common/helpers/validate';
+import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
-  name: Joi.string().max(128).required(),
+  artworks: Joi.array().required().max(10),
   bio: Joi.string().max(2000).required(),
-  consentToDataReveal: Joi.boolean(),
+  consentToDataReveal: Joi.boolean().required(),
   images: imagesValidation.max(2),
-  artworks: Joi.array().max(10),
+  name: Joi.string().max(128).required(),
 };
 
 export default {
@@ -20,7 +20,7 @@ export default {
   readAll: {
     [Segments.PARAMS]: {
       ...paginationValidation,
-      orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt', 'title'),
+      orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt', 'name'),
     },
   },
   read: {

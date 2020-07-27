@@ -1,18 +1,13 @@
-import httpStatus from 'http-status';
-
 import requestGraph from '~/common/services/subgraph';
-import APIError from '~/server/helpers/errors';
 
-export default function (queryBuilder, paramName) {
+export default function fetchFromGraphMiddleware(queryBuilder, params) {
   return async (req, res, next) => {
-    const query = queryBuilder(req.params[paramName]);
-    try {
-      req.locals = req.locals || {};
-      const graphData = await requestGraph(query);
-      req.locals.graphData = graphData.answers;
-      next();
-    } catch (err) {
-      next(new APIError(httpStatus.BAD_REQUEST));
-    }
+    const query = queryBuilder({ ...params });
+    const graphData = await requestGraph(query);
+
+    req.locals = req.locals || {};
+    req.locals.graphData = graphData;
+
+    next();
   };
 }

@@ -1,23 +1,20 @@
 import { Joi, Segments } from 'celebrate';
 
+import { slugValidation } from '~/server/validations';
 import { web3Validators } from '~/common/helpers/validate';
 
-export const paramValidation = {
-  questionAddress: web3Validators.web3().address(),
-};
-
 const defaultValidation = {
-  signature: Joi.string().max(132).required(),
-  sender: web3Validators.web3().address(),
-  booth: web3Validators.web3().address(),
-  boothSignature: Joi.string().max(132).required(),
-  nonce: Joi.number().required(),
-  festivalQuestion: web3Validators.web3().address(),
-  festivalAnswers: Joi.array().items(Joi.number().positive()).required(),
-  festivalVoteTokens: Joi.array().items(Joi.number().positive()),
-  artworkQuestion: web3Validators.web3().address(),
-  artworkAnswers: Joi.array().items(Joi.number().positive()).required(),
+  artworkAnswerIds: Joi.array().items(Joi.number().positive()),
+  artworkQuestionId: Joi.number().positive().required(),
   artworkVoteTokens: Joi.array().items(Joi.number().positive()),
+  boothAddress: web3Validators.web3().address().required(),
+  boothSignature: Joi.string().length(132).required(),
+  festivalAnswerIds: Joi.array().items(Joi.number().positive()),
+  festivalQuestionId: Joi.number().positive().required(),
+  festivalVoteTokens: Joi.array().items(Joi.number().positive()),
+  nonce: Joi.number().required(),
+  senderAddress: web3Validators.web3().address().required(),
+  senderSignature: Joi.string().length(132).required(),
 };
 
 export default {
@@ -28,7 +25,7 @@ export default {
   },
   read: {
     [Segments.PARAMS]: {
-      ...paramValidation,
+      ...slugValidation,
     },
   },
 };

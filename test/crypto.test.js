@@ -1,10 +1,15 @@
 import web3 from '~/common/services/web3';
-
 import {
   compareHashSecret,
   generateHashSecret,
   generateRandomString,
 } from '~/server/services/crypto';
+
+afterAll(async () => {
+  // Workaround to give web3 provider time for async imports (otherwise jest
+  // will throw an error as all the tests here are sync):
+  await new Promise((resolve) => setTimeout(resolve, 100));
+});
 
 describe('Crypto service', () => {
   let str;

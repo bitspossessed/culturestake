@@ -29,7 +29,7 @@
     "artworkId": 6,
     "questionId": 1
   },
-  "propertyAnswer": {
+  "propertyAnswer1": {
     "type": "property",
     "propertyId": 1,
     "questionId": 2
