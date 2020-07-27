@@ -108,6 +108,7 @@
     "pepjs": "^0.5.2",
     "pg": "^8.3.0",
     "pug": "^3.0.0",
+    "qrcode": "^1.4.4",
     "react": "^16.13.1",
     "react-datetime-picker": "^3.0.2",
     "react-dom": "^16.13.1",

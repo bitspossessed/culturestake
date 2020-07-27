@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { Fragment, useState, useMemo, useEffect } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
@@ -8,6 +8,7 @@ import ButtonOutline from '~/client/components/ButtonOutline';
 import ColorSection from '~/client/components/ColorSection';
 import PaperStamp from '~/client/components/PaperStamp';
 import Pill from '~/client/components/Pill';
+import QRCode from '~/client/components/QRCode';
 import Scanner from '~/client/components/Scanner';
 import Spinner from '~/client/components/Spinner';
 import Sticker from '~/client/components/Sticker';
@@ -16,6 +17,11 @@ import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { PaperContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
+import {
+  encodeVoteData,
+  getBoothNonce,
+  signBooth,
+} from '~/common/services/vote';
 import { useResource } from '~/client/hooks/resources';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
@@ -25,17 +31,25 @@ const VoteSessionCreator = () => {
   const booth = useSelector((state) => state.booth);
 
   const [festivalAnswerIds, setFestivalAnswerIds] = useState([]);
+  const [festivalQuestionId, setFestivalQuestionId] = useState(null);
   const [isAdminVisible, setIsAdminVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isManual, setIsManual] = useState(false);
+  const [voteData, setVoteData] = useState(null);
 
-  const [data, isLoading] = useResource(['booths', booth.festivalChainId]);
+  const [data, isArtworksLoading] = useResource([
+    'booths',
+    booth.festivalChainId,
+  ]);
 
   const artworks = useMemo(() => {
     if (!isLoading) {
       return [];
     }
 
-    return data.questions.reduce((acc, question) => {
+    let questionId;
+
+    const result = data.questions.reduce((acc, question) => {
       // Combine answerId with artwork
       question.answers.forEach((answer) => {
         if (answer.artwork) {
@@ -43,11 +57,23 @@ const VoteSessionCreator = () => {
             ...answer.artwork,
             answerId: answer.id,
           });
+
+          // Extract questionId related to all of these
+          // answers + make sure it stays the same
+          if (questionId && questionId !== answer.questionId) {
+            throw new Error('Only one question per vote');
+          }
+
+          questionId = answer.questionId;
         }
       });
 
       return acc;
     }, []);
+
+    setFestivalQuestionId(questionId);
+
+    return result;
   }, [isLoading, data]);
 
   const onBarcodeScanned = (barcode) => {
@@ -84,9 +110,27 @@ const VoteSessionCreator = () => {
     }
   };
 
-  const onCreateVoteSession = () => {
-    // @TODO: Build vote signature
-    // dispatch(...);
+  const onCreateVoteSession = async () => {
+    setIsLoading(true);
+
+    const nonce = await getBoothNonce();
+
+    const signature = signBooth({
+      festivalAnswerIds,
+      privateKey: '',
+      nonce,
+    });
+
+    setVoteData(
+      encodeVoteData({
+        festivalAnswerIds,
+        festivalQuestionId,
+        nonce,
+        signature,
+      }),
+    );
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -130,32 +174,44 @@ const VoteSessionCreator = () => {
         </VoteSessionCreatorAdminStyle>
       )}
 
-      {isLoading ? (
+      {isLoading || isArtworksLoading ? (
         <Spinner isLarge />
       ) : (
         <ColorSection>
-          {!isManual && (
-            <VoteSessionCreatorScannerStyle>
-              <Scanner onDetected={onBarcodeScanned} />
-            </VoteSessionCreatorScannerStyle>
-          )}
+          {voteData ? (
+            <Fragment>
+              <QRCode data={voteData} />
 
-          <PaperContainerStyle>
-            {artworks.map((artwork) => {
-              return (
-                <VoteSessionCreatorArtwork
-                  answerId={artwork.answerId}
-                  artistName={artwork.artist.name}
-                  images={artwork.images}
-                  isSelected={festivalAnswerIds.includes(artwork.answerId)}
-                  key={artwork.id}
-                  stickerCode={artwork.sticker}
-                  title={artwork.title}
-                  onToggle={onManualToggle}
-                />
-              );
-            })}
-          </PaperContainerStyle>
+              <ButtonOutline to={`/vote/${voteData}`}>
+                {translate('VoteSessionCreator.buttonVoteOnBooth')}
+              </ButtonOutline>
+            </Fragment>
+          ) : (
+            <Fragment>
+              {!isManual && (
+                <VoteSessionCreatorScannerStyle>
+                  <Scanner onDetected={onBarcodeScanned} />
+                </VoteSessionCreatorScannerStyle>
+              )}
+
+              <PaperContainerStyle>
+                {artworks.map((artwork) => {
+                  return (
+                    <VoteSessionCreatorArtwork
+                      answerId={artwork.answerId}
+                      artistName={artwork.artist.name}
+                      images={artwork.images}
+                      isSelected={festivalAnswerIds.includes(artwork.answerId)}
+                      key={artwork.id}
+                      stickerCode={artwork.sticker}
+                      title={artwork.title}
+                      onToggle={onManualToggle}
+                    />
+                  );
+                })}
+              </PaperContainerStyle>
+            </Fragment>
+          )}
         </ColorSection>
       )}
     </VoteSessionCreatorStyle>
