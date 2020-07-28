@@ -1,30 +1,50 @@
 import PropTypes from 'prop-types';
-import React, { Fragment, useState, useMemo, useEffect } from 'react';
+import React, {
+  Fragment,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BoxRounded from '~/client/components/BoxRounded';
-import ButtonOutline from '~/client/components/ButtonOutline';
+import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
+import HorizontalLine from '~/client/components/HorizontalLine';
+import Loading from '~/client/components/Loading';
 import PaperStamp from '~/client/components/PaperStamp';
 import Pill from '~/client/components/Pill';
 import QRCode from '~/client/components/QRCode';
 import Scanner from '~/client/components/Scanner';
-import Spinner from '~/client/components/Spinner';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 import styles from '~/client/styles/variables';
+import swirl from '~/client/assets/images/swirl.svg';
 import translate from '~/common/services/i18n';
-import { PaperContainerStyle } from '~/client/styles/layout';
+import {
+  ContainerStyle,
+  PaperContainerStyle,
+  SpacingGroupStyle,
+} from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 import { encodeVoteData, signBooth } from '~/common/services/vote';
+import { getPrivateKey } from '~/client/services/wallet';
 import { useResource } from '~/client/hooks/resources';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const ADMIN_KEY = 77; // Key [M] (+ [SHIFT])
 
 const VoteSessionCreator = () => {
-  const booth = useSelector((state) => state.booth);
+  const dispatch = useDispatch();
+
+  const { address, festivalChainId, nonce } = useSelector(
+    (state) => state.booth,
+  );
 
   const [festivalAnswerIds, setFestivalAnswerIds] = useState([]);
   const [festivalQuestionId, setFestivalQuestionId] = useState(null);
@@ -33,87 +53,108 @@ const VoteSessionCreator = () => {
   const [isManual, setIsManual] = useState(false);
   const [voteData, setVoteData] = useState(null);
 
-  const [data, isArtworksLoading] = useResource([
-    'booths',
-    booth.festivalChainId,
-  ]);
+  const [data, isArtworksLoading] = useResource(['booths', festivalChainId]);
 
   const artworks = useMemo(() => {
-    if (!isLoading) {
+    if (isLoading || !data.questions) {
       return [];
     }
 
-    let questionId;
+    try {
+      let questionId;
 
-    const result = data.questions.reduce((acc, question) => {
-      // Combine answerId with artwork
-      question.answers.forEach((answer) => {
-        if (answer.artwork) {
-          acc.push({
-            ...answer.artwork,
-            answerId: answer.id,
-          });
+      const result = data.questions.reduce((acc, question) => {
+        // Combine answerId with artwork
+        question.answers.forEach((answer) => {
+          if (answer.artwork) {
+            acc.push({
+              ...answer.artwork,
+              answerId: answer.id,
+            });
 
-          // Extract questionId related to all of these
-          // answers + make sure it stays the same
-          if (questionId && questionId !== answer.questionId) {
-            throw new Error('Only one question per vote');
+            // Extract questionId related to all of these
+            // answers + make sure it stays the same
+            if (questionId && questionId !== answer.questionId) {
+              throw new Error('Only one question per vote');
+            }
+
+            questionId = answer.questionId;
           }
+        });
 
-          questionId = answer.questionId;
-        }
+        return acc;
+      }, []);
+
+      setFestivalQuestionId(questionId);
+
+      return result;
+    } catch {
+      dispatch(
+        notify({
+          text: translate('VoteSessionCreator.notificationInvalidData'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
+
+      return [];
+    }
+  }, [dispatch, isLoading, data]);
+
+  const onBarcodeScanned = useCallback(
+    (barcode) => {
+      const { answerId } = artworks.find((artwork) => {
+        return artwork.barcode === barcode;
       });
 
-      return acc;
-    }, []);
+      // Connected answer was not found / Barcode was invalid
+      if (!answerId) {
+        dispatch(
+          notify({
+            text: translate('VoteSessionCreator.notificationInvalidBarcode'),
+            type: NotificationsTypes.ERROR,
+          }),
+        );
 
-    setFestivalQuestionId(questionId);
+        return;
+      }
 
-    return result;
-  }, [isLoading, data]);
+      // Barcode was already scanned
+      if (festivalAnswerIds.includes(answerId)) {
+        return;
+      }
 
-  const onBarcodeScanned = (barcode) => {
-    const { answerId } = artworks.find((artwork) => {
-      return artwork.barcode === barcode;
-    });
-
-    // Connected answer was not found / Barcode was invalid
-    if (!answerId) {
-      return;
-    }
-
-    // Barcode was already scanned
-    if (festivalAnswerIds.includes(answerId)) {
-      return;
-    }
-
-    setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
-  };
+      setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
+    },
+    [dispatch, artworks, festivalAnswerIds],
+  );
 
   const onManualOverride = () => {
     setIsManual(true);
+    setIsAdminVisible(false);
   };
 
-  const onManualToggle = (answerId) => {
-    if (!isManual) {
-      return;
-    }
+  const onManualToggle = useCallback(
+    (answerId) => {
+      if (!isManual) {
+        return;
+      }
 
-    if (festivalAnswerIds.includes(answerId)) {
-      setFestivalAnswerIds(festivalAnswerIds.filter((id) => id !== answerId));
-    } else {
-      setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
-    }
-  };
+      if (festivalAnswerIds.includes(answerId)) {
+        setFestivalAnswerIds(festivalAnswerIds.filter((id) => id !== answerId));
+      } else {
+        setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
+      }
+    },
+    [isManual, festivalAnswerIds],
+  );
 
-  const onCreateVoteSession = async () => {
+  const onCreateVoteSession = useCallback(async () => {
     setIsLoading(true);
-
-    const { nonce } = booth;
+    setIsAdminVisible(false);
 
     const signature = signBooth({
       festivalAnswerIds,
-      privateKey: '',
+      privateKey: getPrivateKey(),
       nonce,
     });
 
@@ -127,90 +168,106 @@ const VoteSessionCreator = () => {
     );
 
     setIsLoading(false);
-  };
+  }, [nonce, festivalAnswerIds, festivalQuestionId]);
 
   useEffect(() => {
     const onKeyDown = window.addEventListener('keydown', (event) => {
       if (event.keyCode === ADMIN_KEY && event.shiftKey) {
-        setIsAdminVisible(!isAdminVisible);
+        setIsAdminVisible((isVisible) => !isVisible);
       }
     });
 
     return () => {
       window.removeEventListener('keydown', onKeyDown);
     };
-  }, [isAdminVisible, setIsAdminVisible]);
+  }, [setIsAdminVisible]);
 
   return (
-    <VoteSessionCreatorStyle>
+    <Fragment>
       {isAdminVisible && (
         <VoteSessionCreatorAdminStyle>
-          <BoxRounded title={translate('VoteSessionCreator.bodyAdmin')}>
+          <BoxRounded title={translate('VoteSessionCreator.titleAdmin')}>
             <ParagraphStyle>
               {translate('VoteSessionCreator.bodyBoothAddress')}{' '}
-              <Pill>{booth.address}</Pill>
+              <Pill>{address}</Pill>
             </ParagraphStyle>
 
             <ParagraphStyle>
               {translate('VoteSessionCreator.bodyFestivalChainId')}{' '}
-              <Pill>{booth.festivalChainId}</Pill>
+              <Pill>{festivalChainId}</Pill>
             </ParagraphStyle>
 
-            <ButtonOutline disabled={isManual} onClick={onManualOverride}>
-              {translate('VoteSessionCreator.buttonManualOverride')}
-            </ButtonOutline>
+            <HorizontalLine />
 
-            <ButtonOutline
-              disabled={festivalAnswerIds.length === 0}
-              onClick={onCreateVoteSession}
-            >
-              {translate('VoteSessionCreator.buttonCreateVoteSession')}
-            </ButtonOutline>
+            <ParagraphStyle>
+              {translate('VoteSessionCreator.bodySelectedArtworks', {
+                count: festivalAnswerIds.length,
+              })}
+            </ParagraphStyle>
+
+            <SpacingGroupStyle>
+              <ButtonIcon
+                disabled={isManual}
+                url={swirl}
+                onClick={onManualOverride}
+              >
+                {translate('VoteSessionCreator.buttonManualOverride')}
+              </ButtonIcon>
+
+              <ButtonIcon
+                disabled={festivalAnswerIds.length === 0 || !!voteData}
+                onClick={onCreateVoteSession}
+              >
+                {translate('VoteSessionCreator.buttonCreateVoteSession')}
+              </ButtonIcon>
+            </SpacingGroupStyle>
           </BoxRounded>
         </VoteSessionCreatorAdminStyle>
       )}
 
+      {!isManual && (
+        <VoteSessionCreatorScannerStyle>
+          <Scanner onDetected={onBarcodeScanned} onError={onManualOverride} />
+        </VoteSessionCreatorScannerStyle>
+      )}
+
       {isLoading || isArtworksLoading ? (
-        <Spinner isLarge />
+        <Loading />
       ) : (
         <ColorSection>
           {voteData ? (
-            <Fragment>
-              <QRCode data={voteData} />
+            <ContainerStyle>
+              <BoxRounded
+                title={translate('VoteSessionCreator.titleStartVote')}
+              >
+                <QRCode data={voteData} />
 
-              <ButtonOutline to={`/vote/${voteData}`}>
-                {translate('VoteSessionCreator.buttonVoteOnBooth')}
-              </ButtonOutline>
-            </Fragment>
+                <ButtonIcon to={`/vote/${voteData}`}>
+                  {translate('VoteSessionCreator.buttonVoteOnBooth')}
+                </ButtonIcon>
+              </BoxRounded>
+            </ContainerStyle>
           ) : (
-            <Fragment>
-              {!isManual && (
-                <VoteSessionCreatorScannerStyle>
-                  <Scanner onDetected={onBarcodeScanned} />
-                </VoteSessionCreatorScannerStyle>
-              )}
-
-              <PaperContainerStyle>
-                {artworks.map((artwork) => {
-                  return (
-                    <VoteSessionCreatorArtwork
-                      answerId={artwork.answerId}
-                      artistName={artwork.artist.name}
-                      images={artwork.images}
-                      isSelected={festivalAnswerIds.includes(artwork.answerId)}
-                      key={artwork.id}
-                      stickerCode={artwork.sticker}
-                      title={artwork.title}
-                      onToggle={onManualToggle}
-                    />
-                  );
-                })}
-              </PaperContainerStyle>
-            </Fragment>
+            <PaperContainerStyle>
+              {artworks.map((artwork) => {
+                return (
+                  <VoteSessionCreatorArtwork
+                    answerId={artwork.answerId}
+                    artistName={artwork.artist.name}
+                    images={artwork.images}
+                    isSelected={festivalAnswerIds.includes(artwork.answerId)}
+                    key={artwork.id}
+                    stickerCode={artwork.sticker}
+                    title={artwork.title}
+                    onToggle={onManualToggle}
+                  />
+                );
+              })}
+            </PaperContainerStyle>
           )}
         </ColorSection>
       )}
-    </VoteSessionCreatorStyle>
+    </Fragment>
   );
 };
 
@@ -223,23 +280,19 @@ const VoteSessionCreatorArtwork = (props) => {
   };
 
   return (
-    <PaperStamp
-      isDisabled={!props.isSelected}
-      scheme={scheme}
-      onClick={onToggle}
-    >
-      <Sticker code={props.stickerCode} imagePath={stickerImagePath} />
+    <VoteSessionCreatorArtworkStyle onClick={onToggle}>
+      <PaperStamp isDisabled={!props.isSelected} scheme={scheme}>
+        <Sticker code={props.stickerCode} imagePath={stickerImagePath} />
 
-      <StickerHeading
-        scheme={scheme}
-        subtitle={props.artistName}
-        title={props.title}
-      />
-    </PaperStamp>
+        <StickerHeading
+          scheme={scheme}
+          subtitle={props.artistName}
+          title={props.title}
+        />
+      </PaperStamp>
+    </VoteSessionCreatorArtworkStyle>
   );
 };
-
-const VoteSessionCreatorStyle = styled.div``;
 
 const VoteSessionCreatorAdminStyle = styled.div`
   position: fixed;
@@ -270,10 +323,14 @@ const VoteSessionCreatorScannerStyle = styled.div`
   justify-content: center;
 `;
 
+const VoteSessionCreatorArtworkStyle = styled.div`
+  cursor: pointer;
+`;
+
 VoteSessionCreatorArtwork.propTypes = {
   answerId: PropTypes.number.isRequired,
   artistName: PropTypes.string.isRequired,
-  images: PropTypes.array.isRequired,
+  images: PropTypes.array,
   isSelected: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
   stickerCode: PropTypes.string,

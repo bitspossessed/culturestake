@@ -7,12 +7,13 @@ import ButtonOutline from '~/client/components/ButtonOutline';
 import Pill from '~/client/components/Pill';
 import Spinner from '~/client/components/Spinner';
 import styles from '~/client/styles/variables';
-import { initializeBooth, resetBooth } from '~/client/store/booth/actions';
 import translate from '~/common/services/i18n';
+import { ContainerStyle } from '~/client/styles/layout';
 import {
   HeadingSecondaryStyle,
   ParagraphStyle,
 } from '~/client/styles/typography';
+import { initializeBooth, resetBooth } from '~/client/store/booth/actions';
 
 const BoothContainer = (props) => {
   const dispatch = useDispatch();
@@ -30,7 +31,9 @@ const BoothContainer = (props) => {
     dispatch(resetBooth());
   };
 
-  return (
+  return booth.isInitialized && !booth.isDeactivated ? (
+    props.children
+  ) : (
     <BoothContainerStyle>
       <HeadingSecondaryStyle>
         {translate('BoothContainer.title')}
@@ -38,42 +41,36 @@ const BoothContainer = (props) => {
 
       {booth.address ? (
         <Fragment>
-          {booth.isInitialized && !booth.isDeactivated ? (
-            props.children
-          ) : (
-            <Fragment>
-              <ParagraphStyle>
-                {translate('BoothContainer.bodyYourAddress')}{' '}
-                <Pill>{booth.address}</Pill>
-              </ParagraphStyle>
+          <ParagraphStyle>
+            {translate('BoothContainer.bodyYourAddress')}{' '}
+            <Pill>{booth.address}</Pill>
+          </ParagraphStyle>
 
-              <BoothContainerInnerStyle>
-                {!booth.isInitialized && (
-                  <Fragment>
-                    <ParagraphStyle>
-                      {translate('BoothContainer.bodyPendingInitialization')}
-                    </ParagraphStyle>
+          <BoothContainerInnerStyle>
+            {!booth.isInitialized && (
+              <Fragment>
+                <ParagraphStyle>
+                  {translate('BoothContainer.bodyPendingInitialization')}
+                </ParagraphStyle>
 
-                    <BoothContainerSpinnerStyle>
-                      <Spinner />
-                    </BoothContainerSpinnerStyle>
-                  </Fragment>
-                )}
+                <BoothContainerSpinnerStyle>
+                  <Spinner />
+                </BoothContainerSpinnerStyle>
+              </Fragment>
+            )}
 
-                {booth.isDeactivated && (
-                  <Fragment>
-                    <ParagraphStyle>
-                      {translate('BoothContainer.bodyBoothIsDeactivated')}
-                    </ParagraphStyle>
+            {booth.isDeactivated && (
+              <Fragment>
+                <ParagraphStyle>
+                  {translate('BoothContainer.bodyBoothIsDeactivated')}
+                </ParagraphStyle>
 
-                    <ButtonOutline onClick={onBurnBooth}>
-                      {translate('BoothContainer.buttonBurnBooth')}
-                    </ButtonOutline>
-                  </Fragment>
-                )}
-              </BoothContainerInnerStyle>
-            </Fragment>
-          )}
+                <ButtonOutline onClick={onBurnBooth}>
+                  {translate('BoothContainer.buttonBurnBooth')}
+                </ButtonOutline>
+              </Fragment>
+            )}
+          </BoothContainerInnerStyle>
         </Fragment>
       ) : (
         <ButtonOutline onClick={onInitializeBooth}>
@@ -89,7 +86,7 @@ BoothContainer.propTypes = {
   isPending: PropTypes.bool,
 };
 
-export const BoothContainerStyle = styled.section`
+export const BoothContainerStyle = styled(ContainerStyle)`
   position: relative;
 
   margin-top: 2rem;
