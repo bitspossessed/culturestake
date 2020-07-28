@@ -6,7 +6,7 @@ import { requestResource } from '~/client/store/resources/actions';
 
 export const useResource = (
   path,
-  { onError, onSuccess, isCollection = false },
+  { onError, onSuccess, isCollection = false } = {},
 ) => {
   const dispatch = useDispatch();
 
