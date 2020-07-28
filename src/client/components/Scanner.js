@@ -14,6 +14,7 @@ const Scanner = ({ onDetected, onError }) => {
   const ref = useRef();
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
+  const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
     let scanner;
@@ -28,7 +29,7 @@ const Scanner = ({ onDetected, onError }) => {
         }
 
         scanner.decodeFromVideoDevice(
-          devices[0].deviceId,
+          undefined,
           ref.current,
           (result, error) => {
             if (result) {
@@ -40,6 +41,8 @@ const Scanner = ({ onDetected, onError }) => {
             }
           },
         );
+
+        setIsReady(true);
       } catch (error) {
         dispatch(
           notify({
@@ -67,14 +70,32 @@ const Scanner = ({ onDetected, onError }) => {
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return !isError && <ScannerStyle ref={ref} />;
+  return (
+    !isError && (
+      <ScannerStyle isReady={isReady}>
+        <ScannerVideoStyle ref={ref} />
+      </ScannerStyle>
+    )
+  );
 };
 
-const ScannerStyle = styled.video`
+const ScannerStyle = styled.div`
   max-width: 40rem;
+`;
+
+const ScannerVideoStyle = styled.video`
+  width: 100%;
 
   border: 1.5px solid ${styles.colors.violet};
   border-radius: 5px;
+
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 3px,
+    ${styles.colors.violet} 3px,
+    ${styles.colors.violet} 6px
+  );
 `;
 
 Scanner.propTypes = {

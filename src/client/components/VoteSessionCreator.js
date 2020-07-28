@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 import React, {
   Fragment,
-  useState,
   useCallback,
-  useMemo,
   useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,6 +54,7 @@ const VoteSessionCreator = () => {
   const [isManual, setIsManual] = useState(false);
   const [voteData, setVoteData] = useState(null);
 
+  const barcodes = useRef({});
   const [data, isArtworksLoading] = useResource(['booths', festivalChainId]);
 
   const artworks = useMemo(() => {
@@ -87,6 +89,11 @@ const VoteSessionCreator = () => {
 
       setFestivalQuestionId(questionId);
 
+      barcodes.current = result.reduce((acc, artwork) => {
+        acc[artwork.barcode] = artwork;
+        return acc;
+      }, {});
+
       return result;
     } catch {
       dispatch(
@@ -102,30 +109,32 @@ const VoteSessionCreator = () => {
 
   const onBarcodeScanned = useCallback(
     (barcode) => {
-      const { answerId } = artworks.find((artwork) => {
-        return artwork.barcode === barcode;
-      });
-
       // Connected answer was not found / Barcode was invalid
-      if (!answerId) {
+      if (!(barcode in barcodes.current)) {
+        return;
+      }
+
+      const { answerId, title } = barcodes.current[barcode];
+
+      // Activate it!
+      setFestivalAnswerIds((answerIds) => {
+        // Barcode was already scanned
+        if (answerIds.includes(answerId)) {
+          return answerIds;
+        }
+
         dispatch(
           notify({
-            text: translate('VoteSessionCreator.notificationInvalidBarcode'),
-            type: NotificationsTypes.ERROR,
+            text: translate('VoteSessionCreator.notificationAddedArtwork', {
+              title,
+            }),
           }),
         );
 
-        return;
-      }
-
-      // Barcode was already scanned
-      if (festivalAnswerIds.includes(answerId)) {
-        return;
-      }
-
-      setFestivalAnswerIds(festivalAnswerIds.concat([answerId]));
+        return answerIds.concat([answerId]);
+      });
     },
-    [dispatch, artworks, festivalAnswerIds],
+    [dispatch, barcodes],
   );
 
   const onManualOverride = () => {
@@ -170,6 +179,11 @@ const VoteSessionCreator = () => {
     setIsLoading(false);
   }, [nonce, festivalAnswerIds, festivalQuestionId]);
 
+  const onReset = () => {
+    setVoteData(null);
+    setFestivalAnswerIds([]);
+  };
+
   useEffect(() => {
     const onKeyDown = window.addEventListener('keydown', (event) => {
       if (event.keyCode === ADMIN_KEY && event.shiftKey) {
@@ -181,6 +195,8 @@ const VoteSessionCreator = () => {
       window.removeEventListener('keydown', onKeyDown);
     };
   }, [setIsAdminVisible]);
+
+  const isVoteCreated = !!voteData;
 
   return (
     <Fragment>
@@ -215,7 +231,7 @@ const VoteSessionCreator = () => {
               </ButtonIcon>
 
               <ButtonIcon
-                disabled={festivalAnswerIds.length === 0 || !!voteData}
+                disabled={festivalAnswerIds.length === 0 || isVoteCreated}
                 onClick={onCreateVoteSession}
               >
                 {translate('VoteSessionCreator.buttonCreateVoteSession')}
@@ -225,7 +241,7 @@ const VoteSessionCreator = () => {
         </VoteSessionCreatorAdminStyle>
       )}
 
-      {!isManual && (
+      {!isManual && !isVoteCreated && (
         <VoteSessionCreatorScannerStyle>
           <Scanner onDetected={onBarcodeScanned} onError={onManualOverride} />
         </VoteSessionCreatorScannerStyle>
@@ -235,16 +251,22 @@ const VoteSessionCreator = () => {
         <Loading />
       ) : (
         <ColorSection>
-          {voteData ? (
+          {isVoteCreated ? (
             <ContainerStyle>
               <BoxRounded
                 title={translate('VoteSessionCreator.titleStartVote')}
               >
                 <QRCode data={voteData} />
 
-                <ButtonIcon to={`/vote/${voteData}`}>
-                  {translate('VoteSessionCreator.buttonVoteOnBooth')}
-                </ButtonIcon>
+                <SpacingGroupStyle>
+                  <ButtonIcon to={`/vote/${voteData}`}>
+                    {translate('VoteSessionCreator.buttonVoteOnBooth')}
+                  </ButtonIcon>
+
+                  <ButtonIcon url={swirl} onClick={onReset}>
+                    {translate('VoteSessionCreator.buttonReset')}
+                  </ButtonIcon>
+                </SpacingGroupStyle>
               </BoxRounded>
             </ContainerStyle>
           ) : (
@@ -317,7 +339,7 @@ const VoteSessionCreatorScannerStyle = styled.div`
 
   display: flex;
 
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.1);
 
   align-items: center;
   justify-content: center;
