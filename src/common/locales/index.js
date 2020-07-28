@@ -62,6 +62,9 @@ const components = {
   FormQuestions: {
     fieldTitle: 'Question text:',
   },
+  FormProperties: {
+    fieldTitle: 'Property:',
+  },
   Loading: {
     bodyLoading: 'Loading ...',
   },
@@ -153,6 +156,13 @@ const views = {
     fieldPlaceholder: 'Choose a festival',
     notificationSuccess: 'You created the question {title}.',
   },
+  AdminQuestionsEdit: {
+    errorNotFound: 'This question does not exist.',
+    notificationDestroySuccess: 'You deleted the question {title}.',
+    notificationSuccess: 'You updated the question {title}.',
+    title: 'Edit question',
+    buttonNewAnswer: 'Add a new answer to this question',
+  },
   AdminAnswersNew: {
     title: 'Create new answer',
     fieldArtwork: 'Artwork',
@@ -162,12 +172,18 @@ const views = {
   AdminAnswersEdit: {
     title: 'Edit question',
   },
-  AdminQuestionsEdit: {
-    errorNotFound: 'This question does not exist.',
-    notificationDestroySuccess: 'You deleted the question {title}.',
-    notificationSuccess: 'You updated the question {title}.',
-    title: 'Edit question',
-    buttonNewAnswer: 'Add a new answer to this question',
+  AdminProperties: {
+    buttonNewQuestion: 'Create new property',
+    fieldTitle: 'Property',
+    title: 'Properties',
+  },
+  AdminPropertiesNew: {
+    title: 'Create new property',
+    notificationSuccess: 'You created the property {title}.',
+  },
+  AdminPropertiesEdit: {
+    title: 'Edit property',
+    notificationSuccess: 'You edited the property {title}.',
   },
   Homepage: {
     bodyIntroduction:

@@ -12,6 +12,9 @@ import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
 import AdminQuestionsEdit from '~/client/views/AdminQuestionsEdit';
 import AdminAnswersNew from '~/client/views/AdminAnswersNew';
 import AdminAnswersEdit from '~/client/views/AdminAnswersEdit';
+import AdminProperties from '~/client/views/AdminProperties';
+import AdminPropertiesNew from '~/client/views/AdminPropertiesNew';
+import AdminPropertiesEdit from '~/client/views/AdminPropertiesEdit';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
@@ -145,6 +148,21 @@ const Routes = () => (
       component={AdminAnswersEdit}
       exact
       path="/admin/questions/:questionId/answers/:answerId/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminProperties}
+      exact
+      path="/admin/properties"
+    />
+    <AuthenticatedRoute
+      component={AdminPropertiesNew}
+      exact
+      path="/admin/properties/new"
+    />
+    <AuthenticatedRoute
+      component={AdminPropertiesEdit}
+      exact
+      path="/admin/properties/:slug/edit"
     />
     <UnauthenticatedRoute
       component={AdminLogin}
