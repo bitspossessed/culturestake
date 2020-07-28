@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import styles from '~/client/styles/variables';
 
-const QR_CODE_SIZE = 230;
+const QR_CODE_SIZE = 320;
 
 const QRCode = (props) => {
   const ref = createRef();
@@ -37,12 +37,8 @@ QRCode.propTypes = {
 const QRCodeStyle = styled.div`
   display: flex;
 
-  width: 28rem;
-  height: 28rem;
-
   margin: 0 auto;
-
-  border-radius: 25px;
+  padding: 2rem;
 
   background-color: ${styles.colors.white};
 
