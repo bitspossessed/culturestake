@@ -1,6 +1,6 @@
 import ActionTypes from '~/client/store/booth/types';
 import { getAccount, removePrivateKey } from '~/client/services/wallet';
-import { getNonce } from '~/client/services/nonce';
+import { getNonce, removeNonce } from '~/client/services/nonce';
 import { getVotingBooth } from '~/common/services/contracts/booths';
 
 export function initializeBooth() {
@@ -48,6 +48,7 @@ export function checkBoothStatus() {
 
 export function resetBooth() {
   removePrivateKey();
+  removeNonce();
 
   return {
     type: ActionTypes.BOOTH_RESET,
