@@ -1,6 +1,7 @@
 import React, { Fragment, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
+import VoteInterface from '~/client/components/VoteInterface';
 import View from '~/client/components/View';
 import { decodeVoteData } from '~/common/services/vote';
 
@@ -11,8 +12,8 @@ const Vote = () => {
     festivalAnswerIds,
     festivalQuestionId,
     isDataValid,
-    nonce,
-    signature,
+    // nonce,
+    // signature,
   } = useMemo(() => {
     try {
       return {
@@ -29,11 +30,14 @@ const Vote = () => {
   return (
     <Fragment>
       <View>
-        {isDataValid ? 'Valid vote' : 'Invalid vote'}
-        {festivalAnswerIds}
-        {festivalQuestionId}
-        {nonce}
-        {signature}
+        {isDataValid ? (
+          <VoteInterface
+            festivalAnswerIds={festivalAnswerIds}
+            festivalQuestionId={festivalQuestionId}
+          />
+        ) : (
+          <p>Ouch ..</p>
+        )}
       </View>
     </Fragment>
   );
