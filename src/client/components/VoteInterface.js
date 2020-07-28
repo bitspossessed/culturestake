@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, Suspense, useState, useMemo } from 'react';
 
+import BoxFramed from '~/client/components/BoxFramed';
 import ColorSection from '~/client/components/ColorSection';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
@@ -9,6 +10,7 @@ import SnuggleSlider from '~/client/components/SnuggleSlider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
+import { HeadingPrimaryStyle } from '~/client/styles/typography';
 import { PaperContainerStyle } from '~/client/styles/layout';
 import { useResource } from '~/client/hooks/resources';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
@@ -72,6 +74,12 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
       ) : (
         <ColorSection>
           <PaperContainerStyle>
+            <PaperTicket>
+              <BoxFramed>
+                <HeadingPrimaryStyle>{data.title}</HeadingPrimaryStyle>
+              </BoxFramed>
+            </PaperTicket>
+
             {artworks.map((artwork) => {
               return (
                 <VoteInterfaceItem
