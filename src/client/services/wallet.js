@@ -14,7 +14,7 @@ function generatePrivateKey() {
   return privateKey;
 }
 
-function getPrivateKey() {
+export function getPrivateKey() {
   if (!isAvailable()) {
     throw new Error('LocalStorage is not available');
   }

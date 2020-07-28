@@ -7,10 +7,10 @@ module.exports = {
       })
       .then(
         queryInterface.sequelize.query(`
-          update questions
-          set "chainId" =
-            cast((select floor(random() * 10000) + 1 where questions.id = questions.id)
-            as text);`),
+          UPDATE questions
+          SET "chainId" =
+            cast((SELECT floor(random() * 10000) + 1 WHERE questions.id = questions.id)
+            AS text);`),
       )
       .then(
         queryInterface.changeColumn('questions', 'chainId', {

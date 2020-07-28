@@ -15,14 +15,14 @@ export function getNonce() {
   }
 
   if (hasItem(STORAGE_NAME)) {
-    return getItem(STORAGE_NAME);
+    return parseInt(getItem(STORAGE_NAME));
   } else {
     setNonce(INITIAL_NONCE);
     return INITIAL_NONCE;
   }
 }
 
-function setNonce(nonce) {
+export function setNonce(nonce) {
   setItem(STORAGE_NAME, nonce);
 }
 

@@ -18,6 +18,12 @@ Pill.propTypes = {
 };
 
 export const PillStyle = styled.span`
+  display: inline-block;
+
+  overflow: hidden;
+
+  max-width: 100%;
+
   padding: 0.2rem;
   padding-right: 0.5rem;
   padding-left: 0.5rem;
@@ -25,10 +31,14 @@ export const PillStyle = styled.span`
   border: 1.5px solid ${styles.colors.violet};
   border-radius: 15px;
 
+  white-space: nowrap;
+
   color: ${(props) =>
     props.isAlternateColor ? styles.colors.yellow : styles.colors.white};
 
   background-color: ${styles.colors.violet};
+
+  text-overflow: ellipsis;
 `;
 
 export default Pill;

@@ -109,8 +109,6 @@ const PaperStampDotsItemStyle = styled.div`
 const PaperStampStyle = styled.div`
   position: relative;
 
-  opacity: ${(props) => (props.isDisabled ? 0.8 : 1)};
-
   & + & {
     ${/* sc-selector */ PaperStampLineStyle}:first-child {
       display: none;
@@ -121,6 +119,23 @@ const PaperStampStyle = styled.div`
     ${/* sc-selector */ PaperStyle} {
       margin-bottom: 0;
     }
+  }
+
+  &::after {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: ${styles.layers.PaperStampDisabled};
+
+    display: ${(props) => (props.isDisabled ? 'block' : 'none')};
+
+    content: '';
+
+    background-color: rgba(255, 255, 255, 0.5);
   }
 
   ${/* sc-selector */ PaperStampDotsItemStyle},

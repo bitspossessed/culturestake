@@ -41,3 +41,9 @@ export const PaperContainerStyle = styled.div`
 
   margin: 0 auto;
 `;
+
+export const SpacingGroupStyle = styled.div`
+  & > * {
+    margin-top: 1rem;
+  }
+`;
