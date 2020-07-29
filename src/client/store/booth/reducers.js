@@ -7,6 +7,7 @@ const initialState = {
   festivalChainId: null,
   isDeactivated: false,
   isInitialized: false,
+  isVotePending: false,
   nonce: 0,
 };
 
@@ -22,6 +23,19 @@ const boothReducer = (state = initialState, action) => {
         festivalChainId: { $set: action.meta.festivalChainId },
         isDeactivated: { $set: action.meta.isDeactivated },
         isInitialized: { $set: action.meta.isInitialized },
+      });
+    case ActionTypes.BOOTH_VOTE_REQUEST:
+      return update(state, {
+        isVotePending: { $set: true },
+      });
+    case ActionTypes.BOOTH_VOTE_SUCCESS:
+      return update(state, {
+        nonce: { $set: state.nonce + 1 },
+        isVotePending: { $set: false },
+      });
+    case ActionTypes.BOOTH_VOTE_FAILURE:
+      return update(state, {
+        isVotePending: { $set: false },
       });
     case ActionTypes.BOOTH_RESET:
       return update(state, { $set: initialState });

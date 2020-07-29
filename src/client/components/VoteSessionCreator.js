@@ -51,7 +51,7 @@ const VoteSessionCreator = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { address, festivalChainId, nonce } = useSelector(
+  const { address, festivalChainId, nonce, isVotePending } = useSelector(
     (state) => state.booth,
   );
 
@@ -259,7 +259,11 @@ const VoteSessionCreator = () => {
               </ButtonIcon>
 
               <ButtonIcon
-                disabled={festivalAnswerIds.length === 0 || isVoteCreated}
+                disabled={
+                  isVotePending ||
+                  festivalAnswerIds.length === 0 ||
+                  isVoteCreated
+                }
                 onClick={onCreateVoteSession}
               >
                 {translate('VoteSessionCreator.buttonCreateVoteSession')}

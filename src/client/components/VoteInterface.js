@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, Suspense, useEffect, useState, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
@@ -12,20 +13,36 @@ import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
 import translate from '~/common/services/i18n';
-import { PaperContainerStyle, SpacingGroupStyle } from '~/client/styles/layout';
+import web3 from '~/common/services/web3';
 import {
   HeadingPrimaryStyle,
   HeadingSecondaryStyle,
 } from '~/client/styles/typography';
+import { PaperContainerStyle, SpacingGroupStyle } from '~/client/styles/layout';
+import { VOTE_ACCOUNT_NAME } from '~/client/store/vote/actions';
+import { getPrivateKey } from '~/client/services/wallet';
 import { getQuestion } from '~/common/services/contracts';
+import { packBooth } from '~/common/services/encoding';
+import { signAudienceVote } from '~/common/services/vote';
 import { useResource } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
+import { voteOnBooth } from '~/client/store/booth/actions';
 
 const FESTIVAL_STEP = 'festival';
 const ARTWORK_STEP = 'artwork';
 
-const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
+const VoteInterface = ({
+  boothSignature,
+  festivalAnswerIds,
+  festivalQuestionId,
+  nonce,
+  senderAddress,
+}) => {
+  const dispatch = useDispatch();
+
   const [currentStep, setCurrentStep] = useState(FESTIVAL_STEP);
+  const [hasVoted, setHasVoted] = useState(false);
+  const [isVoting, setIsVoting] = useState(false);
 
   // How happy is our SnuggleRain component?
   const [snuggleness, setSnuggleness] = useState(0.0);
@@ -89,8 +106,12 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
     }));
   }, [artworkQuestionData]);
 
+  const hasVotedOnArtworks = !!Object.keys(credits[ARTWORK_STEP]).find(
+    (answerId) => credits[ARTWORK_STEP][answerId] > 0,
+  );
+
   // Is something loading here?
-  const isLoading = isDataLoading || isFestivalQuestionDataLoading;
+  const isLoading = isDataLoading || isFestivalQuestionDataLoading || isVoting;
 
   // Get max vote tokens from chain
   useEffect(() => {
@@ -208,101 +229,156 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
     setCurrentStep(FESTIVAL_STEP);
   };
 
-  const onVote = () => {
-    // @TODO
+  const onVote = async () => {
+    const festivalVoteTokens = Object.values(credits[FESTIVAL_STEP]);
+
+    const artworkQuestionId = artworkQuestionData.id;
+    const artworkVoteTokens = Object.values(credits[ARTWORK_STEP]);
+    const artworkAnswerIds = Object.keys(credits[ARTWORK_STEP]).map((id) =>
+      parseInt(id, 10),
+    );
+
+    const boothAddress = web3.eth.accounts.recover(
+      packBooth(festivalAnswerIds, nonce),
+      boothSignature,
+    );
+
+    const senderSignature = signAudienceVote({
+      festivalAnswerIds,
+      festivalVoteTokens,
+      artworkAnswerIds,
+      artworkVoteTokens,
+      privateKey: getPrivateKey(VOTE_ACCOUNT_NAME),
+    });
+
+    const voteData = {
+      artworkAnswerIds,
+      artworkQuestionId,
+      artworkVoteTokens,
+      boothAddress,
+      boothSignature,
+      festivalAnswerIds,
+      festivalQuestionId,
+      festivalVoteTokens,
+      nonce,
+      senderAddress,
+      senderSignature,
+    };
+
+    setIsVoting(true);
+
+    // @TODO: Currently we can only vote on the booth as we manage the nonce on
+    // the booth device. To enable users to vote on any device we need another
+    // way to manage transaction nonces going through our server.
+    await dispatch(voteOnBooth(voteData));
+
+    setIsVoting(false);
+    setHasVoted(true);
   };
 
   return (
     <Fragment>
-      <SnuggleRain snuggleness={snuggleness} />
-
-      {isLoading ? (
-        <Loading />
+      {hasVoted ? (
+        <Fragment>Thank you!</Fragment>
       ) : (
-        <ColorSection>
-          {currentStep === FESTIVAL_STEP ? (
-            <Fragment>
-              <VoteCreditsBar
-                left={creditLeft[FESTIVAL_STEP]}
-                total={creditTotal[FESTIVAL_STEP]}
-              />
+        <Fragment>
+          <SnuggleRain snuggleness={snuggleness} />
 
-              <PaperContainerStyle>
-                <PaperTicket>
-                  <BoxFramed>
-                    <HeadingPrimaryStyle>
-                      {festivalQuestionData.title}
-                    </HeadingPrimaryStyle>
-                  </BoxFramed>
-                </PaperTicket>
-
-                {artworks.map((artwork) => {
-                  return (
-                    <VoteInterfaceArtwork
-                      answerId={artwork.answerId}
-                      credit={credits[FESTIVAL_STEP][artwork.answerId]}
-                      creditTotal={creditTotal[FESTIVAL_STEP]}
-                      images={artwork.images}
-                      key={artwork.id}
-                      stickerCode={artwork.sticker}
-                      subtitle={artwork.subtitle}
-                      title={artwork.title}
-                      onCreditChange={onCreditChange}
-                    />
-                  );
-                })}
-
-                <PaperTicket>
-                  <ButtonIcon disabled={!winnerArtworkId} onClick={onNextStep}>
-                    {translate('VoteInterface.buttonNextStep')}
-                  </ButtonIcon>
-                </PaperTicket>
-              </PaperContainerStyle>
-            </Fragment>
+          {isLoading ? (
+            <Loading />
           ) : (
-            <Fragment>
-              <VoteCreditsBar
-                left={creditLeft[ARTWORK_STEP]}
-                total={creditTotal[ARTWORK_STEP]}
-              />
+            <ColorSection>
+              {currentStep === FESTIVAL_STEP ? (
+                <Fragment>
+                  <VoteCreditsBar
+                    left={creditLeft[FESTIVAL_STEP]}
+                    total={creditTotal[FESTIVAL_STEP]}
+                  />
 
-              <PaperContainerStyle>
-                <PaperTicket>
-                  <BoxFramed>
-                    <HeadingPrimaryStyle>
-                      {artworkQuestionData.title}
-                    </HeadingPrimaryStyle>
-                  </BoxFramed>
-                </PaperTicket>
+                  <PaperContainerStyle>
+                    <PaperTicket>
+                      <BoxFramed>
+                        <HeadingPrimaryStyle>
+                          {festivalQuestionData.title}
+                        </HeadingPrimaryStyle>
+                      </BoxFramed>
+                    </PaperTicket>
 
-                {properties.map((property) => {
-                  return (
-                    <VoteInterfaceProperty
-                      answerId={property.answerId}
-                      credit={credits[ARTWORK_STEP][property.answerId]}
-                      creditTotal={creditTotal[ARTWORK_STEP]}
-                      key={property.id}
-                      title={property.title}
-                      onCreditChange={onCreditChange}
-                    />
-                  );
-                })}
+                    {artworks.map((artwork) => {
+                      return (
+                        <VoteInterfaceArtwork
+                          answerId={artwork.answerId}
+                          credit={credits[FESTIVAL_STEP][artwork.answerId]}
+                          creditTotal={creditTotal[FESTIVAL_STEP]}
+                          images={artwork.images}
+                          key={artwork.id}
+                          stickerCode={artwork.sticker}
+                          subtitle={artwork.subtitle}
+                          title={artwork.title}
+                          onCreditChange={onCreditChange}
+                        />
+                      );
+                    })}
 
-                <PaperTicket>
-                  <SpacingGroupStyle>
-                    <ButtonIcon isIconFlipped onClick={onPreviousStep}>
-                      {translate('VoteInterface.buttonPreviousStep')}
-                    </ButtonIcon>
+                    <PaperTicket>
+                      <ButtonIcon
+                        disabled={!winnerArtworkId}
+                        onClick={onNextStep}
+                      >
+                        {translate('VoteInterface.buttonNextStep')}
+                      </ButtonIcon>
+                    </PaperTicket>
+                  </PaperContainerStyle>
+                </Fragment>
+              ) : (
+                <Fragment>
+                  <VoteCreditsBar
+                    left={creditLeft[ARTWORK_STEP]}
+                    total={creditTotal[ARTWORK_STEP]}
+                  />
 
-                    <ButtonIcon onClick={onVote}>
-                      {translate('VoteInterface.buttonVote')}
-                    </ButtonIcon>
-                  </SpacingGroupStyle>
-                </PaperTicket>
-              </PaperContainerStyle>
-            </Fragment>
+                  <PaperContainerStyle>
+                    <PaperTicket>
+                      <BoxFramed>
+                        <HeadingPrimaryStyle>
+                          {artworkQuestionData.title}
+                        </HeadingPrimaryStyle>
+                      </BoxFramed>
+                    </PaperTicket>
+
+                    {properties.map((property) => {
+                      return (
+                        <VoteInterfaceProperty
+                          answerId={property.answerId}
+                          credit={credits[ARTWORK_STEP][property.answerId]}
+                          creditTotal={creditTotal[ARTWORK_STEP]}
+                          key={property.id}
+                          title={property.title}
+                          onCreditChange={onCreditChange}
+                        />
+                      );
+                    })}
+
+                    <PaperTicket>
+                      <SpacingGroupStyle>
+                        <ButtonIcon isIconFlipped onClick={onPreviousStep}>
+                          {translate('VoteInterface.buttonPreviousStep')}
+                        </ButtonIcon>
+
+                        <ButtonIcon
+                          disabled={!hasVotedOnArtworks}
+                          onClick={onVote}
+                        >
+                          {translate('VoteInterface.buttonVote')}
+                        </ButtonIcon>
+                      </SpacingGroupStyle>
+                    </PaperTicket>
+                  </PaperContainerStyle>
+                </Fragment>
+              )}
+            </ColorSection>
           )}
-        </ColorSection>
+        </Fragment>
       )}
     </Fragment>
   );
@@ -367,8 +443,11 @@ const VoteInterfaceProperty = (props) => {
 };
 
 VoteInterface.propTypes = {
-  festivalAnswerIds: PropTypes.array.isRequired,
+  boothSignature: PropTypes.string.isRequired,
+  festivalAnswerIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   festivalQuestionId: PropTypes.number.isRequired,
+  nonce: PropTypes.number.isRequired,
+  senderAddress: PropTypes.string.isRequired,
 };
 
 VoteInterfaceArtwork.propTypes = {

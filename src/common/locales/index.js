@@ -112,8 +112,12 @@ const middlewares = {
 
 const store = {
   app: {
-    notificationTokenSuccess: 'Login successful! Welcome!',
     errorTokenFailure: 'Login failed, please try again.',
+    notificationTokenSuccess: 'Login successful! Welcome!',
+  },
+  booth: {
+    errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
+    notificationVoteSuccess: 'Thank you!',
   },
 };
 

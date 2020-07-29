@@ -62,8 +62,11 @@ const Vote = () => {
       <View>
         {isVoteReady ? (
           <VoteInterface
+            boothSignature={vote.boothSignature}
             festivalAnswerIds={vote.festivalAnswerIds}
             festivalQuestionId={vote.festivalQuestionId}
+            nonce={vote.nonce}
+            senderAddress={vote.address}
           />
         ) : (
           <Scanner onDetected={onQRScanned} onError={onScannerError} />

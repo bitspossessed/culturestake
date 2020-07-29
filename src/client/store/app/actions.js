@@ -1,6 +1,5 @@
-import translate from '~/common/services/i18n';
-
 import ActionTypes from '~/client/store/app/types';
+import translate from '~/common/services/i18n';
 import { NOTIFICATION } from '~/client/middlewares/notifications';
 import { NotificationsTypes } from '~/client/store/notifications/actions';
 import { generateRequestId } from '~/client/middlewares/api';
