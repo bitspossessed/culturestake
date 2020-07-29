@@ -7,8 +7,11 @@ import { useDispatch } from 'react-redux';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import ColorSection from '~/client/components/ColorSection';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
+import { ParagraphStyle } from '~/client/styles/typography';
+import { SpacingGroupStyle } from '~/client/styles/layout';
 
 const Scanner = ({ onDetected, onError }) => {
   const ref = useRef();
@@ -73,7 +76,15 @@ const Scanner = ({ onDetected, onError }) => {
   return (
     !isError && (
       <ScannerStyle isReady={isReady}>
-        <ScannerVideoStyle ref={ref} />
+        <SpacingGroupStyle>
+          <ScannerVideoStyle ref={ref} />
+
+          <ColorSection>
+            <ParagraphStyle>
+              {translate('Scanner.bodyDescription')}
+            </ParagraphStyle>
+          </ColorSection>
+        </SpacingGroupStyle>
       </ScannerStyle>
     )
   );
@@ -94,6 +105,7 @@ const ScannerStyle = styled.div`
   background-color: rgba(255, 255, 255, 0.1);
 
   align-items: center;
+  flex-direction: column;
   justify-content: center;
 `;
 

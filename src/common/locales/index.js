@@ -67,6 +67,7 @@ const components = {
     titleFestivals: 'Festivals:',
   },
   Scanner: {
+    bodyDescription: 'Use camera to scan code',
     notificationError: 'Camera could not be activated: {error}',
   },
   Table: {
