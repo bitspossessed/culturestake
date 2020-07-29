@@ -54,6 +54,7 @@ export const useRequest = (requestId, { onError, onSuccess } = {}) => {
   }, [isError, isSuccess]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return {
+    response,
     isError,
     isPending,
     isSuccess,
@@ -64,22 +65,10 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
   const requestId = useResourceId(path);
   const dispatch = useDispatch();
 
-  const {
-    isError = false,
-    isPending = false,
-    isSuccess = false,
-    error = null,
-  } = useSelector((state) => {
-    return state.api.requests[requestId] || {};
+  const { response, isPending = false } = useRequest(requestId, {
+    onError,
+    onSuccess,
   });
-
-  const response = useMemo(() => {
-    if (isSuccess) {
-      return getCached(requestId);
-    }
-
-    return {};
-  }, [isSuccess, requestId]);
 
   const pathStr = path.join('/');
 
@@ -95,14 +84,6 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
       }),
     );
   }, [requestId, dispatch, pathStr]);
-
-  useEffect(() => {
-    if (isError && onError) {
-      onError(error);
-    } else if (isSuccess && onSuccess) {
-      onSuccess(response);
-    }
-  }, [isError, isSuccess]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return [response, isPending];
 };
