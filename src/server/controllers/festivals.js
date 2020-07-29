@@ -4,9 +4,9 @@ import {
   FestivalBelongsToManyArtworks,
   FestivalHasManyDocuments,
   FestivalHasManyImages,
+  baseFileFields,
+  imageFileFields,
 } from '~/server/database/associations';
-
-const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Festival,
@@ -21,12 +21,7 @@ const options = {
     {
       association: FestivalHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...baseFileFields,
-        'urlThreshold',
-        'urlThresholdThumb',
-        'urlThumb',
-      ],
+      fields: [...imageFileFields],
     },
     {
       association: FestivalHasManyDocuments,

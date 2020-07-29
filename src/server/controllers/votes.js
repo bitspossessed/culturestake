@@ -20,8 +20,8 @@ const answerAssociation = {
 
 const options = {
   model: Question,
-  fields: ['answers', 'chainId', 'title'],
-  fieldsProtected: ['artworkId', 'festivalId'],
+  fields: ['answers', 'title'],
+  fieldsProtected: ['artworkId', 'chainId', 'festivalId'],
   include: [QuestionHasManyAnswers],
   associations: [answerAssociation],
   customFilter: topThreeFilter,

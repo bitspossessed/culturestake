@@ -11,7 +11,7 @@ const PaperStamp = (props) => {
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
 
   return (
-    <PaperStampStyle scheme={innerScheme}>
+    <PaperStampStyle isDisabled={props.isDisabled} scheme={innerScheme}>
       <PaperStampLine position="top" />
       <Paper scheme={innerScheme}>{props.children}</Paper>
       <PaperStampLine position="bottom" />
@@ -121,6 +121,23 @@ const PaperStampStyle = styled.div`
     }
   }
 
+  &::after {
+    position: absolute;
+
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: ${styles.layers.PaperStampDisabled};
+
+    display: ${(props) => (props.isDisabled ? 'block' : 'none')};
+
+    content: '';
+
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+
   ${/* sc-selector */ PaperStampDotsItemStyle},
   ${/* sc-selector */ PaperStampLargeDotStyle} {
     background-color: ${(props) => {
@@ -142,6 +159,7 @@ const PaperStampStyle = styled.div`
 
 PaperStamp.propTypes = {
   children: PropTypes.node,
+  isDisabled: PropTypes.bool,
   scheme: PropTypes.string,
 };
 

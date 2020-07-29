@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import ColorSection from '~/client/components/ColorSection';
-import FramedBox from '~/client/components/FramedBox';
+import BoxFramed from '~/client/components/BoxFramed';
 import Loading from '~/client/components/Loading';
 import Paper from '~/client/components/Paper';
 import PaperTicket from '~/client/components/PaperTicket';
@@ -59,12 +59,12 @@ const FestivalsProfile = () => {
               </Paper>
 
               <PaperTicket>
-                <FramedBox>
+                <BoxFramed>
                   <HeadingSecondaryStyle>
                     Example question?
                     {/* @TODO */}
                   </HeadingSecondaryStyle>
-                </FramedBox>
+                </BoxFramed>
               </PaperTicket>
             </PaperContainerStyle>
           </Fragment>

@@ -5,29 +5,29 @@ import styled from 'styled-components';
 import InlineSVG from '~/client/components/InlineSVG';
 import corner from '~/client/assets/images/corner.svg';
 
-const FramedBox = ({ children, ...props }) => {
+const BoxFramed = ({ children, ...props }) => {
   return (
-    <FramedBoxStyle {...props}>
+    <BoxFramedStyle {...props}>
       {children}
-      <FramedBoxCorner left top />
-      <FramedBoxCorner right top />
-      <FramedBoxCorner bottom left />
-      <FramedBoxCorner bottom right />
-    </FramedBoxStyle>
+      <BoxFramedCorner left top />
+      <BoxFramedCorner right top />
+      <BoxFramedCorner bottom left />
+      <BoxFramedCorner bottom right />
+    </BoxFramedStyle>
   );
 };
 
-const FramedBoxCorner = (props) => {
+const BoxFramedCorner = (props) => {
   return (
     <Suspense fallback={null}>
-      <FramedBoxCornerStyle {...props}>
+      <BoxFramedCornerStyle {...props}>
         <InlineSVG url={corner} />
-      </FramedBoxCornerStyle>
+      </BoxFramedCornerStyle>
     </Suspense>
   );
 };
 
-const FramedBoxStyle = styled.div`
+const BoxFramedStyle = styled.div`
   position: relative;
 
   display: flex;
@@ -42,7 +42,7 @@ const FramedBoxStyle = styled.div`
   justify-content: center;
 `;
 
-export const FramedBoxCornerStyle = styled.div`
+export const BoxFramedCornerStyle = styled.div`
   position: absolute;
 
   top: ${(props) => (props.top ? '0' : null)};
@@ -68,15 +68,15 @@ export const FramedBoxCornerStyle = styled.div`
   );
 `;
 
-FramedBox.propTypes = {
+BoxFramed.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-FramedBoxCorner.propTypes = {
+BoxFramedCorner.propTypes = {
   bottom: PropTypes.bool,
   left: PropTypes.bool,
   right: PropTypes.bool,
   top: PropTypes.bool,
 };
 
-export default FramedBox;
+export default BoxFramed;

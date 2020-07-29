@@ -23,20 +23,36 @@ export function filterResponseFields(req, data, options) {
   // Filter association responses as well
   if (options.associations) {
     options.associations.forEach(
-      ({ association, fields = [], fieldsProtected = [] }) => {
+      ({
+        association,
+        fields = [],
+        fieldsProtected = [],
+        associations = [],
+      }) => {
         const { as } = association;
 
-        if (as in data) {
-          const newData = data[as].reduce((acc, item) => {
-            acc.push(
-              filterResponseFields(req, item, {
-                fields,
-                fieldsProtected,
-              }),
-            );
+        if (as in data && data[as]) {
+          let newData;
 
-            return acc;
-          }, []);
+          if (Array.isArray(data[as])) {
+            newData = data[as].reduce((acc, item) => {
+              acc.push(
+                filterResponseFields(req, item, {
+                  fields,
+                  fieldsProtected,
+                  associations,
+                }),
+              );
+
+              return acc;
+            }, []);
+          } else {
+            newData = filterResponseFields(req, data[as], {
+              fields,
+              fieldsProtected,
+              associations,
+            });
+          }
 
           data.set(as, newData, {
             raw: true,

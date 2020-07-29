@@ -1,7 +1,9 @@
 import express from 'express';
 
 import Festival from '~/server/models/festival';
-import authMiddleware from '~/server/middlewares/passport';
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from '~/server/middlewares/passport';
 import festivalsController from '~/server/controllers/festivals';
 import festivalsValidation from '~/server/validations/festivals';
 import resourcesMiddleware from '~/server/middlewares/resources';
@@ -22,12 +24,14 @@ router.put(
 
 router.get(
   '/',
+  optionalAuthMiddleware,
   validate(festivalsValidation.readAll),
   festivalsController.readAll,
 );
 
 router.get(
   '/:slug',
+  optionalAuthMiddleware,
   validate(festivalsValidation.read),
   getFestivalResource,
   festivalsController.read,

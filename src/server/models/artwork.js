@@ -2,6 +2,9 @@ import SequelizeSlugify from 'sequelize-slugify';
 import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
+import { generateRandomString } from '~/server/services/crypto';
+
+const BARCODE_LENGTH = 8;
 
 const Artwork = db.define('artwork', {
   id: {
@@ -12,6 +15,10 @@ const Artwork = db.define('artwork', {
   },
   slug: {
     type: DataTypes.STRING,
+  },
+  barcode: {
+    type: DataTypes.STRING,
+    unique: true,
   },
   title: {
     type: DataTypes.STRING,
@@ -26,10 +33,17 @@ const Artwork = db.define('artwork', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
+  sticker: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Artwork, {
   source: ['title'],
+});
+
+Artwork.addHook('beforeCreate', async (artwork) => {
+  artwork.barcode = generateRandomString(BARCODE_LENGTH);
 });
 
 export default Artwork;

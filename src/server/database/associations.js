@@ -13,6 +13,15 @@ const attachableMixin = {
   constraints: false,
 };
 
+export const baseFileFields = ['fileName', 'fileType', 'url'];
+
+export const imageFileFields = [
+  ...baseFileFields,
+  'urlThreshold',
+  'urlThresholdThumb',
+  'urlThumb',
+];
+
 // Artwork
 
 export const ArtworkHasManyAnswers = Artwork.hasMany(Answer);

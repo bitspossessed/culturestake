@@ -1,24 +1,20 @@
 import Artwork from '~/server/models/artwork';
 import baseController from '~/server/controllers';
 
-import { ArtworkHasManyImages } from '~/server/database/associations';
-
-const baseFileFields = ['fileName', 'fileType', 'url'];
+import {
+  ArtworkHasManyImages,
+  imageFileFields,
+} from '~/server/database/associations';
 
 const options = {
   model: Artwork,
-  fields: ['title', 'description'],
+  fields: ['title', 'description', 'barcode', 'artistId', 'sticker'],
   include: [ArtworkHasManyImages],
   associations: [
     {
       association: ArtworkHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...baseFileFields,
-        'urlThreshold',
-        'urlThresholdThumb',
-        'urlThumb',
-      ],
+      fields: [...imageFileFields],
     },
   ],
 };

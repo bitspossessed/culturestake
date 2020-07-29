@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
@@ -8,7 +9,6 @@ import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
-import { Link } from 'react-router-dom';
 import { PaperContainerStyle, ContainerStyle } from '~/client/styles/layout';
 import { usePaginatedResource } from '~/client/hooks/resources';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';

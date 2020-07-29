@@ -1,4 +1,12 @@
 const components = {
+  BoothContainer: {
+    bodyBoothIsDeactivated: 'Booth was deactivated and is not valid anymore',
+    bodyPendingInitialization: 'Waiting for initialization by admin ...',
+    bodyYourAddress: 'Address:',
+    buttonInitializeBooth: 'Create booth account',
+    buttonBurnBooth: 'Remove booth account',
+    title: 'Voting booth setup',
+  },
   DangerZone: {
     title: 'Danger Zone',
   },
@@ -20,13 +28,6 @@ const components = {
     buttonEnable: 'Enable Ethereum wallet',
     title: 'Smart Contracts Snuggle Panel (SCSP)',
   },
-  Table: {
-    bodyEmpty: 'No entries given',
-    bodyError: 'Something went wrong ...',
-    bodyLoading: 'Loading ...',
-    columnCreatedAt: 'Created at',
-    columnUpdatedAt: 'Updated at',
-  },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
@@ -45,6 +46,13 @@ const components = {
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
   },
+  InputUploadField: {
+    buttonRemoveFile: 'Remove',
+    buttonSelectFiles: 'Select files',
+  },
+  InputStickerField: {
+    buttonGenerateParticles: 'Generate particles',
+  },
   Loading: {
     bodyLoading: 'Loading ...',
   },
@@ -58,15 +66,35 @@ const components = {
     titleAdmin: 'Admin:',
     titleFestivals: 'Festivals:',
   },
-  InputUploadField: {
-    buttonRemoveFile: 'Remove',
-    buttonSelectFiles: 'Select files',
+  Scanner: {
+    notificationError: 'Camera could not be activated: {error}',
   },
-  InputStickerField: {
-    buttonGenerateParticles: 'Generate particles',
+  Table: {
+    bodyEmpty: 'No entries given',
+    bodyError: 'Something went wrong ...',
+    bodyLoading: 'Loading ...',
+    columnCreatedAt: 'Created at',
+    columnUpdatedAt: 'Updated at',
   },
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
+  },
+  VoteSessionCreator: {
+    bodyBoothAddress: 'Booth address:',
+    bodyFestivalChainId: 'Festival ID:',
+    bodySelectedArtworks: {
+      zero: 'No artwork selected',
+      one: 'Selected one artwork',
+      other: 'Selected {count} artworks',
+    },
+    buttonCreateVoteSession: 'Create vote session',
+    buttonManualOverride: 'Manual override',
+    buttonReset: 'Reset',
+    buttonVoteOnBooth: 'Vote here',
+    notificationAddedArtwork: 'Activated {title}',
+    notificationInvalidData: 'Inconsistent data to create vote',
+    titleAdmin: 'Admin',
+    titleStartVote: 'Start vote session',
   },
 };
 
