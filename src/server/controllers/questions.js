@@ -18,8 +18,7 @@ const artworkFields = [
 
 const options = {
   model: Question,
-  fields: ['title', 'slug', 'answers'],
-  fieldsProtected: ['chainId', 'artworkId', 'festivalId'],
+  fields: ['title', 'chainId', 'artworkId', 'festivalId', 'slug', 'answers'],
 };
 
 const optionsRead = {
