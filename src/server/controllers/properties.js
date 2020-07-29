@@ -1,9 +1,10 @@
 import Property from '~/server/models/property';
 import baseController from '~/server/controllers';
+import { propertyFields } from '~/server/database/associations';
 
 const options = {
   model: Property,
-  fields: ['title'],
+  fields: [...propertyFields],
 };
 
 function create(req, res, next) {

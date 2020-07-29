@@ -5,20 +5,15 @@ import {
   AnswerBelongsToProperty,
   ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
+  answerFields,
+  artworkFields,
+  propertyFields,
+  questionFields,
 } from '~/server/database/associations';
-
-const artworkFields = [
-  'artist',
-  'artistId',
-  'barcode',
-  'description',
-  'subtitle',
-  'title',
-];
 
 const options = {
   model: Question,
-  fields: ['title', 'chainId', 'artworkId', 'festivalId', 'slug', 'answers'],
+  fields: [...questionFields],
 };
 
 const optionsRead = {
@@ -38,7 +33,7 @@ const optionsRead = {
   associations: [
     {
       association: QuestionHasManyAnswers,
-      fields: ['artwork', 'artworkId', 'property', 'propertyId', 'questionId'],
+      fields: [...answerFields],
       associations: [
         {
           association: AnswerBelongsToArtwork,
@@ -46,13 +41,13 @@ const optionsRead = {
           associations: [
             {
               association: ArtworkBelongsToArtist,
-              fields: ['name', 'bio'],
+              fields: [...artworkFields],
             },
           ],
         },
         {
           association: AnswerBelongsToProperty,
-          fields: ['title'],
+          fields: [...propertyFields],
         },
       ],
     },

@@ -1,9 +1,10 @@
 import Answer from '~/server/models/answer';
 import baseController from '~/server/controllers';
+import { answerFields } from '~/server/database/associations';
 
 const options = {
   model: Answer,
-  fields: ['type', 'artworkId', 'propertyId'],
+  fields: [...answerFields],
   fieldsProtected: ['chainId'],
 };
 

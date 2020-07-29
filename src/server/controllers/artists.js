@@ -3,12 +3,14 @@ import baseController from '~/server/controllers';
 import {
   ArtistHasManyArtworks,
   ArtistHasManyImages,
+  artistFields,
+  artworkFields,
   imageFileFields,
 } from '~/server/database/associations';
 
 const options = {
   model: Artist,
-  fields: ['name', 'bio', 'consentToDataReveal', 'images', 'artworks'],
+  fields: [...artistFields],
   include: [ArtistHasManyImages, ArtistHasManyArtworks],
   associations: [
     {
@@ -19,7 +21,7 @@ const options = {
     {
       association: ArtistHasManyArtworks,
       destroyCascade: false,
-      fields: ['title', 'description'],
+      fields: [...artworkFields],
     },
   ],
 };
