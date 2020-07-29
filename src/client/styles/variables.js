@@ -73,7 +73,7 @@ const layers = {
   PaperStamp: 3300,
   PaperStampDisabled: 3500,
   VoteCreditsBar: 5000,
-  VoteSessionCreatorScanner: 6000,
+  Scanner: 6000,
   VoteSessionCreatorAdmin: 7000,
   Navigation: 9000,
   ThreeInterfaceElement: 10000,
