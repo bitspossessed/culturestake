@@ -171,7 +171,6 @@ const InputUploadField = ({
     dispatch(
       postRequest({
         id: requestId,
-        isResponseKept: true,
         path: isImageUpload ? ['uploads', 'images'] : ['uploads', 'documents'],
         body: [...files].reduce((acc, file) => {
           acc.append('files', file, file.name);

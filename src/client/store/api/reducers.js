@@ -9,13 +9,11 @@ const initialRequestState = {
   id: undefined,
   createdAt: undefined,
   updatedAt: undefined,
-  isResponseKept: false,
   isError: false,
   isFinished: false,
   isPending: false,
   isSuccess: false,
   error: null,
-  response: null,
 };
 
 const initialState = {
@@ -29,13 +27,12 @@ const apiReducer = (state = initialState, action) => {
       // Add new request to list
       const addedRequestState = update(state, {
         requests: {
-          $merge: {
+          $set: {
             [action.id]: Object.assign({}, initialRequestState, {
               id: action.id,
               createdAt: DateTime.local().toISO(),
               updatedAt: DateTime.local().toISO(),
               isPending: true,
-              isResponseKept: action.isResponseKept == true,
             }),
           },
         },
@@ -63,15 +60,12 @@ const apiReducer = (state = initialState, action) => {
     case ActionTypes.API_SUCCESS: {
       return update(state, {
         requests: {
-          $merge: {
+          $set: {
             [action.id]: Object.assign({}, state.requests[action.id], {
               updatedAt: DateTime.local().toISO(),
               isFinished: true,
               isPending: false,
               isSuccess: true,
-              response: state.requests[action.id].isResponseKept
-                ? action.response
-                : null,
             }),
           },
         },
@@ -81,7 +75,7 @@ const apiReducer = (state = initialState, action) => {
     case ActionTypes.API_FAILURE:
       return update(state, {
         requests: {
-          $merge: {
+          $set: {
             [action.id]: Object.assign({}, state.requests[action.id], {
               updatedAt: DateTime.local().toISO(),
               isError: true,

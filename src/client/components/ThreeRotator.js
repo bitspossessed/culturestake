@@ -20,7 +20,6 @@ const possibleRotations = [
 const ThreeRotator = ({ children, ...props }) => {
   const ref = useRef();
 
-  const [originalRotation, setOriginalRotation] = useState(new Vector3());
   const [targetRotation, setTargetRotation] = useState(new Vector3());
 
   const animate = () => {
@@ -28,7 +27,7 @@ const ThreeRotator = ({ children, ...props }) => {
       .clone()
       .multiply(randomFromArray(possibleRotations));
 
-    setTargetRotation(originalRotation.add(target));
+    setTargetRotation(new Vector3().fromArray(props.rotation).add(target));
   };
 
   useFrame((state, delta) => {
@@ -42,8 +41,6 @@ const ThreeRotator = ({ children, ...props }) => {
 
   useEffect(() => {
     const initialRotation = new Vector3().fromArray(props.rotation);
-
-    setOriginalRotation(initialRotation);
     setTargetRotation(initialRotation);
   }, [props.rotation]);
 

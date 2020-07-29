@@ -2,13 +2,14 @@ import ActionTypes from '~/client/store/api/types';
 import apiRequest from '~/client/services/api';
 import web3 from '~/common/services/web3';
 import { API_REQUEST } from '~/client/store/api/actions';
+import { setCached } from '~/client/services/cache';
 
 export function generateRequestId() {
   return web3.utils.randomHex(16).slice(2);
 }
 
-export function generateResourceId(path) {
-  return web3.utils.sha3(path.join()).slice(2, 18);
+export function generateResourceId(pathStr) {
+  return web3.utils.sha3(pathStr).slice(2, 34);
 }
 
 const apiMiddleware = (store) => (next) => async (action) => {
@@ -30,7 +31,6 @@ const apiMiddleware = (store) => (next) => async (action) => {
 
   store.dispatch({
     type: ActionTypes.API_REQUEST,
-    isResponseKept: action[API_REQUEST].isResponseKept,
     id,
   });
 
@@ -43,6 +43,9 @@ const apiMiddleware = (store) => (next) => async (action) => {
       token: app.token,
     });
 
+    // Store data in cache, not in redux store
+    setCached(id, response);
+
     if (types.success && types.success.type) {
       store.dispatch({ ...types.success, response });
     }
@@ -50,7 +53,6 @@ const apiMiddleware = (store) => (next) => async (action) => {
     store.dispatch({
       type: ActionTypes.API_SUCCESS,
       id,
-      response,
     });
   } catch (error) {
     if (types.failure && types.failure.type) {

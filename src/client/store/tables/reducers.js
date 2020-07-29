@@ -17,7 +17,6 @@ const initialState = {
   pageSize: DEFAULT_LIMIT,
   pageIndex: 0,
   pagesTotal: 1,
-  results: [],
 };
 
 const tablesReducer = (state = initialState, action) => {
@@ -32,7 +31,6 @@ const tablesReducer = (state = initialState, action) => {
         pageSize: { $set: action.meta.pageSize },
         pageIndex: { $set: action.meta.pageIndex },
         pagesTotal: { $set: 1 },
-        results: { $set: [] },
       });
     case ActionTypes.TABLES_REQUEST_SUCCESS: {
       const pagesTotal = Math.ceil(
@@ -42,7 +40,6 @@ const tablesReducer = (state = initialState, action) => {
       return update(state, {
         isLoading: { $set: false },
         isSuccess: { $set: true },
-        results: { $set: action.response.results },
         pagesTotal: { $set: pagesTotal },
       });
     }

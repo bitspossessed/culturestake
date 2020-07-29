@@ -14,10 +14,12 @@ export function requestTable({
   pageIndex = 0,
   orderDirection = DEFAULT_ORDER_DIRECTION,
   orderKey = DEFAULT_ORDER_KEY,
+  requestId,
 }) {
   return getRequest(
     {
       path,
+      id: requestId,
       params: {
         limit: pageSize,
         offset: pageIndex * pageSize,

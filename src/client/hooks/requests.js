@@ -6,12 +6,25 @@ import {
   generateRequestId,
   generateResourceId,
 } from '~/client/middlewares/api';
+import { getCached } from '~/client/services/cache';
 import { getRequest } from '~/client/store/api/actions';
 
 export const useRequestId = () => {
   return useMemo(() => {
     return generateRequestId();
   }, []);
+};
+
+export const useResourceId = (path) => {
+  const pathStr = path.join('');
+
+  return useMemo(() => {
+    if (pathStr.length === 0) {
+      return null;
+    }
+
+    return generateResourceId(pathStr);
+  }, [pathStr]);
 };
 
 export const useRequest = (requestId, { onError, onSuccess } = {}) => {
@@ -41,7 +54,7 @@ export const useRequest = (requestId, { onError, onSuccess } = {}) => {
 };
 
 export const useResource = (path, { onError, onSuccess } = {}) => {
-  const requestId = path.length === 0 ? null : generateResourceId(path);
+  const requestId = useResourceId(path);
   const dispatch = useDispatch();
 
   const {
@@ -49,10 +62,17 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
     isPending = false,
     isSuccess = false,
     error = null,
-    response,
   } = useSelector((state) => {
     return state.api.requests[requestId] || {};
   });
+
+  const response = useMemo(() => {
+    if (isSuccess) {
+      return getCached(requestId);
+    }
+
+    return {};
+  }, [isSuccess, requestId]);
 
   const pathStr = path.join('/');
 
@@ -65,7 +85,6 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
       getRequest({
         path: pathStr.split('/'),
         id: requestId,
-        isResponseKept: true,
       }),
     );
   }, [requestId, dispatch, pathStr]);
@@ -78,7 +97,7 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
     }
   }, [isError, isSuccess]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return [response || {}, isPending];
+  return [response, isPending];
 };
 
 export const usePaginatedResource = (path, body = { orderKey: 'title' }) => {

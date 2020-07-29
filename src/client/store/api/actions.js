@@ -1,17 +1,9 @@
 export const API_REQUEST = Symbol('api-request');
 
-function apiRequest(
-  path,
-  method = 'GET',
-  id = null,
-  body = null,
-  isResponseKept = false,
-  types = {},
-) {
+function apiRequest(path, method = 'GET', id = null, body = null, types = {}) {
   return {
     [API_REQUEST]: {
       id,
-      isResponseKept,
       path,
       body,
       method,
@@ -20,16 +12,16 @@ function apiRequest(
   };
 }
 
-export function putRequest({ path, body, id, isResponseKept }, types) {
-  return apiRequest(path, 'PUT', id, body, isResponseKept, types);
+export function putRequest({ path, body, id }, types) {
+  return apiRequest(path, 'PUT', id, body, types);
 }
 
-export function getRequest({ path, params, id, isResponseKept }, types) {
-  return apiRequest(path, 'GET', id, params, isResponseKept, types);
+export function getRequest({ path, params, id }, types) {
+  return apiRequest(path, 'GET', id, params, types);
 }
 
-export function postRequest({ path, body, id, isResponseKept }, types) {
-  return apiRequest(path, 'POST', id, body, isResponseKept, types);
+export function postRequest({ path, body, id }, types) {
+  return apiRequest(path, 'POST', id, body, types);
 }
 
 export function destroyRequest({ path, body, id }, types) {

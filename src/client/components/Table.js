@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { DateTime } from 'luxon';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -8,7 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonOutline from '~/client/components/ButtonOutline';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
-
+import { getCached } from '~/client/services/cache';
+import { useResourceId } from '~/client/hooks/requests';
 import {
   DEFAULT_LIMIT,
   DEFAULT_ORDER_DIRECTION,
@@ -54,6 +55,7 @@ const Table = ({
   onSelect,
 }) => {
   const dispatch = useDispatch();
+  const requestId = useResourceId(path);
 
   const location = useLocation();
   const history = useHistory();
@@ -62,6 +64,14 @@ const Table = ({
   const [orderKey, setOrderKey] = useState(initialOrderKey);
 
   const tables = useSelector((state) => state.tables);
+
+  const results = useMemo(() => {
+    if (tables.isSuccess) {
+      return getCached(requestId).results;
+    }
+
+    return [];
+  }, [tables.isSuccess, requestId]);
 
   const pathString = path.join('/');
   const colSpan = DEFAULT_HEADERS.length + columns.length + 1;
@@ -93,6 +103,7 @@ const Table = ({
         pageSize,
         pageIndex,
         path,
+        requestId,
       }),
     );
   }, [
@@ -103,6 +114,7 @@ const Table = ({
     pageSize,
     path,
     pathString,
+    requestId,
   ]);
 
   const onSelectHeader = ({ key }) => {
@@ -144,7 +156,7 @@ const Table = ({
         isError={tables.isError}
         isLoading={tables.isLoading}
         offset={tables.pageSize * tables.pageIndex}
-        results={tables.results}
+        results={results}
         onSelect={onSelectRow}
       />
 
