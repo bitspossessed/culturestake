@@ -1,6 +1,7 @@
 import update from 'immutability-helper';
 
 import ActionTypes from '~/client/store/booth/types';
+import { setNonce } from '~/client/services/nonce';
 
 const initialState = {
   address: null,
@@ -28,11 +29,15 @@ const boothReducer = (state = initialState, action) => {
       return update(state, {
         isVotePending: { $set: true },
       });
-    case ActionTypes.BOOTH_VOTE_SUCCESS:
+    case ActionTypes.BOOTH_VOTE_SUCCESS: {
+      const nonce = state.nonce + 1;
+      setNonce(nonce);
+
       return update(state, {
-        nonce: { $set: state.nonce + 1 },
+        nonce: { $set: nonce },
         isVotePending: { $set: false },
       });
+    }
     case ActionTypes.BOOTH_VOTE_FAILURE:
       return update(state, {
         isVotePending: { $set: false },

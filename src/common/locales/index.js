@@ -81,8 +81,10 @@ const components = {
     voteCredits: 'Vote Credits',
   },
   VoteInterface: {
+    bodyYourVotesRecorded: 'Your votes have been recorded.',
     buttonNextStep: 'Next',
     buttonPreviousStep: 'Return',
+    buttonToHomepage: 'Back to Homepage',
     buttonVote: 'Vote',
   },
   VoteSessionCreator: {

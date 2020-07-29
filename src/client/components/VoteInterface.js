@@ -1,22 +1,26 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, Suspense, useEffect, useState, useMemo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
+import HorizontalLine from '~/client/components/HorizontalLine';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import SnuggleRain from '~/client/components/SnuggleRain';
 import SnuggleSlider from '~/client/components/SnuggleSlider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
+import ThreeCanvas from '~/client/components/ThreeCanvas';
+import ThreeThankYou from '~/client/components/ThreeThankYou';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
 import translate from '~/common/services/i18n';
 import web3 from '~/common/services/web3';
 import {
   HeadingPrimaryStyle,
   HeadingSecondaryStyle,
+  ParagraphStyle,
 } from '~/client/styles/typography';
 import { PaperContainerStyle, SpacingGroupStyle } from '~/client/styles/layout';
 import { VOTE_ACCOUNT_NAME } from '~/client/store/vote/actions';
@@ -39,6 +43,7 @@ const VoteInterface = ({
   senderAddress,
 }) => {
   const dispatch = useDispatch();
+  const { isAlternateColor } = useSelector((state) => state.app);
 
   const [currentStep, setCurrentStep] = useState(FESTIVAL_STEP);
   const [hasVoted, setHasVoted] = useState(false);
@@ -279,7 +284,31 @@ const VoteInterface = ({
   return (
     <Fragment>
       {hasVoted ? (
-        <Fragment>Thank you!</Fragment>
+        <ColorSection>
+          <PaperContainerStyle>
+            <PaperTicket>
+              <BoxFramed>
+                <ThreeCanvas style={{ height: '30rem' }}>
+                  <Suspense fallback={null}>
+                    <ThreeThankYou isAlternateColor={isAlternateColor} />
+                  </Suspense>
+                </ThreeCanvas>
+              </BoxFramed>
+            </PaperTicket>
+
+            <PaperTicket>
+              <ParagraphStyle>
+                {translate('VoteInterface.bodyYourVotesRecorded')}
+              </ParagraphStyle>
+
+              <HorizontalLine />
+
+              <ButtonIcon to="/">
+                {translate('VoteInterface.buttonToHomepage')}
+              </ButtonIcon>
+            </PaperTicket>
+          </PaperContainerStyle>
+        </ColorSection>
       ) : (
         <Fragment>
           <SnuggleRain snuggleness={snuggleness} />
