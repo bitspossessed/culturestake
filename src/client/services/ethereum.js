@@ -5,9 +5,21 @@ if (window.ethereum) {
   window.ethereum.autoRefreshOnNetworkChange = false;
 }
 
+let provider;
+
 export async function detectMetaMask() {
-  return await detectEthereumProvider({
+  provider = await detectEthereumProvider({
     mustBeMetaMask: true,
     timeout: 5000,
   });
+
+  return provider;
+}
+
+export async function enableProvider() {
+  if (!provider) {
+    throw new Error('Provider not given');
+  }
+
+  return await provider.enable();
 }

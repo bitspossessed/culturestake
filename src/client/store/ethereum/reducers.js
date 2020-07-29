@@ -11,8 +11,8 @@ const initialTransactionState = {
 
 const initialState = {
   account: undefined,
+  hasProvider: false,
   isOwner: false,
-  provider: null,
   transactions: {},
 };
 
@@ -20,7 +20,7 @@ const ethereumReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.ETHEREUM_INITIALIZE:
       return update(state, {
-        provider: { $set: action.meta.provider },
+        hasProvider: { $set: action.meta.hasProvider },
       });
     case ActionTypes.ETHEREUM_ACCOUNT_CHANGED:
       return update(state, {
