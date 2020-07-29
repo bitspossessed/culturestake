@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import BoxRounded from '~/client/components/BoxRounded';
 import ButtonIcon from '~/client/components/ButtonIcon';
@@ -32,9 +33,15 @@ import {
   PaperContainerStyle,
   SpacingGroupStyle,
 } from '~/client/styles/layout';
+import { BOOTH_ACCOUNT_NAME } from '~/client/store/booth/actions';
 import { ParagraphStyle } from '~/client/styles/typography';
-import { encodeVoteData, signBooth } from '~/common/services/vote';
+import {
+  decodeVoteData,
+  encodeVoteData,
+  signBooth,
+} from '~/common/services/vote';
 import { getPrivateKey } from '~/client/services/wallet';
+import { initializeVote } from '~/client/store/vote/actions';
 import { useResource } from '~/client/hooks/resources';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
@@ -42,6 +49,7 @@ const ADMIN_KEY = 77; // Key [M] (+ [SHIFT])
 
 const VoteSessionCreator = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { address, festivalChainId, nonce } = useSelector(
     (state) => state.booth,
@@ -161,23 +169,39 @@ const VoteSessionCreator = () => {
     setIsLoading(true);
     setIsAdminVisible(false);
 
-    const signature = signBooth({
+    const boothSignature = signBooth({
       festivalAnswerIds,
-      privateKey: getPrivateKey(),
+      privateKey: getPrivateKey(BOOTH_ACCOUNT_NAME),
       nonce,
     });
 
     setVoteData(
       encodeVoteData({
+        boothSignature,
         festivalAnswerIds,
         festivalQuestionId,
         nonce,
-        signature,
       }),
     );
 
     setIsLoading(false);
   }, [nonce, festivalAnswerIds, festivalQuestionId]);
+
+  const onVoteOnBooth = async () => {
+    setIsLoading(true);
+
+    // Put vote data in store
+    dispatch(initializeVote(decodeVoteData(voteData)));
+
+    // Reset voting booth
+    onReset();
+
+    // Show spinner (because its fun!)
+    await new Promise((resolve) => window.setTimeout(resolve, 500));
+
+    // Redirect to vote page
+    history.push('/vote');
+  };
 
   const onReset = () => {
     setVoteData(null);
@@ -242,9 +266,7 @@ const VoteSessionCreator = () => {
       )}
 
       {!isManual && !isVoteCreated && (
-        <VoteSessionCreatorScannerStyle>
-          <Scanner onDetected={onBarcodeScanned} onError={onManualOverride} />
-        </VoteSessionCreatorScannerStyle>
+        <Scanner onDetected={onBarcodeScanned} onError={onManualOverride} />
       )}
 
       {isLoading || isArtworksLoading ? (
@@ -259,7 +281,7 @@ const VoteSessionCreator = () => {
                 <QRCode data={voteData} />
 
                 <SpacingGroupStyle>
-                  <ButtonIcon to={`/vote/${voteData}`}>
+                  <ButtonIcon onClick={onVoteOnBooth}>
                     {translate('VoteSessionCreator.buttonVoteOnBooth')}
                   </ButtonIcon>
 
@@ -275,11 +297,11 @@ const VoteSessionCreator = () => {
                 return (
                   <VoteSessionCreatorArtwork
                     answerId={artwork.answerId}
-                    artistName={artwork.artist.name}
                     images={artwork.images}
                     isSelected={festivalAnswerIds.includes(artwork.answerId)}
                     key={artwork.id}
                     stickerCode={artwork.sticker}
+                    subtitle={artwork.subtitle}
                     title={artwork.title}
                     onToggle={onManualToggle}
                   />
@@ -308,7 +330,7 @@ const VoteSessionCreatorArtwork = (props) => {
 
         <StickerHeading
           scheme={scheme}
-          subtitle={props.artistName}
+          subtitle={props.subtitle}
           title={props.title}
         />
       </PaperStamp>
@@ -327,35 +349,17 @@ const VoteSessionCreatorAdminStyle = styled.div`
   width: 30rem;
 `;
 
-const VoteSessionCreatorScannerStyle = styled.div`
-  position: fixed;
-
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  z-index: ${styles.layers.VoteSessionCreatorScanner};
-
-  display: flex;
-
-  background-color: rgba(255, 255, 255, 0.1);
-
-  align-items: center;
-  justify-content: center;
-`;
-
 const VoteSessionCreatorArtworkStyle = styled.div`
   cursor: pointer;
 `;
 
 VoteSessionCreatorArtwork.propTypes = {
   answerId: PropTypes.number.isRequired,
-  artistName: PropTypes.string.isRequired,
   images: PropTypes.array,
   isSelected: PropTypes.bool.isRequired,
   onToggle: PropTypes.func.isRequired,
   stickerCode: PropTypes.string,
+  subtitle: PropTypes.string,
   title: PropTypes.string.isRequired,
 };
 
