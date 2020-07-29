@@ -8,33 +8,33 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import DangerZone from '~/client/components/DangerZone';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
-import FormProperties from '~/client/components/FormProperties';
+import FormArtists from '~/client/components/FormArtists';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
 
-const AdminPropertiesEdit = () => {
-  const returnUrl = '/admin/properties';
+const AdminArtistsEdit = () => {
+  const returnUrl = '/admin/artists';
   const { slug } = useParams();
   const dispatch = useDispatch();
 
   const { ButtonDelete, Form } = useEditForm({
-    fields: ['title'],
-    resourcePath: ['properties', slug],
+    fields: ['title', 'description', 'images'],
+    resourcePath: ['artists', slug],
     returnUrl,
     onNotFound: () => {
       dispatch(
         notify({
-          text: translate('AdminPropertiesEdit.errorNotFound'),
+          text: translate('AdminArtistsEdit.errorNotFound'),
         }),
       );
     },
     onDeleteSuccess: ({ title }) => {
       dispatch(
         notify({
-          text: translate('AdminPropertiesEdit.notificationDestroySuccess', {
+          text: translate('AdminArtistsEdit.notificationDestroySuccess', {
             title,
           }),
         }),
@@ -43,7 +43,7 @@ const AdminPropertiesEdit = () => {
     onUpdateSuccess: ({ title }) => {
       dispatch(
         notify({
-          text: translate('AdminPropertiesEdit.notificationSuccess', {
+          text: translate('AdminArtistsEdit.notificationSuccess', {
             title,
           }),
         }),
@@ -61,11 +61,11 @@ const AdminPropertiesEdit = () => {
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminPropertiesEdit.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('AdminArtistsEdit.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>
-          <FormProperties />
+          <FormArtists />
 
           <DangerZone>
             <ButtonDelete />
@@ -84,4 +84,4 @@ const AdminPropertiesEdit = () => {
   );
 };
 
-export default AdminPropertiesEdit;
+export default AdminArtistsEdit;

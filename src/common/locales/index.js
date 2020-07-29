@@ -65,6 +65,17 @@ const components = {
   FormProperties: {
     fieldTitle: 'Property:',
   },
+  FormArtworks: {
+    fieldTitle: 'Title:',
+    fieldDescription: 'Description:',
+    fieldImages: 'Artwork images',
+  },
+  FormArtists: {
+    fieldName: 'Name:',
+    fieldBio: 'Bio:',
+    fieldConsentToDataReveal: 'Consent to data reveal:',
+    fieldImages: 'Artwork images',
+  },
   Loading: {
     bodyLoading: 'Loading ...',
   },
@@ -184,6 +195,36 @@ const views = {
   AdminPropertiesEdit: {
     title: 'Edit property',
     notificationSuccess: 'You edited the property {title}.',
+  },
+  AdminArtworks: {
+    buttonNewQuestion: 'Create new artwork',
+    fieldTitle: 'Title',
+    title: 'Artworks',
+  },
+  AdminArtworksNew: {
+    title: 'Create new artwork',
+    notificationSuccess: 'You created the artwork {title}.',
+  },
+  AdminArtworksEdit: {
+    title: 'Edit artwork',
+    notificationSuccess: 'You edited the artwork {title}.',
+    errorNotFound: 'This artwork does not exist',
+    notificationDestroySuccess: 'You deleted the artwork {title}',
+  },
+  AdminArtists: {
+    buttonNewQuestion: 'Create new artist',
+    fieldTitle: 'Title',
+    title: 'Artists',
+  },
+  AdminArtistsNew: {
+    title: 'Create new artist',
+    notificationSuccess: 'You created the artist {title}.',
+  },
+  AdminArtistsEdit: {
+    title: 'Edit artist',
+    notificationSuccess: 'You edited the artist {title}.',
+    errorNotFound: 'This artist does not exist',
+    notificationDestroySuccess: 'You deleted the artist {title}',
   },
   Homepage: {
     bodyIntroduction:
