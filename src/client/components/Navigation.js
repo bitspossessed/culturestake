@@ -15,7 +15,7 @@ import {
   HeadingSecondaryStyle,
 } from '~/client/styles/typography';
 import { resetToken } from '~/client/store/app/actions';
-import { usePaginatedResource } from '~/client/hooks/resources';
+import { usePaginatedResource } from '~/client/hooks/requests';
 
 const Navigation = ({ onClickItem, isExpanded }) => {
   const { isAuthenticated, isAlternateColor } = useSelector(

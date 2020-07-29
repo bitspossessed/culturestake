@@ -10,7 +10,7 @@ import StickerHeading from '~/client/components/StickerHeading';
 import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
 import { PaperContainerStyle, ContainerStyle } from '~/client/styles/layout';
-import { usePaginatedResource } from '~/client/hooks/resources';
+import { usePaginatedResource } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const Festivals = () => {
