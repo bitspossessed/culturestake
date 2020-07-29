@@ -1,20 +1,20 @@
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import mime from 'mime/lite';
+import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
 import ButtonOutline from '~/client/components/ButtonOutline';
 import InputFieldsetRounded from '~/client/components/InputFieldsetRounded';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { imageToBase64 } from '~/client/services/images';
 import { postRequest } from '~/client/store/api/actions';
 import { useField } from '~/client/hooks/forms';
 import { useRequest, useRequestId } from '~/client/hooks/requests';
-import notify, {
-  NotificationsTypes,
-} from '~/client/store/notifications/actions';
 
 const DOCUMENT_FILE_TYPES = ['pdf'];
 const IMAGE_FILE_TYPES = ['jpg', 'jpeg', 'png'];

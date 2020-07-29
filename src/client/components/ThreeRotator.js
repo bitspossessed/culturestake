@@ -6,7 +6,7 @@ import { useFrame } from 'react-three-fiber';
 
 import { randomRange, randomFromArray } from '~/common/utils/random';
 
-const ANIMATION_WAIT_MIN = 10 * 1000;
+const ANIMATION_WAIT_MIN = 20 * 1000;
 const ANIMATION_WAIT_MAX = 60 * 1000;
 
 const eulerVector = new Vector3(Math.PI * 2, Math.PI * 2, Math.PI * 2);
@@ -27,7 +27,15 @@ const ThreeRotator = ({ children, ...props }) => {
       .clone()
       .multiply(randomFromArray(possibleRotations));
 
-    setTargetRotation(new Vector3().fromArray(props.rotation).add(target));
+    setTargetRotation(
+      new Vector3()
+        .fromArray([
+          ref.current.rotation._x,
+          ref.current.rotation._y,
+          ref.current.rotation._z,
+        ])
+        .add(target),
+    );
   };
 
   useFrame((state, delta) => {
@@ -35,8 +43,9 @@ const ThreeRotator = ({ children, ...props }) => {
       return;
     }
 
-    const { rotation } = ref.current;
-    rotation.setFromVector3(rotation.toVector3().lerp(targetRotation, delta));
+    ref.current.rotation.setFromVector3(
+      ref.current.rotation.toVector3().lerp(targetRotation, delta),
+    );
   });
 
   useEffect(() => {
