@@ -1,21 +1,55 @@
 import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
-import { QuestionHasManyAnswers } from '~/server/database/associations';
+import {
+  AnswerBelongsToArtwork,
+  AnswerBelongsToProperty,
+  ArtworkBelongsToArtist,
+  QuestionHasManyAnswers,
+  answerFields,
+  artworkFields,
+  propertyFields,
+  questionFields,
+} from '~/server/database/associations';
 
 const options = {
   model: Question,
-  fields: ['title', 'slug', 'answers'],
-  fieldsProtected: ['chainId', 'artworkId', 'festivalId'],
+  fields: [...questionFields],
 };
 
 const optionsRead = {
   ...options,
-  include: [QuestionHasManyAnswers],
+  include: [
+    {
+      association: QuestionHasManyAnswers,
+      include: [
+        {
+          association: AnswerBelongsToArtwork,
+          include: ArtworkBelongsToArtist,
+        },
+        AnswerBelongsToProperty,
+      ],
+    },
+  ],
   associations: [
     {
       association: QuestionHasManyAnswers,
-      fields: ['type'],
-      fieldsProtected: ['chainId', 'artworkId', 'propertyId'],
+      fields: [...answerFields],
+      associations: [
+        {
+          association: AnswerBelongsToArtwork,
+          fields: [...artworkFields],
+          associations: [
+            {
+              association: ArtworkBelongsToArtist,
+              fields: [...artworkFields],
+            },
+          ],
+        },
+        {
+          association: AnswerBelongsToProperty,
+          fields: [...propertyFields],
+        },
+      ],
     },
   ],
 };

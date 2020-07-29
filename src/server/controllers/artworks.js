@@ -1,14 +1,14 @@
 import Artwork from '~/server/models/artwork';
 import baseController from '~/server/controllers';
-
 import {
   ArtworkHasManyImages,
+  artworkFields,
   imageFileFields,
 } from '~/server/database/associations';
 
 const options = {
   model: Artwork,
-  fields: ['title', 'description', 'barcode', 'artistId', 'sticker'],
+  fields: [...artworkFields],
   include: [ArtworkHasManyImages],
   associations: [
     {

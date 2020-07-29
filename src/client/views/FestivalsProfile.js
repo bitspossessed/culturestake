@@ -14,7 +14,7 @@ import {
   ParagraphStyle,
   HeadingSecondaryStyle,
 } from '~/client/styles/typography';
-import { useResource } from '~/client/hooks/resources';
+import { useResource } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const FestivalsProfile = () => {

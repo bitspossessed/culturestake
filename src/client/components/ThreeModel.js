@@ -13,7 +13,14 @@ import { useUpdate } from 'react-three-fiber';
 const EXTRUDE_DEPTH = 20;
 const DEFAULT_SCALE = 0.5;
 
-const ThreeModel = ({ svg, texture, rotation, scale, ...props }) => {
+const ThreeModel = ({
+  svg,
+  texture,
+  rotation,
+  scale,
+  depth = EXTRUDE_DEPTH,
+  ...props
+}) => {
   const [boxSize, setBoxSize] = useState([0, 0, 0]);
 
   const shapes = useMemo(() => {
@@ -25,7 +32,7 @@ const ThreeModel = ({ svg, texture, rotation, scale, ...props }) => {
   const options = {
     bevelEnabled: false,
     curveSegments: 36,
-    depth: EXTRUDE_DEPTH,
+    depth,
   };
 
   const ref = useUpdate(
@@ -65,6 +72,7 @@ const ThreeModel = ({ svg, texture, rotation, scale, ...props }) => {
 };
 
 ThreeModel.propTypes = {
+  depth: PropTypes.number,
   rotation: PropTypes.arrayOf(PropTypes.number),
   scale: PropTypes.arrayOf(PropTypes.number),
   svg: PropTypes.object.isRequired,

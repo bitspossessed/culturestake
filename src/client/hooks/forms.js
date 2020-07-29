@@ -16,8 +16,7 @@ import {
 } from '~/client/store/api/actions';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import { usePendingTransaction } from '~/client/hooks/ethereum';
-import { useRequestId, useRequest } from '~/client/hooks/requests';
-import { useResource } from '~/client/hooks/resources';
+import { useRequestId, useResource, useRequest } from '~/client/hooks/requests';
 
 const joiOptions = {
   errors: {

@@ -25,6 +25,9 @@ const Artwork = db.define('artwork', {
     allowNull: false,
     unique: true,
   },
+  subtitle: {
+    type: DataTypes.STRING,
+  },
   description: {
     type: DataTypes.STRING(2000),
     allowNull: true,

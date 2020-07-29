@@ -7,8 +7,11 @@ import { useDispatch } from 'react-redux';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import ColorSection from '~/client/components/ColorSection';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
+import { ParagraphStyle } from '~/client/styles/typography';
+import { SpacingGroupStyle } from '~/client/styles/layout';
 
 const Scanner = ({ onDetected, onError }) => {
   const ref = useRef();
@@ -73,18 +76,42 @@ const Scanner = ({ onDetected, onError }) => {
   return (
     !isError && (
       <ScannerStyle isReady={isReady}>
-        <ScannerVideoStyle ref={ref} />
+        <SpacingGroupStyle>
+          <ScannerVideoStyle ref={ref} />
+
+          <ColorSection>
+            <ParagraphStyle>
+              {translate('Scanner.bodyDescription')}
+            </ParagraphStyle>
+          </ColorSection>
+        </SpacingGroupStyle>
       </ScannerStyle>
     )
   );
 };
 
 const ScannerStyle = styled.div`
-  max-width: 40rem;
+  position: fixed;
+
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  z-index: ${styles.layers.Scanner};
+
+  display: flex;
+
+  background-color: rgba(255, 255, 255, 0.1);
+
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const ScannerVideoStyle = styled.video`
   width: 100%;
+  max-width: 40rem;
 
   border: 1.5px solid ${styles.colors.violet};
   border-radius: 5px;

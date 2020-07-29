@@ -7,6 +7,10 @@ export function generateRequestId() {
   return web3.utils.randomHex(16).slice(2);
 }
 
+export function generateResourceId(path) {
+  return web3.utils.sha3(path.join()).slice(2, 18);
+}
+
 const apiMiddleware = (store) => (next) => async (action) => {
   if (!(API_REQUEST in action)) {
     return next(action);

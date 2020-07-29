@@ -22,6 +22,36 @@ export const imageFileFields = [
   'urlThumb',
 ];
 
+export const festivalFields = [
+  'description',
+  'images',
+  'sticker',
+  'subtitle',
+  'title',
+];
+
+export const artworkFields = [
+  'artistId',
+  'barcode',
+  'description',
+  'subtitle',
+  'title',
+];
+
+export const questionFields = [
+  'title',
+  'chainId',
+  'artworkId',
+  'festivalId',
+  'slug',
+];
+
+export const answerFields = ['artworkId', 'propertyId', 'questionId'];
+
+export const artistFields = ['bio', 'name'];
+
+export const propertyFields = ['title'];
+
 // Artwork
 
 export const ArtworkHasManyAnswers = Artwork.hasMany(Answer);

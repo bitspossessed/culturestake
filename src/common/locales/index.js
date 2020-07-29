@@ -67,6 +67,7 @@ const components = {
     titleFestivals: 'Festivals:',
   },
   Scanner: {
+    bodyDescription: 'Use camera to scan code',
     notificationError: 'Camera could not be activated: {error}',
   },
   Table: {
@@ -78,6 +79,13 @@ const components = {
   },
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
+  },
+  VoteInterface: {
+    bodyYourVotesRecorded: 'Your votes have been recorded.',
+    buttonNextStep: 'Next',
+    buttonPreviousStep: 'Return',
+    buttonToHomepage: 'Back to Homepage',
+    buttonVote: 'Vote',
   },
   VoteSessionCreator: {
     bodyBoothAddress: 'Booth address:',
@@ -106,8 +114,12 @@ const middlewares = {
 
 const store = {
   app: {
-    notificationTokenSuccess: 'Login successful! Welcome!',
     errorTokenFailure: 'Login failed, please try again.',
+    notificationTokenSuccess: 'Login successful! Welcome!',
+  },
+  booth: {
+    errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
+    notificationVoteSuccess: 'Thank you!',
   },
 };
 
@@ -164,6 +176,10 @@ const views = {
   },
   NotFound: {
     title: 'Not Found',
+  },
+  Vote: {
+    errorScannerFailure: 'Something went wrong with your camera',
+    errorInvalidVoteData: 'QR Code is invalid',
   },
 };
 

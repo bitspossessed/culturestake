@@ -5,28 +5,33 @@ import { useLoader } from 'react-three-fiber';
 
 import ThreeModel from '~/client/components/ThreeModel';
 import ThreeRotator from '~/client/components/ThreeRotator';
-import logo from '~/client/assets/images/logo.svg';
+import thankYou from '~/client/assets/images/thankyou.svg';
 import {
   alternateGradientTexture,
   limeGradientTexture,
 } from '~/client/styles/textures';
 
-const ThreeButtonLogo = (props) => {
-  const svg = useLoader(SVGLoader, logo);
-
+const ThreeThankYou = (props) => {
+  const svg = useLoader(SVGLoader, thankYou);
   const texture = props.isAlternateColor
     ? alternateGradientTexture
     : limeGradientTexture;
 
   return (
     <ThreeRotator rotation={[0, 0, 0]}>
-      <ThreeModel {...props} svg={svg} texture={texture} />
+      <ThreeModel
+        {...props}
+        depth={50}
+        rotation={[-Math.PI - 0.12, -0.5, 0.2]}
+        svg={svg}
+        texture={texture}
+      />
     </ThreeRotator>
   );
 };
 
-ThreeButtonLogo.propTypes = {
+ThreeThankYou.propTypes = {
   isAlternateColor: PropTypes.bool,
 };
 
-export default ThreeButtonLogo;
+export default ThreeThankYou;

@@ -30,6 +30,13 @@ router.get(
 );
 
 router.get(
+  '/:idOrChainId/questions',
+  optionalAuthMiddleware,
+  validate(festivalsValidation.getQuestions),
+  festivalsController.getQuestions,
+);
+
+router.get(
   '/:slug',
   optionalAuthMiddleware,
   validate(festivalsValidation.read),

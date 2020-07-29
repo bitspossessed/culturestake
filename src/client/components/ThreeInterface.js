@@ -48,7 +48,7 @@ const ThreeInterface = (props) => {
   return (
     <Fragment>
       <ThreeInterfaceElement
-        isVisible={!isShowingHome && !isShowingBooth && !isShowingVote}
+        isVisible={!isShowingHome}
         left
         top
         onClick={onClickLogo}
@@ -60,7 +60,7 @@ const ThreeInterface = (props) => {
       </ThreeInterfaceElement>
 
       <ThreeInterfaceElement
-        isVisible={!isShowingBooth && !isShowingVote}
+        isVisible={!isShowingBooth}
         right
         top
         onClick={onClickNavigation}
@@ -74,7 +74,7 @@ const ThreeInterface = (props) => {
 
       <ThreeInterfaceElement
         bottom
-        isVisible={props.isShowingInfo || (false && !isExpanded)}
+        isVisible={props.isShowingInfo || (isShowingVote && !isExpanded)}
         left
         onClick={onClickInfo}
       >
