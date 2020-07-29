@@ -30,8 +30,8 @@ const ethereumReducer = (state = initialState, action) => {
     case ActionTypes.ETHEREUM_TRANSACTIONS_ADD:
       return update(state, {
         transactions: {
-          [action.meta.id]: {
-            $set: Object.assign({}, initialTransactionState, {
+          $merge: {
+            [action.meta.id]: Object.assign({}, initialTransactionState, {
               txHash: action.meta.txHash,
             }),
           },
@@ -40,12 +40,16 @@ const ethereumReducer = (state = initialState, action) => {
     case ActionTypes.ETHEREUM_TRANSACTIONS_UPDATE: {
       return update(state, {
         transactions: {
-          [action.meta.id]: {
-            $set: Object.assign({}, initialTransactionState, {
-              isError: action.meta.isError,
-              isPending: action.meta.isPending,
-              isSuccess: action.meta.isSuccess,
-            }),
+          $merge: {
+            [action.meta.id]: Object.assign(
+              {},
+              state.transactions[action.meta.id],
+              {
+                isError: action.meta.isError,
+                isPending: action.meta.isPending,
+                isSuccess: action.meta.isSuccess,
+              },
+            ),
           },
         },
       });
