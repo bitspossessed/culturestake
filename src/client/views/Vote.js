@@ -9,7 +9,7 @@ import notify, {
 } from '~/client/store/notifications/actions';
 import translate from '~/common/services/i18n';
 import { decodeVoteData } from '~/common/services/vote';
-import { initializeVote } from '~/client/store/vote/actions';
+import { initializeVote, resetVote } from '~/client/store/vote/actions';
 
 const Vote = () => {
   const dispatch = useDispatch();
@@ -50,6 +50,12 @@ const Vote = () => {
       );
     }
   }, [dispatch, voteDataEncoded]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetVote());
+    };
+  }, [dispatch]);
 
   return (
     <Fragment>

@@ -21,7 +21,7 @@ const voteReducer = (state = initialState, action) => {
         nonce: { $set: action.meta.nonce },
       });
     case ActionTypes.VOTE_RESET:
-      return update(state, initialState);
+      return update(state, { $set: initialState });
     default:
       return state;
   }

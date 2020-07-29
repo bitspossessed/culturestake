@@ -24,7 +24,7 @@ const boothReducer = (state = initialState, action) => {
         isInitialized: { $set: action.meta.isInitialized },
       });
     case ActionTypes.BOOTH_RESET:
-      return update(state, initialState);
+      return update(state, { $set: initialState });
     default:
       return state;
   }
