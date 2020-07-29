@@ -7,9 +7,9 @@ import VoteInterface from '~/client/components/VoteInterface';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import translate from '~/common/services/i18n';
 import { decodeVoteData } from '~/common/services/vote';
 import { initializeVote } from '~/client/store/vote/actions';
-import translate from '~/common/services/i18n';
 
 const Vote = () => {
   const dispatch = useDispatch();
