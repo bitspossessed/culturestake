@@ -37,7 +37,7 @@ const AdminAnswersNew = () => {
   }, [setQuestion, setIsLoading, questionId]);
 
   const { Form } = useNewForm({
-    fields: ['type', 'questionId', 'artworkId'],
+    fields: ['type', 'questionId', 'artworkId', 'propertyId'],
     resourcePath: ['answers'],
     returnUrl,
     onSuccess: ({ title }) => {
@@ -65,14 +65,14 @@ const AdminAnswersNew = () => {
 
       <ViewAdmin>
         <Form>
-          {!isLoading ? (
+          {!isLoading && question ? (
             <Fragment>
               <InputHiddenField
                 label={'questionId'}
                 name={'questionId'}
                 value={{ value: questionId }}
               />
-              {question && !question.artworkId ? (
+              {!question.artworkId ? (
                 <Finder
                   label={translate('AdminAnswersNew.fieldArtwork')}
                   name="artworkId"
@@ -82,7 +82,17 @@ const AdminAnswersNew = () => {
                   queryPath={'artworks'}
                   searchParam={'title'}
                 />
-              ) : null}
+              ) : (
+                <Finder
+                  label={translate('AdminAnswersNew.fieldProperty')}
+                  name="propertyId"
+                  placeholder={translate(
+                    'AdminAnswersNew.fieldPropertyPlaceholder',
+                  )}
+                  queryPath={'properties'}
+                  searchParam={'title'}
+                />
+              )}
               <ButtonSubmit />
             </Fragment>
           ) : null}

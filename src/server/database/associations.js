@@ -109,6 +109,7 @@ export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
   allowNull: true,
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
+  as: 'artwork',
 });
 
 export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
@@ -116,7 +117,6 @@ export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
   as: 'festival',
-  // foreignKey: 'festivalId',
 });
 
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {

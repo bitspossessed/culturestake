@@ -180,6 +180,8 @@ const views = {
     title: 'Create new answer',
     fieldArtwork: 'Artwork',
     fieldArtworkPlaceholder: 'Choose an artwork',
+    fieldProperty: 'Property',
+    fieldPropertyPlaceholder: 'Choose a property',
     notificationSuccess: 'You created a new answer.',
   },
   AdminAnswersEdit: {

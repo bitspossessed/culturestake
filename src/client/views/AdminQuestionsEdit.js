@@ -77,11 +77,11 @@ const AdminQuestionsEdit = () => {
                 contents={resource.festival ? resource.festival.title : ''}
                 label={translate('AdminQuestionsNew.fieldFestival')}
                 name="festivalId"
-                value={resource.festivalId ? resource.festivalId : ''}
+                value={resource.festivalId ? resource.festivalId : NaN}
               />
               {resource.artwork ? (
                 <DisabledFinder
-                  contents={resource.artwork ? resource.artwork.title : ''}
+                  contents={resource.artwork ? resource.artwork.title : NaN}
                   label={translate('AdminQuestionsNew.fieldArtwork')}
                   name="artworkId"
                   value={resource.artworkId}

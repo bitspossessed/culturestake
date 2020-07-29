@@ -3,12 +3,22 @@ import baseController from '~/server/controllers';
 import {
   QuestionHasManyAnswers,
   QuestionBelongsToFestival,
+  QuestionBelongsToArtwork,
 } from '~/server/database/associations';
 
 const options = {
   model: Question,
-  fields: ['title', 'slug', 'chainId', 'answers', 'festival', 'festivalId'],
-  fieldsProtected: ['artworkId'],
+  fields: [
+    'title',
+    'slug',
+    'chainId',
+    'answers',
+    'festival',
+    'festivalId',
+    'artworkId',
+    'artwork'
+  ],
+  fieldsProtected: [],
 };
 
 const answerFields = ['type', 'artworkId', 'propertyId'];
@@ -22,7 +32,7 @@ const festivalfields = [
 
 const optionsRead = {
   ...options,
-  include: [QuestionHasManyAnswers, QuestionBelongsToFestival],
+  include: [QuestionHasManyAnswers, QuestionBelongsToFestival, QuestionBelongsToArtwork],
   associations: [
     {
       association: QuestionHasManyAnswers,
@@ -33,6 +43,11 @@ const optionsRead = {
       association: QuestionBelongsToFestival,
       destroyCascade: false,
       fields: [...festivalfields],
+    },
+    {
+      association: QuestionBelongsToArtwork,
+      destroyCascade: false,
+      fields: ['title'],
     },
   ],
 };
