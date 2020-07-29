@@ -29,10 +29,10 @@ export function signAudienceVote({
 }
 
 export function encodeVoteData({
+  boothSignature,
   festivalAnswerIds,
   festivalQuestionId,
   nonce,
-  signature,
 }) {
   return [
     web3.utils.utf8ToHex(
@@ -43,7 +43,7 @@ export function encodeVoteData({
       ].join(''),
     ),
     VOTE_DATA_SIGNATURE_TOKEN,
-    signature.slice(2),
+    boothSignature.slice(2),
   ].join('');
 }
 
@@ -54,7 +54,7 @@ export function decodeVoteData(code) {
     }
 
     if (!web3.utils.isHexStrict(code)) {
-      throw new Error('Invalid code');
+      throw new Error('Invalid encoding');
     }
 
     const parts = code.toLowerCase().split(VOTE_DATA_SIGNATURE_TOKEN);
@@ -77,7 +77,7 @@ export function decodeVoteData(code) {
         return parseInt(value, 10);
       });
 
-    const signature = `0x${parts[1]}`;
+    const boothSignature = `0x${parts[1]}`;
 
     if (isNaN(nonce)) {
       throw new Error('Invalid nonce');
@@ -87,8 +87,11 @@ export function decodeVoteData(code) {
       throw new Error('Invalid festivalQuestionId');
     }
 
-    if (!web3.utils.isHexStrict(signature) || signature.length !== 132) {
-      throw new Error('Invalid signature format');
+    if (
+      !web3.utils.isHexStrict(boothSignature) ||
+      boothSignature.length !== 132
+    ) {
+      throw new Error('Invalid boothSignature format');
     }
 
     if (festivalAnswerIds.length === 0) {
@@ -99,7 +102,7 @@ export function decodeVoteData(code) {
       festivalAnswerIds,
       festivalQuestionId,
       nonce,
-      signature,
+      boothSignature,
     };
   } catch (error) {
     throw new Error('Could not decode vote data');
