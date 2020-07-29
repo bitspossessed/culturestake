@@ -33,10 +33,17 @@ export const useRequest = (requestId, { onError, onSuccess } = {}) => {
     isPending = false,
     isSuccess = false,
     error = null,
-    response,
   } = useSelector((state) => {
     return state.api.requests[requestId] || {};
   });
+
+  const response = useMemo(() => {
+    if (isSuccess) {
+      return getCached(requestId);
+    }
+
+    return {};
+  }, [isSuccess, requestId]);
 
   useEffect(() => {
     if (isError && onError) {
