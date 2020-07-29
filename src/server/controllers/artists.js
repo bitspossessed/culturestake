@@ -10,7 +10,7 @@ const baseFileFields = ['fileName', 'fileType', 'url'];
 const options = {
   model: Artist,
   fields: ['name', 'bio', 'consentToDataReveal', 'images', 'artworks'],
-  include: [ArtistHasManyImages, ArtistHasManyArtworks],
+  include: [ArtistHasManyImages],
   associations: [
     {
       association: ArtistHasManyImages,
@@ -21,11 +21,6 @@ const options = {
         'urlThresholdThumb',
         'urlThumb',
       ],
-    },
-    {
-      association: ArtistHasManyArtworks,
-      destroyCascade: false,
-      fields: ['title', 'description'],
     },
   ],
 };
@@ -39,7 +34,27 @@ function readAll(req, res, next) {
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read({
+    ...options,
+    include: [ArtistHasManyImages, ArtistHasManyArtworks],
+    associations: [
+      {
+        association: ArtistHasManyImages,
+        destroyCascade: true,
+        fields: [
+          ...baseFileFields,
+          'urlThreshold',
+          'urlThresholdThumb',
+          'urlThumb',
+        ],
+      },
+      {
+        association: ArtistHasManyArtworks,
+        destroyCascade: false,
+        fields: ['title', 'description'],
+      },
+    ],
+  })(req, res, next);
 }
 
 function update(req, res, next) {

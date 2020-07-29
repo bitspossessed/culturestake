@@ -21,7 +21,7 @@ const AdminArtistsEdit = () => {
   const dispatch = useDispatch();
 
   const { ButtonDelete, Form } = useEditForm({
-    fields: ['title', 'description', 'images'],
+    fields: ['name', 'bio', 'images', 'consentToDataReveal'],
     resourcePath: ['artists', slug],
     returnUrl,
     onNotFound: () => {
@@ -31,20 +31,20 @@ const AdminArtistsEdit = () => {
         }),
       );
     },
-    onDeleteSuccess: ({ title }) => {
+    onDeleteSuccess: ({ name }) => {
       dispatch(
         notify({
           text: translate('AdminArtistsEdit.notificationDestroySuccess', {
-            title,
+            name,
           }),
         }),
       );
     },
-    onUpdateSuccess: ({ title }) => {
+    onUpdateSuccess: ({ name }) => {
       dispatch(
         notify({
           text: translate('AdminArtistsEdit.notificationSuccess', {
-            title,
+            name,
           }),
         }),
       );

@@ -8,7 +8,7 @@ import { useField } from '~/client/hooks/forms';
 // eslint-disable-next-line react/display-name
 const InputCheckBoxField = React.forwardRef(
   ({ name, validate, label, ...rest }, ref) => {
-    const { meta, getInputProps, setValue } = useField(name, {
+    const { meta, getInputProps, value, setValue } = useField(name, {
       validate,
       type: 'checkbox',
     });
@@ -22,6 +22,7 @@ const InputCheckBoxField = React.forwardRef(
       <InputFieldset label={label} meta={meta} name={name}>
         <InputCheckBoxStyle
           {...getInputProps({ ref, id: name, ...rest })}
+          checked={value}
           ref={ref}
           onChange={onChange}
         />
@@ -30,11 +31,15 @@ const InputCheckBoxField = React.forwardRef(
   },
 );
 
-export const InputCheckBoxStyle = styled.input.attrs({ type: 'checkbox' })`
+export const InputCheckBoxStyle = styled.input.attrs((props) => ({
+  checked: props.value,
+  type: 'checkbox',
+}))`
   display: block;
 `;
 
 InputCheckBoxField.propTypes = {
+  checked: PropTypes.bool,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   validate: PropTypes.object.isRequired,

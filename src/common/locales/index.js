@@ -213,18 +213,18 @@ const views = {
   },
   AdminArtists: {
     buttonNewQuestion: 'Create new artist',
-    fieldTitle: 'Title',
+    fieldName: 'Name',
     title: 'Artists',
   },
   AdminArtistsNew: {
     title: 'Create new artist',
-    notificationSuccess: 'You created the artist {title}.',
+    notificationSuccess: 'You created the artist {name}.',
   },
   AdminArtistsEdit: {
     title: 'Edit artist',
-    notificationSuccess: 'You edited the artist {title}.',
+    notificationSuccess: 'You edited the artist {name}.',
     errorNotFound: 'This artist does not exist',
-    notificationDestroySuccess: 'You deleted the artist {title}',
+    notificationDestroySuccess: 'You deleted the artist {name}',
   },
   Homepage: {
     bodyIntroduction:

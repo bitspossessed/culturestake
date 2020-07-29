@@ -33,7 +33,7 @@ const FormArtists = () => {
 
       <InputCheckboxField
         label={translate('FormArtists.fieldConsentToDataReveal')}
-        name="consent to data reveal"
+        name="consentToDataReveal"
         validate={schema.consentToDataReveal}
       />
 

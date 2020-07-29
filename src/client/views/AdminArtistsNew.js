@@ -19,14 +19,14 @@ const AdminArtistsNew = () => {
   const returnUrl = '/admin/artists';
 
   const { Form } = useNewForm({
-    fields: ['title'],
+    fields: ['name', 'bio', 'images', 'consentToDataReveal'],
     resourcePath: ['artists'],
     returnUrl,
-    onSuccess: ({ title }) => {
+    onSuccess: ({ name }) => {
       dispatch(
         notify({
           text: translate('AdminArtistsNew.notificationSuccess', {
-            title,
+            name,
           }),
         }),
       );
