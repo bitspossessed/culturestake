@@ -31,6 +31,8 @@ export const PillStyle = styled.span`
   border: 1.5px solid ${styles.colors.violet};
   border-radius: 15px;
 
+  vertical-align: middle;
+
   white-space: nowrap;
 
   color: ${(props) =>
