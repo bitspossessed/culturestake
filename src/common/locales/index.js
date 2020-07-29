@@ -80,6 +80,11 @@ const components = {
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
   },
+  VoteInterface: {
+    buttonNextStep: 'Next',
+    buttonPreviousStep: 'Return',
+    buttonVote: 'Vote',
+  },
   VoteSessionCreator: {
     bodyBoothAddress: 'Booth address:',
     bodyFestivalChainId: 'Festival ID:',

@@ -42,7 +42,7 @@ import {
 } from '~/common/services/vote';
 import { getPrivateKey } from '~/client/services/wallet';
 import { initializeVote } from '~/client/store/vote/actions';
-import { useResource } from '~/client/hooks/resources';
+import { useResource } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const ADMIN_KEY = 77; // Key [M] (+ [SHIFT])
@@ -63,7 +63,11 @@ const VoteSessionCreator = () => {
   const [voteData, setVoteData] = useState(null);
 
   const barcodes = useRef({});
-  const [data, isArtworksLoading] = useResource(['booths', festivalChainId]);
+  const [data, isArtworksLoading] = useResource([
+    'festivals',
+    festivalChainId,
+    'questions',
+  ]);
 
   const artworks = useMemo(() => {
     if (isLoading || !data.questions) {

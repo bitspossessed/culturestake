@@ -12,10 +12,13 @@ import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
 import translate from '~/common/services/i18n';
-import { ContainerStyle, PaperContainerStyle } from '~/client/styles/layout';
-import { HeadingPrimaryStyle } from '~/client/styles/typography';
+import { PaperContainerStyle, SpacingGroupStyle } from '~/client/styles/layout';
+import {
+  HeadingPrimaryStyle,
+  HeadingSecondaryStyle,
+} from '~/client/styles/typography';
 import { getQuestion } from '~/common/services/contracts';
-import { useResource } from '~/client/hooks/resources';
+import { useResource } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const FESTIVAL_STEP = 'festival';
@@ -23,7 +26,6 @@ const ARTWORK_STEP = 'artwork';
 
 const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
   const [currentStep, setCurrentStep] = useState(FESTIVAL_STEP);
-  const [isChainDataLoading, setIsChainDataLoading] = useState(false);
 
   // How happy is our SnuggleRain component?
   const [snuggleness, setSnuggleness] = useState(0.0);
@@ -45,56 +47,90 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
     [ARTWORK_STEP]: {},
   });
 
+  // Which answer of the first question had the most vote tokens?
   const [winnerArtworkId, setWinnerArtworkId] = useState(null);
-  const [artworkQuestionId, setArtworkQuestionId] = useState(
+
+  // Load question data for first festival question
+  const [festivalQuestionData, isFestivalQuestionDataLoading] = useResource([
+    'questions',
     festivalQuestionId,
+  ]);
+
+  // Prepare loading more data when we have the festival id ...
+  const [data, isDataLoading] = useResource(
+    festivalQuestionData && festivalQuestionData.festivalId
+      ? ['festivals', festivalQuestionData.festivalId, 'questions']
+      : [],
   );
 
-  // Load question and answer data for both questions
-  const [festivalQuestionData, isFestivalQuestionLoading] = useResource([
-    'questions',
-    festivalQuestionId,
-  ]);
+  // ... load artwork data for second question from it as soon as we know the
+  // winning artwork from the first question
+  const artworkQuestionData = useMemo(() => {
+    if (!data || !data.questions || !winnerArtworkId) {
+      return {};
+    }
 
-  const [artworkQuestionData, isArtworkQuestionLoading] = useResource([
-    'questions',
-    artworkQuestionId,
-  ]);
+    return data.questions.find((question) => {
+      return question.artworkId === winnerArtworkId;
+    });
+  }, [winnerArtworkId, data]);
+
+  useEffect(() => {
+    if (!artworkQuestionData || !artworkQuestionData.answers) {
+      return;
+    }
+
+    setCredits((value) => ({
+      ...value,
+      [ARTWORK_STEP]: artworkQuestionData.answers.reduce((acc, answer) => {
+        acc[answer.id] = 0;
+        return acc;
+      }, {}),
+    }));
+  }, [artworkQuestionData]);
 
   // Is something loading here?
-  const isLoading =
-    isFestivalQuestionLoading || isArtworkQuestionLoading || isChainDataLoading;
+  const isLoading = isDataLoading || isFestivalQuestionDataLoading;
 
   // Get max vote tokens from chain
   useEffect(() => {
     const getMaxVoteTokens = async (stepName, chainId) => {
-      setIsChainDataLoading(true);
-
       const { maxVoteTokens } = await getQuestion(chainId);
       setCreditTotal((value) => ({
         ...value,
-        [stepName]: parseInt(maxVoteTokens, 10),
+        [stepName]: maxVoteTokens,
       }));
-
-      setIsChainDataLoading(false);
+      setCreditLeft((value) =>
+        value[stepName] !== maxVoteTokens
+          ? value
+          : {
+              ...value,
+              [stepName]: maxVoteTokens,
+            },
+      );
     };
 
     if (festivalQuestionData.chainId) {
       getMaxVoteTokens(FESTIVAL_STEP, festivalQuestionData.chainId);
     }
 
-    if (artworkQuestionData.chainId) {
+    // Get data from artwork question (when festival question winner is set)
+    if (artworkQuestionData.chainId && currentStep === ARTWORK_STEP) {
       getMaxVoteTokens(ARTWORK_STEP, artworkQuestionData.chainId);
     }
-  }, [festivalQuestionData, artworkQuestionData]);
+  }, [festivalQuestionData.chainId, artworkQuestionData.chainId, currentStep]);
 
   // Filter artwork for first question
   const artworks = useMemo(() => {
-    if (isFestivalQuestionLoading || !festivalQuestionData.answers) {
+    if (!data || !data.questions) {
       return [];
     }
 
-    return festivalQuestionData.answers.reduce((acc, answer) => {
+    const { answers } = data.questions.find((question) => {
+      return question.id === festivalQuestionId;
+    });
+
+    return answers.reduce((acc, answer) => {
       if (answer.artwork && festivalAnswerIds.includes(answer.id)) {
         acc.push({
           ...answer.artwork,
@@ -104,53 +140,72 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
 
       return acc;
     }, []);
-  }, [festivalAnswerIds, isFestivalQuestionLoading, festivalQuestionData]);
+  }, [data, festivalQuestionId, festivalAnswerIds]);
 
   // Filter properties for second question
   const properties = useMemo(() => {
-    if (
-      isArtworkQuestionLoading ||
-      !artworkQuestionData.answers ||
-      !winnerArtworkId
-    ) {
+    if (!artworkQuestionData || !artworkQuestionData.answers) {
       return [];
     }
 
-    // @TODO
-    // return artworkQuestionData.answers.reduce((acc, answer) => {
-    //   if (answer.property) {
-    //     acc.push({
-    //       ...answer.artwork,
-    //       answerId: answer.id,
-    //     });
-    //   }
+    return artworkQuestionData.answers.reduce((acc, answer) => {
+      if (answer.property) {
+        acc.push({
+          ...answer.property,
+          answerId: answer.id,
+        });
+      }
 
-    //   return acc;
-    // }, []);
-    return [];
-  }, [winnerArtworkId, isArtworkQuestionLoading, artworkQuestionData]);
+      return acc;
+    }, []);
+  }, [artworkQuestionData]);
 
-  const onCreditChange = ({ id, credit }) => {
-    const creditOld = credits[id];
-    const creditNew = Math.min(credit, creditOld + creditLeft);
+  const onCreditChange = ({ stepName, id, credit }) => {
+    const creditOld = credits[stepName][id];
+    const creditNew = Math.min(credit, creditOld + creditLeft[stepName]);
 
-    const creditsNew = Object.assign({}, credits, {
+    const creditsNew = Object.assign({}, credits[stepName], {
       [id]: creditNew,
     });
-    setCredits(creditsNew);
+    setCredits((value) => ({
+      ...value,
+      [stepName]: creditsNew,
+    }));
 
-    const creditsLeftNew = Object.keys(creditsNew).reduce((acc, creditId) => {
+    const creditLeftNew = Object.keys(creditsNew).reduce((acc, creditId) => {
       return acc - creditsNew[creditId];
-    }, creditTotal);
-    setCreditLeft(creditsLeftNew);
+    }, creditTotal[stepName]);
+    setCreditLeft((value) => ({
+      ...value,
+      [stepName]: creditLeftNew,
+    }));
 
-    const totalVotePower = Math.sqrt(creditTotal);
+    const totalVotePower = Math.sqrt(creditTotal[stepName]);
     const currentVotePower = Math.sqrt(creditNew);
     setSnuggleness(currentVotePower / totalVotePower);
+
+    // Set most voted artwork when in festival question step
+    if (stepName === FESTIVAL_STEP) {
+      const highestVoteTokens = Math.max(...Object.values(creditsNew));
+      setWinnerArtworkId(
+        highestVoteTokens > 0
+          ? parseInt(
+              Object.keys(creditsNew).find((id) => {
+                return creditsNew[id] === highestVoteTokens;
+              }),
+              10,
+            )
+          : null,
+      );
+    }
   };
 
   const onNextStep = () => {
     setCurrentStep(ARTWORK_STEP);
+  };
+
+  const onPreviousStep = () => {
+    setCurrentStep(FESTIVAL_STEP);
   };
 
   const onVote = () => {
@@ -199,13 +254,53 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
 
                 <PaperTicket>
                   <ButtonIcon disabled={!winnerArtworkId} onClick={onNextStep}>
-                    {translate('Vote.buttonNextStep')}
+                    {translate('VoteInterface.buttonNextStep')}
                   </ButtonIcon>
                 </PaperTicket>
               </PaperContainerStyle>
             </Fragment>
           ) : (
-            <PaperContainerStyle>{/* @TODO */}</PaperContainerStyle>
+            <Fragment>
+              <VoteCreditsBar
+                left={creditLeft[ARTWORK_STEP]}
+                total={creditTotal[ARTWORK_STEP]}
+              />
+
+              <PaperContainerStyle>
+                <PaperTicket>
+                  <BoxFramed>
+                    <HeadingPrimaryStyle>
+                      {artworkQuestionData.title}
+                    </HeadingPrimaryStyle>
+                  </BoxFramed>
+                </PaperTicket>
+
+                {properties.map((property) => {
+                  return (
+                    <VoteInterfaceProperty
+                      answerId={property.answerId}
+                      credit={credits[ARTWORK_STEP][property.answerId]}
+                      creditTotal={creditTotal[ARTWORK_STEP]}
+                      key={property.id}
+                      title={property.title}
+                      onCreditChange={onCreditChange}
+                    />
+                  );
+                })}
+
+                <PaperTicket>
+                  <SpacingGroupStyle>
+                    <ButtonIcon isIconFlipped onClick={onPreviousStep}>
+                      {translate('VoteInterface.buttonPreviousStep')}
+                    </ButtonIcon>
+
+                    <ButtonIcon onClick={onVote}>
+                      {translate('VoteInterface.buttonVote')}
+                    </ButtonIcon>
+                  </SpacingGroupStyle>
+                </PaperTicket>
+              </PaperContainerStyle>
+            </Fragment>
           )}
         </ColorSection>
       )}
@@ -216,6 +311,14 @@ const VoteInterface = ({ festivalQuestionId, festivalAnswerIds }) => {
 const VoteInterfaceArtwork = (props) => {
   const stickerImagePath = useStickerImage(props.images);
   const { scheme } = useSticker(props.stickerCode);
+
+  const onCreditChange = ({ id, credit }) => {
+    props.onCreditChange({
+      id,
+      credit,
+      stepName: FESTIVAL_STEP,
+    });
+  };
 
   return (
     <Suspense fallback={null}>
@@ -233,10 +336,33 @@ const VoteInterfaceArtwork = (props) => {
           id={props.answerId}
           scheme={scheme}
           total={props.creditTotal}
-          onChange={props.onCreditChange}
+          onChange={onCreditChange}
         />
       </PaperTicket>
     </Suspense>
+  );
+};
+
+const VoteInterfaceProperty = (props) => {
+  const onCreditChange = ({ id, credit }) => {
+    props.onCreditChange({
+      id,
+      credit,
+      stepName: ARTWORK_STEP,
+    });
+  };
+
+  return (
+    <PaperTicket>
+      <HeadingSecondaryStyle>{props.title}</HeadingSecondaryStyle>
+
+      <SnuggleSlider
+        credit={props.credit}
+        id={props.answerId}
+        total={props.creditTotal}
+        onChange={onCreditChange}
+      />
+    </PaperTicket>
   );
 };
 
@@ -253,6 +379,14 @@ VoteInterfaceArtwork.propTypes = {
   onCreditChange: PropTypes.func.isRequired,
   stickerCode: PropTypes.string,
   subtitle: PropTypes.string,
+  title: PropTypes.string.isRequired,
+};
+
+VoteInterfaceProperty.propTypes = {
+  answerId: PropTypes.number.isRequired,
+  credit: PropTypes.number.isRequired,
+  creditTotal: PropTypes.number.isRequired,
+  onCreditChange: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
 };
 

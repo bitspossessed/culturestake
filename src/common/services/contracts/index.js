@@ -28,7 +28,7 @@ export async function getQuestion(chainId) {
     isDeactivated: data[1],
     address: data[2],
     festivalChainId: data[3],
-    maxVoteTokens: data[4],
+    maxVoteTokens: parseInt(data[4], 10),
   };
 }
 
