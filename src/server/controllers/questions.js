@@ -7,7 +7,14 @@ import {
   QuestionHasManyAnswers,
 } from '~/server/database/associations';
 
-const artworkFields = ['barcode', 'title', 'description', 'artistId', 'artist'];
+const artworkFields = [
+  'artist',
+  'artistId',
+  'barcode',
+  'description',
+  'subtitle',
+  'title',
+];
 
 const options = {
   model: Question,

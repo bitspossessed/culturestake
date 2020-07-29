@@ -6,7 +6,6 @@ import Festival from '~/server/models/festival';
 import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
-  ArtworkBelongsToArtist,
   FestivalHasManyQuestions,
   QuestionBelongsToArtwork,
   QuestionHasManyAnswers,
@@ -14,7 +13,14 @@ import {
 import { filterResponseFields } from '~/server/controllers';
 import { respondWithSuccess } from '~/server/helpers/respond';
 
-const artworkFields = ['barcode', 'title', 'description', 'artistId', 'artist'];
+const artworkFields = [
+  'artist',
+  'artistId',
+  'barcode',
+  'description',
+  'subtitle',
+  'title',
+];
 
 const options = {
   model: Festival,
@@ -48,12 +54,6 @@ const options = {
             {
               association: AnswerBelongsToArtwork,
               fields: [...artworkFields],
-              associations: [
-                {
-                  association: ArtworkBelongsToArtist,
-                  fields: ['name', 'bio'],
-                },
-              ],
             },
             {
               association: AnswerBelongsToProperty,
@@ -73,13 +73,7 @@ const options = {
         },
         {
           association: QuestionHasManyAnswers,
-          include: [
-            {
-              association: AnswerBelongsToArtwork,
-              include: ArtworkBelongsToArtist,
-            },
-            AnswerBelongsToProperty,
-          ],
+          include: [AnswerBelongsToArtwork, AnswerBelongsToProperty],
         },
       ],
     },
