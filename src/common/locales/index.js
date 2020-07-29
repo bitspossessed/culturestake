@@ -204,12 +204,15 @@ const views = {
   AdminArtworksNew: {
     title: 'Create new artwork',
     notificationSuccess: 'You created the artwork {title}.',
+    fieldArtist: 'Artist:',
+    fieldArtistPlaceholder: 'Choose an artist',
   },
   AdminArtworksEdit: {
     title: 'Edit artwork',
     notificationSuccess: 'You edited the artwork {title}.',
     errorNotFound: 'This artwork does not exist',
     notificationDestroySuccess: 'You deleted the artwork {title}',
+    fieldArtist: 'Artist:',
   },
   AdminArtists: {
     buttonNewQuestion: 'Create new artist',

@@ -9,6 +9,7 @@ import HeaderAdmin from '~/client/components/HeaderAdmin';
 import DangerZone from '~/client/components/DangerZone';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FormArtworks from '~/client/components/FormArtworks';
+import Finder from '~/client/components/Finder';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
@@ -20,7 +21,7 @@ const AdminArtworksEdit = () => {
   const { slug } = useParams();
   const dispatch = useDispatch();
 
-  const { ButtonDelete, Form } = useEditForm({
+  const { ButtonDelete, Form, resource, isResourceLoading } = useEditForm({
     fields: ['title', 'description', 'images'],
     resourcePath: ['artworks', slug],
     returnUrl,
@@ -66,6 +67,16 @@ const AdminArtworksEdit = () => {
       <ViewAdmin>
         <Form>
           <FormArtworks />
+
+          {!isResourceLoading ? (
+            <Finder
+              label={translate('AdminArtworksEdit.fieldArtist')}
+              name="artistId"
+              placeholder={resource.artist ? resource.artist.name : ''}
+              queryPath={'artists'}
+              searchParam={'name'}
+            />
+          ) : null}
 
           <DangerZone>
             <ButtonDelete />

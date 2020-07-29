@@ -1,13 +1,13 @@
 import Artwork from '~/server/models/artwork';
 import baseController from '~/server/controllers';
 
-import { ArtworkHasManyImages } from '~/server/database/associations';
+import { ArtworkHasManyImages, ArtworkBelongsToArtist } from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Artwork,
-  fields: ['title', 'description'],
+  fields: ['title', 'description', 'images', 'artistId'],
   include: [ArtworkHasManyImages],
   associations: [
     {
@@ -23,19 +23,42 @@ const options = {
   ],
 };
 
+const optionsRead = {
+  ...options,
+  fields: ['title', 'description', 'images', 'artistId', 'artist'],
+  include: [ArtworkHasManyImages, ArtworkBelongsToArtist],
+  associations: [
+    {
+      association: ArtworkHasManyImages,
+      destroyCascade: true,
+      fields: [
+        ...baseFileFields,
+        'urlThreshold',
+        'urlThresholdThumb',
+        'urlThumb',
+      ],
+    },
+    {
+      association: ArtworkBelongsToArtist,
+      destroyCascade: false,
+      fields: ['name'],
+    },
+  ],
+}
+
 function create(req, res, next) {
   baseController.create(options)(req, res, next);
 }
 
 function readAll(req, res, next) {
   baseController.readAll({
-    ...options,
+    ...optionsRead,
     isSearchable: true,
   })(req, res, next);
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read(optionsRead)(req, res, next);
 }
 
 function update(req, res, next) {

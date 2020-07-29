@@ -7,6 +7,7 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import FormArtworks from '~/client/components/FormArtworks';
+import Finder from '~/client/components/Finder';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import { useNewForm } from '~/client/hooks/forms';
 import notify, {
@@ -19,7 +20,7 @@ const AdminArtworksNew = () => {
   const returnUrl = '/admin/artworks';
 
   const { Form } = useNewForm({
-    fields: ['title'],
+    fields: ['title', 'description', 'images', 'artistId'],
     resourcePath: ['artworks'],
     returnUrl,
     onSuccess: ({ title }) => {
@@ -48,6 +49,14 @@ const AdminArtworksNew = () => {
       <ViewAdmin>
         <Form>
           <FormArtworks />
+
+          <Finder
+            label={translate('AdminArtworksNew.fieldArtist')}
+            name="artistId"
+            placeholder={translate('AdminArtworksNew.fieldArtistPlaceholder')}
+            queryPath={'artists'}
+            searchParam={'name'}
+          />
 
           <ButtonSubmit />
         </Form>
