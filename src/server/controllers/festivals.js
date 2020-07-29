@@ -113,8 +113,6 @@ async function getQuestions(req, res, next) {
       where,
     });
 
-    console.log(data);
-
     respondWithSuccess(
       res,
       filterResponseFields(req, data, optionsWithQuestions),
