@@ -11,6 +11,7 @@ import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FormQuestions from '~/client/components/FormQuestions';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import ContractsQuestions from '~/client/components/ContractsQuestions';
+import DisabledFinder from '~/client/components/DisabledFinder';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -70,6 +71,25 @@ const AdminQuestionsEdit = () => {
         <Form>
           <FormQuestions />
 
+          {!isResourceLoading ? (
+            <Fragment>
+              <DisabledFinder
+                contents={resource.festival ? resource.festival.title : ''}
+                label={translate('AdminQuestionsNew.fieldFestival')}
+                name="festivalId"
+                value={resource.festivalId ? resource.festivalId : ''}
+              />
+              {resource.artwork ? (
+                <DisabledFinder
+                  contents={resource.artwork ? resource.artwork.title : ''}
+                  label={translate('AdminQuestionsNew.fieldArtwork')}
+                  name="artworkId"
+                  value={resource.artworkId}
+                />
+              ) : null}
+            </Fragment>
+          ) : null}
+
           <AnswersTable
             isArtworkQuestion={resource.artworkId ? true : false}
             isInitialized={isInitialized}
@@ -83,7 +103,7 @@ const AdminQuestionsEdit = () => {
             <ButtonDelete />
           </DangerZone>
 
-          {!isResourceLoading && resource.chainId && (
+          {!isResourceLoading && resource && resource.chainId && (
             <ContractsQuestions
               festivalChainId={resource.festival.chainId}
               isInitialized={isInitialized}

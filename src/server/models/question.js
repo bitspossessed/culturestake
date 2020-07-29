@@ -31,9 +31,6 @@ const Question = db.define('question', {
   title: {
     type: DataTypes.STRING,
     unique: true,
-    validate: {
-      isAlphanumeric: true,
-    },
   },
   festivalId: {
     type: DataTypes.INTEGER,

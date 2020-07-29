@@ -7,8 +7,8 @@ import {
 
 const options = {
   model: Question,
-  fields: ['title', 'slug', 'chainId', 'answers'],
-  fieldsProtected: ['artworkId', 'festivalId'],
+  fields: ['title', 'slug', 'chainId', 'answers', 'festival', 'festivalId'],
+  fieldsProtected: ['artworkId'],
 };
 
 const answerFields = ['type', 'artworkId', 'propertyId'];

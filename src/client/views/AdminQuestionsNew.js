@@ -20,7 +20,7 @@ const AdminQuestionsNew = () => {
   const returnUrl = '/admin/questions';
 
   const { Form } = useNewForm({
-    fields: ['title', 'festivalId'],
+    fields: ['title', 'festivalId', 'artworkId'],
     resourcePath: ['questions'],
     returnUrl,
     onSuccess: ({ title }) => {
@@ -52,8 +52,17 @@ const AdminQuestionsNew = () => {
           <Finder
             label={translate('AdminQuestionsNew.fieldFestival')}
             name="festivalId"
-            placeholder={translate('AdminQuestionsNew.fieldPlaceholder')}
+            placeholder={translate(
+              'AdminQuestionsNew.fieldFestivalPlaceholder',
+            )}
             queryPath={'festivals'}
+            searchParam={'title'}
+          />
+          <Finder
+            label={translate('AdminQuestionsNew.fieldArtwork')}
+            name="artworkId"
+            placeholder={translate('AdminQuestionsNew.fieldArtworkPlaceholder')}
+            queryPath={'artworks'}
             searchParam={'title'}
           />
           <ButtonSubmit />
