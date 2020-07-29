@@ -63,7 +63,19 @@ const Table = ({
   const [orderDirection, setOrderDirection] = useState(initialOrderDirection);
   const [orderKey, setOrderKey] = useState(initialOrderKey);
 
-  const tables = useSelector((state) => state.tables);
+  const tables = useSelector(
+    (state) =>
+      state.tables.requests[requestId] || {
+        isError: false,
+        isLoading: true,
+        isSuccess: false,
+        orderDirection: initialOrderDirection,
+        orderKey: initialOrderKey,
+        pageIndex: 0,
+        pageSize,
+        pagesTotal: 1,
+      },
+  );
 
   const results = useMemo(() => {
     if (tables.isSuccess) {

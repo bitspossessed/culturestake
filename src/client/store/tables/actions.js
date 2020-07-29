@@ -35,13 +35,20 @@ export function requestTable({
           orderKey,
           pageSize,
           pageIndex,
+          id: requestId,
         },
       },
       success: {
         type: ActionTypes.TABLES_REQUEST_SUCCESS,
+        meta: {
+          id: requestId,
+        },
       },
       failure: {
         type: ActionTypes.TABLES_REQUEST_FAILURE,
+        meta: {
+          id: requestId,
+        },
       },
     },
   );

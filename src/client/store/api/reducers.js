@@ -27,7 +27,7 @@ const apiReducer = (state = initialState, action) => {
       // Add new request to list
       const addedRequestState = update(state, {
         requests: {
-          $set: {
+          $merge: {
             [action.id]: Object.assign({}, initialRequestState, {
               id: action.id,
               createdAt: DateTime.local().toISO(),
@@ -60,7 +60,7 @@ const apiReducer = (state = initialState, action) => {
     case ActionTypes.API_SUCCESS: {
       return update(state, {
         requests: {
-          $set: {
+          $merge: {
             [action.id]: Object.assign({}, state.requests[action.id], {
               updatedAt: DateTime.local().toISO(),
               isFinished: true,
@@ -75,7 +75,7 @@ const apiReducer = (state = initialState, action) => {
     case ActionTypes.API_FAILURE:
       return update(state, {
         requests: {
-          $set: {
+          $merge: {
             [action.id]: Object.assign({}, state.requests[action.id], {
               updatedAt: DateTime.local().toISO(),
               isError: true,
