@@ -16,7 +16,7 @@ const options = {
     'festival',
     'festivalId',
     'artworkId',
-    'artwork'
+    'artwork',
   ],
   fieldsProtected: [],
 };
@@ -32,7 +32,11 @@ const festivalfields = [
 
 const optionsRead = {
   ...options,
-  include: [QuestionHasManyAnswers, QuestionBelongsToFestival, QuestionBelongsToArtwork],
+  include: [
+    QuestionHasManyAnswers,
+    QuestionBelongsToFestival,
+    QuestionBelongsToArtwork,
+  ],
   associations: [
     {
       association: QuestionHasManyAnswers,

@@ -22,7 +22,6 @@ export function respondWithError(
 }
 
 export function filterResponse(response, filterSchema) {
-  if (!response) return;
   const data =
     typeof response.toJSON === 'function' ? response.toJSON() : response;
 

@@ -59,8 +59,11 @@ export function filterResponseFields(req, data, options) {
     req.locals && req.locals.user
       ? options.fields.concat(options.fieldsProtected)
       : options.fields;
-
-  return filterResponse(data, fields);
+  if (data) {
+    return filterResponse(data, fields);
+  } else {
+    return {};
+  }
 }
 
 export function filterResponseFieldsAll(req, arr, options) {
