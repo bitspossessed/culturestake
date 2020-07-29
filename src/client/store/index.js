@@ -7,6 +7,7 @@ import ethereum from '~/client/store/ethereum/reducers';
 import notifications from '~/client/store/notifications/reducers';
 import resources from '~/client/store/resources/reducers';
 import tables from '~/client/store/tables/reducers';
+import vote from '~/client/store/vote/reducers';
 
 const rootReducer = combineReducers({
   api,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   notifications,
   resources,
   tables,
+  vote,
 });
 
 export default rootReducer;

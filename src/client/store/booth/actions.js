@@ -3,9 +3,11 @@ import { getAccount, removePrivateKey } from '~/client/services/wallet';
 import { getNonce, removeNonce } from '~/client/services/nonce';
 import { getVotingBooth } from '~/common/services/contracts/booths';
 
+export const BOOTH_ACCOUNT_NAME = 'booth';
+
 export function initializeBooth() {
   const nonce = getNonce();
-  const { address } = getAccount();
+  const { address } = getAccount(BOOTH_ACCOUNT_NAME);
 
   return {
     type: ActionTypes.BOOTH_INITIALIZE,
@@ -47,7 +49,7 @@ export function checkBoothStatus() {
 }
 
 export function resetBooth() {
-  removePrivateKey();
+  removePrivateKey(BOOTH_ACCOUNT_NAME);
   removeNonce();
 
   return {
