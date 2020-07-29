@@ -25,7 +25,7 @@ const Vote = () => {
   const onScannerError = (error) => {
     dispatch(
       notify({
-        text: translate('Vote.notificationScannerError', {
+        text: translate('Vote.errorScannerFailure', {
           error: error.message || 'Unknown error',
         }),
         type: NotificationsTypes.ERROR,
@@ -44,7 +44,7 @@ const Vote = () => {
     } catch (error) {
       dispatch(
         notify({
-          text: translate('Vote.notificationVoteDataError'),
+          text: translate('Vote.errorInvalidVoteData'),
           type: NotificationsTypes.ERROR,
         }),
       );

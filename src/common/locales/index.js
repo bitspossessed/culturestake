@@ -177,6 +177,10 @@ const views = {
   NotFound: {
     title: 'Not Found',
   },
+  Vote: {
+    errorScannerFailure: 'Something went wrong with your camera',
+    errorInvalidVoteData: 'QR Code is invalid',
+  },
 };
 
 export default {
