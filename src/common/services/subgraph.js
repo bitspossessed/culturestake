@@ -3,7 +3,6 @@ import { request } from 'graphql-request';
 const endpoint = `${process.env.GRAPH_NODE_ENDPOINT}/subgraphs/name/${process.env.SUBGRAPH_NAME}`;
 
 export default async function requestGraph(query, variables) {
-  console.log(endpoint, query, variables)
   return await request(endpoint, query, variables);
 }
 

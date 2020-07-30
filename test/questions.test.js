@@ -58,10 +58,6 @@ describe('Questions', () => {
         .expect((response) => {
           const { title, answers } = response.body.data;
           expect(title).toBe(questionData.title);
-<<<<<<< HEAD
-=======
-          expect(chainId).toBeDefined();
->>>>>>> aa041de1b8e3da9dc7e886dce495ba1400bebd4b
           expect(answers.length).toBe(1);
           expect(answers[0].id).toBe(answerData.id);
           expect(answers[0].chainId).toBeUndefined();
