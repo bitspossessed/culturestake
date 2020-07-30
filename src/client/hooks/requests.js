@@ -9,12 +9,14 @@ import {
 import { getCached } from '~/client/services/cache';
 import { getRequest } from '~/client/store/api/actions';
 
+// Create a random, unique request id
 export const useRequestId = () => {
   return useMemo(() => {
     return generateRequestId();
   }, []);
 };
 
+// Create a deterministic request id based on a resource path
 export const useResourceId = (path) => {
   const pathStr = path.join('');
 
@@ -27,6 +29,7 @@ export const useResourceId = (path) => {
   }, [pathStr]);
 };
 
+// Returns the current state of an request via its id
 export const useRequest = (requestId, { onError, onSuccess } = {}) => {
   const {
     isError = false,
@@ -61,6 +64,8 @@ export const useRequest = (requestId, { onError, onSuccess } = {}) => {
   };
 };
 
+// Returns the current state of an request via its id and dispatches it
+// automatically
 export const useResource = (path, { onError, onSuccess } = {}) => {
   const requestId = useResourceId(path);
   const dispatch = useDispatch();
@@ -88,6 +93,8 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
   return [response, isPending];
 };
 
+// Returns data, loading state and functions to easily paginate through
+// API resources
 export const usePaginatedResource = (path, body = { orderKey: 'title' }) => {
   const [resources, setResources] = useState([]);
   const [hasMore, setHasMore] = useState(false);
