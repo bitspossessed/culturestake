@@ -7,6 +7,7 @@ import {
   QuestionBelongsToArtwork,
   QuestionBelongsToFestival,
   QuestionHasManyAnswers,
+  artistFields,
   answerFields,
   artworkFields,
   festivalFields,
@@ -21,20 +22,6 @@ const options = {
 
 const optionsRead = {
   ...options,
-  include: [
-    QuestionBelongsToFestival,
-    QuestionBelongsToArtwork,
-    {
-      association: QuestionHasManyAnswers,
-      include: [
-        {
-          association: AnswerBelongsToArtwork,
-          include: ArtworkBelongsToArtist,
-        },
-        AnswerBelongsToProperty,
-      ],
-    },
-  ],
   associations: [
     {
       association: QuestionBelongsToFestival,
@@ -56,7 +43,7 @@ const optionsRead = {
           associations: [
             {
               association: ArtworkBelongsToArtist,
-              fields: [...artworkFields],
+              fields: [...artistFields],
             },
           ],
         },
@@ -64,6 +51,20 @@ const optionsRead = {
           association: AnswerBelongsToProperty,
           fields: [...propertyFields],
         },
+      ],
+    },
+  ],
+  include: [
+    QuestionBelongsToFestival,
+    QuestionBelongsToArtwork,
+    {
+      association: QuestionHasManyAnswers,
+      include: [
+        {
+          association: AnswerBelongsToArtwork,
+          include: ArtworkBelongsToArtist,
+        },
+        AnswerBelongsToProperty,
       ],
     },
   ],
