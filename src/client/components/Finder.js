@@ -27,16 +27,18 @@ const Finder = (props) => {
   const onSelect = (item) => {
     setSelectedSearchParam(item[props.searchParam]);
     setValue(item.id);
+    if (props.setValue) {
+      props.setValue(item);
+    }
     setSearchResults([]);
   };
 
   const search = useCallback(
     async (query) => {
       setIsLoading(true);
-      const queryObject = {};
+      const queryObject = { ...props.defaultQuery };
       queryObject[props.searchParam] = `${query}`;
       const body = {
-        ...props.defaultQuery,
         query: JSON.stringify(queryObject),
       };
       const response = await apiRequest({
@@ -52,10 +54,18 @@ const Finder = (props) => {
         })
         .slice(0, MAX_SEARCH_RESULTS);
 
-      setSearchResults(result);
+      const filtered = props.clientSideFilter
+        ? result.filter(props.clientSideFilter)
+        : result;
+      setSearchResults(filtered);
       setIsLoading(false);
     },
-    [props.queryPath, props.searchParam, props.defaultQuery],
+    [
+      props.queryPath,
+      props.searchParam,
+      props.defaultQuery,
+      props.clientSideFilter,
+    ],
   );
 
   useEffect(() => {
@@ -134,12 +144,14 @@ const FinderItem = (props) => {
 };
 
 Finder.propTypes = {
+  clientSideFilter: PropTypes.func,
   defaultQuery: PropTypes.object,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.string.isRequired,
   searchParam: PropTypes.string.isRequired,
+  setValue: PropTypes.func,
 };
 
 FinderResult.propTypes = {

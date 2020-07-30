@@ -12,6 +12,7 @@ import InputField from '~/client/components/InputField';
 import InputStickerField from '~/client/components/InputStickerField';
 import InputTextareaField from '~/client/components/InputTextareaField';
 import InputUploadField from '~/client/components/InputUploadField';
+import InputArtworksField from '~/client/components/InputArtworksField';
 
 const FormFestivals = () => {
   const schema = {
@@ -62,19 +63,13 @@ const FormFestivals = () => {
         validate={schema.documents}
       />
 
-      <InputUploadField
-        label={translate('FormFestivals.fieldArtworks')}
-        name="artworks"
-        validate={schema.artworks}
-      />
-
       <InputStickerField
         label={translate('FormFestivals.fieldSticker')}
         name="sticker"
         validate={schema.sticker}
       />
 
-      <InputUploadField
+      <InputArtworksField
         label={translate('FormFestivals.fieldArtworks')}
         name="artworks"
         validate={schema.artworks}
