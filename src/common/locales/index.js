@@ -280,6 +280,11 @@ const views = {
     errorNotFound: 'This artist does not exist',
     notificationDestroySuccess: 'You deleted the artist {name}',
   },
+  ArtworksProfile: {
+    buttonBackToFestival: 'Back to festival',
+    titleArtistDescription: 'Artist bio',
+    titleArtworkDescription: 'Artwork description',
+  },
   Homepage: {
     bodyIntroduction:
       'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',

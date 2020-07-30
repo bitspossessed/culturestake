@@ -11,7 +11,7 @@ const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Artwork,
-  fields: [...artworkFields],
+  fields: [...artworkFields, 'images'],
   include: [ArtworkHasManyImages],
   associations: [
     {
@@ -24,7 +24,7 @@ const options = {
 
 const optionsRead = {
   ...options,
-  fields: ['title', 'description', 'images', 'artistId', 'artist'],
+  fields: ['title', 'description', 'sticker', 'images', 'artistId', 'artist'],
   include: [ArtworkHasManyImages, ArtworkBelongsToArtist],
   associations: [
     {
