@@ -22,8 +22,9 @@ export default {
   getQuestions: {
     [Segments.PARAMS]: {
       idOrChainId: Joi.alternatives().try(
-        web3Validators.web3().sha3().required(),
         Joi.number().integer().positive().required(),
+        Joi.string().required(),
+        web3Validators.web3().sha3().required(),
       ),
     },
   },

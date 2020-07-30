@@ -4,27 +4,28 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Admin from '~/client/views/Admin';
+import AdminAnswersEdit from '~/client/views/AdminAnswersEdit';
+import AdminAnswersNew from '~/client/views/AdminAnswersNew';
+import AdminArtists from '~/client/views/AdminArtists';
+import AdminArtistsEdit from '~/client/views/AdminArtistsEdit';
+import AdminArtistsNew from '~/client/views/AdminArtistsNew';
+import AdminArtworks from '~/client/views/AdminArtworks';
+import AdminArtworksEdit from '~/client/views/AdminArtworksEdit';
+import AdminArtworksNew from '~/client/views/AdminArtworksNew';
 import AdminFestivals from '~/client/views/AdminFestivals';
 import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
-import AdminQuestions from '~/client/views/AdminQuestions';
-import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
-import AdminQuestionsEdit from '~/client/views/AdminQuestionsEdit';
-import AdminAnswersNew from '~/client/views/AdminAnswersNew';
-import AdminAnswersEdit from '~/client/views/AdminAnswersEdit';
-import AdminProperties from '~/client/views/AdminProperties';
-import AdminPropertiesNew from '~/client/views/AdminPropertiesNew';
-import AdminPropertiesEdit from '~/client/views/AdminPropertiesEdit';
-import AdminArtworks from '~/client/views/AdminArtworks';
-import AdminArtworksNew from '~/client/views/AdminArtworksNew';
-import AdminArtworksEdit from '~/client/views/AdminArtworksEdit';
-import AdminArtists from '~/client/views/AdminArtists';
-import AdminArtistsNew from '~/client/views/AdminArtistsNew';
-import AdminArtistsEdit from '~/client/views/AdminArtistsEdit';
 import AdminLogin from '~/client/views/AdminLogin';
+import AdminProperties from '~/client/views/AdminProperties';
+import AdminPropertiesEdit from '~/client/views/AdminPropertiesEdit';
+import AdminPropertiesNew from '~/client/views/AdminPropertiesNew';
+import AdminQuestions from '~/client/views/AdminQuestions';
+import AdminQuestionsEdit from '~/client/views/AdminQuestionsEdit';
+import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
 import AdminUsersNew from '~/client/views/AdminUsersNew';
+import ArtworksProfile from '~/client/views/ArtworksProfile';
 import Booth from '~/client/views/Booth';
 import Festivals from '~/client/views/Festivals';
 import FestivalsProfile from '~/client/views/FestivalsProfile';
@@ -86,14 +87,34 @@ const Routes = () => (
       path="/"
     />
     <PublicRoute
+      component={Festivals}
+      exact
+      path="/festivals"
+    />
+    <PublicRoute
       component={FestivalsProfile}
       exact
       path="/festivals/:slug"
     />
     <PublicRoute
-      component={Festivals}
+      component={ArtworksProfile}
       exact
-      path="/festivals"
+      path="/festivals/:festivalSlug/artworks/:artworkSlug"
+    />
+    <PublicRoute
+      component={Vote}
+      exact
+      path="/vote"
+    />
+    <PublicRoute
+      component={Booth}
+      exact
+      path="/booth"
+    />
+    <UnauthenticatedRoute
+      component={AdminLogin}
+      exact
+      path="/login"
     />
     <AuthenticatedRoute
       component={Admin}
@@ -199,18 +220,6 @@ const Routes = () => (
       component={AdminArtistsEdit}
       exact
       path="/admin/artists/:slug/edit"
-    />
-    <UnauthenticatedRoute
-      component={Booth}
-      path="/booth"
-    />
-    <UnauthenticatedRoute
-      component={AdminLogin}
-      path="/login"
-    />
-    <PublicRoute
-      component={Vote}
-      path="/vote"
     />
     <Route
       component={NotFound}

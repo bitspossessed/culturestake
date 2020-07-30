@@ -11,7 +11,11 @@ const PaperStamp = (props) => {
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
 
   return (
-    <PaperStampStyle isDisabled={props.isDisabled} scheme={innerScheme}>
+    <PaperStampStyle
+      isAlternateColor={isAlternateColor}
+      isDisabled={props.isDisabled}
+      scheme={innerScheme}
+    >
       <PaperStampLine position="top" />
       <Paper scheme={innerScheme}>{props.children}</Paper>
       <PaperStampLine position="bottom" />
@@ -135,7 +139,10 @@ const PaperStampStyle = styled.div`
 
     content: '';
 
-    background-color: rgba(255, 255, 255, 0.5);
+    background-color: ${(props) =>
+      props.isAlternateColor
+        ? 'rgba(0, 0, 0, 0.5)'
+        : 'rgba(255, 255, 255, 0.5)'};
   }
 
   ${/* sc-selector */ PaperStampDotsItemStyle},

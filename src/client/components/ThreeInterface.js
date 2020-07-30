@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useHistory, useLocation } from 'react-router';
 import { useSelector } from 'react-redux';
 
+import Instructions from '~/client/components/Instructions';
 import Navigation from '~/client/components/Navigation';
 import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
@@ -20,7 +21,6 @@ const ThreeInterface = (props) => {
   const history = useHistory();
 
   const isShowingHome = location.pathname === '/';
-  const isShowingBooth = location.pathname.includes('/booth');
   const isShowingVote = location.pathname.includes('/vote');
 
   const onClickLogo = () => {
@@ -35,10 +35,6 @@ const ThreeInterface = (props) => {
 
   const onClickInfo = () => {
     setIsInfoExpanded(!isInfoExpanded);
-
-    if (props.onClickInfo) {
-      props.onClickInfo();
-    }
   };
 
   const onClickNavigationItem = () => {
@@ -48,7 +44,7 @@ const ThreeInterface = (props) => {
   return (
     <Fragment>
       <ThreeInterfaceElement
-        isVisible={!isShowingHome}
+        isVisible={!isShowingHome && !isInfoExpanded}
         left
         top
         onClick={onClickLogo}
@@ -60,7 +56,7 @@ const ThreeInterface = (props) => {
       </ThreeInterfaceElement>
 
       <ThreeInterfaceElement
-        isVisible={!isShowingBooth}
+        isVisible={!isInfoExpanded}
         right
         top
         onClick={onClickNavigation}
@@ -86,6 +82,7 @@ const ThreeInterface = (props) => {
       </ThreeInterfaceElement>
 
       <Navigation isExpanded={isExpanded} onClickItem={onClickNavigationItem} />
+      {isInfoExpanded && <Instructions />}
     </Fragment>
   );
 };
@@ -102,7 +99,6 @@ const ThreeInterfaceElement = ({ isVisible = true, ...props }) => {
 
 ThreeInterface.propTypes = {
   isShowingInfo: PropTypes.bool,
-  onClickInfo: PropTypes.func,
 };
 
 ThreeInterfaceElement.propTypes = {

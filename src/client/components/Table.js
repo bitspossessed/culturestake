@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { DateTime } from 'luxon';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -297,7 +297,7 @@ export const TableBody = ({
   }
 
   return (
-    <Fragment>
+    <TableBodyStyle>
       {results.map((item, index) => {
         const onSelectAction = (type) => {
           onSelect({
@@ -325,7 +325,7 @@ export const TableBody = ({
           </tr>
         );
       })}
-    </Fragment>
+    </TableBodyStyle>
   );
 };
 
@@ -438,6 +438,15 @@ const TableHeaderItemStyle = styled.th`
     props.isSelected ? styles.colors.violet : 'transparent'};
 
   cursor: ${(props) => (props.isSelectable ? 'pointer' : null)};
+`;
+
+const TableBodyStyle = styled.tbody`
+  tr {
+    cursor: pointer;
+    &:hover {
+      background-color: ${styles.colors.grayLight};
+    }
+  }
 `;
 
 const TableBodyMessageStyle = styled.tbody``;

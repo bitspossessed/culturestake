@@ -1,12 +1,10 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import React, { useEffect, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
 
-import styles, {
-  DEFAULT_SCHEME,
-  SCHEME_ALTERNATE,
-} from '~/client/styles/variables';
+import Slider, { SliderStyle } from '~/client/components/Slider';
+import { DEFAULT_SCHEME, SCHEME_ALTERNATE } from '~/client/styles/variables';
 import { SNUGGLEPUNKS_COUNT } from '~/client/components/SVGDefinitions';
 
 const SNUGGLEPUNK_SIZE = 8;
@@ -28,14 +26,9 @@ const SnuggleSlider = ({
 }) => {
   const { isAlternateColor } = useSelector((state) => state.app);
   const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
+  const ref = useRef();
 
   const [isDragging, setIsDragging] = useState(false);
-
-  const refContainer = useRef();
-  const refBar = useRef();
-
-  // Calculate slider position
-  const percentage = (credit / total) * 100;
 
   // Calculate SnugglePunk Happyness Factor === snuggleness!
   const totalVotePower = Math.sqrt(total);
@@ -46,7 +39,7 @@ const SnuggleSlider = ({
 
   const updateValue = useCallback(
     (position) => {
-      const { x, width } = refBar.current.getBoundingClientRect();
+      const { x, width } = ref.current.getBoundingClientRect();
 
       const newCredit = Math.round(
         (Math.min(Math.max(0, position - x), width) / width) * total,
@@ -63,8 +56,6 @@ const SnuggleSlider = ({
     },
     [id, credit, onChange, total],
   );
-
-  // const debouncedUpdateValue = debounce(updateValue, 10);
 
   const onStart = (position) => {
     setIsDragging(true);
@@ -152,61 +143,24 @@ const SnuggleSlider = ({
     };
   }, [onMove, onEnd]);
 
-  useEffect(() => {
-    // Update styles outside of React to improve performance
-    refContainer.current.style.transform = `translate3d(${percentage}%, 0, 0)`;
-
-    const { foreground } = styles.schemes[innerScheme];
-    const gradient = `${foreground} 0%, ${foreground} ${percentage}%, transparent ${percentage}%`;
-    refBar.current.style.background = `linear-gradient(to right, ${gradient})`;
-  }, [refContainer, percentage, innerScheme]);
-
   return (
-    <SnuggleSliderStyle
-      onBlur={onBlur}
-      onMouseDown={onMouseDown}
-      onTouchStart={onTouchStart}
-    >
-      <SnuggleSliderBarStyle
-        percentage={percentage}
-        ref={refBar}
+    <SnuggleSliderStyle>
+      <Slider
+        credit={credit}
+        ref={ref}
         scheme={innerScheme}
-      />
-
-      <SnuggleSliderHandleContainerStyle
-        percentage={percentage}
-        ref={refContainer}
+        total={total}
+        onBlur={onBlur}
+        onMouseDown={onMouseDown}
+        onTouchStart={onTouchStart}
       >
         <SnuggleSliderHandleStyle>
           <use xlinkHref={`#snugglepunk-${snuggleness}`} />
         </SnuggleSliderHandleStyle>
-      </SnuggleSliderHandleContainerStyle>
+      </Slider>
     </SnuggleSliderStyle>
   );
 };
-
-const SnuggleSliderBarStyle = styled.div`
-  width: 100%;
-  height: 1.5rem;
-
-  border: 1.5px solid;
-  border-color: ${(props) => {
-    return styles.schemes[props.scheme].foreground;
-  }};
-  border-radius: 10px;
-`;
-
-const SnuggleSliderHandleContainerStyle = styled.div`
-  position: absolute;
-
-  top: 0;
-  right: ${SNUGGLEPUNK_SIZE / 3}rem;
-  left: ${SNUGGLEPUNK_SIZE / 3}rem;
-
-  pointer-events: none;
-
-  user-select: none;
-`;
 
 const SnuggleSliderHandleStyle = styled.svg`
   position: relative;
@@ -222,19 +176,14 @@ const SnuggleSliderHandleStyle = styled.svg`
 `;
 
 const SnuggleSliderStyle = styled.div`
-  position: relative;
-
-  display: flex;
-
-  width: 100%;
-  height: ${SNUGGLEPUNK_SIZE}rem;
-
-  padding-right: ${SNUGGLEPUNK_SIZE / 3}rem;
-  padding-left: ${SNUGGLEPUNK_SIZE / 3}rem;
-
-  align-items: center;
-
   cursor: pointer;
+
+  ${SliderStyle} {
+    height: ${SNUGGLEPUNK_SIZE}rem;
+
+    padding-right: ${SNUGGLEPUNK_SIZE / 3}rem;
+    padding-left: ${SNUGGLEPUNK_SIZE / 3}rem;
+  }
 
   &:hover {
     ${SnuggleSliderHandleStyle} {

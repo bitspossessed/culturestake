@@ -76,6 +76,7 @@ const layers = {
   Scanner: 6000,
   VoteSessionCreatorAdmin: 7000,
   Navigation: 9000,
+  Instructions: 9500,
   ThreeInterfaceElement: 10000,
   SnuggleRain: 50000,
   Notifications: 60000,

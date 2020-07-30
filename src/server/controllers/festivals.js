@@ -7,6 +7,7 @@ import baseController from '~/server/controllers';
 import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
+  ArtworkBelongsToArtist,
   FestivalBelongsToManyArtworks,
   FestivalHasManyDocuments,
   FestivalHasManyImages,
@@ -14,11 +15,12 @@ import {
   QuestionBelongsToArtwork,
   QuestionHasManyAnswers,
   answerFields,
+  artistFields,
   artworkFields,
   baseFileFields,
-  propertyFields,
   festivalFields,
   imageFileFields,
+  propertyFields,
   questionFields,
 } from '~/server/database/associations';
 import { filterResponseFields } from '~/server/controllers';
@@ -36,17 +38,14 @@ const options = {
   associations: [
     {
       association: FestivalHasManyImages,
-      destroyCascade: true,
       fields: [...imageFileFields],
     },
     {
       association: FestivalHasManyDocuments,
-      destroyCascade: true,
       fields: [...baseFileFields],
     },
     {
       association: FestivalBelongsToManyArtworks,
-      destroyCascade: false,
       fields: [...artworkFields],
     },
   ],
@@ -57,12 +56,22 @@ const optionsWithQuestions = {
   fields: [...festivalFields, 'images', 'questions'],
   associations: [
     {
+      association: FestivalHasManyImages,
+      fields: [...imageFileFields],
+    },
+    {
       association: FestivalHasManyQuestions,
       fields: [...questionFields, 'artwork', 'answers'],
       associations: [
         {
           association: QuestionBelongsToArtwork,
-          fields: [...artworkFields],
+          fields: [...artworkFields, 'artist'],
+          associations: [
+            {
+              association: ArtworkBelongsToArtist,
+              fields: [...artistFields],
+            },
+          ],
         },
         {
           association: QuestionHasManyAnswers,
@@ -82,11 +91,13 @@ const optionsWithQuestions = {
     },
   ],
   include: [
+    FestivalHasManyImages,
     {
       association: FestivalHasManyQuestions,
       include: [
         {
           association: QuestionBelongsToArtwork,
+          include: [ArtworkBelongsToArtist],
         },
         {
           association: QuestionHasManyAnswers,
@@ -98,12 +109,14 @@ const optionsWithQuestions = {
 };
 
 async function getQuestions(req, res, next) {
-  // Request can be via `chainId` or database `id`
+  // Request can be via `chainId` or database `id` or `slug`
   const where = {};
   if (Number.isInteger(req.params.idOrChainId)) {
     where.id = req.params.idOrChainId;
-  } else {
+  } else if (req.params.idOrChainId.slice(0, 2) === '0x') {
     where.chainId = req.params.idOrChainId;
+  } else {
+    where.slug = req.params.idOrChainId;
   }
 
   try {

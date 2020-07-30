@@ -9,6 +9,7 @@ import {
   ArtworkBelongsToArtist,
   answerFields,
   artworkFields,
+  festivalFields,
   propertyFields,
   questionFields,
 } from '~/server/database/associations';
@@ -18,25 +19,35 @@ const options = {
   fields: [...questionFields, 'answers', 'festival', 'artwork'],
 };
 
-const festivalfields = [
-  'chainId',
-  'description',
-  'sticker',
-  'subtitle',
-  'title',
-];
-
 const optionsRead = {
   ...options,
   include: [
-    QuestionHasManyAnswers,
     QuestionBelongsToFestival,
     QuestionBelongsToArtwork,
+    {
+      association: QuestionHasManyAnswers,
+      include: [
+        {
+          association: AnswerBelongsToArtwork,
+          include: ArtworkBelongsToArtist,
+        },
+        AnswerBelongsToProperty,
+      ],
+    },
   ],
   associations: [
     {
+      association: QuestionBelongsToFestival,
+      destroyCascade: false,
+      fields: [...festivalFields],
+    },
+    {
+      association: QuestionBelongsToArtwork,
+      destroyCascade: false,
+      fields: ['title'],
+    },
+    {
       association: QuestionHasManyAnswers,
-      include: [AnswerBelongsToArtwork, AnswerBelongsToProperty],
       fields: [...answerFields],
       associations: [
         {
@@ -54,16 +65,6 @@ const optionsRead = {
           fields: [...propertyFields],
         },
       ],
-    },
-    {
-      association: QuestionBelongsToFestival,
-      destroyCascade: false,
-      fields: [...festivalfields],
-    },
-    {
-      association: QuestionBelongsToArtwork,
-      destroyCascade: false,
-      fields: ['title'],
     },
   ],
 };

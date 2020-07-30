@@ -25,7 +25,13 @@ export const artworkFields = [
   'title',
 ];
 export const baseFileFields = ['fileName', 'fileType', 'url'];
-export const festivalFields = ['description', 'sticker', 'subtitle', 'title'];
+export const festivalFields = [
+  'chainId',
+  'description',
+  'sticker',
+  'subtitle',
+  'title',
+];
 export const imageFileFields = [
   ...baseFileFields,
   'urlThreshold',

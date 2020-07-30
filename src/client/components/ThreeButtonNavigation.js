@@ -4,7 +4,6 @@ import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { useLoader } from 'react-three-fiber';
 
 import ThreeModel from '~/client/components/ThreeModel';
-import ThreeRotator from '~/client/components/ThreeRotator';
 import close from '~/client/assets/images/close.svg';
 import menu from '~/client/assets/images/menu.svg';
 import {
@@ -20,11 +19,7 @@ const ThreeButtonNavigation = (props) => {
     ? alternateGradientTexture
     : limeGradientTexture;
 
-  return (
-    <ThreeRotator rotation={[0, 0, 0]}>
-      <ThreeModel {...props} svg={svg} texture={texture} />
-    </ThreeRotator>
-  );
+  return <ThreeModel {...props} svg={svg} texture={texture} />;
 };
 
 ThreeButtonNavigation.propTypes = {
