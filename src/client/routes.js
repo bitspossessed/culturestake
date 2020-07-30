@@ -116,7 +116,7 @@ const Routes = () => (
       exact
       path="/admin/festivals/:slug/edit"
     />
-    <AuthenticatedRoute
+    <UnauthenticatedRoute
       component={Booth}
       path="/booth"
     />
