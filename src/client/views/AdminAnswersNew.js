@@ -37,7 +37,7 @@ const AdminAnswersNew = () => {
   }, [setQuestion, setIsLoading, questionId]);
 
   const { Form } = useNewForm({
-    fields: ['type', 'questionId', 'artworkId', 'propertyId'],
+    fields: ['questionId', 'artworkId', 'propertyId'],
     resourcePath: ['answers'],
     returnUrl,
     onSuccess: ({ title }) => {
@@ -59,6 +59,13 @@ const AdminAnswersNew = () => {
     },
   });
 
+  const filter = (item) => {
+    const filtered = item.festivals.filter(
+      (festival) => festival.id === question.festivalId,
+    );
+    return filtered.length >= 1;
+  };
+
   return (
     <Fragment>
       <HeaderAdmin>{translate('AdminAnswersNew.title')}</HeaderAdmin>
@@ -74,6 +81,7 @@ const AdminAnswersNew = () => {
               />
               {!question.artworkId ? (
                 <Finder
+                  clientSideFilter={filter}
                   label={translate('AdminAnswersNew.fieldArtwork')}
                   name="artworkId"
                   placeholder={translate(

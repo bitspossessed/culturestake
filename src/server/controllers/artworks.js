@@ -3,8 +3,10 @@ import baseController from '~/server/controllers';
 import {
   ArtworkHasManyImages,
   ArtworkBelongsToArtist,
+  ArtworkBelongsToManyFestivals,
   artworkFields,
   imageFileFields,
+  festivalFields,
 } from '~/server/database/associations';
 
 const baseFileFields = ['fileName', 'fileType', 'url'];
@@ -24,8 +26,12 @@ const options = {
 
 const optionsRead = {
   ...options,
-  fields: ['title', 'description', 'images', 'artistId', 'artist'],
-  include: [ArtworkHasManyImages, ArtworkBelongsToArtist],
+  fields: ['title', 'description', 'images', 'artistId', 'artist', 'festivals'],
+  include: [
+    ArtworkHasManyImages,
+    ArtworkBelongsToArtist,
+    ArtworkBelongsToManyFestivals,
+  ],
   associations: [
     {
       association: ArtworkHasManyImages,
@@ -41,6 +47,11 @@ const optionsRead = {
       association: ArtworkBelongsToArtist,
       destroyCascade: false,
       fields: ['name'],
+    },
+    {
+      association: ArtworkBelongsToManyFestivals,
+      destroyCascade: false,
+      fields: [...festivalFields],
     },
   ],
 };
