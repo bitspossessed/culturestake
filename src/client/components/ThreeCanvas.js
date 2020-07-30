@@ -9,6 +9,7 @@ const ThreeCanvas = ({ children, isDimmed, ...props }) => {
   return (
     <Canvas
       {...props}
+      invalidateFrameloop
       noEvents
       orthographic
       pixelRatio={Math.min(window.devicePixelRatio, MAX_DEVICE_PIXEL_RATIO)}

@@ -29,6 +29,10 @@ import {
   BoxRoundedStyle,
   BoxRoundedInnerStyle,
 } from '~/client/components/BoxRounded';
+import {
+  BoothContainerStyle,
+  BoothContainerInnerStyle,
+} from '~/client/components/BoothContainer';
 import { InputFieldStyle } from '~/client/components/InputField';
 import { InputFieldsetLabelStyle } from '~/client/components/InputFieldset';
 import { InputTextareaFieldStyle } from '~/client/components/InputTextareaField';
@@ -54,9 +58,12 @@ const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
 };
 
 export const ColorSectionStyle = styled.div`
+  ${/* sc-selector */ BoothContainerInnerStyle},
+  ${/* sc-selector */ BoothContainerStyle},
   ${/* sc-selector */ BoxRoundedInnerStyle},
   ${/* sc-selector */ BoxRoundedStyle},
   ${/* sc-selector */ ButtonIconStyle},
+  ${/* sc-selector */ ButtonOutlineStyle},
   ${/* sc-selector */ EthereumContainerStyle},
   ${/* sc-selector */ HeadingPrimaryStyle},
   ${/* sc-selector */ HeadingSecondaryStyle},
@@ -135,10 +142,13 @@ export const ColorSectionStyle = styled.div`
     }
   }
 
+  ${/* sc-selector */ BoothContainerInnerStyle},
+  ${/* sc-selector */ BoothContainerStyle},
   ${/* sc-selector */ BoxRoundedInnerStyle},
   ${/* sc-selector */ BoxRoundedStyle},
   ${/* sc-selector */ ButtonIconSVGStyle},
   ${/* sc-selector */ ButtonIconStyle},
+  ${/* sc-selector */ ButtonOutlineStyle},
   ${/* sc-selector */ EthereumContainerInnerStyle},
   ${/* sc-selector */ EthereumContainerStyle},
   ${/* sc-selector */ InputFieldStyle},

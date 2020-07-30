@@ -2,13 +2,16 @@ import PropTypes from 'prop-types';
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
 import ColorSection from '~/client/components/ColorSection';
-import styles from '~/client/styles/variables';
+import styles, {
+  DEFAULT_SCHEME,
+  SCHEME_ALTERNATE,
+} from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { ParagraphStyle } from '~/client/styles/typography';
 import { SpacingGroupStyle } from '~/client/styles/layout';
@@ -18,6 +21,9 @@ const Scanner = ({ onDetected, onError }) => {
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isReady, setIsReady] = useState(false);
+
+  const { isAlternateColor } = useSelector((state) => state.app);
+  const scheme = isAlternateColor ? SCHEME_ALTERNATE : DEFAULT_SCHEME;
 
   useEffect(() => {
     let scanner;
@@ -81,7 +87,7 @@ const Scanner = ({ onDetected, onError }) => {
     !isError && (
       <ScannerStyle isReady={isReady}>
         <SpacingGroupStyle>
-          <ScannerVideoStyle ref={ref} />
+          <ScannerVideoStyle ref={ref} scheme={scheme} />
 
           <ColorSection>
             <ParagraphStyle>
@@ -106,8 +112,6 @@ const ScannerStyle = styled.div`
 
   display: flex;
 
-  background-color: rgba(255, 255, 255, 0.1);
-
   align-items: center;
   flex-direction: column;
   justify-content: center;
@@ -117,15 +121,15 @@ const ScannerVideoStyle = styled.video`
   width: 100%;
   max-width: 40rem;
 
-  border: 1.5px solid ${styles.colors.violet};
+  border: 1.5px solid ${(props) => styles.schemes[props.scheme].foreground};
   border-radius: 5px;
 
   background: repeating-linear-gradient(
     45deg,
     transparent,
     transparent 3px,
-    ${styles.colors.violet} 3px,
-    ${styles.colors.violet} 6px
+    ${(props) => styles.schemes[props.scheme].foreground} 3px,
+    ${(props) => styles.schemes[props.scheme].foreground} 6px
   );
 `;
 

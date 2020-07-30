@@ -20,7 +20,6 @@ const ThreeInterface = (props) => {
   const history = useHistory();
 
   const isShowingHome = location.pathname === '/';
-  const isShowingBooth = location.pathname.includes('/booth');
   const isShowingVote = location.pathname.includes('/vote');
 
   const onClickLogo = () => {
@@ -59,12 +58,7 @@ const ThreeInterface = (props) => {
         />
       </ThreeInterfaceElement>
 
-      <ThreeInterfaceElement
-        isVisible={!isShowingBooth}
-        right
-        top
-        onClick={onClickNavigation}
-      >
+      <ThreeInterfaceElement isVisible right top onClick={onClickNavigation}>
         <ThreeButtonNavigation
           isAlternateColor={isAlternateColor}
           isExpanded={isExpanded}
