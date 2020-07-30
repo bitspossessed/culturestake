@@ -42,6 +42,10 @@ export const PaperContainerStyle = styled.div`
   margin: 0 auto;
 `;
 
+export const HorizontalSpacingStyle = styled.div`
+  height: 2rem;
+`;
+
 export const SpacingGroupStyle = styled.div`
   & > * {
     margin-top: 1rem;

@@ -31,6 +31,10 @@ const Scanner = ({ onDetected, onError }) => {
           throw new Error('No devices found');
         }
 
+        if (!ref.current) {
+          return;
+        }
+
         scanner.decodeFromVideoDevice(
           undefined,
           ref.current,

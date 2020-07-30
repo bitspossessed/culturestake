@@ -25,6 +25,7 @@ import StickerHeading from '~/client/components/StickerHeading';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import rectangle from '~/client/assets/images/rectangle.svg';
 import styles from '~/client/styles/variables';
 import swirl from '~/client/assets/images/swirl.svg';
 import translate from '~/common/services/i18n';
@@ -33,7 +34,10 @@ import {
   PaperContainerStyle,
   SpacingGroupStyle,
 } from '~/client/styles/layout';
-import { BOOTH_ACCOUNT_NAME } from '~/client/store/booth/actions';
+import {
+  BOOTH_ACCOUNT_NAME,
+  incrementBoothNonce,
+} from '~/client/store/booth/actions';
 import { ParagraphStyle } from '~/client/styles/typography';
 import {
   decodeVoteData,
@@ -173,6 +177,7 @@ const VoteSessionCreator = () => {
     setIsLoading(true);
     setIsAdminVisible(false);
 
+    // Create booth voteData
     const boothSignature = signBooth({
       festivalAnswerIds,
       privateKey: getPrivateKey(BOOTH_ACCOUNT_NAME),
@@ -188,8 +193,11 @@ const VoteSessionCreator = () => {
       }),
     );
 
+    // Increment booth nonce
+    dispatch(incrementBoothNonce());
+
     setIsLoading(false);
-  }, [nonce, festivalAnswerIds, festivalQuestionId]);
+  }, [nonce, festivalAnswerIds, dispatch, festivalQuestionId]);
 
   const onVoteOnBooth = async () => {
     setIsLoading(true);
@@ -210,6 +218,8 @@ const VoteSessionCreator = () => {
   const onReset = () => {
     setVoteData(null);
     setFestivalAnswerIds([]);
+    setIsManual(false);
+    setIsAdminVisible(false);
   };
 
   useEffect(() => {
@@ -241,6 +251,11 @@ const VoteSessionCreator = () => {
               <Pill>{festivalChainId}</Pill>
             </ParagraphStyle>
 
+            <ParagraphStyle>
+              {translate('VoteSessionCreator.bodyCurrentNonce')}{' '}
+              <Pill>{nonce}</Pill>
+            </ParagraphStyle>
+
             <HorizontalLine />
 
             <ParagraphStyle>
@@ -252,7 +267,7 @@ const VoteSessionCreator = () => {
             <SpacingGroupStyle>
               <ButtonIcon
                 disabled={isManual}
-                url={swirl}
+                url={rectangle}
                 onClick={onManualOverride}
               >
                 {translate('VoteSessionCreator.buttonManualOverride')}
@@ -267,6 +282,14 @@ const VoteSessionCreator = () => {
                 onClick={onCreateVoteSession}
               >
                 {translate('VoteSessionCreator.buttonCreateVoteSession')}
+              </ButtonIcon>
+
+              <ButtonIcon
+                disabled={festivalAnswerIds.length === 0}
+                url={swirl}
+                onClick={onReset}
+              >
+                {translate('VoteSessionCreator.buttonReset')}
               </ButtonIcon>
             </SpacingGroupStyle>
           </BoxRounded>

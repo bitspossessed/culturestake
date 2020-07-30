@@ -15,6 +15,9 @@ import StickerHeading from '~/client/components/StickerHeading';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeThankYou from '~/client/components/ThreeThankYou';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 import translate from '~/common/services/i18n';
 import web3 from '~/common/services/web3';
 import {
@@ -22,20 +25,25 @@ import {
   HeadingSecondaryStyle,
   ParagraphStyle,
 } from '~/client/styles/typography';
-import { PaperContainerStyle, SpacingGroupStyle } from '~/client/styles/layout';
+import {
+  HorizontalSpacingStyle,
+  PaperContainerStyle,
+  SpacingGroupStyle,
+} from '~/client/styles/layout';
 import { VOTE_ACCOUNT_NAME } from '~/client/store/vote/actions';
 import { getPrivateKey } from '~/client/services/wallet';
 import { getQuestion } from '~/common/services/contracts';
 import { packBooth } from '~/common/services/encoding';
 import { signAudienceVote } from '~/common/services/vote';
-import { useResource } from '~/client/hooks/requests';
+import { useResource, useRequest, useRequestId } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
-import { voteOnBooth } from '~/client/store/booth/actions';
+import { vote } from '~/client/store/vote/actions';
 
-const FESTIVAL_STEP = 'festival';
-const ARTWORK_STEP = 'artwork';
+const MAX_TOP_ARTWORKS = 3;
+const STEP_FESTIVAL = 'festival';
+const STEP_ARTWORK = 'artwork';
 
-const VoteInterface = ({
+const VoteSession = ({
   boothSignature,
   festivalAnswerIds,
   festivalQuestionId,
@@ -45,28 +53,27 @@ const VoteInterface = ({
   const dispatch = useDispatch();
   const { isAlternateColor } = useSelector((state) => state.app);
 
-  const [currentStep, setCurrentStep] = useState(FESTIVAL_STEP);
-  const [hasVoted, setHasVoted] = useState(false);
+  const [currentStep, setCurrentStep] = useState(STEP_FESTIVAL);
   const [isVoting, setIsVoting] = useState(false);
 
   // How happy is our SnuggleRain component?
   const [snuggleness, setSnuggleness] = useState(0.0);
 
-  // Actual quadratic vote states, divided by the two separate votes
+  // Actual quadratic vote states, divided by the two separate vote steps
   const [creditLeft, setCreditLeft] = useState({
-    [FESTIVAL_STEP]: 0,
-    [ARTWORK_STEP]: 0,
+    [STEP_FESTIVAL]: 0,
+    [STEP_ARTWORK]: 0,
   });
   const [creditTotal, setCreditTotal] = useState({
-    [FESTIVAL_STEP]: 0,
-    [ARTWORK_STEP]: 0,
+    [STEP_FESTIVAL]: 0,
+    [STEP_ARTWORK]: 0,
   });
   const [credits, setCredits] = useState({
-    [FESTIVAL_STEP]: festivalAnswerIds.reduce((acc, id) => {
+    [STEP_FESTIVAL]: festivalAnswerIds.reduce((acc, id) => {
       acc[id] = 0;
       return acc;
     }, {}),
-    [ARTWORK_STEP]: {},
+    [STEP_ARTWORK]: {},
   });
 
   // Which answer of the first question had the most vote tokens?
@@ -104,16 +111,34 @@ const VoteInterface = ({
 
     setCredits((value) => ({
       ...value,
-      [ARTWORK_STEP]: artworkQuestionData.answers.reduce((acc, answer) => {
+      [STEP_ARTWORK]: artworkQuestionData.answers.reduce((acc, answer) => {
         acc[answer.id] = 0;
         return acc;
       }, {}),
     }));
   }, [artworkQuestionData]);
 
-  const hasVotedOnArtworks = !!Object.keys(credits[ARTWORK_STEP]).find(
-    (answerId) => credits[ARTWORK_STEP][answerId] > 0,
+  const hasVotedOnArtworks = !!Object.keys(credits[STEP_ARTWORK]).find(
+    (answerId) => credits[STEP_ARTWORK][answerId] > 0,
   );
+
+  // Current status of vote request
+  const requestId = useRequestId();
+  const { isSuccess: isVoteSuccess } = useRequest(requestId, {
+    onSuccess: () => {
+      setIsVoting(false);
+    },
+    onError: () => {
+      setIsVoting(false);
+
+      dispatch(
+        notify({
+          text: translate('VoteSession.errorVoteFailure'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
+    },
+  });
 
   // Is something loading here?
   const isLoading = isDataLoading || isFestivalQuestionDataLoading || isVoting;
@@ -137,12 +162,12 @@ const VoteInterface = ({
     };
 
     if (festivalQuestionData.chainId) {
-      getMaxVoteTokens(FESTIVAL_STEP, festivalQuestionData.chainId);
+      getMaxVoteTokens(STEP_FESTIVAL, festivalQuestionData.chainId);
     }
 
     // Get data from artwork question (when festival question winner is set)
-    if (artworkQuestionData.chainId && currentStep === ARTWORK_STEP) {
-      getMaxVoteTokens(ARTWORK_STEP, artworkQuestionData.chainId);
+    if (artworkQuestionData.chainId && currentStep === STEP_ARTWORK) {
+      getMaxVoteTokens(STEP_ARTWORK, artworkQuestionData.chainId);
     }
   }, [festivalQuestionData.chainId, artworkQuestionData.chainId, currentStep]);
 
@@ -211,7 +236,7 @@ const VoteInterface = ({
     setSnuggleness(currentVotePower / totalVotePower);
 
     // Set most voted artwork when in festival question step
-    if (stepName === FESTIVAL_STEP) {
+    if (stepName === STEP_FESTIVAL) {
       const highestVoteTokens = Math.max(...Object.values(creditsNew));
       setWinnerArtworkId(
         highestVoteTokens > 0
@@ -226,20 +251,32 @@ const VoteInterface = ({
     }
   };
 
+  const highestVoteArtworks = useMemo(() => {
+    return artworks
+      .map((artwork) => {
+        artwork.voteTokens = credits[STEP_FESTIVAL][artwork.answerId];
+        return artwork;
+      })
+      .sort(({ voteTokens: itemA, voteTokens: itemB }) => {
+        return itemB - itemA;
+      })
+      .slice(0, MAX_TOP_ARTWORKS);
+  }, [artworks, credits]);
+
   const onNextStep = () => {
-    setCurrentStep(ARTWORK_STEP);
+    setCurrentStep(STEP_ARTWORK);
   };
 
   const onPreviousStep = () => {
-    setCurrentStep(FESTIVAL_STEP);
+    setCurrentStep(STEP_FESTIVAL);
   };
 
   const onVote = async () => {
-    const festivalVoteTokens = Object.values(credits[FESTIVAL_STEP]);
+    const festivalVoteTokens = Object.values(credits[STEP_FESTIVAL]);
 
     const artworkQuestionId = artworkQuestionData.id;
-    const artworkVoteTokens = Object.values(credits[ARTWORK_STEP]);
-    const artworkAnswerIds = Object.keys(credits[ARTWORK_STEP]).map((id) =>
+    const artworkVoteTokens = Object.values(credits[STEP_ARTWORK]);
+    const artworkAnswerIds = Object.keys(credits[STEP_ARTWORK]).map((id) =>
       parseInt(id, 10),
     );
 
@@ -272,18 +309,13 @@ const VoteInterface = ({
 
     setIsVoting(true);
 
-    // @TODO: Currently we can only vote on the booth as we manage the nonce on
-    // the booth device. To enable users to vote on any device we need another
-    // way to manage transaction nonces going through our server.
-    await dispatch(voteOnBooth(voteData));
-
-    setIsVoting(false);
-    setHasVoted(true);
+    // Go vote!
+    await dispatch(vote(voteData, requestId));
   };
 
   return (
     <Fragment>
-      {hasVoted ? (
+      {isVoteSuccess ? (
         <ColorSection>
           <PaperContainerStyle>
             <PaperTicket>
@@ -298,13 +330,25 @@ const VoteInterface = ({
 
             <PaperTicket>
               <ParagraphStyle>
-                {translate('VoteInterface.bodyYourVotesRecorded')}
+                {translate('VoteSession.bodyYourVotesRecorded', {
+                  count: Math.min(MAX_TOP_ARTWORKS, festivalAnswerIds.length),
+                })}
               </ParagraphStyle>
+
+              <HorizontalSpacingStyle />
+
+              {highestVoteArtworks.map((artwork, index) => {
+                return (
+                  <HeadingSecondaryStyle key={index}>
+                    {index + 1}. {artwork.title}
+                  </HeadingSecondaryStyle>
+                );
+              })}
 
               <HorizontalLine />
 
               <ButtonIcon to="/">
-                {translate('VoteInterface.buttonToHomepage')}
+                {translate('VoteSession.buttonToHomepage')}
               </ButtonIcon>
             </PaperTicket>
           </PaperContainerStyle>
@@ -317,11 +361,11 @@ const VoteInterface = ({
             <Loading />
           ) : (
             <ColorSection>
-              {currentStep === FESTIVAL_STEP ? (
+              {currentStep === STEP_FESTIVAL ? (
                 <Fragment>
                   <VoteCreditsBar
-                    left={creditLeft[FESTIVAL_STEP]}
-                    total={creditTotal[FESTIVAL_STEP]}
+                    left={creditLeft[STEP_FESTIVAL]}
+                    total={creditTotal[STEP_FESTIVAL]}
                   />
 
                   <PaperContainerStyle>
@@ -335,10 +379,10 @@ const VoteInterface = ({
 
                     {artworks.map((artwork) => {
                       return (
-                        <VoteInterfaceArtwork
+                        <VoteSessionArtwork
                           answerId={artwork.answerId}
-                          credit={credits[FESTIVAL_STEP][artwork.answerId]}
-                          creditTotal={creditTotal[FESTIVAL_STEP]}
+                          credit={credits[STEP_FESTIVAL][artwork.answerId]}
+                          creditTotal={creditTotal[STEP_FESTIVAL]}
                           images={artwork.images}
                           key={artwork.id}
                           stickerCode={artwork.sticker}
@@ -354,7 +398,7 @@ const VoteInterface = ({
                         disabled={!winnerArtworkId}
                         onClick={onNextStep}
                       >
-                        {translate('VoteInterface.buttonNextStep')}
+                        {translate('VoteSession.buttonNextStep')}
                       </ButtonIcon>
                     </PaperTicket>
                   </PaperContainerStyle>
@@ -362,8 +406,8 @@ const VoteInterface = ({
               ) : (
                 <Fragment>
                   <VoteCreditsBar
-                    left={creditLeft[ARTWORK_STEP]}
-                    total={creditTotal[ARTWORK_STEP]}
+                    left={creditLeft[STEP_ARTWORK]}
+                    total={creditTotal[STEP_ARTWORK]}
                   />
 
                   <PaperContainerStyle>
@@ -377,10 +421,10 @@ const VoteInterface = ({
 
                     {properties.map((property) => {
                       return (
-                        <VoteInterfaceProperty
+                        <VoteSessionProperty
                           answerId={property.answerId}
-                          credit={credits[ARTWORK_STEP][property.answerId]}
-                          creditTotal={creditTotal[ARTWORK_STEP]}
+                          credit={credits[STEP_ARTWORK][property.answerId]}
+                          creditTotal={creditTotal[STEP_ARTWORK]}
                           key={property.id}
                           title={property.title}
                           onCreditChange={onCreditChange}
@@ -391,14 +435,14 @@ const VoteInterface = ({
                     <PaperTicket>
                       <SpacingGroupStyle>
                         <ButtonIcon isIconFlipped onClick={onPreviousStep}>
-                          {translate('VoteInterface.buttonPreviousStep')}
+                          {translate('VoteSession.buttonPreviousStep')}
                         </ButtonIcon>
 
                         <ButtonIcon
                           disabled={!hasVotedOnArtworks}
                           onClick={onVote}
                         >
-                          {translate('VoteInterface.buttonVote')}
+                          {translate('VoteSession.buttonVote')}
                         </ButtonIcon>
                       </SpacingGroupStyle>
                     </PaperTicket>
@@ -413,7 +457,7 @@ const VoteInterface = ({
   );
 };
 
-const VoteInterfaceArtwork = (props) => {
+const VoteSessionArtwork = (props) => {
   const stickerImagePath = useStickerImage(props.images);
   const { scheme } = useSticker(props.stickerCode);
 
@@ -421,7 +465,7 @@ const VoteInterfaceArtwork = (props) => {
     props.onCreditChange({
       id,
       credit,
-      stepName: FESTIVAL_STEP,
+      stepName: STEP_FESTIVAL,
     });
   };
 
@@ -448,12 +492,12 @@ const VoteInterfaceArtwork = (props) => {
   );
 };
 
-const VoteInterfaceProperty = (props) => {
+const VoteSessionProperty = (props) => {
   const onCreditChange = ({ id, credit }) => {
     props.onCreditChange({
       id,
       credit,
-      stepName: ARTWORK_STEP,
+      stepName: STEP_ARTWORK,
     });
   };
 
@@ -471,7 +515,7 @@ const VoteInterfaceProperty = (props) => {
   );
 };
 
-VoteInterface.propTypes = {
+VoteSession.propTypes = {
   boothSignature: PropTypes.string.isRequired,
   festivalAnswerIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   festivalQuestionId: PropTypes.number.isRequired,
@@ -479,7 +523,7 @@ VoteInterface.propTypes = {
   senderAddress: PropTypes.string.isRequired,
 };
 
-VoteInterfaceArtwork.propTypes = {
+VoteSessionArtwork.propTypes = {
   answerId: PropTypes.number.isRequired,
   credit: PropTypes.number.isRequired,
   creditTotal: PropTypes.number.isRequired,
@@ -490,7 +534,7 @@ VoteInterfaceArtwork.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-VoteInterfaceProperty.propTypes = {
+VoteSessionProperty.propTypes = {
   answerId: PropTypes.number.isRequired,
   credit: PropTypes.number.isRequired,
   creditTotal: PropTypes.number.isRequired,
@@ -498,4 +542,4 @@ VoteInterfaceProperty.propTypes = {
   title: PropTypes.string.isRequired,
 };
 
-export default VoteInterface;
+export default VoteSession;

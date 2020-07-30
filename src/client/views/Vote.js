@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Scanner from '~/client/components/Scanner';
 import View from '~/client/components/View';
-import VoteInterface from '~/client/components/VoteInterface';
+import VoteSession from '~/client/components/VoteSession';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
@@ -61,7 +61,7 @@ const Vote = () => {
     <Fragment>
       <View>
         {isVoteReady ? (
-          <VoteInterface
+          <VoteSession
             boothSignature={vote.boothSignature}
             festivalAnswerIds={vote.festivalAnswerIds}
             festivalQuestionId={vote.festivalQuestionId}

@@ -1,11 +1,7 @@
 import ActionTypes from '~/client/store/booth/types';
-import translate from '~/common/services/i18n';
-import { NOTIFICATION } from '~/client/middlewares/notifications';
-import { NotificationsTypes } from '~/client/store/notifications/actions';
 import { getAccount, removePrivateKey } from '~/client/services/wallet';
-import { getNonce, removeNonce } from '~/client/services/nonce';
+import { getNonce, setNonce, removeNonce } from '~/client/services/nonce';
 import { getVotingBooth } from '~/common/services/contracts/booths';
-import { postRequest } from '~/client/store/api/actions';
 
 export const BOOTH_ACCOUNT_NAME = 'booth';
 
@@ -52,31 +48,20 @@ export function checkBoothStatus() {
   };
 }
 
-export function voteOnBooth(voteData) {
-  return postRequest(
-    {
-      path: ['votes'],
-      body: voteData,
-    },
-    {
-      request: {
-        type: ActionTypes.BOOTH_VOTE_REQUEST,
+export function incrementBoothNonce() {
+  return async (dispatch, getStore) => {
+    const { booth } = getStore();
+    const nonce = booth.nonce + 1;
+
+    setNonce(nonce);
+
+    dispatch({
+      type: ActionTypes.BOOTH_UPDATE_NONCE,
+      meta: {
+        nonce,
       },
-      success: {
-        type: ActionTypes.BOOTH_VOTE_SUCCESS,
-        [NOTIFICATION]: {
-          text: translate('booth.notificationVoteSuccess'),
-        },
-      },
-      failure: {
-        type: ActionTypes.BOOTH_VOTE_FAILURE,
-        [NOTIFICATION]: {
-          text: translate('booth.errorVoteFailure'),
-          type: NotificationsTypes.ERROR,
-        },
-      },
-    },
-  );
+    });
+  };
 }
 
 export function resetBooth() {

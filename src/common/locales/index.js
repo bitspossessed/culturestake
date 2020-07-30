@@ -80,15 +80,21 @@ const components = {
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
   },
-  VoteInterface: {
-    bodyYourVotesRecorded: 'Your votes have been recorded.',
+  VoteSession: {
+    bodyYourVotesRecorded: {
+      zero: 'Your votes have been recorded.',
+      one: 'Your votes have been recorded. Your top artwork is:',
+      other: 'Your votes have been recorded. Your top {count} artworks are:',
+    },
     buttonNextStep: 'Next',
     buttonPreviousStep: 'Return',
     buttonToHomepage: 'Back to Homepage',
     buttonVote: 'Vote',
+    errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
   },
   VoteSessionCreator: {
     bodyBoothAddress: 'Booth address:',
+    bodyCurrentNonce: 'Nonce:',
     bodyFestivalChainId: 'Festival ID:',
     bodySelectedArtworks: {
       zero: 'No artwork selected',
@@ -116,10 +122,6 @@ const store = {
   app: {
     errorTokenFailure: 'Login failed, please try again.',
     notificationTokenSuccess: 'Login successful! Welcome!',
-  },
-  booth: {
-    errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
-    notificationVoteSuccess: 'Thank you!',
   },
 };
 

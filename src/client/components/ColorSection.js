@@ -116,7 +116,8 @@ export const ColorSectionStyle = styled.div`
 
   ${/* sc-selector */ ButtonIconSVGStyle},
   ${/* sc-selector */ BoxFramedCornerStyle} {
-    g {
+    g,
+    path {
       stroke: ${(props) => {
         const { foreground, background } = styles.schemes[props.scheme];
         return props.isInverted ? background : foreground;
