@@ -43,7 +43,7 @@ export const PaperContainerStyle = styled.div`
 `;
 
 export const HorizontalSpacingStyle = styled.div`
-  height: 2rem;
+  height: ${(props) => (props.isLarge ? '4rem' : '2rem')};
 `;
 
 export const SpacingGroupStyle = styled.div`
