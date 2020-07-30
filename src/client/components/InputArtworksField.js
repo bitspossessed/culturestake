@@ -51,7 +51,7 @@ const InputArtworksField = ({ label, name, validate }) => {
         setValue={setCurrentlySelectedArtwork}
       />
       <ButtonOutline disabled={false} onClick={onClickAdd}>
-        {'add artwork'}
+        {translate('FormFestivals.fieldArtworkPrompt')}
       </ButtonOutline>
     </InputFieldsetRounded>
   );

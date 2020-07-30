@@ -56,6 +56,7 @@ const components = {
     fieldArtworks: 'Artworks:',
     fieldArtwork: 'Artwork:',
     fieldArtworkPlaceholder: 'Choose an artwork:',
+    fieldArtworkPrompt: 'Add artwork:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
@@ -112,9 +113,12 @@ const components = {
     linkAdminSignOut: '🚪',
     linkAdminUsers: 'Users',
     notificationSignOutSuccess: 'Your session has ended. See you soon!',
-    titleAccessibility: 'Accessibility',
+    titleAccessibility: 'AccessibiliFty',
     titleAdmin: 'Admin:',
     titleFestivals: 'Festivals:',
+  },
+  PayerBalance: {
+    title: 'Payer Balance',
   },
   Scanner: {
     bodyDescription: 'Use camera to scan code',
