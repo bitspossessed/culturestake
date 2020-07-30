@@ -11,7 +11,7 @@ const initialRequestState = {
   updatedAt: undefined,
   isError: false,
   isFinished: false,
-  isPending: false,
+  isPending: true,
   isSuccess: false,
   error: null,
 };
