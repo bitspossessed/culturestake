@@ -58,6 +58,7 @@ describe('Vote', () => {
         title: 'What was your favorite artwork of this festival?',
         festivalId: festivalData.id,
       });
+
       const festivalQuestionAddress = await initQuestion(
         adminContract,
         festivalQuestionData.chainId,
@@ -80,12 +81,10 @@ describe('Vote', () => {
 
       // Add possible answers to API
       festivalAnswerData = await put('/api/answers', {
-        type: 'artwork',
         artworkId: artworkData.id,
         questionId: festivalQuestionData.id,
       });
       propertyAnswerData = await put('/api/answers', {
-        type: 'property',
         propertyId: propertyData.id,
         questionId: artworkQuestionData.id,
       });

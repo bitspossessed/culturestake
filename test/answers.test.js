@@ -45,7 +45,6 @@ describe('Answers', () => {
       await authRequest
         .put('/api/answers')
         .send({
-          type: 'artwork',
           artworkId: artworkData.id,
           questionId: questionData1.id,
         })
@@ -56,7 +55,6 @@ describe('Answers', () => {
       await authRequest
         .put('/api/answers')
         .send({
-          type: 'property',
           propertyId: propertyData.id,
           questionId: questionData2.id,
         })
@@ -69,7 +67,6 @@ describe('Answers', () => {
 
     beforeAll(async () => {
       answerData = await put('/api/answers', {
-        type: 'property',
         propertyId: propertyData.id,
         questionId: questionData2.id,
       });

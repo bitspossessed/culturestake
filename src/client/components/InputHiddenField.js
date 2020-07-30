@@ -4,7 +4,6 @@ import { useField } from 'react-form';
 import styled from 'styled-components';
 
 const InputHiddenField = (props) => {
-  console.log(props)
   const { setValue } = useField(props.name);
   useEffect(() => {
     setValue(props.value.value);
@@ -15,7 +14,6 @@ const InputHiddenField = (props) => {
 
 export const InputHiddenFieldStyle = styled.input`
   visibility: hidden;
-  height: 0px;
 `;
 
 InputHiddenField.propTypes = {

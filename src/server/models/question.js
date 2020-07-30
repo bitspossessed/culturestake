@@ -30,7 +30,6 @@ const Question = db.define('question', {
   },
   title: {
     type: DataTypes.STRING,
-    unique: true,
   },
   festivalId: {
     type: DataTypes.INTEGER,
