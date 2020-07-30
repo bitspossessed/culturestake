@@ -27,6 +27,9 @@ const Finder = (props) => {
   const onSelect = (item) => {
     setSelectedSearchParam(item[props.searchParam]);
     setValue(item.id);
+    if (props.setValue) {
+      props.setValue(item);
+    }
     setSearchResults([]);
   };
 
@@ -140,6 +143,7 @@ Finder.propTypes = {
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.string.isRequired,
   searchParam: PropTypes.string.isRequired,
+  setValue: PropTypes.func,
 };
 
 FinderResult.propTypes = {

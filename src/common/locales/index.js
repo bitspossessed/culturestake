@@ -54,6 +54,8 @@ const components = {
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
     fieldArtworks: 'Artworks:',
+    fieldArtwork: 'Artwork:',
+    fieldArtworkPlaceholder: 'Choose an artwork:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
