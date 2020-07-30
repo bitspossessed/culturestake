@@ -5,7 +5,14 @@ import Vote from '~/server/models/vote';
 import baseController from '~/server/controllers';
 import dispatchVote from '~/server/services/dispatcher';
 import {
+  AnswerBelongsToArtwork,
+  AnswerBelongsToProperty,
+  ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
+  artistFields,
+  answerFields,
+  artworkFields,
+  propertyFields,
   questionFields,
 } from '~/server/database/associations';
 import { filterResponse } from '~/server/helpers/respond';
@@ -16,15 +23,47 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 const PUBLIC_TOP_ANSWERS = 3;
 
 const answerAssociation = {
-  fields: ['votePower', 'voteTokens', 'votes', 'questionId'],
-  fieldsProtected: ['artworkId', 'propertyId'],
+  fields: [...answerFields, 'votePower', 'voteTokens', 'votes', 'questionId'],
+  fieldsProtected: ['artworkId', 'artwork', 'propertyId', 'property'],
+  association: QuestionHasManyAnswers,
+  associations: [
+    {
+      association: AnswerBelongsToArtwork,
+      fields: [...artworkFields, 'artist'],
+      associations: [
+        {
+          association: ArtworkBelongsToArtist,
+          fields: [...artistFields],
+        },
+      ],
+    },
+    {
+      association: AnswerBelongsToProperty,
+      fields: [...propertyFields],
+    },
+  ],
 };
 
 const options = {
   model: Question,
   fields: [...questionFields, 'answers'],
-  include: [QuestionHasManyAnswers],
-  associations: [answerAssociation],
+  associations: [
+    {
+      ...answerAssociation,
+    },
+  ],
+  include: [
+    {
+      association: QuestionHasManyAnswers,
+      include: [
+        {
+          association: AnswerBelongsToArtwork,
+          include: ArtworkBelongsToArtist,
+        },
+        AnswerBelongsToProperty,
+      ],
+    },
+  ],
   customFilter: topThreeFilter,
 };
 
@@ -77,10 +116,12 @@ function topThreeFilter(req, data) {
     // filterResponseFieldsAll since they can see everything
     if (topThreeVotePowers.includes(answer.get('votePower')) || user) {
       // Override the options and allow the protected fields to be seen
-      return filterResponse(
-        answer,
-        answerAssociation.fields.concat(answerAssociation.fieldsProtected),
-      );
+      return filterResponseFields(req, answer, {
+        ...answerAssociation,
+        fields: answerAssociation.fields.concat(
+          answerAssociation.fieldsProtected,
+        ),
+      });
     }
 
     return filterResponse(answer, answerAssociation.fields);
