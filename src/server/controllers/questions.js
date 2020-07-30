@@ -13,7 +13,7 @@ import {
 
 const options = {
   model: Question,
-  fields: [...questionFields],
+  fields: [...questionFields, 'answers'],
 };
 
 const optionsRead = {

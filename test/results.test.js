@@ -164,7 +164,6 @@ describe('Vote results', () => {
 
           // Secret is not leaked
           expect(data.secret).toBeUndefined();
-          expect(data.chainId).toBeUndefined();
 
           // Show all answers, also the anonymized ones
           expect(data.answers.length).toBe(4);

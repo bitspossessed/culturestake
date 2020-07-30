@@ -6,7 +6,6 @@ import baseController from '~/server/controllers';
 import dispatchVote from '~/server/services/dispatcher';
 import {
   QuestionHasManyAnswers,
-  answerFields,
   questionFields,
 } from '~/server/database/associations';
 import { filterResponse } from '~/server/helpers/respond';
@@ -17,8 +16,8 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 const PUBLIC_TOP_ANSWERS = 3;
 
 const answerAssociation = {
-  association: QuestionHasManyAnswers,
-  fields: [...answerFields, 'votePower', 'voteTokens', 'votes'],
+  fields: ['votePower', 'voteTokens', 'votes', 'questionId'],
+  fieldsProtected: ['artworkId', 'propertyId'],
 };
 
 const options = {

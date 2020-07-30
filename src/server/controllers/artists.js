@@ -10,7 +10,7 @@ import {
 
 const options = {
   model: Artist,
-  fields: [...artistFields],
+  fields: [...artistFields, 'artworks', 'images'],
   include: [ArtistHasManyImages, ArtistHasManyArtworks],
   associations: [
     {

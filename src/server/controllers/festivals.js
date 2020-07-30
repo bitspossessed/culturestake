@@ -26,7 +26,7 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: [...festivalFields],
+  fields: [...festivalFields, 'images', 'artworks'],
   fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
@@ -54,7 +54,7 @@ const options = {
 
 const optionsWithQuestions = {
   model: Festival,
-  fields: [...festivalFields, 'questions'],
+  fields: [...festivalFields, 'images', 'questions'],
   associations: [
     {
       association: FestivalHasManyQuestions,

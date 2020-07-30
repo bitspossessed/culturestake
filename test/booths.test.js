@@ -91,12 +91,12 @@ describe('Voting booth', () => {
     }
   });
 
-  describe('GET /api/booths', () => {
+  describe('GET /api/festivals/:id/questions', () => {
     it('should return all artworks needed to set up a booth', async () => {
       const authRequest = await createSupertest();
 
       await authRequest
-        .get(`/api/booths/${festivalData.chainId}`)
+        .get(`/api/festivals/${festivalData.chainId}/questions`)
         .expect(httpStatus.OK)
         .expect((response) => {
           const { data } = response.body;
@@ -122,7 +122,7 @@ describe('Voting booth', () => {
           });
 
           data.questions.forEach((question) => {
-            expect(question.chainId).toBeUndefined();
+            expect(question.chainId).toBeDefined();
 
             question.answers.forEach((answer) => {
               expect(answer.chainId).toBeUndefined();
