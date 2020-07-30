@@ -23,22 +23,22 @@ const getQuestionGraphData = (req, res, next) => {
   })(req, res, next);
 };
 
-router.get(
-  '/:slug',
-  optionalAuthMiddleware,
-  validate(voteValidation.read),
-  getQuestionResource,
-  getQuestionGraphData,
-  voteController.read,
-);
-
 router.post(
   '/',
   optionalAuthMiddleware,
-  validate(voteValidation.create),
+  validate(voteValidation.vote),
   resolveChainIdsMiddleware,
   validateVoteMiddleware,
-  voteController.create,
+  voteController.vote,
+);
+
+router.get(
+  '/:slug',
+  optionalAuthMiddleware,
+  validate(voteValidation.results),
+  getQuestionResource,
+  getQuestionGraphData,
+  voteController.results,
 );
 
 export default router;

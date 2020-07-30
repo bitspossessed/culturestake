@@ -13,23 +13,10 @@ const attachableMixin = {
   constraints: false,
 };
 
-export const baseFileFields = ['fileName', 'fileType', 'url'];
+// Public API response fields
 
-export const imageFileFields = [
-  ...baseFileFields,
-  'urlThreshold',
-  'urlThresholdThumb',
-  'urlThumb',
-];
-
-export const festivalFields = [
-  'description',
-  'images',
-  'sticker',
-  'subtitle',
-  'title',
-];
-
+export const answerFields = ['artworkId', 'propertyId', 'questionId'];
+export const artistFields = ['bio', 'name'];
 export const artworkFields = [
   'artistId',
   'barcode',
@@ -37,20 +24,23 @@ export const artworkFields = [
   'subtitle',
   'title',
 ];
-
-export const questionFields = [
+export const baseFileFields = ['fileName', 'fileType', 'url'];
+export const festivalFields = [
+  'description',
+  'images',
+  'sticker',
+  'subtitle',
   'title',
-  'chainId',
-  'artworkId',
-  'festivalId',
-  'slug',
 ];
-
-export const answerFields = ['artworkId', 'propertyId', 'questionId'];
-
-export const artistFields = ['bio', 'name'];
-
+export const imageFileFields = [
+  ...baseFileFields,
+  'urlThreshold',
+  'urlThresholdThumb',
+  'urlThumb',
+];
 export const propertyFields = ['title'];
+export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
+export const userFields = ['username', 'email'];
 
 // Artwork
 

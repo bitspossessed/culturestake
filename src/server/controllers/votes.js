@@ -4,7 +4,11 @@ import Question from '~/server/models/question';
 import Vote from '~/server/models/vote';
 import baseController from '~/server/controllers';
 import dispatchVote from '~/server/services/dispatcher';
-import { QuestionHasManyAnswers } from '~/server/database/associations';
+import {
+  QuestionHasManyAnswers,
+  answerFields,
+  questionFields,
+} from '~/server/database/associations';
 import { filterResponse } from '~/server/helpers/respond';
 import { filterResponseFields } from '~/server/controllers';
 import { getQuestion } from '~/common/services/contracts';
@@ -14,14 +18,12 @@ const PUBLIC_TOP_ANSWERS = 3;
 
 const answerAssociation = {
   association: QuestionHasManyAnswers,
-  fields: ['type', 'votePower', 'voteTokens', 'votes'],
-  fieldsProtected: ['artworkId', 'propertyId'],
+  fields: [...answerFields, 'votePower', 'voteTokens', 'votes'],
 };
 
 const options = {
   model: Question,
-  fields: ['answers', 'title'],
-  fieldsProtected: ['artworkId', 'chainId', 'festivalId'],
+  fields: [...questionFields, 'answers'],
   include: [QuestionHasManyAnswers],
   associations: [answerAssociation],
   customFilter: topThreeFilter,
@@ -95,8 +97,8 @@ function topThreeFilter(req, data) {
   });
 }
 
-// Create a new Vote
-async function create(req, res, next) {
+// Create a new Vote on the blockchain and in the database
+async function vote(req, res, next) {
   const { vote } = req.locals;
 
   const { address: festivalQuestionAddress } = await getQuestion(
@@ -131,12 +133,12 @@ async function create(req, res, next) {
   }
 }
 
-// Read Question with answers
-async function read(req, res, next) {
+// Read vote results (Question with anonymized answers)
+async function results(req, res, next) {
   baseController.read(options)(req, res, next);
 }
 
 export default {
-  create,
-  read,
+  vote,
+  results,
 };

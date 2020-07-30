@@ -1,7 +1,8 @@
-import APIError from '~/server/helpers/errors';
 import httpStatus from 'http-status';
 import mime from 'mime';
 import multer, { MulterError } from 'multer';
+
+import APIError from '~/server/helpers/errors';
 
 const DEFAULT_FILE_MAX_SIZE = 5 * 1000 * 1000;
 const DEFAULT_FILE_TYPES = ['jpeg', 'jpg', 'png'];

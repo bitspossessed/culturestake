@@ -1,9 +1,10 @@
 import User from '~/server/models/user';
 import baseController from '~/server/controllers';
+import { userFields } from '~/server/database/associations';
 
 const options = {
   model: User,
-  fields: ['username', 'email'],
+  fields: [...userFields],
 };
 
 function create(req, res, next) {
