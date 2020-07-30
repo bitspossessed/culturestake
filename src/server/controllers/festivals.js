@@ -98,12 +98,14 @@ const optionsWithQuestions = {
 };
 
 async function getQuestions(req, res, next) {
-  // Request can be via `chainId` or database `id`
+  // Request can be via `chainId` or database `id` or `slug`
   const where = {};
   if (Number.isInteger(req.params.idOrChainId)) {
     where.id = req.params.idOrChainId;
-  } else {
+  } else if (req.params.idOrChainId.slice(0, 2) === '0x') {
     where.chainId = req.params.idOrChainId;
+  } else {
+    where.slug = req.params.idOrChainId;
   }
 
   try {
