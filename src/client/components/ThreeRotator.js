@@ -38,13 +38,13 @@ const ThreeRotator = ({ children, ...props }) => {
     );
   };
 
-  useFrame((state, delta) => {
+  useFrame(() => {
     if (!ref.current) {
       return;
     }
 
     ref.current.rotation.setFromVector3(
-      ref.current.rotation.toVector3().lerp(targetRotation, delta),
+      ref.current.rotation.toVector3().lerp(targetRotation, 0.01),
     );
   });
 
