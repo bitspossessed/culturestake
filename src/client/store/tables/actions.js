@@ -31,6 +31,7 @@ export function requestTable({
   }
   return getRequest(
     {
+      id: requestId,
       path,
       params,
     },

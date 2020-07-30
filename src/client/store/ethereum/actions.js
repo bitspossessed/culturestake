@@ -32,7 +32,6 @@ export function getTransactionId(txMethod, params) {
 
 export function initializeProvider() {
   return async (dispatch) => {
-
     const provider = await detectMetaMask();
     const hasProvider = !!provider;
 
