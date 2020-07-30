@@ -6,22 +6,18 @@ import {
   artistFields,
   artworkFields,
   imageFileFields,
+  baseFileFields,
 } from '~/server/database/associations';
 
 const options = {
   model: Artist,
   fields: [...artistFields, 'artworks', 'images'],
-  include: [ArtistHasManyImages, ArtistHasManyArtworks],
+  include: [ArtistHasManyImages],
   associations: [
     {
       association: ArtistHasManyImages,
       destroyCascade: true,
       fields: [...imageFileFields],
-    },
-    {
-      association: ArtistHasManyArtworks,
-      destroyCascade: false,
-      fields: [...artworkFields],
     },
   ],
 };
@@ -35,7 +31,27 @@ function readAll(req, res, next) {
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read({
+    ...options,
+    include: [ArtistHasManyImages, ArtistHasManyArtworks],
+    associations: [
+      {
+        association: ArtistHasManyImages,
+        destroyCascade: true,
+        fields: [
+          ...baseFileFields,
+          'urlThreshold',
+          'urlThresholdThumb',
+          'urlThumb',
+        ],
+      },
+      {
+        association: ArtistHasManyArtworks,
+        destroyCascade: false,
+        fields: [...artworkFields],
+      },
+    ],
+  })(req, res, next);
 }
 
 function update(req, res, next) {

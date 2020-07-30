@@ -123,7 +123,6 @@ const ContractsFestivals = ({ chainId }) => {
     txMethod: TX_DEACTIVATE_FESTIVAL,
     params: { chainId },
   });
-  const owner = useOwnerAddress();
 
   const [isInitialized, setIsInitialized] = useState(false);
   const [isDeactivated, setIsDeactivated] = useState(false);
@@ -149,9 +148,9 @@ const ContractsFestivals = ({ chainId }) => {
       {isDeactivated ? (
         translate('ContractsFestivals.notificationAlreadyDeactivated')
       ) : !isInitialized ? (
-        <ContractsFestivalsInitialize chainId={chainId} owner={owner} />
+        <ContractsFestivalsInitialize chainId={chainId} />
       ) : (
-        <ContractsFestivalsDeactivate chainId={chainId} owner={owner} />
+        <ContractsFestivalsDeactivate chainId={chainId} />
       )}
     </EthereumContainer>
   );

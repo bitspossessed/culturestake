@@ -1,4 +1,8 @@
 const components = {
+  AnswersTable: {
+    fieldTitle: 'Answer name',
+    buttonEdit: 'See Snuggle panel',
+  },
   BoothContainer: {
     bodyBoothIsDeactivated: 'Booth was deactivated and is not valid anymore',
     bodyPendingInitialization: 'Waiting for initialization by admin ...',
@@ -20,6 +24,16 @@ const components = {
     buttonInitializeFestival: 'Initialize Festival',
     buttonDeactivateFestival: 'Deactivate Festival',
     notificationAlreadyDeactivated: 'This festival is deactivated',
+  },
+  ContractsQuestions: {
+    buttonInitializeQuestion: 'Initialize Question',
+    buttonDeactivateQuestion: 'Deactivate Question',
+    notificationAlreadyDeactivated: 'This question is deactivated',
+  },
+  ContractsAnswers: {
+    buttonInitializeAnswer: 'Initialize Answer',
+    buttonDeactivateAnswer: 'Deactivate Answer',
+    notificationAlreadyDeactivated: 'This answer is deactivated',
   },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
@@ -45,6 +59,23 @@ const components = {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
     fieldUsername: 'Username:',
+  },
+  FormQuestions: {
+    fieldTitle: 'Question text:',
+  },
+  FormProperties: {
+    fieldTitle: 'Property:',
+  },
+  FormArtworks: {
+    fieldTitle: 'Title:',
+    fieldDescription: 'Description:',
+    fieldImages: 'Artwork images',
+  },
+  FormArtists: {
+    fieldName: 'Name:',
+    fieldBio: 'Bio:',
+    fieldConsentToDataReveal: 'Consent to data reveal:',
+    fieldImages: 'Artwork images',
   },
   InputUploadField: {
     buttonRemoveFile: 'Remove',
@@ -165,6 +196,84 @@ const views = {
   AdminFestivalsNew: {
     title: 'Create new festival',
     notificationSuccess: 'You created the festival {title}.',
+  },
+  AdminQuestions: {
+    buttonNewQuestion: 'Create new question',
+    fieldTitle: 'Title',
+    fieldDescription: 'Description',
+    title: 'Questions',
+  },
+  AdminQuestionsNew: {
+    title: 'Create new question',
+    fieldFestival: 'Festival',
+    fieldFestivalPlaceholder: 'Choose a festival',
+    fieldArtwork: 'Artwork',
+    fieldArtworkPlaceholder: '(optional) Choose an artwork',
+    notificationSuccess: 'You created the question {title}.',
+  },
+  AdminQuestionsEdit: {
+    errorNotFound: 'This question does not exist.',
+    notificationDestroySuccess: 'You deleted the question {title}.',
+    notificationSuccess: 'You updated the question {title}.',
+    title: 'Edit question',
+    buttonNewAnswer: 'Add a new answer to this question',
+  },
+  AdminAnswersNew: {
+    title: 'Create new answer',
+    fieldArtwork: 'Artwork',
+    fieldArtworkPlaceholder: 'Choose an artwork',
+    fieldProperty: 'Property',
+    fieldPropertyPlaceholder: 'Choose a property',
+    notificationSuccess: 'You created a new answer.',
+  },
+  AdminAnswersEdit: {
+    title: 'Edit question',
+  },
+  AdminProperties: {
+    buttonNewQuestion: 'Create new property',
+    fieldTitle: 'Property',
+    title: 'Properties',
+  },
+  AdminPropertiesNew: {
+    title: 'Create new property',
+    notificationSuccess: 'You created the property {title}.',
+  },
+  AdminPropertiesEdit: {
+    title: 'Edit property',
+    notificationSuccess: 'You edited the property {title}.',
+  },
+  AdminArtworks: {
+    buttonNewQuestion: 'Create new artwork',
+    fieldTitle: 'Title',
+    title: 'Artworks',
+  },
+  AdminArtworksNew: {
+    title: 'Create new artwork',
+    notificationSuccess: 'You created the artwork {title}.',
+    fieldArtist: 'Artist:',
+    fieldArtistPlaceholder: 'Choose an artist',
+  },
+  AdminArtworksEdit: {
+    title: 'Edit artwork',
+    notificationSuccess: 'You edited the artwork {title}.',
+    errorNotFound: 'This artwork does not exist',
+    notificationDestroySuccess: 'You deleted the artwork {title}',
+    fieldArtist: 'Artist:',
+  },
+  AdminArtists: {
+    buttonNewQuestion: 'Create new artist',
+    fieldName: 'Name',
+    title: 'Artists',
+  },
+  AdminArtistsNew: {
+    title: 'Create new artist',
+    notificationSuccess: 'You created the artist {name}.',
+  },
+  AdminArtistsEdit: {
+    title: 'Edit artist',
+    notificationSuccess: 'You edited the artist {name}.',
+    errorNotFound: 'This artist does not exist',
+    notificationDestroySuccess: 'You deleted the artist {name}',
   },
   Homepage: {
     bodyIntroduction:

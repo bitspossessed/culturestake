@@ -1,36 +1,29 @@
 {
   "artworkAnswer1": {
-    "type": "artwork",
     "artworkId": 1,
     "questionId": 1
   },
   "artworkAnswer2": {
-    "type": "artwork",
     "artworkId": 2,
     "questionId": 1
   },
   "artworkAnswer3": {
-    "type": "artwork",
     "artworkId": 3,
     "questionId": 1
   },
   "artworkAnswer4": {
-    "type": "artwork",
     "artworkId": 4,
     "questionId": 1
   },
   "artworkAnswer5": {
-    "type": "artwork",
     "artworkId": 5,
     "questionId": 1
   },
   "artworkAnswer6": {
-    "type": "artwork",
     "artworkId": 6,
     "questionId": 1
   },
   "propertyAnswer1": {
-    "type": "property",
     "propertyId": 1,
     "questionId": 2
   }

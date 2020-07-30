@@ -131,7 +131,10 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  baseController.readAll(options)(req, res, next);
+  baseController.readAll({
+    ...options,
+    isSearchable: true,
+  })(req, res, next);
 }
 
 function read(req, res, next) {

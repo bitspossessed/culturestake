@@ -67,8 +67,11 @@ export function filterResponseFields(req, data, options) {
     req.locals && req.locals.user
       ? options.fields.concat(options.fieldsProtected)
       : options.fields;
-
-  return filterResponse(data, fields);
+  if (data) {
+    return filterResponse(data, fields);
+  } else {
+    return {};
+  }
 }
 
 export function filterResponseFieldsAll(req, arr, options) {
@@ -214,6 +217,11 @@ function readAll(options) {
       orderKey = DEFAULT_ORDER_KEY,
     } = req.query;
 
+    const where =
+      options.isSearchable && req.locals && req.locals.query
+        ? req.locals.query
+        : {};
+
     try {
       const response = await options.model.findAndCountAll({
         limit,
@@ -221,6 +229,7 @@ function readAll(options) {
         order: [[orderKey, orderDirection.toUpperCase()]],
         include: options.include,
         distinct: true,
+        where,
       });
 
       respondWithSuccess(res, {

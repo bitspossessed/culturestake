@@ -4,6 +4,7 @@ import Artwork from '~/server/models/artwork';
 import artworksController from '~/server/controllers/artworks';
 import artworksValidation from '~/server/validations/artworks';
 import authMiddleware from '~/server/middlewares/passport';
+import isSearchableMiddleware from '~/server/middlewares/isSearchable';
 import resourcesMiddleware from '~/server/middlewares/resources';
 import validate from '~/server/services/validate';
 
@@ -23,6 +24,7 @@ router.put(
 router.get(
   '/',
   validate(artworksValidation.readAll),
+  isSearchableMiddleware,
   artworksController.readAll,
 );
 

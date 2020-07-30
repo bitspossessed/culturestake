@@ -20,7 +20,9 @@ module.exports = {
         }),
       );
   },
-  down: (queryInterface) => {
-    return queryInterface.removeColumn('questions', 'chainId');
+  down: (queryInterface, Sequelize) => {
+    return queryInterface.addColumn('questions', 'chainId', {
+      type: Sequelize.STRING,
+    });
   },
 };

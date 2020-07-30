@@ -7,6 +7,20 @@ import Admin from '~/client/views/Admin';
 import AdminFestivals from '~/client/views/AdminFestivals';
 import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
+import AdminQuestions from '~/client/views/AdminQuestions';
+import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
+import AdminQuestionsEdit from '~/client/views/AdminQuestionsEdit';
+import AdminAnswersNew from '~/client/views/AdminAnswersNew';
+import AdminAnswersEdit from '~/client/views/AdminAnswersEdit';
+import AdminProperties from '~/client/views/AdminProperties';
+import AdminPropertiesNew from '~/client/views/AdminPropertiesNew';
+import AdminPropertiesEdit from '~/client/views/AdminPropertiesEdit';
+import AdminArtworks from '~/client/views/AdminArtworks';
+import AdminArtworksNew from '~/client/views/AdminArtworksNew';
+import AdminArtworksEdit from '~/client/views/AdminArtworksEdit';
+import AdminArtists from '~/client/views/AdminArtists';
+import AdminArtistsNew from '~/client/views/AdminArtistsNew';
+import AdminArtistsEdit from '~/client/views/AdminArtistsEdit';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
@@ -115,6 +129,76 @@ const Routes = () => (
       component={AdminFestivalsEdit}
       exact
       path="/admin/festivals/:slug/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminQuestions}
+      exact
+      path="/admin/questions"
+    />
+    <AuthenticatedRoute
+      component={AdminQuestionsNew}
+      exact
+      path="/admin/questions/new"
+    />
+    <AuthenticatedRoute
+      component={AdminQuestionsEdit}
+      exact
+      path="/admin/questions/:questionId/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminAnswersNew}
+      exact
+      path="/admin/questions/:questionId/answers/new"
+    />
+    <AuthenticatedRoute
+      component={AdminAnswersEdit}
+      exact
+      path="/admin/questions/:questionId/answers/:answerId/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminProperties}
+      exact
+      path="/admin/properties"
+    />
+    <AuthenticatedRoute
+      component={AdminPropertiesNew}
+      exact
+      path="/admin/properties/new"
+    />
+    <AuthenticatedRoute
+      component={AdminPropertiesEdit}
+      exact
+      path="/admin/properties/:slug/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminArtworks}
+      exact
+      path="/admin/artworks"
+    />
+    <AuthenticatedRoute
+      component={AdminArtworksNew}
+      exact
+      path="/admin/artworks/new"
+    />
+    <AuthenticatedRoute
+      component={AdminArtworksEdit}
+      exact
+      path="/admin/artworks/:slug/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminArtists}
+      exact
+      path="/admin/artists"
+    />
+    <AuthenticatedRoute
+      component={AdminArtistsNew}
+      exact
+      path="/admin/artists/new"
+    />
+    <AuthenticatedRoute
+      component={AdminArtistsEdit}
+      exact
+      path="/admin/artists/:slug/edit"
     />
     <UnauthenticatedRoute
       component={Booth}

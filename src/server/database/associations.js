@@ -132,12 +132,14 @@ export const QuestionBelongsToArtwork = Question.belongsTo(Artwork, {
   allowNull: true,
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
+  as: 'artwork',
 });
 
 export const QuestionBelongsToFestival = Question.belongsTo(Festival, {
   allowNull: true,
   onDelete: 'SET NULL',
   onUpdate: 'CASCADE',
+  as: 'festival',
 });
 
 export const QuestionHasManyAnswers = Question.hasMany(Answer, {

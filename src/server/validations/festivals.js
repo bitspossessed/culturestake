@@ -36,6 +36,7 @@ export default {
     [Segments.PARAMS]: {
       ...paginationValidation,
       orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt', 'title'),
+      query: Joi.string(),
     },
   },
   read: {

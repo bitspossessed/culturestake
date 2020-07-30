@@ -31,7 +31,6 @@ const Answer = db.define('answer', {
   type: {
     type: DataTypes.ENUM,
     values: ANSWER_TYPES,
-    allowNull: false,
   },
   artworkId: {
     type: DataTypes.INTEGER,
@@ -50,11 +49,13 @@ const Answer = db.define('answer', {
 Answer.addHook('beforeCreate', async (answer) => {
   let model;
   let key;
-  if (answer.type == 'property') {
+  if (answer.propertyId != null) {
     model = Property;
+    answer.type = 'property';
     key = answer.propertyId;
   } else {
     model = Artwork;
+    answer.type = 'artwork';
     key = answer.artworkId;
   }
 

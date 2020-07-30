@@ -1,10 +1,12 @@
 import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
 import {
-  AnswerBelongsToArtwork,
-  AnswerBelongsToProperty,
-  ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
+  QuestionBelongsToFestival,
+  AnswerBelongsToProperty,
+  AnswerBelongsToArtwork,
+  QuestionBelongsToArtwork,
+  ArtworkBelongsToArtist,
   answerFields,
   artworkFields,
   propertyFields,
@@ -13,26 +15,28 @@ import {
 
 const options = {
   model: Question,
-  fields: [...questionFields, 'answers'],
+  fields: [...questionFields, 'answers', 'festival', 'artwork'],
 };
+
+const festivalfields = [
+  'chainId',
+  'description',
+  'sticker',
+  'subtitle',
+  'title',
+];
 
 const optionsRead = {
   ...options,
   include: [
-    {
-      association: QuestionHasManyAnswers,
-      include: [
-        {
-          association: AnswerBelongsToArtwork,
-          include: ArtworkBelongsToArtist,
-        },
-        AnswerBelongsToProperty,
-      ],
-    },
+    QuestionHasManyAnswers,
+    QuestionBelongsToFestival,
+    QuestionBelongsToArtwork,
   ],
   associations: [
     {
       association: QuestionHasManyAnswers,
+      include: [AnswerBelongsToArtwork, AnswerBelongsToProperty],
       fields: [...answerFields],
       associations: [
         {
@@ -50,6 +54,16 @@ const optionsRead = {
           fields: [...propertyFields],
         },
       ],
+    },
+    {
+      association: QuestionBelongsToFestival,
+      destroyCascade: false,
+      fields: [...festivalfields],
+    },
+    {
+      association: QuestionBelongsToArtwork,
+      destroyCascade: false,
+      fields: ['title'],
     },
   ],
 };

@@ -68,7 +68,6 @@ describe('Voting booth', () => {
     for await (let artworkId of artworkIds) {
       // Create answer in local database
       const answerData = await put('/api/answers', {
-        type: 'artwork',
         artworkId,
         questionId: festivalQuestionData.id,
       });
@@ -81,7 +80,6 @@ describe('Voting booth', () => {
     for await (let propertyId of propertyIds) {
       // Create answer in local database
       const answerData = await put('/api/answers', {
-        type: 'property',
         propertyId,
         questionId: artworkQuestionData.id,
       });
