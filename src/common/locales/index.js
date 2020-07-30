@@ -88,8 +88,13 @@ const components = {
     bodyLoading: 'Loading ...',
   },
   Navigation: {
+    linkAdminAnswers: 'Answers',
+    linkAdminArtists: 'Artists',
+    linkAdminArtworks: 'Artworks',
     linkAdminDashboard: 'Dashboard',
     linkAdminFestivals: 'Festivals',
+    linkAdminProperties: 'Properties',
+    linkAdminQuestions: 'Questions',
     linkAdminSignOut: '🚪',
     linkAdminUsers: 'Users',
     notificationSignOutSuccess: 'Your session has ended. See you soon!',

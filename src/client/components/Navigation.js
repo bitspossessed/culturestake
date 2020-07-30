@@ -95,6 +95,46 @@ const Navigation = ({ onClickItem, isExpanded }) => {
             </NavigationMenuItemStyle>
 
             <NavigationMenuItemStyle>
+              <NavigationLink to="/admin/artists" onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminArtists')}
+                </ParagraphStyle>
+              </NavigationLink>
+            </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
+              <NavigationLink to="/admin/artworks" onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminArtworks')}
+                </ParagraphStyle>
+              </NavigationLink>
+            </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
+              <NavigationLink to="/admin/properties" onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminProperties')}
+                </ParagraphStyle>
+              </NavigationLink>
+            </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
+              <NavigationLink to="/admin/questions" onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminQuestions')}
+                </ParagraphStyle>
+              </NavigationLink>
+            </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
+              <NavigationLink to="/admin/answers" onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminAnswers')}
+                </ParagraphStyle>
+              </NavigationLink>
+            </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
               <NavigationLogoutButton onClick={onClickItem}>
                 <ParagraphStyle>
                   {translate('Navigation.linkAdminSignOut')}
