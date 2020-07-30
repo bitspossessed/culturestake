@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, Suspense, useEffect, useState, useMemo } from 'react';
+import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
+import Legend from '~/client/components/Legend';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import SnuggleRain from '~/client/components/SnuggleRain';
@@ -487,6 +489,10 @@ const VoteSessionArtwork = (props) => {
           total={props.creditTotal}
           onChange={onCreditChange}
         />
+
+        <VoteSessionArtworkLegendStyle>
+          <Legend scheme={scheme} title={translate('default.legendVote')} />
+        </VoteSessionArtworkLegendStyle>
       </PaperTicket>
     </Suspense>
   );
@@ -514,6 +520,11 @@ const VoteSessionProperty = (props) => {
     </PaperTicket>
   );
 };
+
+export const VoteSessionArtworkLegendStyle = styled.div`
+  margin-top: 2rem;
+  margin-left: 2.75rem;
+`;
 
 VoteSession.propTypes = {
   boothSignature: PropTypes.string.isRequired,

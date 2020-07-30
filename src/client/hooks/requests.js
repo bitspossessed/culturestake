@@ -70,10 +70,13 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
   const requestId = useResourceId(path);
   const dispatch = useDispatch();
 
-  const { response, isPending = false } = useRequest(requestId, {
+  const { response, isSuccess, isError } = useRequest(requestId, {
     onError,
     onSuccess,
   });
+
+  // A resource is always pending until its there ..
+  const isPending = !isSuccess && !isError;
 
   const pathStr = path.join('/');
 

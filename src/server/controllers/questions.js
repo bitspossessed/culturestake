@@ -1,12 +1,12 @@
 import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
 import {
-  AnswerBelongsToArtwork,
-  AnswerBelongsToProperty,
-  ArtworkBelongsToArtist,
-  QuestionBelongsToArtwork,
-  QuestionBelongsToFestival,
   QuestionHasManyAnswers,
+  QuestionBelongsToFestival,
+  AnswerBelongsToProperty,
+  AnswerBelongsToArtwork,
+  QuestionBelongsToArtwork,
+  ArtworkBelongsToArtist,
   answerFields,
   artworkFields,
   festivalFields,
