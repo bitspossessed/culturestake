@@ -95,6 +95,21 @@ const Routes = () => (
       exact
       path="/festivals"
     />
+    <PublicRoute
+      component={Vote}
+      exact
+      path="/vote"
+    />
+    <PublicRoute
+      component={Booth}
+      exact
+      path="/booth"
+    />
+    <UnauthenticatedRoute
+      component={AdminLogin}
+      exact
+      path="/login"
+    />
     <AuthenticatedRoute
       component={Admin}
       exact
@@ -199,18 +214,6 @@ const Routes = () => (
       component={AdminArtistsEdit}
       exact
       path="/admin/artists/:slug/edit"
-    />
-    <UnauthenticatedRoute
-      component={Booth}
-      path="/booth"
-    />
-    <UnauthenticatedRoute
-      component={AdminLogin}
-      path="/login"
-    />
-    <PublicRoute
-      component={Vote}
-      path="/vote"
     />
     <Route
       component={NotFound}
