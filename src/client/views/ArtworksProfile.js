@@ -5,6 +5,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
+import Legend from '~/client/components/Legend';
 import Image from '~/client/components/Image';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
@@ -168,6 +169,13 @@ const ArtworksProfile = () => {
                       />
                     );
                   })}
+
+                  <Legend
+                    scheme={scheme}
+                    title={translate('default.legendVotes')}
+                  />
+
+                  <HorizontalSpacingStyle />
 
                   <ButtonIcon isIconFlipped to={`/festivals/${festival.slug}`}>
                     {translate('ArtworksProfile.buttonBackToFestival')}

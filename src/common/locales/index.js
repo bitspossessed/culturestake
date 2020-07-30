@@ -314,6 +314,8 @@ export default {
     buttonSubmitEdit: 'Save',
     buttonSubmitNew: 'Create',
     errorMessage: 'Something went wrong ...',
+    legendVote: 'Vote',
+    legendVotes: 'Votes',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',
   },

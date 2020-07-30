@@ -3,16 +3,18 @@ import React, { Fragment, useMemo } from 'react';
 import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 
+import BoxFramed from '~/client/components/BoxFramed';
 import ButtonMore from '~/client/components/ButtonMore';
 import ColorSection from '~/client/components/ColorSection';
-import BoxFramed from '~/client/components/BoxFramed';
+import Legend from '~/client/components/Legend';
 import Loading from '~/client/components/Loading';
-import Slider from '~/client/components/Slider';
 import Paper from '~/client/components/Paper';
 import PaperTicket from '~/client/components/PaperTicket';
+import Slider from '~/client/components/Slider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import View from '~/client/components/View';
+import translate from '~/common/services/i18n';
 import {
   ContainerStyle,
   HorizontalSpacingStyle,
@@ -132,6 +134,11 @@ const FestivalsProfile = () => {
                       />
                     );
                   })}
+
+                  <Legend
+                    scheme={scheme}
+                    title={translate('default.legendVotes')}
+                  />
                 </PaperTicket>
               )}
             </PaperContainerStyle>
