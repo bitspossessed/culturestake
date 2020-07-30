@@ -84,6 +84,18 @@ const components = {
   InputStickerField: {
     buttonGenerateParticles: 'Generate particles',
   },
+  Instructions: {
+    title: 'Instructions',
+    titleStepOne: '1. Step',
+    bodyStepOne:
+      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+    titleStepTwo: '2. Step',
+    bodyStepTwo:
+      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+    titleStepThree: '3. Step',
+    bodyStepThree:
+      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+  },
   Loading: {
     bodyLoading: 'Loading ...',
   },
