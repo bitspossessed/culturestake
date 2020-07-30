@@ -3,24 +3,21 @@ import baseController from '~/server/controllers';
 import {
   ArtistHasManyArtworks,
   ArtistHasManyImages,
+  artistFields,
+  artworkFields,
+  imageFileFields,
+  baseFileFields,
 } from '~/server/database/associations';
-
-const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Artist,
-  fields: ['name', 'bio', 'consentToDataReveal', 'images', 'artworks'],
+  fields: [...artistFields, 'artworks', 'images'],
   include: [ArtistHasManyImages],
   associations: [
     {
       association: ArtistHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...baseFileFields,
-        'urlThreshold',
-        'urlThresholdThumb',
-        'urlThumb',
-      ],
+      fields: [...imageFileFields],
     },
   ],
 };
@@ -51,7 +48,7 @@ function read(req, res, next) {
       {
         association: ArtistHasManyArtworks,
         destroyCascade: false,
-        fields: ['title', 'description'],
+        fields: [...artworkFields],
       },
     ],
   })(req, res, next);

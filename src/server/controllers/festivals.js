@@ -1,17 +1,32 @@
-import { Op } from 'sequelize';
+import httpStatus from 'http-status';
+import { EmptyResultError } from 'sequelize';
+
+import APIError from '~/server/helpers/errors';
 import Festival from '~/server/models/festival';
 import baseController from '~/server/controllers';
 import {
+  AnswerBelongsToArtwork,
+  AnswerBelongsToProperty,
   FestivalBelongsToManyArtworks,
   FestivalHasManyDocuments,
   FestivalHasManyImages,
+  FestivalHasManyQuestions,
+  QuestionBelongsToArtwork,
+  QuestionHasManyAnswers,
+  answerFields,
+  artworkFields,
+  baseFileFields,
+  propertyFields,
+  festivalFields,
+  imageFileFields,
+  questionFields,
 } from '~/server/database/associations';
-
-const baseFileFields = ['fileName', 'fileType', 'url'];
+import { filterResponseFields } from '~/server/controllers';
+import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: ['artworks', 'description', 'images', 'sticker', 'subtitle', 'title'],
+  fields: [...festivalFields, 'images', 'artworks'],
   fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
@@ -22,12 +37,7 @@ const options = {
     {
       association: FestivalHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...baseFileFields,
-        'urlThreshold',
-        'urlThresholdThumb',
-        'urlThumb',
-      ],
+      fields: [...imageFileFields],
     },
     {
       association: FestivalHasManyDocuments,
@@ -37,10 +47,84 @@ const options = {
     {
       association: FestivalBelongsToManyArtworks,
       destroyCascade: false,
-      fields: ['title', 'description', 'images'],
+      fields: [...artworkFields],
     },
   ],
 };
+
+const optionsWithQuestions = {
+  model: Festival,
+  fields: [...festivalFields, 'images', 'questions'],
+  associations: [
+    {
+      association: FestivalHasManyQuestions,
+      fields: [...questionFields, 'artwork', 'answers'],
+      associations: [
+        {
+          association: QuestionBelongsToArtwork,
+          fields: [...artworkFields],
+        },
+        {
+          association: QuestionHasManyAnswers,
+          fields: [...answerFields, 'property', 'artwork'],
+          associations: [
+            {
+              association: AnswerBelongsToArtwork,
+              fields: [...artworkFields],
+            },
+            {
+              association: AnswerBelongsToProperty,
+              fields: [...propertyFields],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+  include: [
+    {
+      association: FestivalHasManyQuestions,
+      include: [
+        {
+          association: QuestionBelongsToArtwork,
+        },
+        {
+          association: QuestionHasManyAnswers,
+          include: [AnswerBelongsToArtwork, AnswerBelongsToProperty],
+        },
+      ],
+    },
+  ],
+};
+
+async function getQuestions(req, res, next) {
+  // Request can be via `chainId` or database `id`
+  const where = {};
+  if (Number.isInteger(req.params.idOrChainId)) {
+    where.id = req.params.idOrChainId;
+  } else {
+    where.chainId = req.params.idOrChainId;
+  }
+
+  try {
+    const data = await Festival.findOne({
+      rejectOnEmpty: true,
+      include: optionsWithQuestions.include,
+      where,
+    });
+
+    respondWithSuccess(
+      res,
+      filterResponseFields(req, data, optionsWithQuestions),
+    );
+  } catch (error) {
+    if (error instanceof EmptyResultError) {
+      next(new APIError(httpStatus.NOT_FOUND));
+    } else {
+      next(error);
+    }
+  }
+}
 
 function create(req, res, next) {
   baseController.create(options)(req, res, next);
@@ -66,6 +150,7 @@ function destroy(req, res, next) {
 }
 
 export default {
+  getQuestions,
   create,
   read,
   readAll,

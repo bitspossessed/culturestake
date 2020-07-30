@@ -4,6 +4,7 @@ import {
   documentsValidation,
   imagesValidation,
   stickerValidation,
+  web3Validators,
 } from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
@@ -18,6 +19,14 @@ const defaultValidation = {
 };
 
 export default {
+  getQuestions: {
+    [Segments.PARAMS]: {
+      idOrChainId: Joi.alternatives().try(
+        web3Validators.web3().sha3().required(),
+        Joi.number().integer().positive().required(),
+      ),
+    },
+  },
   create: {
     [Segments.BODY]: {
       ...defaultValidation,

@@ -3,6 +3,14 @@ const components = {
     fieldTitle: 'Answer name',
     buttonEdit: 'See Snuggle panel',
   },
+  BoothContainer: {
+    bodyBoothIsDeactivated: 'Booth was deactivated and is not valid anymore',
+    bodyPendingInitialization: 'Waiting for initialization by admin ...',
+    bodyYourAddress: 'Address:',
+    buttonInitializeBooth: 'Create booth account',
+    buttonBurnBooth: 'Remove booth account',
+    title: 'Voting booth setup',
+  },
   DangerZone: {
     title: 'Danger Zone',
   },
@@ -33,13 +41,6 @@ const components = {
     bodyYourAddress: 'Your address:',
     buttonEnable: 'Enable Ethereum wallet',
     title: 'Smart Contracts Snuggle Panel (SCSP)',
-  },
-  Table: {
-    bodyEmpty: 'No entries given',
-    bodyError: 'Something went wrong ...',
-    bodyLoading: 'Loading ...',
-    columnCreatedAt: 'Created at',
-    columnUpdatedAt: 'Updated at',
   },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
@@ -76,6 +77,13 @@ const components = {
     fieldConsentToDataReveal: 'Consent to data reveal:',
     fieldImages: 'Artwork images',
   },
+  InputUploadField: {
+    buttonRemoveFile: 'Remove',
+    buttonSelectFiles: 'Select files',
+  },
+  InputStickerField: {
+    buttonGenerateParticles: 'Generate particles',
+  },
   Loading: {
     bodyLoading: 'Loading ...',
   },
@@ -89,15 +97,49 @@ const components = {
     titleAdmin: 'Admin:',
     titleFestivals: 'Festivals:',
   },
-  InputUploadField: {
-    buttonRemoveFile: 'Remove',
-    buttonSelectFiles: 'Select files',
+  Scanner: {
+    bodyDescription: 'Use camera to scan code',
+    notificationError: 'Camera could not be activated: {error}',
   },
-  InputStickerField: {
-    buttonGenerateParticles: 'Generate particles',
+  Table: {
+    bodyEmpty: 'No entries given',
+    bodyError: 'Something went wrong ...',
+    bodyLoading: 'Loading ...',
+    columnCreatedAt: 'Created at',
+    columnUpdatedAt: 'Updated at',
   },
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
+  },
+  VoteSession: {
+    bodyYourVotesRecorded: {
+      zero: 'Your votes have been recorded.',
+      one: 'Your votes have been recorded. Your top artwork is:',
+      other: 'Your votes have been recorded. Your top {count} artworks are:',
+    },
+    buttonNextStep: 'Next',
+    buttonPreviousStep: 'Return',
+    buttonToHomepage: 'Back to Homepage',
+    buttonVote: 'Vote',
+    errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
+  },
+  VoteSessionCreator: {
+    bodyBoothAddress: 'Booth address:',
+    bodyCurrentNonce: 'Nonce:',
+    bodyFestivalChainId: 'Festival ID:',
+    bodySelectedArtworks: {
+      zero: 'No artwork selected',
+      one: 'Selected one artwork',
+      other: 'Selected {count} artworks',
+    },
+    buttonCreateVoteSession: 'Create vote session',
+    buttonManualOverride: 'Manual override',
+    buttonReset: 'Reset',
+    buttonVoteOnBooth: 'Vote here',
+    notificationAddedArtwork: 'Activated {title}',
+    notificationInvalidData: 'Inconsistent data to create vote',
+    titleAdmin: 'Admin',
+    titleStartVote: 'Start vote session',
   },
 };
 
@@ -109,8 +151,8 @@ const middlewares = {
 
 const store = {
   app: {
-    notificationTokenSuccess: 'Login successful! Welcome!',
     errorTokenFailure: 'Login failed, please try again.',
+    notificationTokenSuccess: 'Login successful! Welcome!',
   },
 };
 
@@ -245,6 +287,10 @@ const views = {
   },
   NotFound: {
     title: 'Not Found',
+  },
+  Vote: {
+    errorScannerFailure: 'Something went wrong with your camera',
+    errorInvalidVoteData: 'QR Code is invalid',
   },
 };
 

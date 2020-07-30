@@ -13,6 +13,29 @@ const attachableMixin = {
   constraints: false,
 };
 
+// Public API response fields
+
+export const answerFields = ['artworkId', 'propertyId', 'questionId'];
+export const artistFields = ['bio', 'name'];
+export const artworkFields = [
+  'artistId',
+  'barcode',
+  'description',
+  'subtitle',
+  'title',
+];
+export const baseFileFields = ['fileName', 'fileType', 'url'];
+export const festivalFields = ['description', 'sticker', 'subtitle', 'title'];
+export const imageFileFields = [
+  ...baseFileFields,
+  'urlThreshold',
+  'urlThresholdThumb',
+  'urlThumb',
+];
+export const propertyFields = ['title'];
+export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
+export const userFields = ['username', 'email'];
+
 // Artwork
 
 export const ArtworkHasManyAnswers = Artwork.hasMany(Answer);

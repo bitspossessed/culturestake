@@ -15,7 +15,9 @@ import {
 } from '~/client/styles/typography';
 
 const EthereumContainer = (props) => {
-  const { account, provider, isOwner } = useSelector((state) => state.ethereum);
+  const { account, hasProvider, isOwner } = useSelector(
+    (state) => state.ethereum,
+  );
   const dispatch = useDispatch();
 
   const onEnable = (event) => {
@@ -24,7 +26,7 @@ const EthereumContainer = (props) => {
   };
 
   return (
-    <EthereumContainerStyle disabled={!provider}>
+    <EthereumContainerStyle disabled={!hasProvider}>
       <HeadingSecondaryStyle>
         {translate('EthereumContainer.title')}
       </HeadingSecondaryStyle>
@@ -35,7 +37,7 @@ const EthereumContainer = (props) => {
         </EthereumContainerSpinnerStyle>
       )}
 
-      {provider ? (
+      {hasProvider ? (
         <Fragment>
           {account ? (
             <Fragment>

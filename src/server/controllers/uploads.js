@@ -4,10 +4,6 @@ import mime from 'mime';
 import Document from '~/server/models/document';
 import Image from '~/server/models/image';
 import {
-  filterResponseAll,
-  respondWithSuccess,
-} from '~/server/helpers/respond';
-import {
   DOCUMENTS_SUBFOLDER,
   FIELD_NAME,
   IMAGES_SUBFOLDER,
@@ -17,31 +13,18 @@ import {
   SUFFIX_THUMB,
 } from '~/server/routes/uploads';
 import {
+  baseFileFields,
+  imageFileFields,
+} from '~/server/database/associations';
+import {
   copyToUploadsDir,
   getVersionUrl,
   toFileUrl,
 } from '~/server/helpers/uploads';
-
-const IMAGE_FIELDS = [
-  'id',
-  'fileName',
-  'fileType',
-  'url',
-  'urlThreshold',
-  'urlThumb',
-  'urlThresholdThumb',
-  'createdAt',
-  'updatedAt',
-];
-
-const DOCUMENT_FIELDS = [
-  'id',
-  'fileName',
-  'fileType',
-  'url',
-  'createdAt',
-  'updatedAt',
-];
+import {
+  filterResponseAll,
+  respondWithSuccess,
+} from '~/server/helpers/respond';
 
 async function uploadImages(req, res, next) {
   try {
@@ -83,7 +66,7 @@ async function uploadImages(req, res, next) {
 
     respondWithSuccess(
       res,
-      filterResponseAll(response, IMAGE_FIELDS),
+      filterResponseAll(response, [...imageFileFields]),
       httpStatus.CREATED,
     );
   } catch (error) {
@@ -113,7 +96,7 @@ async function uploadDocuments(req, res, next) {
 
     respondWithSuccess(
       res,
-      filterResponseAll(response, DOCUMENT_FIELDS),
+      filterResponseAll(response, [...baseFileFields]),
       httpStatus.CREATED,
     );
   } catch (error) {

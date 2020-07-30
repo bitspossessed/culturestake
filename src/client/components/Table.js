@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { DateTime } from 'luxon';
 import { useLocation, useHistory } from 'react-router-dom';
@@ -8,7 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import ButtonOutline from '~/client/components/ButtonOutline';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
-
+import { getCached } from '~/client/services/cache';
+import { useResourceId } from '~/client/hooks/requests';
 import {
   DEFAULT_LIMIT,
   DEFAULT_ORDER_DIRECTION,
@@ -55,6 +56,7 @@ const Table = ({
   onSelect,
 }) => {
   const dispatch = useDispatch();
+  const requestId = useResourceId(path);
 
   const location = useLocation();
   const history = useHistory();
@@ -62,7 +64,27 @@ const Table = ({
   const [orderDirection, setOrderDirection] = useState(initialOrderDirection);
   const [orderKey, setOrderKey] = useState(initialOrderKey);
 
-  const tables = useSelector((state) => state.tables);
+  const tables = useSelector(
+    (state) =>
+      state.tables.requests[requestId] || {
+        isError: false,
+        isLoading: true,
+        isSuccess: false,
+        orderDirection: initialOrderDirection,
+        orderKey: initialOrderKey,
+        pageIndex: 0,
+        pageSize,
+        pagesTotal: 1,
+      },
+  );
+
+  const results = useMemo(() => {
+    if (tables.isSuccess) {
+      return getCached(requestId).results;
+    }
+
+    return [];
+  }, [tables.isSuccess, requestId]);
 
   const pathString = path.join('/');
   const colSpan = DEFAULT_HEADERS.length + columns.length + 1;
@@ -97,6 +119,7 @@ const Table = ({
         pageIndex,
         path,
         searchParams: urlSearchParams,
+        requestId,
       }),
     );
   }, [
@@ -108,6 +131,7 @@ const Table = ({
     path,
     pathString,
     urlSearchParams,
+    requestId,
   ]);
 
   const onSelectHeader = ({ key }) => {
@@ -150,7 +174,7 @@ const Table = ({
         isError={tables.isError}
         isLoading={tables.isLoading}
         offset={tables.pageSize * tables.pageIndex}
-        results={tables.results}
+        results={results}
         onSelect={onSelectRow}
       />
 

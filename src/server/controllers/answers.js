@@ -5,16 +5,11 @@ import {
   AnswerBelongsToProperty,
 } from '~/server/database/associations';
 
+import { answerFields } from '~/server/database/associations';
+
 const options = {
   model: Answer,
-  fields: [
-    'type',
-    'artworkId',
-    'propertyId',
-    'questionId',
-    'artwork',
-    'property',
-  ],
+  fields: [...answerFields],
   fieldsProtected: ['chainId'],
 };
 

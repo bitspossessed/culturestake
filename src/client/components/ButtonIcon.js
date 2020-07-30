@@ -9,13 +9,13 @@ import styles from '~/client/styles/variables';
 
 // eslint-disable-next-line react/display-name
 const ButtonIcon = React.forwardRef(
-  ({ children, url = arrow, ...props }, ref) => {
+  ({ children, isIconFlipped = false, url = arrow, ...props }, ref) => {
     return (
       <ButtonIconStyle {...props} ref={ref}>
         {children}
 
         <Suspense fallback={null}>
-          <ButtonIconSVGStyle {...props}>
+          <ButtonIconSVGStyle isIconFlipped={isIconFlipped}>
             <InlineSVG url={url} />
           </ButtonIconSVGStyle>
         </Suspense>
@@ -33,9 +33,7 @@ export const ButtonIconStyle = styled(Button)`
   height: 3rem;
 
   padding: 0.5rem;
-  ${(props) => {
-    return props.isIconLeft ? 'padding-left' : 'padding-right';
-  }}: 3.5rem;
+  padding-right: 3.5rem;
 
   border: 1.5px solid ${styles.colors.black};
 
@@ -64,9 +62,7 @@ export const ButtonIconSVGStyle = styled.div`
   padding-top: 0.5rem;
 
   ${(props) => {
-    return props.isIconLeft !== props.isIconFlipped
-      ? 'border-right'
-      : 'border-left';
+    return props.isIconFlipped ? 'border-right' : 'border-left';
   }}: 1.5px solid ${styles.colors.black};
 
   transform: rotate(

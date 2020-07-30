@@ -8,48 +8,72 @@ import {
   DEFAULT_ORDER_KEY,
 } from '~/client/store/tables/actions';
 
-const initialState = {
+const initialTableState = {
   isError: false,
-  isLoading: false,
+  isLoading: true,
   isSuccess: false,
   orderDirection: DEFAULT_ORDER_DIRECTION,
   orderKey: DEFAULT_ORDER_KEY,
   pageSize: DEFAULT_LIMIT,
   pageIndex: 0,
   pagesTotal: 1,
-  results: [],
+};
+
+const initialState = {
+  requests: {},
 };
 
 const tablesReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.TABLES_REQUEST:
       return update(state, {
-        isError: { $set: false },
-        isLoading: { $set: true },
-        isSuccess: { $set: false },
-        orderDirection: { $set: action.meta.orderDirection },
-        orderKey: { $set: action.meta.orderKey },
-        pageSize: { $set: action.meta.pageSize },
-        pageIndex: { $set: action.meta.pageIndex },
-        pagesTotal: { $set: 1 },
-        results: { $set: [] },
+        requests: {
+          $merge: {
+            [action.meta.id]: Object.assign({}, initialTableState, {
+              orderDirection: action.meta.orderDirection,
+              orderKey: action.meta.orderKey,
+              pageSize: action.meta.pageSize,
+              pageIndex: action.meta.pageIndex,
+            }),
+          },
+        },
       });
     case ActionTypes.TABLES_REQUEST_SUCCESS: {
       const pagesTotal = Math.ceil(
-        action.response.pagination.total / state.pageSize,
+        action.response.pagination.total /
+          state.requests[action.meta.id].pageSize,
       );
 
       return update(state, {
-        isLoading: { $set: false },
-        isSuccess: { $set: true },
-        results: { $set: action.response.results },
-        pagesTotal: { $set: pagesTotal },
+        requests: {
+          $merge: {
+            [action.meta.id]: Object.assign(
+              {},
+              state.requests[action.meta.id],
+              {
+                isLoading: false,
+                isSuccess: true,
+                pagesTotal,
+              },
+            ),
+          },
+        },
       });
     }
     case ActionTypes.TABLES_REQUEST_FAILURE:
       return update(state, {
-        isLoading: { $set: false },
-        isError: { $set: true },
+        requests: {
+          $merge: {
+            [action.meta.id]: Object.assign(
+              {},
+              state.requests[action.meta.id],
+              {
+                isLoading: false,
+                isError: true,
+              },
+            ),
+          },
+        },
       });
     default:
       return state;

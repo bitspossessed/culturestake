@@ -201,12 +201,12 @@ const Routes = () => (
       path="/admin/artists/:slug/edit"
     />
     <UnauthenticatedRoute
-      component={AdminLogin}
-      path="/login"
-    />
-    <PublicRoute
       component={Booth}
       path="/booth"
+    />
+    <UnauthenticatedRoute
+      component={AdminLogin}
+      path="/login"
     />
     <PublicRoute
       component={Vote}

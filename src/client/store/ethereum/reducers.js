@@ -11,8 +11,8 @@ const initialTransactionState = {
 
 const initialState = {
   account: undefined,
+  hasProvider: false,
   isOwner: false,
-  provider: null,
   transactions: {},
 };
 
@@ -20,7 +20,7 @@ const ethereumReducer = (state = initialState, action) => {
   switch (action.type) {
     case ActionTypes.ETHEREUM_INITIALIZE:
       return update(state, {
-        provider: { $set: action.meta.provider },
+        hasProvider: { $set: action.meta.hasProvider },
       });
     case ActionTypes.ETHEREUM_ACCOUNT_CHANGED:
       return update(state, {
@@ -30,8 +30,8 @@ const ethereumReducer = (state = initialState, action) => {
     case ActionTypes.ETHEREUM_TRANSACTIONS_ADD:
       return update(state, {
         transactions: {
-          [action.meta.id]: {
-            $set: Object.assign({}, initialTransactionState, {
+          $merge: {
+            [action.meta.id]: Object.assign({}, initialTransactionState, {
               txHash: action.meta.txHash,
             }),
           },
@@ -40,12 +40,16 @@ const ethereumReducer = (state = initialState, action) => {
     case ActionTypes.ETHEREUM_TRANSACTIONS_UPDATE: {
       return update(state, {
         transactions: {
-          [action.meta.id]: {
-            $set: Object.assign({}, initialTransactionState, {
-              isError: action.meta.isError,
-              isPending: action.meta.isPending,
-              isSuccess: action.meta.isSuccess,
-            }),
+          $merge: {
+            [action.meta.id]: Object.assign(
+              {},
+              state.transactions[action.meta.id],
+              {
+                isError: action.meta.isError,
+                isPending: action.meta.isPending,
+                isSuccess: action.meta.isSuccess,
+              },
+            ),
           },
         },
       });

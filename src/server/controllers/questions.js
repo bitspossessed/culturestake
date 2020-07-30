@@ -1,13 +1,25 @@
 import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
 import {
+<<<<<<< HEAD
   QuestionHasManyAnswers,
   QuestionBelongsToFestival,
   QuestionBelongsToArtwork,
+=======
+  AnswerBelongsToArtwork,
+  AnswerBelongsToProperty,
+  ArtworkBelongsToArtist,
+  QuestionHasManyAnswers,
+  answerFields,
+  artworkFields,
+  propertyFields,
+  questionFields,
+>>>>>>> aa041de1b8e3da9dc7e886dce495ba1400bebd4b
 } from '~/server/database/associations';
 
 const options = {
   model: Question,
+<<<<<<< HEAD
   fields: [
     'title',
     'slug',
@@ -19,6 +31,9 @@ const options = {
     'artwork',
   ],
   fieldsProtected: [],
+=======
+  fields: [...questionFields, 'answers'],
+>>>>>>> aa041de1b8e3da9dc7e886dce495ba1400bebd4b
 };
 
 const answerFields = ['type', 'artworkId', 'propertyId'];
@@ -33,13 +48,27 @@ const festivalfields = [
 const optionsRead = {
   ...options,
   include: [
+<<<<<<< HEAD
     QuestionHasManyAnswers,
     QuestionBelongsToFestival,
     QuestionBelongsToArtwork,
+=======
+    {
+      association: QuestionHasManyAnswers,
+      include: [
+        {
+          association: AnswerBelongsToArtwork,
+          include: ArtworkBelongsToArtist,
+        },
+        AnswerBelongsToProperty,
+      ],
+    },
+>>>>>>> aa041de1b8e3da9dc7e886dce495ba1400bebd4b
   ],
   associations: [
     {
       association: QuestionHasManyAnswers,
+<<<<<<< HEAD
       destroyCascade: true,
       fields: [...answerFields],
     },
@@ -52,6 +81,25 @@ const optionsRead = {
       association: QuestionBelongsToArtwork,
       destroyCascade: false,
       fields: ['title'],
+=======
+      fields: [...answerFields],
+      associations: [
+        {
+          association: AnswerBelongsToArtwork,
+          fields: [...artworkFields],
+          associations: [
+            {
+              association: ArtworkBelongsToArtist,
+              fields: [...artworkFields],
+            },
+          ],
+        },
+        {
+          association: AnswerBelongsToProperty,
+          fields: [...propertyFields],
+        },
+      ],
+>>>>>>> aa041de1b8e3da9dc7e886dce495ba1400bebd4b
     },
   ],
 };

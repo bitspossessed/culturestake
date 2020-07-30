@@ -8,6 +8,7 @@ import Notifications from '~/client/components/Notifications';
 import Routes from '~/client/routes';
 import SVGDefinitions from '~/client/components/SVGDefinitions';
 import ThreeInterface from '~/client/components/ThreeInterface';
+import { checkBoothStatus } from '~/client/store/booth/actions';
 import { initializeApp } from '~/client/store/app/actions';
 import {
   initializeProvider,
@@ -23,13 +24,14 @@ const App = () => {
   const { isAlternateColor } = useSelector((state) => state.app);
 
   useEffect(() => {
-    const initialize = () => {
-      dispatch(initializeApp());
-      dispatch(initializeProvider());
+    const initialize = async () => {
+      await dispatch(initializeApp());
+      await dispatch(initializeProvider());
     };
 
     checkInterval = window.setInterval(() => {
       dispatch(checkPendingTransactions());
+      dispatch(checkBoothStatus());
     }, CHECK_FREQUENCY);
 
     initialize();

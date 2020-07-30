@@ -1,12 +1,13 @@
 import { Joi, Segments } from 'celebrate';
 
-import { imagesValidation } from '~/common/helpers/validate';
+import { imagesValidation, stickerValidation } from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
   artistId: Joi.number().integer().positive(),
   description: Joi.string().max(2000).required(),
   images: imagesValidation.max(10),
+  sticker: stickerValidation.required(),
   title: Joi.string().max(128).required(),
 };
 

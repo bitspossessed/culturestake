@@ -1,7 +1,7 @@
 import ActionTypes from '~/client/store/ethereum/types';
 import ownersModule from '~/common/services/contracts/owners';
 import web3 from '~/common/services/web3';
-import { detectMetaMask } from '~/client/services/ethereum';
+import { detectMetaMask, enableProvider } from '~/client/services/ethereum';
 
 async function handleAccountChange(accounts) {
   const isOwner = await ownersModule.isOwner(accounts[0]);
@@ -32,9 +32,11 @@ export function getTransactionId(txMethod, params) {
 
 export function initializeProvider() {
   return async (dispatch) => {
-    let provider = await detectMetaMask();
 
-    if (provider) {
+    const provider = await detectMetaMask();
+    const hasProvider = !!provider;
+
+    if (hasProvider) {
       provider.on('accountsChanged', async (accounts) => {
         dispatch(await handleAccountChange(accounts));
       });
@@ -43,18 +45,15 @@ export function initializeProvider() {
     dispatch({
       type: ActionTypes.ETHEREUM_INITIALIZE,
       meta: {
-        provider,
+        hasProvider,
       },
     });
   };
 }
 
 export function enableAccount() {
-  return async (dispatch, getStore) => {
-    const { ethereum } = getStore();
-    // eslint-disable-next-line
-    console.log(ethereum)
-    const accounts = await ethereum.provider.enable();
+  return async (dispatch) => {
+    const accounts = await enableProvider();
     dispatch(await handleAccountChange(accounts));
   };
 }

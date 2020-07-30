@@ -19,7 +19,7 @@ import {
 } from '~/client/components/ButtonIcon';
 import { ButtonMoreStyle } from '~/client/components/ButtonMore';
 import { ButtonOutlineStyle } from '~/client/components/ButtonOutline';
-import { FramedBoxCornerStyle } from '~/client/components/FramedBox';
+import { BoxFramedCornerStyle } from '~/client/components/BoxFramed';
 import { HorizontalLineStyle } from '~/client/components/HorizontalLine';
 import {
   EthereumContainerStyle,
@@ -115,8 +115,9 @@ export const ColorSectionStyle = styled.div`
   }
 
   ${/* sc-selector */ ButtonIconSVGStyle},
-  ${/* sc-selector */ FramedBoxCornerStyle} {
-    g {
+  ${/* sc-selector */ BoxFramedCornerStyle} {
+    g,
+    path {
       stroke: ${(props) => {
         const { foreground, background } = styles.schemes[props.scheme];
         return props.isInverted ? background : foreground;
