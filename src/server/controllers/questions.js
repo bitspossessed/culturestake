@@ -15,7 +15,7 @@ import {
 
 const options = {
   model: Question,
-  fields: [...questionFields, 'answers'],
+  fields: [...questionFields, 'answers', 'festival', 'artwork'],
 };
 
 const festivalfields = [
@@ -54,7 +54,6 @@ const optionsRead = {
           fields: [...propertyFields],
         },
       ],
-
     },
     {
       association: QuestionBelongsToFestival,

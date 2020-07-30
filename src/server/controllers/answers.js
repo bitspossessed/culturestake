@@ -9,7 +9,7 @@ import { answerFields } from '~/server/database/associations';
 
 const options = {
   model: Answer,
-  fields: [...answerFields],
+  fields: [...answerFields, 'artwork', 'property'],
   fieldsProtected: ['chainId'],
 };
 
