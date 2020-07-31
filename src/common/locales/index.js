@@ -102,7 +102,6 @@ const components = {
     bodyLoading: 'Loading ...',
   },
   Navigation: {
-    linkAdminAnswers: 'Answers',
     linkAdminArtists: 'Artists',
     linkAdminArtworks: 'Artworks',
     linkAdminDashboard: 'Dashboard',

@@ -127,14 +127,6 @@ const Navigation = ({ onClickItem, isExpanded }) => {
             </NavigationMenuItemStyle>
 
             <NavigationMenuItemStyle>
-              <NavigationLink to="/admin/answers" onClick={onClickItem}>
-                <ParagraphStyle>
-                  {translate('Navigation.linkAdminAnswers')}
-                </ParagraphStyle>
-              </NavigationLink>
-            </NavigationMenuItemStyle>
-
-            <NavigationMenuItemStyle>
               <NavigationLogoutButton onClick={onClickItem}>
                 <ParagraphStyle>
                   {translate('Navigation.linkAdminSignOut')}
