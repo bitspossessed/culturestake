@@ -104,7 +104,10 @@ function topThreeFilter(req, data) {
   const { graphData, user } = req.locals;
 
   // Combine graph data with postgres data, mapping chainId : id
-  const answers = combineAnswers(graphData.question.answers, data.answers);
+  const answers = combineAnswers(
+    graphData.question ? graphData.question.answers : [],
+    data.answers,
+  );
 
   // Find the top three votePowers
   const topThreeVotePowers = findTopThreeVotePowers(answers);

@@ -110,7 +110,7 @@ const FestivalsProfile = () => {
                 <HorizontalSpacingStyle isLarge />
               </Paper>
 
-              {questionTitle && artworks && (
+              {questionTitle && artworks && artworks.length > 0 && (
                 <PaperTicket>
                   <BoxFramed>
                     <HeadingSecondaryStyle>
