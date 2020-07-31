@@ -43,15 +43,15 @@ const InputArtworksField = ({ label, name, validate }) => {
       <InputArtworkFieldItems artworks={selectedArtworks} onRemove={onRemove} />
 
       <Finder
-        label={translate('FormFestivals.fieldArtwork')}
+        label={translate('InputArtworksField.fieldArtwork')}
         name="artworkId"
-        placeholder={translate('FormFestivals.fieldArtworkPlaceholder')}
+        placeholder={translate('InputArtworksField.fieldArtworkPlaceholder')}
         queryPath={'artworks'}
         searchParam={'title'}
         setValue={setCurrentlySelectedArtwork}
       />
       <ButtonOutline disabled={false} onClick={onClickAdd}>
-        {'add artwork'}
+        {translate('InputArtworksField.fieldArtworkPrompt')}
       </ButtonOutline>
     </InputFieldsetRounded>
   );
