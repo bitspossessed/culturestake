@@ -205,6 +205,12 @@ const views = {
     notificationSuccess: 'You created the user {username}.',
     errorUniqueUser: 'A user with this email or username exists already.',
   },
+  AdminBooths: {
+    fieldAddress: 'Address',
+    fieldFestival: 'Festival',
+    fieldAction: 'See Snuggle panel',
+    title: 'Voting Booths',
+  },
   AdminFestivals: {
     buttonNewFestival: 'Create new festival',
     fieldTitle: 'Title',
@@ -254,7 +260,7 @@ const views = {
     title: 'Edit question',
   },
   AdminProperties: {
-    buttonNewQuestion: 'Create new property',
+    buttonNewProperty: 'Create new property',
     fieldTitle: 'Property',
     title: 'Properties',
   },

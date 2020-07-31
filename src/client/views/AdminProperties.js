@@ -48,7 +48,7 @@ const AdminProperties = () => {
 
       <FooterAdmin>
         <ButtonIcon to="/admin/properties/new">
-          {translate('AdminProperties.buttonNewQuestion')}
+          {translate('AdminProperties.buttonNewProperty')}
         </ButtonIcon>
       </FooterAdmin>
     </Fragment>
