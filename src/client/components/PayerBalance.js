@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 
 import translate from '~/common/services/i18n';
@@ -17,14 +16,8 @@ const PayerBalance = () => {
   }, [setBalance]);
 
   return (
-    <main>
-      <BoxRounded title={translate('PayerBalance.title')}>{balance}</BoxRounded>
-    </main>
+    <BoxRounded title={translate('PayerBalance.title')}>{balance}</BoxRounded>
   );
-};
-
-PayerBalance.propTypes = {
-  children: PropTypes.node,
 };
 
 export default PayerBalance;

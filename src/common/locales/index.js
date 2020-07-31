@@ -54,9 +54,6 @@ const components = {
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
     fieldArtworks: 'Artworks:',
-    fieldArtwork: 'Artwork:',
-    fieldArtworkPlaceholder: 'Choose an artwork:',
-    fieldArtworkPrompt: 'Add artwork:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
@@ -79,6 +76,11 @@ const components = {
     fieldBio: 'Bio:',
     fieldConsentToDataReveal: 'Consent to data reveal:',
     fieldImages: 'Artwork images',
+  },
+  InputArtworksField: {
+    fieldArtwork: 'Artwork:',
+    fieldArtworkPlaceholder: 'Choose an artwork:',
+    fieldArtworkPrompt: 'Add artwork',
   },
   InputUploadField: {
     buttonRemoveFile: 'Remove',
@@ -113,7 +115,7 @@ const components = {
     linkAdminSignOut: '🚪',
     linkAdminUsers: 'Users',
     notificationSignOutSuccess: 'Your session has ended. See you soon!',
-    titleAccessibility: 'AccessibiliFty',
+    titleAccessibility: 'Accessibility',
     titleAdmin: 'Admin:',
     titleFestivals: 'Festivals:',
   },
