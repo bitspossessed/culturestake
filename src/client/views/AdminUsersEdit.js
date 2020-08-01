@@ -2,8 +2,6 @@ import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import translate from '~/common/services/i18n';
-
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import DangerZone from '~/client/components/DangerZone';
@@ -11,10 +9,11 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import FormUsers from '~/client/components/FormUsers';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
-import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import translate from '~/common/services/i18n';
+import { useEditForm } from '~/client/hooks/forms';
 
 const AdminUsersEdit = () => {
   return (
@@ -85,7 +84,7 @@ const AdminUsersEditForm = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>
