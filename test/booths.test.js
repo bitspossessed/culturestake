@@ -24,7 +24,6 @@ describe('Voting booth', () => {
       bio: 'Magical dog',
       consentToDataReveal: true,
       images: [],
-      artworks: [],
     });
 
     artworkIds = await Promise.all(
