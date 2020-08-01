@@ -6,7 +6,6 @@ import ButtonOutline from '~/client/components/ButtonOutline';
 import DateTimePicker from '~/client/components/DateTimePicker';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import translate from '~/common/services/i18n';
-import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import { ParagraphStyle } from '~/client/styles/typography';
 import {
   TX_DEACTIVATE_FESTIVAL,
@@ -16,6 +15,7 @@ import {
   isFestivalDeactivated,
   isFestivalInitialized,
 } from '~/common/services/contracts/festivals';
+import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import {
   usePendingTransaction,
   useOwnerAddress,

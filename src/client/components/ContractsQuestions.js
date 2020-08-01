@@ -2,23 +2,79 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { MAX_VOTE_TOKENS } from '~/common/utils/constants';
-import translate from '~/common/services/i18n';
 import ButtonOutline from '~/client/components/ButtonOutline';
 import EthereumContainer from '~/client/components/EthereumContainer';
-import { addPendingTransaction } from '~/client/store/ethereum/actions';
+import translate from '~/common/services/i18n';
+import { MAX_VOTE_TOKENS } from '~/common/utils/constants';
+import { ParagraphStyle } from '~/client/styles/typography';
 import {
-  initializeQuestion,
-  isQuestionInitialized,
+  TX_DEACTIVATE_QUESTION,
   TX_INITIALIZE_QUESTION,
   deactivateQuestion,
+  initializeQuestion,
   isQuestionDeactivated,
-  TX_DEACTIVATE_QUESTION,
+  isQuestionInitialized,
 } from '~/common/services/contracts/questions';
+import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import {
   usePendingTransaction,
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
+
+const ContractsQuestions = ({
+  festivalChainId,
+  isInitialized,
+  questionChainId,
+  setIsInitialized,
+}) => {
+  const initializeTx = usePendingTransaction({
+    txMethod: TX_INITIALIZE_QUESTION,
+    params: { questionChainId },
+  });
+  const deactivateTx = usePendingTransaction({
+    txMethod: TX_DEACTIVATE_QUESTION,
+    params: { questionChainId },
+  });
+
+  const [isDeactivated, setIsDeactivated] = useState(false);
+
+  useEffect(() => {
+    const getInitializedStatus = async () => {
+      if (questionChainId !== '') {
+        const state = await isQuestionInitialized(questionChainId);
+        setIsInitialized(state);
+      }
+    };
+
+    getInitializedStatus();
+  }, [questionChainId, initializeTx.isPending, setIsInitialized]);
+
+  useEffect(() => {
+    const getDeactivatedStatus = async () => {
+      const state = await isQuestionDeactivated(questionChainId);
+      setIsDeactivated(state);
+    };
+
+    getDeactivatedStatus();
+  }, [questionChainId, deactivateTx.isPending]);
+
+  return (
+    <EthereumContainer>
+      {isDeactivated ? (
+        <ParagraphStyle>
+          {translate('ContractsQuestions.notificationAlreadyDeactivated')}
+        </ParagraphStyle>
+      ) : !isInitialized ? (
+        <ContractsQuestionsInitialize
+          festivalChainId={festivalChainId}
+          questionChainId={questionChainId}
+        />
+      ) : (
+        <ContractsQuestionsDeactivate questionChainId={questionChainId} />
+      )}
+    </EthereumContainer>
+  );
+};
 
 const ContractsQuestionsInitialize = ({ questionChainId, festivalChainId }) => {
   const dispatch = useDispatch();
@@ -44,11 +100,9 @@ const ContractsQuestionsInitialize = ({ questionChainId, festivalChainId }) => {
   };
 
   return (
-    <div>
-      <ButtonOutline onClick={onClick}>
-        {translate('ContractsQuestions.buttonInitializeQuestion')}
-      </ButtonOutline>
-    </div>
+    <ButtonOutline onClick={onClick}>
+      {translate('ContractsQuestions.buttonInitializeQuestion')}
+    </ButtonOutline>
   );
 };
 
@@ -74,62 +128,9 @@ const ContractsQuestionsDeactivate = ({ questionChainId }) => {
   };
 
   return (
-    <div>
-      <ButtonOutline isDanger={true} onClick={onClick}>
-        {translate('ContractsQuestions.buttonDeactivateQuestion')}
-      </ButtonOutline>
-    </div>
-  );
-};
-
-const ContractsQuestions = ({
-  questionChainId,
-  festivalChainId,
-  isInitialized,
-  setIsInitialized,
-}) => {
-  const initializeTx = usePendingTransaction({
-    txMethod: TX_INITIALIZE_QUESTION,
-    params: { questionChainId },
-  });
-  const deactivateTx = usePendingTransaction({
-    txMethod: TX_DEACTIVATE_QUESTION,
-    params: { questionChainId },
-  });
-
-  const [isDeactivated, setIsDeactivated] = useState(false);
-
-  useEffect(() => {
-    const getInitializedStatus = async () => {
-      if (questionChainId !== '') {
-        const state = await isQuestionInitialized(questionChainId);
-        setIsInitialized(state);
-      }
-    };
-    getInitializedStatus();
-  }, [questionChainId, initializeTx.isPending, setIsInitialized]);
-
-  useEffect(() => {
-    const getDeactivatedStatus = async () => {
-      const state = await isQuestionDeactivated(questionChainId);
-      setIsDeactivated(state);
-    };
-    getDeactivatedStatus();
-  }, [questionChainId, deactivateTx.isPending]);
-
-  return (
-    <EthereumContainer>
-      {isDeactivated ? (
-        translate('ContractsQuestions.notificationAlreadyDeactivated')
-      ) : !isInitialized ? (
-        <ContractsQuestionsInitialize
-          festivalChainId={festivalChainId}
-          questionChainId={questionChainId}
-        />
-      ) : (
-        <ContractsQuestionsDeactivate questionChainId={questionChainId} />
-      )}
-    </EthereumContainer>
+    <ButtonOutline isDanger onClick={onClick}>
+      {translate('ContractsQuestions.buttonDeactivateQuestion')}
+    </ButtonOutline>
   );
 };
 
