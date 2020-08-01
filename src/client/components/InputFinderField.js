@@ -19,6 +19,7 @@ const InputFinderField = ({
 }) => {
   const { meta, setMeta, setValue, value } = useField(name, {
     validate,
+    defaultValue: null,
   });
 
   const onChange = (item) => {
