@@ -1,17 +1,18 @@
 import ActionTypes from '~/client/store/ethereum/types';
 import notify from '~/client/store/notifications/actions';
-import ownersModule from '~/common/services/contracts/owners';
 import translate from '~/common/services/i18n';
 import web3 from '~/common/services/web3';
 import { detectMetaMask, enableProvider } from '~/client/services/ethereum';
+import { isOwner } from '~/common/services/contracts/owners';
 
 async function handleAccountChange(accounts) {
-  const isOwner = await ownersModule.isOwner(accounts[0]);
+  const isOwnerState =
+    accounts && accounts.length > 0 ? await isOwner(accounts[0]) : false;
   return {
     type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
     meta: {
       account: accounts[0],
-      isOwner,
+      isOwner: isOwnerState,
     },
   };
 }
