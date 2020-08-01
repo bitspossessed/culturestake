@@ -4,6 +4,7 @@ import {
   ArtworkBelongsToArtist,
   ArtworkBelongsToManyFestivals,
   ArtworkHasManyImages,
+  artistFields,
   artworkFields,
   festivalFields,
   imageFileFields,
@@ -39,7 +40,7 @@ const optionsRead = {
     {
       association: ArtworkBelongsToArtist,
       destroyCascade: false,
-      fields: [...artworkFields],
+      fields: [...artistFields],
     },
     {
       association: ArtworkBelongsToManyFestivals,
