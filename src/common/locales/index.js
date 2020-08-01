@@ -121,6 +121,7 @@ const components = {
   Navigation: {
     linkAdminArtists: 'Artists',
     linkAdminArtworks: 'Artworks',
+    linkAdminBooths: 'Booths',
     linkAdminDashboard: 'Dashboard',
     linkAdminFestivals: 'Festivals',
     linkAdminProperties: 'Properties',
@@ -201,6 +202,15 @@ const store = {
 const views = {
   Admin: {
     title: 'Admin',
+    titleNavigation: 'Navigation',
+    linkAdminArtists: 'Artists',
+    linkAdminArtworks: 'Artworks',
+    linkAdminBooths: 'Booths',
+    linkAdminDashboard: 'Dashboard',
+    linkAdminFestivals: 'Festivals',
+    linkAdminProperties: 'Properties',
+    linkAdminQuestions: 'Questions',
+    linkAdminUsers: 'Users',
   },
   AdminLogin: {
     buttonSubmit: 'Login',
