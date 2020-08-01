@@ -10,7 +10,6 @@ import {
   ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
   artistFields,
-  answerFields,
   artworkFields,
   propertyFields,
   questionFields,
@@ -23,7 +22,7 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 const PUBLIC_TOP_ANSWERS = 3;
 
 const answerAssociation = {
-  fields: [...answerFields, 'votePower', 'voteTokens', 'votes', 'questionId'],
+  fields: ['propertyId', 'votePower', 'voteTokens', 'votes', 'questionId'],
   fieldsProtected: ['artworkId', 'artwork', 'propertyId', 'property'],
   association: QuestionHasManyAnswers,
   associations: [
