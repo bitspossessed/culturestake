@@ -13,7 +13,10 @@ const FormQuestions = ({ isFinderDisabled }) => {
       .integer()
       .required()
       .error(new Error(translate('validations.festivalRequired'))),
-    artworkId: Joi.number().integer().allow(null),
+    artworkId: Joi.number()
+      .integer()
+      .allow(null, '')
+      .error(new Error(translate('validations.artworkRequired'))),
   };
 
   return (
