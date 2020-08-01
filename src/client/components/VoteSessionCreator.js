@@ -177,9 +177,12 @@ const VoteSessionCreator = () => {
     setIsLoading(true);
     setIsAdminVisible(false);
 
+    // Sort by id to be consisent with the order of things
+    const sortedFestivalAnswerIds = festivalAnswerIds.sort();
+
     // Create booth voteData
     const boothSignature = signBooth({
-      festivalAnswerIds,
+      festivalAnswerIds: sortedFestivalAnswerIds,
       privateKey: getPrivateKey(BOOTH_ACCOUNT_NAME),
       nonce,
     });
@@ -187,7 +190,7 @@ const VoteSessionCreator = () => {
     setVoteData(
       encodeVoteData({
         boothSignature,
-        festivalAnswerIds,
+        festivalAnswerIds: sortedFestivalAnswerIds,
         festivalQuestionId,
         nonce,
       }),
