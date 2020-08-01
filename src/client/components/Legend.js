@@ -1,18 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
-import styles, {
-  DEFAULT_SCHEME,
-  SCHEME_ALTERNATE,
-} from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
+import { useScheme } from '~/client/hooks/scheme';
 
 const Legend = (props) => {
-  const { isAlternateColor, isLargerFont } = useSelector((state) => state.app);
-  const scheme = isAlternateColor
-    ? SCHEME_ALTERNATE
-    : props.scheme || DEFAULT_SCHEME;
+  const { scheme, isLargerFont } = useScheme(props.scheme);
 
   return (
     <LegendStyle>

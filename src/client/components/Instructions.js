@@ -1,14 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
 import BoxFramed from '~/client/components/BoxFramed';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
-import styles, {
-  DEFAULT_SCHEME,
-  SCHEME_ALTERNATE,
-} from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import {
@@ -16,12 +12,13 @@ import {
   HeadingSecondaryStyle,
   HeadingPrimaryStyle,
 } from '~/client/styles/typography';
+import { useScheme } from '~/client/hooks/scheme';
 
 const Instructions = () => {
-  const { isAlternateColor } = useSelector((state) => state.app);
+  const { scheme } = useScheme();
 
   return (
-    <InstructionsStyle isAlternateColor={isAlternateColor}>
+    <InstructionsStyle scheme={scheme}>
       <ColorSection>
         <ContainerStyle>
           <BoxFramed>
@@ -78,11 +75,7 @@ const InstructionsStyle = styled.div`
   overflow-x: hidden;
   overflow-y: auto;
 
-  background-color: ${(props) => {
-    return props.isAlternateColor
-      ? styles.schemes[SCHEME_ALTERNATE].background
-      : styles.schemes[DEFAULT_SCHEME].background;
-  }};
+  background-color: ${(props) => styles.schemes[props.scheme].background};
 `;
 
 export default Instructions;

@@ -1,20 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
-import styles, {
-  DEFAULT_SCHEME,
-  SCHEME_ALTERNATE,
-} from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
+import { useScheme } from '~/client/hooks/scheme';
 
 const SNUGGLEPUNK_SIZE = 8;
 
 // eslint-disable-next-line react/display-name
 const Slider = React.forwardRef(
-  ({ children, credit, total, scheme = DEFAULT_SCHEME, ...props }, ref) => {
-    const { isAlternateColor } = useSelector((state) => state.app);
-    const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
+  ({ children, credit, total, ...props }, ref) => {
+    const { scheme } = useScheme(props.scheme);
     const refBar = useRef();
     const refContainer = useRef();
 
@@ -25,18 +21,14 @@ const Slider = React.forwardRef(
       // Update styles outside of React to improve performance
       refContainer.current.style.transform = `translate3d(${percentage}%, 0, 0)`;
 
-      const { foreground } = styles.schemes[innerScheme];
+      const { foreground } = styles.schemes[scheme];
       const gradient = `${foreground} 0%, ${foreground} ${percentage}%, transparent ${percentage}%`;
       refBar.current.style.background = `linear-gradient(to right, ${gradient})`;
-    }, [refBar, refContainer, percentage, innerScheme]);
+    }, [refBar, refContainer, percentage, scheme]);
 
     return (
       <SliderStyle {...props} ref={ref}>
-        <SliderBarStyle
-          percentage={percentage}
-          ref={refBar}
-          scheme={innerScheme}
-        />
+        <SliderBarStyle percentage={percentage} ref={refBar} scheme={scheme} />
 
         <SnuggleSliderHandleContainerStyle
           percentage={percentage}

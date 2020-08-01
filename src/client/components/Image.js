@@ -1,14 +1,12 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
-import { SCHEME_ALTERNATE } from '~/client/styles/variables';
+import { useScheme } from '~/client/hooks/scheme';
 
 const Image = (props) => {
   const [href, setHref] = useState(props.src);
-  const { isAlternateColor } = useSelector((state) => state.app);
-  const scheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
+  const { scheme } = useScheme(props.scheme);
 
   const onToggle = () => {
     setHref((value) => (value === props.src ? props.srcOriginal : props.src));

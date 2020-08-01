@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { useEffect, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
 import Slider, { SliderStyle } from '~/client/components/Slider';
-import { DEFAULT_SCHEME, SCHEME_ALTERNATE } from '~/client/styles/variables';
 import { SNUGGLEPUNKS_COUNT } from '~/client/components/SVGDefinitions';
+import { useScheme } from '~/client/hooks/scheme';
 
 const SNUGGLEPUNK_SIZE = 8;
 
@@ -17,15 +16,8 @@ function isNotTouchEvent(event) {
   );
 }
 
-const SnuggleSlider = ({
-  credit,
-  total,
-  id,
-  onChange,
-  scheme = DEFAULT_SCHEME,
-}) => {
-  const { isAlternateColor } = useSelector((state) => state.app);
-  const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
+const SnuggleSlider = ({ credit, total, id, onChange, ...props }) => {
+  const { scheme } = useScheme(props.scheme);
   const ref = useRef();
 
   const [isDragging, setIsDragging] = useState(false);
@@ -148,7 +140,7 @@ const SnuggleSlider = ({
       <Slider
         credit={credit}
         ref={ref}
-        scheme={innerScheme}
+        scheme={scheme}
         total={total}
         onBlur={onBlur}
         onMouseDown={onMouseDown}

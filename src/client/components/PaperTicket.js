@@ -1,19 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
 import Paper, { PaperStyle } from '~/client/components/Paper';
-import styles, { SCHEME_ALTERNATE } from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
+import { useScheme } from '~/client/hooks/scheme';
 
 const PaperTicket = (props) => {
-  const { isAlternateColor } = useSelector((state) => state.app);
-  const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
+  const { scheme } = useScheme(props.scheme);
 
   return (
-    <PaperTicketStyle scheme={innerScheme}>
+    <PaperTicketStyle scheme={scheme}>
       <PaperTicketLine position="top" />
-      <Paper scheme={innerScheme}>{props.children}</Paper>
+      <Paper scheme={scheme}>{props.children}</Paper>
       <PaperTicketLine position="bottom" />
     </PaperTicketStyle>
   );
