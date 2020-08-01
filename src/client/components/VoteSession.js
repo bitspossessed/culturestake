@@ -251,7 +251,7 @@ const VoteSession = ({
     // Set most voted artwork when in festival question step
     if (stepName === STEP_FESTIVAL) {
       const highestVoteTokens = Math.max(...Object.values(creditsNew));
-      setWinnerArtworkId(
+      const winnerAnswerId =
         highestVoteTokens > 0
           ? parseInt(
               Object.keys(creditsNew).find((id) => {
@@ -259,8 +259,17 @@ const VoteSession = ({
               }),
               10,
             )
-          : null,
-      );
+          : null;
+
+      if (!winnerAnswerId) {
+        setWinnerArtworkId(null);
+      } else {
+        const { artworkId } = festivalQuestionData.answers.find(
+          ({ id }) => id === winnerAnswerId,
+        );
+
+        setWinnerArtworkId(artworkId);
+      }
     }
   };
 
