@@ -1,23 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
-import { useLoader } from 'react-three-fiber';
 
 import ThreeModel from '~/client/components/ThreeModel';
-import logo from '~/client/assets/images/logo.svg';
-import {
-  alternateGradientTexture,
-  limeGradientTexture,
-} from '~/client/styles/textures';
+import { alternateMaterial, limeMaterial } from '~/client/styles/materials';
+import { useExtrudeGeometry } from '~/client/hooks/geometry';
 
 const ThreeButtonLogo = (props) => {
-  const svg = useLoader(SVGLoader, logo);
-
-  const texture = props.isAlternateColor
-    ? alternateGradientTexture
-    : limeGradientTexture;
-
-  return <ThreeModel {...props} svg={svg} texture={texture} />;
+  const material = props.isAlternateColor ? alternateMaterial : limeMaterial;
+  const geometry = useExtrudeGeometry('logo');
+  return <ThreeModel {...props} geometry={geometry} material={material} />;
 };
 
 ThreeButtonLogo.propTypes = {

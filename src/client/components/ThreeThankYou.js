@@ -1,28 +1,20 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
-import { useLoader } from 'react-three-fiber';
 
 import ThreeModel from '~/client/components/ThreeModel';
-import thankYou from '~/client/assets/images/thankyou.svg';
-import {
-  alternateGradientTexture,
-  limeGradientTexture,
-} from '~/client/styles/textures';
+import { alternateMaterial, limeMaterial } from '~/client/styles/materials';
+import { useExtrudeGeometry } from '~/client/hooks/geometry';
 
 const ThreeThankYou = (props) => {
-  const svg = useLoader(SVGLoader, thankYou);
-  const texture = props.isAlternateColor
-    ? alternateGradientTexture
-    : limeGradientTexture;
+  const material = props.isAlternateColor ? alternateMaterial : limeMaterial;
+  const geometry = useExtrudeGeometry('thankyou', 50);
 
   return (
     <ThreeModel
       {...props}
-      depth={50}
+      geometry={geometry}
+      material={material}
       rotation={[-Math.PI - 0.12, -0.5, 0.2]}
-      svg={svg}
-      texture={texture}
     />
   );
 };

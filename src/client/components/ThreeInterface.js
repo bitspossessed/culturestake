@@ -10,6 +10,7 @@ import ThreeButtonInfo from '~/client/components/ThreeButtonInfo';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeButtonNavigation from '~/client/components/ThreeButtonNavigation';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
+import ThreeRotator from '~/client/components/ThreeRotator';
 import styles from '~/client/styles/variables';
 
 const ThreeInterface = (props) => {
@@ -49,10 +50,12 @@ const ThreeInterface = (props) => {
         top
         onClick={onClickLogo}
       >
-        <ThreeButtonLogo
-          isAlternateColor={isAlternateColor}
-          rotation={[3.5, -0.6, 0]}
-        />
+        <ThreeRotator>
+          <ThreeButtonLogo
+            isAlternateColor={isAlternateColor}
+            rotation={[3.5, -0.6, 0]}
+          />
+        </ThreeRotator>
       </ThreeInterfaceElement>
 
       <ThreeInterfaceElement
@@ -61,11 +64,13 @@ const ThreeInterface = (props) => {
         top
         onClick={onClickNavigation}
       >
-        <ThreeButtonNavigation
-          isAlternateColor={isAlternateColor}
-          isExpanded={isExpanded}
-          rotation={[3.5, 0.3, 0]}
-        />
+        <ThreeRotator>
+          <ThreeButtonNavigation
+            isAlternateColor={isAlternateColor}
+            isExpanded={isExpanded}
+            rotation={[3.5, 0.3, 0]}
+          />
+        </ThreeRotator>
       </ThreeInterfaceElement>
 
       <ThreeInterfaceElement

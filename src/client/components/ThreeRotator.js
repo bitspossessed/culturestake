@@ -17,7 +17,12 @@ const possibleRotations = [
   new Vector3(0, 0, 1),
 ];
 
-const ThreeRotator = ({ children, ...props }) => {
+const ThreeRotator = ({
+  children,
+  min = ANIMATION_WAIT_MIN,
+  max = ANIMATION_WAIT_MAX,
+  ...props
+}) => {
   const ref = useRef();
 
   const [targetRotation, setTargetRotation] = useState(new Vector3());
@@ -27,15 +32,7 @@ const ThreeRotator = ({ children, ...props }) => {
       .clone()
       .multiply(randomFromArray(possibleRotations));
 
-    setTargetRotation(
-      new Vector3()
-        .fromArray([
-          ref.current.rotation._x,
-          ref.current.rotation._y,
-          ref.current.rotation._z,
-        ])
-        .add(target),
-    );
+    setTargetRotation(new Vector3().fromArray([0, 0, 0]).add(target));
   };
 
   useFrame(() => {
@@ -49,9 +46,8 @@ const ThreeRotator = ({ children, ...props }) => {
   });
 
   useEffect(() => {
-    const initialRotation = new Vector3().fromArray(props.rotation);
-    setTargetRotation(initialRotation);
-  }, [props.rotation]);
+    setTargetRotation(new Vector3().fromArray([0, 0, 0]));
+  }, []);
 
   useEffect(() => {
     let timeout;
@@ -60,7 +56,7 @@ const ThreeRotator = ({ children, ...props }) => {
       timeout = setTimeout(() => {
         animate();
         nextAnimation();
-      }, randomRange(ANIMATION_WAIT_MIN, ANIMATION_WAIT_MAX));
+      }, randomRange(min, max));
     };
 
     nextAnimation();
@@ -81,7 +77,8 @@ const ThreeRotator = ({ children, ...props }) => {
 
 ThreeRotator.propTypes = {
   children: PropTypes.node.isRequired,
-  rotation: PropTypes.array.isRequired,
+  max: PropTypes.number,
+  min: PropTypes.number,
 };
 
 export default ThreeRotator;

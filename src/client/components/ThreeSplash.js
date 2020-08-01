@@ -7,6 +7,7 @@ import { useThree } from 'react-three-fiber';
 import ColorSection from '~/client/components/ColorSection';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
+import ThreeRotator from '~/client/components/ThreeRotator';
 import styles, {
   SCHEME_ALTERNATE,
   SCHEME_BLACK,
@@ -70,7 +71,9 @@ const ThreeSplashLogos = (props) => {
           rotation={randomRotation}
           scale={[ICONS_SCALE, ICONS_SCALE, ICONS_SCALE]}
         >
-          <ThreeButtonLogo isAlternateColor={props.isAlternateColor} />
+          <ThreeRotator>
+            <ThreeButtonLogo isAlternateColor={props.isAlternateColor} />
+          </ThreeRotator>
         </Group>
       );
     });
