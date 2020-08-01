@@ -7,12 +7,13 @@ import styles from '~/client/styles/variables';
 import { useScheme } from '~/client/hooks/scheme';
 
 const PaperTicket = (props) => {
-  const { scheme } = useScheme(props.scheme);
+  const { isAlternateColor, scheme } = useScheme();
+  const innerScheme = isAlternateColor ? scheme : props.scheme;
 
   return (
-    <PaperTicketStyle scheme={scheme}>
+    <PaperTicketStyle scheme={innerScheme}>
       <PaperTicketLine position="top" />
-      <Paper scheme={scheme}>{props.children}</Paper>
+      <Paper scheme={innerScheme}>{props.children}</Paper>
       <PaperTicketLine position="bottom" />
     </PaperTicketStyle>
   );
