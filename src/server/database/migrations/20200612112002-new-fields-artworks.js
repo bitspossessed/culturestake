@@ -4,7 +4,7 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface
       .addColumn('artworks', 'description', {
-        type: Sequelize.STRING(2000),
+        type: Sequelize.TEXT,
       })
       .then(() => {
         return queryInterface.addColumn('artworks', 'artistId', {
