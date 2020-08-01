@@ -113,9 +113,9 @@ async function checkArtworkQuestionIsHighestVoted({ vote }) {
     return acc;
   }, {});
 
-  const highestTokenValue = Object.keys(groupAnswers)
-    .map((tokens) => parseInt(tokens, 10))
-    .sort((itemA, itemB) => itemB - itemA)[0];
+  const highestTokenValue = Math.max(
+    ...Object.keys(groupAnswers).map((tokens) => parseInt(tokens, 10)),
+  );
 
   const highestAnswersIds = groupAnswers[highestTokenValue].map(({ index }) => {
     return vote.festivalAnswerIds[index];

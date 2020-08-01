@@ -1,195 +1,247 @@
 import PropTypes from 'prop-types';
-import React, { Fragment, useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { useField } from 'react-form';
 
-import apiRequest from '~/client/services/api';
 import Spinner from '~/client/components/Spinner';
-import InputFieldset from '~/client/components/InputFieldset';
+import apiRequest from '~/client/services/api';
 import styles from '~/client/styles/variables';
+import { InputFieldStyle } from '~/client/components/InputField';
 
 const MAX_SEARCH_RESULTS = 5;
 
-const Finder = (props) => {
+const Finder = ({
+  clientSideFilter,
+  defaultQuery,
+  isDisabled = false,
+  label,
+  name,
+  placeholder,
+  queryPath,
+  searchParam,
+  selectParam = searchParam,
+  onChange,
+  value,
+}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isQueryEmpty, setIsQueryEmpty] = useState(true);
   const [searchResults, setSearchResults] = useState([]);
-  const [query, setQuery] = useState('');
   const [selectedSearchParam, setSelectedSearchParam] = useState('');
-  const { meta, setValue } = useField(props.name);
+  const [query, setQuery] = useState('');
 
   const onInputChange = (event) => {
     event.preventDefault();
+
     setSelectedSearchParam(event.target.value);
     setQuery(event.target.value);
+    onChange(null);
   };
 
   const onSelect = (item) => {
-    setSelectedSearchParam(item[props.searchParam]);
-    setValue(item.id);
-    if (props.setValue) {
-      props.setValue(item);
-    }
+    onChange(item);
+    setQuery('');
     setSearchResults([]);
+    setSelectedSearchParam('');
   };
 
-  const search = useCallback(
-    async (query) => {
-      setIsLoading(true);
-      const queryObject = { ...props.defaultQuery };
-      queryObject[props.searchParam] = `${query}`;
-      const body = {
-        query: JSON.stringify(queryObject),
-      };
+  useEffect(() => {
+    const resolve = async (item) => {
+      const resources = await apiRequest({
+        path: queryPath,
+        body: {
+          ...defaultQuery,
+          query: typeof item === 'object' ? item[selectParam] : item,
+          queryParam: selectParam,
+        },
+      });
+
+      if (resources.results.length > 0) {
+        setSelectedSearchParam(resources.results[0][searchParam]);
+      }
+    };
+
+    if (value) {
+      resolve(value);
+    } else {
+      setSelectedSearchParam('');
+    }
+  }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    setIsLoading(true);
+
+    const search = async (query) => {
       const response = await apiRequest({
-        path: [`${props.queryPath}`],
-        body,
+        path: queryPath,
+        body: {
+          ...defaultQuery,
+          query,
+          queryParam: searchParam,
+        },
       });
 
       const result = response.results
         .sort((itemA, itemB) => {
-          return itemA[props.searchParam]
+          return itemA[searchParam]
             .toLowerCase()
-            .localeCompare(itemB[props.searchParam].toLowerCase());
+            .localeCompare(itemB[searchParam].toLowerCase());
         })
         .slice(0, MAX_SEARCH_RESULTS);
 
-      const filtered = props.clientSideFilter
-        ? result.filter(props.clientSideFilter)
+      const filtered = clientSideFilter
+        ? result.filter(clientSideFilter)
         : result;
+
       setSearchResults(filtered);
       setIsLoading(false);
-    },
-    [
-      props.queryPath,
-      props.searchParam,
-      props.defaultQuery,
-      props.clientSideFilter,
-    ],
-  );
+    };
 
-  useEffect(() => {
     setIsQueryEmpty(query.length === 0);
 
     if (query.length === 0) {
       setSearchResults([]);
+      setIsLoading(false);
       return;
     }
 
-    setIsLoading(true);
     search(query);
-  }, [query, search]);
+  }, [query, value]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Fragment>
-      <InputFieldset label={props.label} meta={meta} name={props.name}>
-        <InputFieldStyle
-          label={props.label}
-          name={props.name}
-          placeholder={props.placeholder}
-          type="text"
-          value={selectedSearchParam}
-          onChange={onInputChange}
-        />
-      </InputFieldset>
+    <FinderStyle>
+      {isLoading && (
+        <FinderSpinnerStyle>
+          <Spinner />
+        </FinderSpinnerStyle>
+      )}
 
-      <SpacingStyle>
-        <ListStyle>
-          <FinderResult
-            isLoading={isLoading}
-            isQueryEmpty={isQueryEmpty}
-            items={searchResults}
-            searchParam={props.searchParam}
-            onClick={onSelect}
-          />
-        </ListStyle>
-      </SpacingStyle>
-    </Fragment>
+      <InputFieldStyle
+        autocomplete="off"
+        isDisabled={isDisabled}
+        label={label}
+        name={name}
+        placeholder={placeholder}
+        type="text"
+        value={selectedSearchParam}
+        onChange={onInputChange}
+      />
+
+      <FinderResult
+        isLoading={isLoading}
+        isQueryEmpty={isQueryEmpty}
+        items={searchResults}
+        searchParam={searchParam}
+        onClick={onSelect}
+      />
+    </FinderStyle>
   );
 };
 
 const FinderResult = (props) => {
-  const onClick = (item) => {
-    props.onClick(item);
-  };
-
-  if (props.isLoading) {
-    return <Spinner />;
+  if (props.items.length === 0) {
+    return null;
   }
 
   if (props.isQueryEmpty) {
     return null;
   }
 
-  return props.items.map((item, index) => {
-    return (
-      <FinderItem
-        key={index}
-        searchParam={props.searchParam}
-        selected={item}
-        onClick={onClick}
-      />
-    );
-  });
+  return (
+    <FinderResultStyle>
+      {props.items.map((item, index) => {
+        return (
+          <FinderResultItem
+            key={index}
+            searchParam={props.searchParam}
+            selectedItem={item}
+            onClick={props.onClick}
+          />
+        );
+      })}
+    </FinderResultStyle>
+  );
 };
 
-const FinderItem = (props) => {
+const FinderResultItem = (props) => {
   const onClick = () => {
-    props.onClick(props.selected);
+    props.onClick(props.selectedItem);
   };
 
   return (
-    <ItemStyle onClick={onClick}>{props.selected[props.searchParam]}</ItemStyle>
+    <FinderResultItemStyle onClick={onClick}>
+      {props.selectedItem[props.searchParam]}
+    </FinderResultItemStyle>
   );
 };
 
 Finder.propTypes = {
   clientSideFilter: PropTypes.func,
   defaultQuery: PropTypes.object,
+  isDisabled: PropTypes.bool,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
-  queryPath: PropTypes.string.isRequired,
+  queryPath: PropTypes.arrayOf(PropTypes.string).isRequired,
   searchParam: PropTypes.string.isRequired,
-  setValue: PropTypes.func,
+  selectParam: PropTypes.string,
+  value: PropTypes.any,
 };
 
 FinderResult.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  isQueryEmpty: PropTypes.bool.isRequired,
+  items: PropTypes.array.isRequired,
   onClick: PropTypes.func.isRequired,
   searchParam: PropTypes.string.isRequired,
 };
 
-FinderItem.propTypes = {
+FinderResultItem.propTypes = {
   onClick: PropTypes.func.isRequired,
   searchParam: PropTypes.string.isRequired,
-  selected: PropTypes.object.isRequired,
+  selectedItem: PropTypes.object.isRequired,
 };
 
-const ListStyle = styled.ul`
+const FinderStyle = styled.div`
+  position: relative;
+`;
+
+const FinderSpinnerStyle = styled.div`
+  position: absolute;
+
+  right: 0;
+`;
+
+const FinderResultStyle = styled.ul`
+  padding: 0;
+
   list-style: none;
 `;
 
-const ItemStyle = styled.li`
+const FinderResultItemStyle = styled.li`
   margin-top: 1rem;
   margin-bottom: 1rem;
-`;
-
-export const InputFieldStyle = styled.input`
-  width: 100%;
-
-  padding: 1rem;
+  padding: 0.5rem;
 
   border: 1.5px solid ${styles.colors.violet};
-  border-radius: 20px;
+  border-radius: 3px;
 
   color: ${styles.colors.violet};
 
-  background-color: transparent;
-`;
+  cursor: pointer;
 
-const SpacingStyle = styled.div`
-  margin-top: '5rem';
-  margin-bottom: '5rem';
+  &:hover {
+    color: ${styles.colors.white};
+
+    background-color: ${styles.colors.violet};
+  }
+
+  &::before {
+    display: inline;
+
+    padding-right: 0.25rem;
+
+    content: '★';
+  }
 `;
 
 export default Finder;

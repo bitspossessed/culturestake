@@ -4,12 +4,18 @@ import translate from '~/common/services/i18n';
 import { useFormContext } from 'react-form';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import swirl from '~/client/assets/images/swirl.svg';
 
 const ButtonSubmit = ({ children, disabled, ...rest }) => {
   const { meta } = useFormContext();
 
   return (
-    <ButtonIcon disabled={disabled || !meta.canSubmit} type="submit" {...rest}>
+    <ButtonIcon
+      disabled={disabled || !meta.canSubmit}
+      type="submit"
+      url={swirl}
+      {...rest}
+    >
       {meta.isSubmitting
         ? '...'
         : children || translate('default.buttonSubmitEdit')}

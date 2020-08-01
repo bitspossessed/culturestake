@@ -1,7 +1,12 @@
 const components = {
   AnswersTable: {
+    buttonEdit: 'Show Snuggle panel',
     fieldTitle: 'Answer name',
-    buttonEdit: 'See Snuggle panel',
+  },
+  Barcode: {
+    bodyBarcode: 'Barcode',
+    bodyLink: 'Show image',
+    title: 'Barcode',
   },
   BoothContainer: {
     bodyBoothIsDeactivated: 'Booth was deactivated and is not valid anymore',
@@ -21,19 +26,21 @@ const components = {
     fieldOwnerAddress: 'Add new address:',
   },
   ContractsFestivals: {
-    buttonInitializeFestival: 'Initialize Festival',
+    bodyAlreadyDeactivated: 'This festival is deactivated',
+    bodyFestivalStartTime: 'From date:',
+    bodyFestivalEndTime: 'To date:',
     buttonDeactivateFestival: 'Deactivate Festival',
-    notificationAlreadyDeactivated: 'This festival is deactivated',
+    buttonInitializeFestival: 'Initialize Festival',
   },
   ContractsQuestions: {
-    buttonInitializeQuestion: 'Initialize Question',
+    bodyAlreadyDeactivated: 'This question is deactivated',
     buttonDeactivateQuestion: 'Deactivate Question',
-    notificationAlreadyDeactivated: 'This question is deactivated',
+    buttonInitializeQuestion: 'Initialize Question',
   },
   ContractsAnswers: {
-    buttonInitializeAnswer: 'Initialize Answer',
+    bodyAlreadyDeactivated: 'This answer is deactivated',
     buttonDeactivateAnswer: 'Deactivate Answer',
-    notificationAlreadyDeactivated: 'This answer is deactivated',
+    buttonInitializeAnswer: 'Initialize Answer',
   },
   EthereumContainer: {
     bodyInstallMetamask: 'Install MetaMask extension to connect to wallet',
@@ -61,25 +68,32 @@ const components = {
     fieldUsername: 'Username:',
   },
   FormQuestions: {
+    fieldArtwork: 'Artwork:',
+    fieldFestival: 'Festival:',
+    fieldFestivalPlaceholder: 'Search for festival to select',
+    fieldArtworkPlaceholder: 'Search for artwork to select',
     fieldTitle: 'Question text:',
   },
   FormProperties: {
     fieldTitle: 'Property:',
   },
   FormArtworks: {
-    fieldTitle: 'Title:',
+    fieldArtist: 'Artist:',
+    fieldArtistPlaceholder: 'Search for artist name',
     fieldDescription: 'Description:',
     fieldImages: 'Artwork images',
+    fieldSticker: 'Sticker',
+    fieldTitle: 'Title:',
   },
   FormArtists: {
-    fieldName: 'Name:',
     fieldBio: 'Bio:',
     fieldConsentToDataReveal: 'Consent to data reveal:',
-    fieldImages: 'Artwork images',
+    fieldImages: 'Artist images',
+    fieldName: 'Name:',
   },
   InputArtworksField: {
     fieldArtwork: 'Artwork:',
-    fieldArtworkPlaceholder: 'Choose an artwork:',
+    fieldArtworkPlaceholder: 'Search for artwork to add',
     fieldArtworkPrompt: 'Add artwork',
   },
   InputUploadField: {
@@ -119,6 +133,7 @@ const components = {
     titleFestivals: 'Festivals:',
   },
   PayerBalance: {
+    bodyPayerAddress: 'Address:',
     title: 'Payer Balance',
   },
   Scanner: {
@@ -178,6 +193,9 @@ const store = {
     errorTokenFailure: 'Login failed, please try again.',
     notificationTokenSuccess: 'Login successful! Welcome!',
   },
+  ethereum: {
+    notificationAccountEnabled: 'Activated Smart Contracts Snuggle Panel',
+  },
 };
 
 const views = {
@@ -224,34 +242,30 @@ const views = {
   AdminQuestions: {
     buttonNewQuestion: 'Create new question',
     fieldTitle: 'Title',
-    fieldDescription: 'Description',
     title: 'Questions',
   },
   AdminQuestionsNew: {
     title: 'Create new question',
-    fieldFestival: 'Festival',
-    fieldFestivalPlaceholder: 'Choose a festival',
-    fieldArtwork: 'Artwork',
-    fieldArtworkPlaceholder: '(optional) Choose an artwork',
     notificationSuccess: 'You created the question {title}.',
   },
   AdminQuestionsEdit: {
+    bodyAnswers: 'Answers',
+    buttonNewAnswer: 'Add a new answer to this question',
     errorNotFound: 'This question does not exist.',
     notificationDestroySuccess: 'You deleted the question {title}.',
     notificationSuccess: 'You updated the question {title}.',
     title: 'Edit question',
-    buttonNewAnswer: 'Add a new answer to this question',
   },
   AdminAnswersNew: {
-    title: 'Create new answer',
-    fieldArtwork: 'Artwork',
-    fieldArtworkPlaceholder: 'Choose an artwork',
-    fieldProperty: 'Property',
-    fieldPropertyPlaceholder: 'Choose a property',
+    fieldArtwork: 'Artwork:',
+    fieldArtworkPlaceholder: 'Search for artwork to select',
+    fieldProperty: 'Property:',
+    fieldPropertyPlaceholder: 'Search for property to select',
     notificationSuccess: 'You created a new answer.',
+    title: 'Create new answer',
   },
   AdminAnswersEdit: {
-    title: 'Edit question',
+    title: 'Edit answer',
   },
   AdminProperties: {
     buttonNewQuestion: 'Create new property',
@@ -263,26 +277,25 @@ const views = {
     notificationSuccess: 'You created the property {title}.',
   },
   AdminPropertiesEdit: {
-    title: 'Edit property',
+    errorNotFound: 'This property does not exist.',
+    notificationDestroySuccess: 'You deleted the property {title}.',
     notificationSuccess: 'You edited the property {title}.',
+    title: 'Edit property',
   },
   AdminArtworks: {
-    buttonNewQuestion: 'Create new artwork',
+    buttonNewArtwork: 'Create new artwork',
     fieldTitle: 'Title',
     title: 'Artworks',
   },
   AdminArtworksNew: {
-    title: 'Create new artwork',
     notificationSuccess: 'You created the artwork {title}.',
-    fieldArtist: 'Artist:',
-    fieldArtistPlaceholder: 'Choose an artist',
+    title: 'Create new artwork',
   },
   AdminArtworksEdit: {
-    title: 'Edit artwork',
+    errorNotFound: 'This artwork does not exist.',
+    notificationDestroySuccess: 'You deleted the artwork {title}.',
     notificationSuccess: 'You edited the artwork {title}.',
-    errorNotFound: 'This artwork does not exist',
-    notificationDestroySuccess: 'You deleted the artwork {title}',
-    fieldArtist: 'Artist:',
+    title: 'Edit artwork',
   },
   AdminArtists: {
     buttonNewQuestion: 'Create new artist',
@@ -294,10 +307,10 @@ const views = {
     notificationSuccess: 'You created the artist {name}.',
   },
   AdminArtistsEdit: {
-    title: 'Edit artist',
+    errorNotFound: 'This artist does not exist.',
+    notificationDestroySuccess: 'You deleted the artist {name}.',
     notificationSuccess: 'You edited the artist {name}.',
-    errorNotFound: 'This artist does not exist',
-    notificationDestroySuccess: 'You deleted the artist {name}',
+    title: 'Edit artist',
   },
   ArtworksProfile: {
     buttonBackToFestival: 'Back to festival',
@@ -324,11 +337,12 @@ const views = {
 };
 
 export default {
-  title: 'Future Fairness',
+  title: 'Culture Stake',
   default: {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',
     buttonLoadMore: 'Load more',
+    buttonReturnToDashboard: 'Return to dashboard',
     buttonReturnToOverview: 'Return to overview',
     buttonSubmitEdit: 'Save',
     buttonSubmitNew: 'Create',
@@ -337,6 +351,13 @@ export default {
     legendVotes: 'Votes',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',
+  },
+  validations: {
+    artistRequired: 'is required',
+    artworkRequired: 'is required',
+    consentRequired: 'is required to be checked',
+    festivalRequired: 'is required',
+    propertyRequired: 'is required',
   },
   ...components,
   ...middlewares,

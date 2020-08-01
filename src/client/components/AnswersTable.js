@@ -1,20 +1,13 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import translate from '~/common/services/i18n';
+import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import Table, { ACTION_EDIT } from '~/client/components/Table';
+import translate from '~/common/services/i18n';
 
 const table = {
   path: ['answers'],
-  columns: [
-    {
-      isOrderKey: true,
-      key: 'artwork.title',
-      label: translate('AnswersTable.fieldTitle'),
-    },
-  ],
   actions: [
     {
       label: translate('AnswersTable.buttonEdit'),
@@ -22,6 +15,22 @@ const table = {
     },
   ],
 };
+
+const tableArtworkColumns = [
+  {
+    key: 'artwork.title',
+    isOrderKey: false,
+    label: translate('AnswersTable.fieldTitle'),
+  },
+];
+
+const tablePropertyColumns = [
+  {
+    key: 'property.title',
+    isOrderKey: false,
+    label: translate('AnswersTable.fieldTitle'),
+  },
+];
 
 const AnswersTable = ({ isArtworkQuestion, isInitialized }) => {
   const { questionId } = useParams();
@@ -33,27 +42,16 @@ const AnswersTable = ({ isArtworkQuestion, isInitialized }) => {
   };
 
   const columns = isArtworkQuestion
-    ? [
-        {
-          isOrderKey: true,
-          key: 'property.title',
-          label: translate('AnswersTable.fieldTitle'),
-        },
-      ]
-    : [
-        {
-          isOrderKey: true,
-          key: 'artwork.title',
-          label: translate('AnswersTable.fieldTitle'),
-        },
-      ];
+    ? tablePropertyColumns
+    : tableArtworkColumns;
 
   return (
     <Table
       actions={isOwner && isInitialized ? table.actions : []}
       columns={columns}
       path={table.path}
-      searchParams={{ questionId }}
+      query={questionId}
+      queryParam="questionId"
       onSelect={isOwner && isInitialized ? onSelect : () => {}}
     />
   );

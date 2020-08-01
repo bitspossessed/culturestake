@@ -1,23 +1,25 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import translate from '~/common/services/i18n';
 import { useParams } from 'react-router-dom';
 
-import apiRequest from '~/client/services/api';
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ContractsAnswers from '~/client/components/ContractsAnswers';
 import FooterAdmin from '~/client/components/FooterAdmin';
+import FormAnswers from '~/client/components/FormAnswers';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
-import ContractsAnswers from '~/client/components/ContractsAnswers';
+import apiRequest from '~/client/services/api';
+import translate from '~/common/services/i18n';
 import { useEditForm } from '~/client/hooks/forms';
 
-const AdminQuestionsEdit = () => {
+const AdminAnswersEdit = () => {
   const { questionId, answerId } = useParams();
-  const returnUrl = `/admin/questions/${questionId}/edit`;
   const [isLoading, setIsLoading] = useState(true);
   const [question, setQuestion] = useState({});
 
+  const returnUrl = `/admin/questions/${questionId}/edit`;
+
   const { Form, isResourceLoading, resource } = useEditForm({
-    fields: [],
+    fields: ['questionId', 'artworkId', 'propertyId'],
     resourcePath: ['answers', answerId],
     returnUrl,
   });
@@ -27,9 +29,11 @@ const AdminQuestionsEdit = () => {
       const response = await apiRequest({
         path: ['questions', questionId],
       });
+
       setQuestion(response);
       setIsLoading(false);
     };
+
     getQuestion();
   }, [setQuestion, setIsLoading, questionId]);
 
@@ -40,16 +44,25 @@ const AdminQuestionsEdit = () => {
       <ViewAdmin>
         <Form>
           {!isLoading && !isResourceLoading && resource.chainId && (
-            <ContractsAnswers
-              answerChainId={resource.chainId}
-              questionChainId={question.chainId}
-            />
+            <Fragment>
+              <FormAnswers
+                festivalId={resource.festivalId}
+                isArtworkAnswer={!!resource.artwork}
+                isDisabled
+                questionId={resource.questionId}
+              />
+
+              <ContractsAnswers
+                answerChainId={resource.chainId}
+                questionChainId={question.chainId}
+              />
+            </Fragment>
           )}
         </Form>
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>
@@ -57,4 +70,4 @@ const AdminQuestionsEdit = () => {
   );
 };
 
-export default AdminQuestionsEdit;
+export default AdminAnswersEdit;

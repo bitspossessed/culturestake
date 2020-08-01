@@ -1,22 +1,23 @@
 import React, { Fragment, useState } from 'react';
-import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
+import AnswersTable from '~/client/components/AnswersTable';
+import BoxRounded from '~/client/components/BoxRounded';
 import ButtonIcon from '~/client/components/ButtonIcon';
-import FooterAdmin from '~/client/components/FooterAdmin';
-import HeaderAdmin from '~/client/components/HeaderAdmin';
-import DangerZone from '~/client/components/DangerZone';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
-import FormQuestions from '~/client/components/FormQuestions';
-import ViewAdmin from '~/client/components/ViewAdmin';
 import ContractsQuestions from '~/client/components/ContractsQuestions';
-import DisabledFinder from '~/client/components/DisabledFinder';
-import { useEditForm } from '~/client/hooks/forms';
+import DangerZone from '~/client/components/DangerZone';
+import FooterAdmin from '~/client/components/FooterAdmin';
+import FormQuestions from '~/client/components/FormQuestions';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
+import ViewAdmin from '~/client/components/ViewAdmin';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
-import AnswersTable from '~/client/components/AnswersTable';
+import swirl from '~/client/assets/images/swirl.svg';
+import translate from '~/common/services/i18n';
+import { useEditForm } from '~/client/hooks/forms';
 
 const AdminQuestionsEdit = () => {
   const returnUrl = '/admin/questions';
@@ -25,7 +26,7 @@ const AdminQuestionsEdit = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
-    fields: ['chainId', 'festivalId', 'title'],
+    fields: ['artworkId', 'festivalId', 'title'],
     resourcePath: ['questions', questionId],
     returnUrl,
     onNotFound: () => {
@@ -69,35 +70,21 @@ const AdminQuestionsEdit = () => {
 
       <ViewAdmin>
         <Form>
-          <FormQuestions />
+          <FormQuestions isFinderDisabled />
 
-          {!isResourceLoading ? (
-            <Fragment>
-              <DisabledFinder
-                contents={resource.festival ? resource.festival.title : ''}
-                label={translate('AdminQuestionsNew.fieldFestival')}
-                name="festivalId"
-                value={resource.festivalId ? resource.festivalId : NaN}
-              />
-              {resource.artwork ? (
-                <DisabledFinder
-                  contents={resource.artwork ? resource.artwork.title : NaN}
-                  label={translate('AdminQuestionsNew.fieldArtwork')}
-                  name="artworkId"
-                  value={resource.artworkId}
-                />
-              ) : null}
-            </Fragment>
-          ) : null}
+          <BoxRounded title={translate(`AdminQuestionsEdit.bodyAnswers`)}>
+            <AnswersTable
+              isArtworkQuestion={resource.artworkId ? true : false}
+              isInitialized={isInitialized}
+            />
 
-          <AnswersTable
-            isArtworkQuestion={resource.artworkId ? true : false}
-            isInitialized={isInitialized}
-          />
-
-          <ButtonIcon to={`/admin/questions/${questionId}/answers/new`}>
-            {translate('AdminQuestionsEdit.buttonNewAnswer')}
-          </ButtonIcon>
+            <ButtonIcon
+              to={`/admin/questions/${questionId}/answers/new`}
+              url={swirl}
+            >
+              {translate('AdminQuestionsEdit.buttonNewAnswer')}
+            </ButtonIcon>
+          </BoxRounded>
 
           <DangerZone>
             <ButtonDelete />
@@ -117,7 +104,7 @@ const AdminQuestionsEdit = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>

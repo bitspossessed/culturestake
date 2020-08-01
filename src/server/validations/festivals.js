@@ -3,15 +3,16 @@ import { Joi, Segments } from 'celebrate';
 import {
   documentsValidation,
   imagesValidation,
+  queryValidation,
   stickerValidation,
   web3Validators,
 } from '~/common/helpers/validate';
 import { slugValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
-  artworks: Joi.array().required().max(30),
-  description: Joi.string().required(),
-  documents: documentsValidation.max(1),
+  artworks: Joi.array().required().items(Joi.object()).max(30),
+  description: Joi.string().max(2000).required(),
+  documents: documentsValidation.max(3),
   images: imagesValidation.max(10),
   sticker: stickerValidation.required(),
   subtitle: Joi.string().max(255).required(),
@@ -36,8 +37,8 @@ export default {
   readAll: {
     [Segments.PARAMS]: {
       ...paginationValidation,
+      ...queryValidation,
       orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt', 'title'),
-      query: Joi.string(),
     },
   },
   read: {

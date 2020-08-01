@@ -6,12 +6,12 @@ import {
   artistFields,
   artworkFields,
   imageFileFields,
-  baseFileFields,
 } from '~/server/database/associations';
 
 const options = {
   model: Artist,
   fields: [...artistFields, 'artworks', 'images'],
+  fieldsProtected: ['consentToDataReveal'],
   include: [ArtistHasManyImages],
   associations: [
     {
@@ -27,7 +27,10 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  baseController.readAll(options)(req, res, next);
+  baseController.readAll({
+    ...options,
+    isSearchable: true,
+  })(req, res, next);
 }
 
 function read(req, res, next) {
@@ -38,12 +41,7 @@ function read(req, res, next) {
       {
         association: ArtistHasManyImages,
         destroyCascade: true,
-        fields: [
-          ...baseFileFields,
-          'urlThreshold',
-          'urlThresholdThumb',
-          'urlThumb',
-        ],
+        fields: [...imageFileFields],
       },
       {
         association: ArtistHasManyArtworks,

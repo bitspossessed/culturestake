@@ -7,32 +7,32 @@ import styles, {
   DEFAULT_SCHEME,
   SCHEME_ALTERNATE,
 } from '~/client/styles/variables';
-import {
-  HeadingPrimaryStyle,
-  HeadingSecondaryStyle,
-  ParagraphStyle,
-} from '~/client/styles/typography';
 import { BackgroundAreaStyle } from '~/client/styles/layout';
+import {
+  BoothContainerStyle,
+  BoothContainerInnerStyle,
+} from '~/client/components/BoothContainer';
+import { BoxFramedCornerStyle } from '~/client/components/BoxFramed';
+import {
+  BoxRoundedStyle,
+  BoxRoundedInnerStyle,
+} from '~/client/components/BoxRounded';
 import {
   ButtonIconSVGStyle,
   ButtonIconStyle,
 } from '~/client/components/ButtonIcon';
 import { ButtonMoreStyle } from '~/client/components/ButtonMore';
 import { ButtonOutlineStyle } from '~/client/components/ButtonOutline';
-import { BoxFramedCornerStyle } from '~/client/components/BoxFramed';
-import { HorizontalLineStyle } from '~/client/components/HorizontalLine';
 import {
   EthereumContainerStyle,
   EthereumContainerInnerStyle,
 } from '~/client/components/EthereumContainer';
 import {
-  BoxRoundedStyle,
-  BoxRoundedInnerStyle,
-} from '~/client/components/BoxRounded';
-import {
-  BoothContainerStyle,
-  BoothContainerInnerStyle,
-} from '~/client/components/BoothContainer';
+  HeadingPrimaryStyle,
+  HeadingSecondaryStyle,
+  ParagraphStyle,
+} from '~/client/styles/typography';
+import { HorizontalLineStyle } from '~/client/components/HorizontalLine';
 import { InputFieldStyle } from '~/client/components/InputField';
 import { InputFieldsetLabelStyle } from '~/client/components/InputFieldset';
 import { InputTextareaFieldStyle } from '~/client/components/InputTextareaField';
@@ -121,7 +121,6 @@ export const ColorSectionStyle = styled.div`
     }};
   }
 
-  ${/* sc-selector */ ButtonIconSVGStyle},
   ${/* sc-selector */ BoxFramedCornerStyle} {
     g,
     path {
@@ -130,6 +129,26 @@ export const ColorSectionStyle = styled.div`
         return props.isInverted ? background : foreground;
       }};
     }
+  }
+
+  ${/* sc-selector */ ButtonIconSVGStyle} {
+    g {
+      fill: ${(props) => {
+        const { foreground, background } = styles.schemes[props.scheme];
+        return props.isInverted ? background : foreground;
+      }};
+    }
+
+    [fill='none'] {
+      fill: none;
+    }
+
+    [stroke] {
+      stroke: ${(props) => {
+        const { foreground, background } = styles.schemes[props.scheme];
+        return props.isInverted ? background : foreground;
+      }};
+    };
   }
 
   ${/* sc-selector */ ButtonMoreStyle},

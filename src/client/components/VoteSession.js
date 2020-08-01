@@ -63,8 +63,8 @@ const VoteSession = ({
 
   // Actual quadratic vote states, divided by the two separate vote steps
   const [creditLeft, setCreditLeft] = useState({
-    [STEP_FESTIVAL]: 0,
-    [STEP_ARTWORK]: 0,
+    [STEP_FESTIVAL]: -1,
+    [STEP_ARTWORK]: -1,
   });
   const [creditTotal, setCreditTotal] = useState({
     [STEP_FESTIVAL]: 0,
@@ -154,7 +154,7 @@ const VoteSession = ({
         [stepName]: maxVoteTokens,
       }));
       setCreditLeft((value) =>
-        value[stepName] !== maxVoteTokens
+        value[stepName] !== -1
           ? value
           : {
               ...value,
@@ -183,16 +183,21 @@ const VoteSession = ({
       return question.id === festivalQuestionId;
     });
 
-    return answers.reduce((acc, answer) => {
-      if (answer.artwork && festivalAnswerIds.includes(answer.id)) {
-        acc.push({
-          ...answer.artwork,
-          answerId: answer.id,
-        });
-      }
+    return answers
+      .sort(({ id: itemA }, { id: itemB }) => {
+        // Sort by id to be consisent with the order of things
+        return itemA - itemB;
+      })
+      .reduce((acc, answer) => {
+        if (answer.artwork && festivalAnswerIds.includes(answer.id)) {
+          acc.push({
+            ...answer.artwork,
+            answerId: answer.id,
+          });
+        }
 
-      return acc;
-    }, []);
+        return acc;
+      }, []);
   }, [data, festivalQuestionId, festivalAnswerIds]);
 
   // Filter properties for second question
@@ -201,16 +206,21 @@ const VoteSession = ({
       return [];
     }
 
-    return artworkQuestionData.answers.reduce((acc, answer) => {
-      if (answer.property) {
-        acc.push({
-          ...answer.property,
-          answerId: answer.id,
-        });
-      }
+    return artworkQuestionData.answers
+      .reduce((acc, answer) => {
+        if (answer.property) {
+          acc.push({
+            ...answer.property,
+            answerId: answer.id,
+          });
+        }
 
-      return acc;
-    }, []);
+        return acc;
+      }, [])
+      .sort(({ id: itemA }, { id: itemB }) => {
+        // Sort by id to be consisent with the order of things
+        return itemA - itemB;
+      });
   }, [artworkQuestionData]);
 
   const onCreditChange = ({ stepName, id, credit }) => {
@@ -259,7 +269,7 @@ const VoteSession = ({
         artwork.voteTokens = credits[STEP_FESTIVAL][artwork.answerId];
         return artwork;
       })
-      .sort(({ voteTokens: itemA, voteTokens: itemB }) => {
+      .sort(({ voteTokens: itemA }, { voteTokens: itemB }) => {
         return itemB - itemA;
       })
       .slice(0, MAX_TOP_ARTWORKS);

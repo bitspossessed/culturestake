@@ -1,15 +1,15 @@
 import React, { Fragment } from 'react';
-import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
-import FooterAdmin from '~/client/components/FooterAdmin';
-import HeaderAdmin from '~/client/components/HeaderAdmin';
-import DangerZone from '~/client/components/DangerZone';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
+import DangerZone from '~/client/components/DangerZone';
+import FooterAdmin from '~/client/components/FooterAdmin';
 import FormArtists from '~/client/components/FormArtists';
+import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import translate from '~/common/services/i18n';
 import { useEditForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
@@ -76,7 +76,7 @@ const AdminArtistsEdit = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>

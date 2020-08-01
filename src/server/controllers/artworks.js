@@ -1,15 +1,13 @@
 import Artwork from '~/server/models/artwork';
 import baseController from '~/server/controllers';
 import {
-  ArtworkHasManyImages,
   ArtworkBelongsToArtist,
   ArtworkBelongsToManyFestivals,
+  ArtworkHasManyImages,
   artworkFields,
-  imageFileFields,
   festivalFields,
+  imageFileFields,
 } from '~/server/database/associations';
-
-const baseFileFields = ['fileName', 'fileType', 'url'];
 
 const options = {
   model: Artwork,
@@ -26,7 +24,7 @@ const options = {
 
 const optionsRead = {
   ...options,
-  fields: ['title', 'description', 'sticker', 'images', 'artistId', 'artist', 'festivals'],
+  fields: [...artworkFields, 'artist', 'festivals', 'images'],
   include: [
     ArtworkHasManyImages,
     ArtworkBelongsToArtist,
@@ -36,17 +34,12 @@ const optionsRead = {
     {
       association: ArtworkHasManyImages,
       destroyCascade: true,
-      fields: [
-        ...baseFileFields,
-        'urlThreshold',
-        'urlThresholdThumb',
-        'urlThumb',
-      ],
+      fields: [...imageFileFields],
     },
     {
       association: ArtworkBelongsToArtist,
       destroyCascade: false,
-      fields: ['name'],
+      fields: [...artworkFields],
     },
     {
       association: ArtworkBelongsToManyFestivals,
