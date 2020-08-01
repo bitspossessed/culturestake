@@ -15,6 +15,7 @@ import SnuggleSlider from '~/client/components/SnuggleSlider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
+import ThreeRotator from '~/client/components/ThreeRotator';
 import ThreeThankYou from '~/client/components/ThreeThankYou';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
 import notify, {
@@ -334,7 +335,9 @@ const VoteSession = ({
               <BoxFramed>
                 <ThreeCanvas style={{ height: '30rem' }}>
                   <Suspense fallback={null}>
-                    <ThreeThankYou isAlternateColor={isAlternateColor} />
+                    <ThreeRotator max={10000} min={2000}>
+                      <ThreeThankYou isAlternateColor={isAlternateColor} />
+                    </ThreeRotator>
                   </Suspense>
                 </ThreeCanvas>
               </BoxFramed>

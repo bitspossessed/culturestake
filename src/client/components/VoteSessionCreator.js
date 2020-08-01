@@ -67,11 +67,19 @@ const VoteSessionCreator = () => {
   const [voteData, setVoteData] = useState(null);
 
   const barcodes = useRef({});
-  const [data, isArtworksLoading] = useResource([
-    'festivals',
-    festivalChainId,
-    'questions',
-  ]);
+  const [data, isArtworksLoading] = useResource(
+    ['festivals', festivalChainId, 'questions'],
+    {
+      onError: () => {
+        dispatch(
+          notify({
+            text: translate('VoteSessionCreator.errorUnknownFestivalChainId'),
+            type: NotificationsTypes.ERROR,
+          }),
+        );
+      },
+    },
+  );
 
   const artworks = useMemo(() => {
     if (isLoading || !data.questions) {
@@ -114,7 +122,7 @@ const VoteSessionCreator = () => {
     } catch {
       dispatch(
         notify({
-          text: translate('VoteSessionCreator.notificationInvalidData'),
+          text: translate('VoteSessionCreator.errorInvalidData'),
           type: NotificationsTypes.ERROR,
         }),
       );
