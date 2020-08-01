@@ -14,7 +14,8 @@ export function requestTable({
   pageIndex = 0,
   orderDirection = DEFAULT_ORDER_DIRECTION,
   orderKey = DEFAULT_ORDER_KEY,
-  searchParams = null,
+  queryParam,
+  query,
   requestId,
 }) {
   let params = {
@@ -23,12 +24,15 @@ export function requestTable({
     orderDirection,
     orderKey,
   };
-  if (searchParams) {
+
+  if (queryParam && query) {
     params = {
       ...params,
-      query: searchParams,
+      query,
+      queryParam,
     };
   }
+
   return getRequest(
     {
       id: requestId,

@@ -3,14 +3,12 @@
     "name": "matthew barney",
     "bio": "an artist",
     "consentToDataReveal": true,
-    "images": [],
-    "artworks": []
+    "images": []
   },
   "you": {
     "name": "georgia o'keefe",
     "bio": "a painter",
     "consentToDataReveal": true,
-    "images": [],
-    "artworks": []
+    "images": []
   }
 }

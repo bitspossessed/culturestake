@@ -3,6 +3,9 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Normalize } from 'styled-normalize';
 import { useDispatch, useSelector } from 'react-redux';
 
+import '~/client/assets/favicon.png';
+import '~/client/assets/favicon.svg';
+
 import GlobalStyle from '~/client/styles';
 import Notifications from '~/client/components/Notifications';
 import Routes from '~/client/routes';

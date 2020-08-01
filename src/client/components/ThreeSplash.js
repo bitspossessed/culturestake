@@ -2,12 +2,12 @@ import PropTypes from 'prop-types';
 import React, { Suspense, useMemo } from 'react';
 import styled from 'styled-components';
 import { Group } from 'react-three-fiber/components';
-import { useSelector } from 'react-redux';
 import { useThree } from 'react-three-fiber';
 
 import ColorSection from '~/client/components/ColorSection';
 import ThreeButtonLogo from '~/client/components/ThreeButtonLogo';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
+import ThreeRotator from '~/client/components/ThreeRotator';
 import styles, {
   SCHEME_ALTERNATE,
   SCHEME_BLACK,
@@ -15,12 +15,13 @@ import styles, {
 import translate from '~/common/services/i18n';
 import { HeadingPrimaryStyle } from '~/client/styles/typography';
 import { randomRange, randomRangeFloat } from '~/common/utils/random';
+import { useScheme } from '~/client/hooks/scheme';
 
 const ICONS_COUNT = 16;
 const ICONS_SCALE = 3;
 
 const ThreeSplash = () => {
-  const { isAlternateColor } = useSelector((state) => state.app);
+  const { isAlternateColor } = useScheme();
 
   return (
     <ThreeSplashStyle>
@@ -70,7 +71,9 @@ const ThreeSplashLogos = (props) => {
           rotation={randomRotation}
           scale={[ICONS_SCALE, ICONS_SCALE, ICONS_SCALE]}
         >
-          <ThreeButtonLogo isAlternateColor={props.isAlternateColor} />
+          <ThreeRotator>
+            <ThreeButtonLogo isAlternateColor={props.isAlternateColor} />
+          </ThreeRotator>
         </Group>
       );
     });

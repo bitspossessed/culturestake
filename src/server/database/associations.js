@@ -21,6 +21,7 @@ export const artworkFields = [
   'artistId',
   'barcode',
   'description',
+  'sticker',
   'subtitle',
   'title',
 ];

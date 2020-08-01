@@ -7,9 +7,9 @@ import { ButtonClearStyle } from '~/client/components/ButtonClear';
 
 // eslint-disable-next-line react/display-name
 const ButtonOutline = React.forwardRef(
-  ({ children, isDangerous, ...props }, ref) => {
+  ({ children, isDanger, ...props }, ref) => {
     return (
-      <ButtonOutlineStyle {...props} isDangerous={isDangerous} ref={ref}>
+      <ButtonOutlineStyle {...props} isDanger={isDanger} ref={ref}>
         {children}
       </ButtonOutlineStyle>
     );
@@ -24,10 +24,13 @@ export const ButtonOutlineStyle = styled(ButtonClearStyle)`
   padding-bottom: 0.5rem;
 
   border: 1.5px solid
-    ${(props) => (props.isDangerous ? styles.colors.red : styles.colors.violet)} !important;
+    ${(props) =>
+      props.isDanger
+        ? `${styles.colors.red} !important`
+        : styles.colors.violet};
 
   color: ${(props) =>
-    props.isDangerous ? styles.colors.red : styles.colors.violet} !important;
+    props.isDanger ? `${styles.colors.red} !important` : styles.colors.violet};
 
   & + & {
     margin-left: 0.5rem;
@@ -38,7 +41,7 @@ ButtonOutline.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  isDangerous: PropTypes.bool,
+  isDanger: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
 };

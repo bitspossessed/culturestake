@@ -1,21 +1,22 @@
 import Joi from '@hapi/joi';
+import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
-import translate from '~/common/services/i18n';
 import InputField from '~/client/components/InputField';
+import InputFinderField from '~/client/components/InputFinderField';
+import translate from '~/common/services/i18n';
 
-const FormQuestions = () => {
+const FormQuestions = ({ isFinderDisabled }) => {
   const schema = {
     title: Joi.string().max(128).required(),
-    festivalId: Joi.number().integer().required(),
-    artworkId: Joi.number().integer(),
-    answers: Joi.array()
-      .items(
-        Joi.object().keys({
-          id: Joi.number().positive(),
-        }),
-      )
-      .max(10),
+    festivalId: Joi.number()
+      .integer()
+      .required()
+      .error(new Error(translate('validations.festivalRequired'))),
+    artworkId: Joi.number()
+      .integer()
+      .allow(null, '')
+      .error(new Error(translate('validations.artworkRequired'))),
   };
 
   return (
@@ -26,8 +27,32 @@ const FormQuestions = () => {
         type="text"
         validate={schema.title}
       />
+
+      <InputFinderField
+        isDisabled={isFinderDisabled}
+        label={translate('FormQuestions.fieldFestival')}
+        name="festivalId"
+        placeholder={translate('FormQuestions.fieldFestivalPlaceholder')}
+        queryPath={['festivals']}
+        searchParam={'title'}
+        validate={schema.festivalId}
+      />
+
+      <InputFinderField
+        isDisabled={isFinderDisabled}
+        label={translate('FormQuestions.fieldArtwork')}
+        name="artworkId"
+        placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}
+        queryPath={['artworks']}
+        searchParam={'title'}
+        validate={schema.artworkId}
+      />
     </Fragment>
   );
+};
+
+FormQuestions.propTypes = {
+  isFinderDisabled: PropTypes.bool,
 };
 
 export default FormQuestions;

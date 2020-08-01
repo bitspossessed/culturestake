@@ -9,11 +9,15 @@ import ButtonOutline, {
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import InputField from '~/client/components/InputField';
-import ownersModule, {
-  TX_ADDED_OWNER,
-  TX_REMOVED_OWNER,
+import {
+  TX_ADD_OWNER,
+  TX_REMOVE_OWNER,
+  addOwner,
+  getOwners,
+  removeOwner,
 } from '~/common/services/contracts/owners';
 import translate from '~/common/services/i18n';
+import { ParagraphStyle } from '~/client/styles/typography';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import { useContractsForm } from '~/client/hooks/forms';
 import {
@@ -21,7 +25,6 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 import { web3Validators } from '~/common/helpers/validate';
-import { ParagraphStyle } from '~/client/styles/typography';
 
 const ownerAddressSchema = web3Validators.web3().address().required();
 
@@ -30,23 +33,23 @@ const ContractsOwners = () => {
   const senderAddress = useOwnerAddress();
 
   const { isPending: isRemovePending } = usePendingTransaction({
-    txMethod: TX_REMOVED_OWNER,
+    txMethod: TX_REMOVE_OWNER,
   });
 
   const { isPending: isAddPending } = usePendingTransaction({
-    txMethod: TX_ADDED_OWNER,
+    txMethod: TX_ADD_OWNER,
   });
 
   const [owners, setOwners] = useState([]);
 
   const updateOwnersList = async () => {
-    const response = await ownersModule.getOwners();
+    const response = await getOwners();
     setOwners(response);
   };
 
   const onClickRemove = useCallback(
     async (ownerAddress) => {
-      const { txHash, txMethod } = await ownersModule.removeOwner(
+      const { txHash, txMethod } = await removeOwner(
         senderAddress,
         ownerAddress,
       );
@@ -90,12 +93,12 @@ const ContractsOwnersForm = () => {
 
   const { Form, meta, reset } = useContractsForm({
     onSubmit: async ({ ownerAddress }) => {
-      const result = await ownersModule.addOwner(senderAddress, ownerAddress);
+      const result = await addOwner(senderAddress, ownerAddress);
 
       dispatch(
         addPendingTransaction({
           txHash: result.txHash,
-          txMethod: TX_ADDED_OWNER,
+          txMethod: TX_ADD_OWNER,
         }),
       );
 

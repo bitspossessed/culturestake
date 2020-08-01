@@ -3,16 +3,16 @@ import React, { Suspense } from 'react';
 import styled from 'styled-components';
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader';
 import { useLoader } from 'react-three-fiber';
-import { useSelector } from 'react-redux';
 
 import rectangle from '~/client/assets/images/rectangle.svg';
 import star from '~/client/assets/images/star.svg';
-import styles, { SCHEME_ALTERNATE } from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
 import swirl from '~/client/assets/images/swirl.svg';
 import {
   CLIP_PATHS,
   CLIP_PATH_DIMENSION,
 } from '~/client/components/SVGDefinitions';
+import { useScheme } from '~/client/hooks/scheme';
 import { useSticker } from '~/client/hooks/sticker';
 
 const PARTICLE_PATHS = {
@@ -29,8 +29,7 @@ const Sticker = (props) => {
     scheme,
   } = useSticker(props.code);
 
-  const { isAlternateColor } = useSelector((state) => state.app);
-  const innerScheme = isAlternateColor ? SCHEME_ALTERNATE : scheme;
+  const { scheme: innerScheme } = useScheme(scheme);
 
   return (
     <StickerStyle

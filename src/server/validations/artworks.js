@@ -1,7 +1,11 @@
 import { Joi, Segments } from 'celebrate';
 
 import { imagesValidation, stickerValidation } from '~/common/helpers/validate';
-import { slugValidation, paginationValidation } from '~/server/validations';
+import {
+  paginationValidation,
+  queryValidation,
+  slugValidation,
+} from '~/server/validations';
 
 const defaultValidation = {
   artistId: Joi.number().integer().positive(),
@@ -19,9 +23,9 @@ export default {
   },
   readAll: {
     [Segments.PARAMS]: {
+      ...queryValidation,
       ...paginationValidation,
       orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt', 'title'),
-      query: Joi.object(),
     },
   },
   read: {

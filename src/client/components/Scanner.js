@@ -2,28 +2,24 @@ import PropTypes from 'prop-types';
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
 import ColorSection from '~/client/components/ColorSection';
-import styles, {
-  DEFAULT_SCHEME,
-  SCHEME_ALTERNATE,
-} from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { ParagraphStyle } from '~/client/styles/typography';
 import { SpacingGroupStyle } from '~/client/styles/layout';
+import { useScheme } from '~/client/hooks/scheme';
 
 const Scanner = ({ onDetected, onError }) => {
   const ref = useRef();
   const dispatch = useDispatch();
   const [isError, setIsError] = useState(false);
   const [isReady, setIsReady] = useState(false);
-
-  const { isAlternateColor } = useSelector((state) => state.app);
-  const scheme = isAlternateColor ? SCHEME_ALTERNATE : DEFAULT_SCHEME;
+  const { scheme } = useScheme();
 
   useEffect(() => {
     let scanner;

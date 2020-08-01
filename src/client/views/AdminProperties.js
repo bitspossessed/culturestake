@@ -1,13 +1,14 @@
 import React, { Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import translate from '~/common/services/i18n';
-
 import ButtonIcon from '~/client/components/ButtonIcon';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import Table, { ACTION_EDIT } from '~/client/components/Table';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import swirl from '~/client/assets/images/swirl.svg';
+import translate from '~/common/services/i18n';
+import { SpacingGroupStyle } from '~/client/styles/layout';
 
 const table = {
   path: ['properties'],
@@ -47,9 +48,15 @@ const AdminProperties = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to="/admin/properties/new">
-          {translate('AdminProperties.buttonNewProperty')}
-        </ButtonIcon>
+        <SpacingGroupStyle>
+          <ButtonIcon to="/admin/properties/new" url={swirl}>
+            {translate('AdminProperties.buttonNewProperty')}
+          </ButtonIcon>
+
+          <ButtonIcon isIconFlipped to="/admin">
+            {translate('default.buttonReturnToDashboard')}
+          </ButtonIcon>
+        </SpacingGroupStyle>
       </FooterAdmin>
     </Fragment>
   );

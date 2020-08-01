@@ -8,6 +8,7 @@ import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
   ArtworkBelongsToArtist,
+  ArtworkHasManyImages,
   FestivalBelongsToManyArtworks,
   FestivalHasManyDocuments,
   FestivalHasManyImages,
@@ -79,7 +80,13 @@ const optionsWithQuestions = {
           associations: [
             {
               association: AnswerBelongsToArtwork,
-              fields: [...artworkFields],
+              fields: [...artworkFields, 'images'],
+              associations: [
+                {
+                  association: ArtworkHasManyImages,
+                  fields: [...imageFileFields],
+                },
+              ],
             },
             {
               association: AnswerBelongsToProperty,
@@ -101,7 +108,13 @@ const optionsWithQuestions = {
         },
         {
           association: QuestionHasManyAnswers,
-          include: [AnswerBelongsToArtwork, AnswerBelongsToProperty],
+          include: [
+            {
+              association: AnswerBelongsToArtwork,
+              include: [ArtworkHasManyImages],
+            },
+            AnswerBelongsToProperty,
+          ],
         },
       ],
     },

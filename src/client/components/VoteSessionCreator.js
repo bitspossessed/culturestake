@@ -67,11 +67,19 @@ const VoteSessionCreator = () => {
   const [voteData, setVoteData] = useState(null);
 
   const barcodes = useRef({});
-  const [data, isArtworksLoading] = useResource([
-    'festivals',
-    festivalChainId,
-    'questions',
-  ]);
+  const [data, isArtworksLoading] = useResource(
+    ['festivals', festivalChainId, 'questions'],
+    {
+      onError: () => {
+        dispatch(
+          notify({
+            text: translate('VoteSessionCreator.errorUnknownFestivalChainId'),
+            type: NotificationsTypes.ERROR,
+          }),
+        );
+      },
+    },
+  );
 
   const artworks = useMemo(() => {
     if (isLoading || !data.questions) {
@@ -114,7 +122,7 @@ const VoteSessionCreator = () => {
     } catch {
       dispatch(
         notify({
-          text: translate('VoteSessionCreator.notificationInvalidData'),
+          text: translate('VoteSessionCreator.errorInvalidData'),
           type: NotificationsTypes.ERROR,
         }),
       );
@@ -177,9 +185,12 @@ const VoteSessionCreator = () => {
     setIsLoading(true);
     setIsAdminVisible(false);
 
+    // Sort by id to be consisent with the order of things
+    const sortedFestivalAnswerIds = festivalAnswerIds.sort();
+
     // Create booth voteData
     const boothSignature = signBooth({
-      festivalAnswerIds,
+      festivalAnswerIds: sortedFestivalAnswerIds,
       privateKey: getPrivateKey(BOOTH_ACCOUNT_NAME),
       nonce,
     });
@@ -187,7 +198,7 @@ const VoteSessionCreator = () => {
     setVoteData(
       encodeVoteData({
         boothSignature,
-        festivalAnswerIds,
+        festivalAnswerIds: sortedFestivalAnswerIds,
         festivalQuestionId,
         nonce,
       }),

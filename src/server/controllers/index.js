@@ -221,7 +221,7 @@ function readAll(options) {
     const where =
       options.isSearchable && req.locals && req.locals.query
         ? req.locals.query
-        : {};
+        : null;
 
     try {
       const response = await options.model.findAndCountAll({

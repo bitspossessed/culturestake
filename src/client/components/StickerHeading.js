@@ -1,16 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
-import { useSelector } from 'react-redux';
 
-import styles, { SCHEME_ALTERNATE } from '~/client/styles/variables';
+import styles from '~/client/styles/variables';
+import { useScheme } from '~/client/hooks/scheme';
 
 const StickerHeading = (props) => {
-  const { isAlternateColor, isAlternateFontFace } = useSelector(
-    (state) => state.app,
-  );
-
-  const scheme = isAlternateColor ? SCHEME_ALTERNATE : props.scheme;
+  const { isAlternateFontFace, scheme } = useScheme(props.scheme);
 
   return (
     <StickerHeadingStyle>

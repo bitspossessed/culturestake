@@ -1,28 +1,28 @@
 import { SENTINEL_ADDRESS } from '~/common/utils/constants';
 import { adminContract } from '~/common/services/contracts';
 
-export const TX_ADDED_OWNER = Symbol('TX_ADDED_OWNER');
-export const TX_REMOVED_OWNER = Symbol('TX_REMOVED_OWNER');
+export const TX_ADD_OWNER = Symbol('TX_ADD_OWNER');
+export const TX_REMOVE_OWNER = Symbol('TX_REMOVE_OWNER');
 
-async function isOwner(ownerAddress) {
+export async function isOwner(ownerAddress) {
   return adminContract.methods.isOwner(ownerAddress).call();
 }
 
-async function getOwners() {
+export async function getOwners() {
   return adminContract.methods.getOwners().call();
 }
 
-async function addOwner(senderAddress, ownerAddress) {
+export async function addOwner(senderAddress, ownerAddress) {
   const { transactionHash: txHash } = await adminContract.methods
     .addOwner(ownerAddress)
     .send({
       from: senderAddress,
     });
 
-  return { txHash, txMethod: TX_ADDED_OWNER };
+  return { txHash, txMethod: TX_ADD_OWNER };
 }
 
-async function removeOwner(senderAddress, ownerAddress) {
+export async function removeOwner(senderAddress, ownerAddress) {
   const owners = await getOwners();
 
   // .. to find out which previous owner in the list is pointing at the one we
@@ -36,12 +36,5 @@ async function removeOwner(senderAddress, ownerAddress) {
       from: senderAddress,
     });
 
-  return { txHash, txMethod: TX_REMOVED_OWNER };
+  return { txHash, txMethod: TX_REMOVE_OWNER };
 }
-
-export default {
-  addOwner,
-  getOwners,
-  isOwner,
-  removeOwner,
-};

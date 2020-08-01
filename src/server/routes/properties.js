@@ -1,10 +1,13 @@
 import express from 'express';
 
 import Property from '~/server/models/property';
-import authMiddleware from '~/server/middlewares/passport';
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from '~/server/middlewares/passport';
 import propertiesController from '~/server/controllers/properties';
 import propertiesValidation from '~/server/validations/properties';
 import resourcesMiddleware from '~/server/middlewares/resources';
+import isSearchableMiddleware from '~/server/middlewares/isSearchable';
 import validate from '~/server/services/validate';
 
 const router = express.Router();
@@ -22,12 +25,15 @@ router.put(
 
 router.get(
   '/',
+  optionalAuthMiddleware,
   validate(propertiesValidation.readAll),
+  isSearchableMiddleware,
   propertiesController.readAll,
 );
 
 router.get(
   '/:slug',
+  optionalAuthMiddleware,
   validate(propertiesValidation.read),
   getPropertyResource,
   propertiesController.read,

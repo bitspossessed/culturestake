@@ -10,7 +10,6 @@ import {
   ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
   artistFields,
-  answerFields,
   artworkFields,
   propertyFields,
   questionFields,
@@ -23,7 +22,7 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 const PUBLIC_TOP_ANSWERS = 3;
 
 const answerAssociation = {
-  fields: [...answerFields, 'votePower', 'voteTokens', 'votes', 'questionId'],
+  fields: ['propertyId', 'votePower', 'voteTokens', 'votes', 'questionId'],
   fieldsProtected: ['artworkId', 'artwork', 'propertyId', 'property'],
   association: QuestionHasManyAnswers,
   associations: [
@@ -104,7 +103,10 @@ function topThreeFilter(req, data) {
   const { graphData, user } = req.locals;
 
   // Combine graph data with postgres data, mapping chainId : id
-  const answers = combineAnswers(graphData.question.answers, data.answers);
+  const answers = combineAnswers(
+    graphData.question ? graphData.question.answers : [],
+    data.answers,
+  );
 
   // Find the top three votePowers
   const topThreeVotePowers = findTopThreeVotePowers(answers);

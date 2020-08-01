@@ -1,14 +1,16 @@
 import { Joi, Segments } from 'celebrate';
 
 import { imagesValidation } from '~/common/helpers/validate';
-import { slugValidation, paginationValidation } from '~/server/validations';
+import {
+  paginationValidation,
+  queryValidation,
+  slugValidation,
+} from '~/server/validations';
 
 const defaultValidation = {
-  // @TODO: This does not validate artworks yet (alternative: remove the possibility to change artworks via artists at all)
-  artworks: Joi.array().required().max(10),
   bio: Joi.string().max(2000).required(),
-  consentToDataReveal: Joi.boolean().required(),
-  images: imagesValidation.max(2),
+  consentToDataReveal: Joi.boolean().valid(true).required(),
+  images: imagesValidation.max(3),
   name: Joi.string().max(128).required(),
 };
 
@@ -21,6 +23,7 @@ export default {
   readAll: {
     [Segments.PARAMS]: {
       ...paginationValidation,
+      ...queryValidation,
       orderKey: Joi.string().valid('id', 'createdAt', 'updatedAt', 'name'),
     },
   },

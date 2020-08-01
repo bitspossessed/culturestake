@@ -1,18 +1,17 @@
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 
-import translate from '~/common/services/i18n';
-
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
-import { useNewForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import translate from '~/common/services/i18n';
+import { useNewForm } from '~/client/hooks/forms';
 
 const AdminFestivalsNew = () => {
   const dispatch = useDispatch();
@@ -62,7 +61,7 @@ const AdminFestivalsNew = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>

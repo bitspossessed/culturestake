@@ -1,0 +1,73 @@
+import Joi from '@hapi/joi';
+import PropTypes from 'prop-types';
+import React, { Fragment } from 'react';
+
+import InputFinderField from '~/client/components/InputFinderField';
+import InputHiddenField from '~/client/components/InputHiddenField';
+import translate from '~/common/services/i18n';
+
+const FormAnswers = ({
+  questionId,
+  festivalId,
+  isArtworkAnswer,
+  isDisabled,
+}) => {
+  const schema = {};
+  if (!isArtworkAnswer) {
+    schema.artworkId = Joi.number()
+      .required()
+      .error(new Error(translate('validations.artworkRequired')));
+  } else {
+    schema.propertyId = Joi.number()
+      .required()
+      .error(new Error(translate('validations.artworkRequired')));
+  }
+
+  const filter = (item) => {
+    const filtered = item.festivals.filter(
+      (festival) => festival.id === festivalId,
+    );
+    return filtered.length >= 1;
+  };
+
+  return (
+    <Fragment>
+      <InputHiddenField
+        label={'questionId'}
+        name={'questionId'}
+        value={{ value: questionId }}
+      />
+
+      {!isArtworkAnswer ? (
+        <InputFinderField
+          clientSideFilter={filter}
+          isDisabled={isDisabled}
+          label={translate('AdminAnswersNew.fieldArtwork')}
+          name="artworkId"
+          placeholder={translate('AdminAnswersNew.fieldArtworkPlaceholder')}
+          queryPath={['artworks']}
+          searchParam={'title'}
+          validate={schema.artworkId}
+        />
+      ) : (
+        <InputFinderField
+          isDisabled={isDisabled}
+          label={translate('AdminAnswersNew.fieldProperty')}
+          name="propertyId"
+          placeholder={translate('AdminAnswersNew.fieldPropertyPlaceholder')}
+          queryPath={['properties']}
+          searchParam={'title'}
+          validate={schema.propertyId}
+        />
+      )}
+    </Fragment>
+  );
+};
+
+FormAnswers.propTypes = {
+  festivalId: PropTypes.number,
+  isArtworkAnswer: PropTypes.bool.isRequired,
+  isDisabled: PropTypes.bool,
+  questionId: PropTypes.number.isRequired,
+};
+export default FormAnswers;

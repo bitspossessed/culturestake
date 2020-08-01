@@ -24,7 +24,7 @@ module.exports = {
         allowNull: false,
       },
       bio: {
-        type: Sequelize.STRING(2000),
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       consentToDataReveal: {

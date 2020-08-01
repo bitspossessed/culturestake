@@ -52,7 +52,8 @@ const Table = ({
   initialOrderKey = DEFAULT_ORDER_KEY,
   pageSize = DEFAULT_LIMIT,
   path,
-  searchParams,
+  query,
+  queryParam,
   onSelect,
 }) => {
   const dispatch = useDispatch();
@@ -89,8 +90,6 @@ const Table = ({
   const pathString = path.join('/');
   const colSpan = DEFAULT_HEADERS.length + columns.length + 1;
 
-  const urlSearchParams = JSON.stringify(searchParams);
-
   // Find out if current page is set as an query parameter
   let pageIndex = 0;
 
@@ -104,7 +103,7 @@ const Table = ({
         pageIndex = pageParam - 1;
       }
     }
-  } catch (err) {
+  } catch {
     // Do nothing ..
   }
 
@@ -115,10 +114,11 @@ const Table = ({
       requestTable({
         orderDirection,
         orderKey,
-        pageSize,
         pageIndex,
+        pageSize,
         path,
-        searchParams: urlSearchParams,
+        query,
+        queryParam,
         requestId,
       }),
     );
@@ -130,7 +130,8 @@ const Table = ({
     pageSize,
     path,
     pathString,
-    urlSearchParams,
+    query,
+    queryParam,
     requestId,
   ]);
 
@@ -481,7 +482,8 @@ Table.propTypes = {
   onSelect: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
   path: PropTypes.arrayOf(PropTypes.string).isRequired,
-  searchParams: PropTypes.object,
+  query: PropTypes.string,
+  queryParam: PropTypes.string,
 };
 
 TableBody.propTypes = {
