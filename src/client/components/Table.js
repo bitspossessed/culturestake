@@ -415,7 +415,7 @@ export const TableFooter = ({
   );
 };
 
-const TableStyle = styled.table`
+export const TableStyle = styled.table`
   width: 100%;
 
   td {
@@ -425,9 +425,9 @@ const TableStyle = styled.table`
   }
 `;
 
-const TableHeaderStyle = styled.thead``;
+export const TableHeaderStyle = styled.thead``;
 
-const TableHeaderItemStyle = styled.th`
+export const TableHeaderItemStyle = styled.th`
   padding: 1rem;
 
   border-bottom: 1.5px solid ${styles.colors.violet};
@@ -441,7 +441,7 @@ const TableHeaderItemStyle = styled.th`
   cursor: ${(props) => (props.isSelectable ? 'pointer' : null)};
 `;
 
-const TableBodyStyle = styled.tbody`
+export const TableBodyStyle = styled.tbody`
   tr {
     cursor: pointer;
     &:hover {
@@ -450,7 +450,7 @@ const TableBodyStyle = styled.tbody`
   }
 `;
 
-const TableBodyMessageStyle = styled.tbody``;
+export const TableBodyMessageStyle = styled.tbody``;
 
 const TableFooterStyle = styled.tfoot`
   tr {

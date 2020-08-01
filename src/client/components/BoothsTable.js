@@ -2,8 +2,14 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import {
+  TableStyle,
+  TableHeaderStyle,
+  TableHeaderItemStyle,
+  TableBodyStyle,
+  TableBodyMessageStyle,
+} from '~/client/components/Table';
 import ButtonOutline from '~/client/components/ButtonOutline';
-import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import requestGraph, { boothsQuery } from '~/common/services/subgraph';
 import {
@@ -85,7 +91,7 @@ export const TableBody = ({
   }
 
   return (
-    <TableBodyStyle>
+    <TableBodyOverflowStyle>
       {results.map((item, index) => {
         const onSelectAction = (type) => {
           onSelect({
@@ -110,7 +116,7 @@ export const TableBody = ({
           </tr>
         );
       })}
-    </TableBodyStyle>
+    </TableBodyOverflowStyle>
   );
 };
 
@@ -160,39 +166,7 @@ export const TableActions = ({ actions, onSelect }) => {
   });
 };
 
-const TableStyle = styled.table`
-  width: 100%;
-
-  td {
-    padding: 1rem;
-
-    color: ${styles.colors.violet};
-  }
-`;
-
-const TableHeaderStyle = styled.thead``;
-
-const TableHeaderItemStyle = styled.th`
-  padding: 1rem;
-
-  border-bottom: 1.5px solid ${styles.colors.violet};
-
-  color: ${(props) =>
-    props.isSelected ? styles.colors.white : styles.colors.violet};
-
-  background-color: ${(props) =>
-    props.isSelected ? styles.colors.violet : 'transparent'};
-
-  cursor: ${(props) => (props.isSelectable ? 'pointer' : null)};
-`;
-
-const TableBodyStyle = styled.tbody`
-  tr {
-    cursor: pointer;
-    &:hover {
-      background-color: ${styles.colors.grayLight};
-    }
-  }
+const TableBodyOverflowStyle = styled(TableBodyStyle)`
   td {
     overflow: hidden;
 
@@ -202,8 +176,6 @@ const TableBodyStyle = styled.tbody`
     white-space: nowrap;
   }
 `;
-
-const TableBodyMessageStyle = styled.tbody``;
 
 const PropTypesColumn = PropTypes.shape({
   key: PropTypes.string.isRequired,
