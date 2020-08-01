@@ -24,10 +24,10 @@ export const ButtonOutlineStyle = styled(ButtonClearStyle)`
   padding-bottom: 0.5rem;
 
   border: 1.5px solid
-    ${(props) => (props.isDangerous ? styles.colors.red : styles.colors.violet)};
+    ${(props) => (props.isDangerous ? styles.colors.red : styles.colors.violet)} !important;
 
   color: ${(props) =>
-    props.isDangerous ? styles.colors.red : styles.colors.violet};
+    props.isDangerous ? styles.colors.red : styles.colors.violet} !important;
 
   & + & {
     margin-left: 0.5rem;

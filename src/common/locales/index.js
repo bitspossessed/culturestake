@@ -11,6 +11,9 @@ const components = {
     buttonBurnBooth: 'Remove booth account',
     title: 'Voting booth setup',
   },
+  BoothsTable: {
+    alreadyDeactivated: 'deactivated',
+  },
   DangerZone: {
     title: 'Danger Zone',
   },
@@ -19,6 +22,12 @@ const components = {
     buttonAddNewOwner: 'Add',
     buttonRemoveOwner: 'Remove',
     fieldOwnerAddress: 'Add new address:',
+  },
+  ContractsBooths: {
+    buttonAddNewBooth: 'Initialize New Voting Booth',
+    fieldBoothAddress: 'Booth Address:',
+    fieldFestivalChainId: 'Festival Id:',
+    title: 'Add New Voting Booth',
   },
   ContractsFestivals: {
     buttonInitializeFestival: 'Initialize Festival',
@@ -208,7 +217,7 @@ const views = {
   AdminBooths: {
     fieldAddress: 'Address',
     fieldFestival: 'Festival',
-    fieldAction: 'See Snuggle panel',
+    fieldAction: 'Deactivate',
     title: 'Voting Booths',
   },
   AdminFestivals: {

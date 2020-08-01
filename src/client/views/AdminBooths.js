@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import translate from '~/common/services/i18n';
 
@@ -8,7 +7,11 @@ import ButtonIcon from '~/client/components/ButtonIcon';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import BoothsTable from '~/client/components/BoothsTable';
+import ContractsBooths from '~/client/components/ContractsBooths';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import { deactivateVotingBooth } from '~/common/services/contracts/booths';
+import { useOwnerAddress } from '~/client/hooks/ethereum';
+import { addPendingTransaction } from '~/client/store/ethereum/actions';
 
 const table = {
   path: ['artists'],
@@ -26,11 +29,20 @@ const table = {
 };
 
 const AdminBooths = () => {
-  const history = useHistory();
   const { isOwner } = useSelector((state) => state.ethereum);
+  const owner = useOwnerAddress();
+  const dispatch = useDispatch();
 
-  const onSelect = ({ item: { address } }) => {
-    history.push(`/admin/booths/${address}/edit`);
+  const onSelect = async ({ item: { id, deactivated } }) => {
+    if (!deactivated) {
+      const { txHash, txMethod } = await deactivateVotingBooth(owner, id);
+      dispatch(
+        addPendingTransaction({
+          txHash,
+          txMethod,
+        }),
+      );
+    }
   };
 
   return (
@@ -39,11 +51,12 @@ const AdminBooths = () => {
 
       <ViewAdmin>
         <BoothsTable
-          actions={isOwner ? table.actions : []}
+          actions={table.actions}
           columns={table.columns}
-          path={table.path}
+          isOwner={isOwner}
           onSelect={isOwner ? onSelect : () => {}}
         />
+        <ContractsBooths />
       </ViewAdmin>
 
       <FooterAdmin>

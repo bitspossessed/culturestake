@@ -6,10 +6,22 @@ import ButtonOutline from '~/client/components/ButtonOutline';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import requestGraph, { boothsQuery } from '~/common/services/subgraph';
+import {
+  TX_INITIALIZE_BOOTH,
+  TX_DEACTIVATE_BOOTH,
+} from '~/common/services/contracts/booths';
+import { usePendingTransaction } from '~/client/hooks/ethereum';
 
-const Table = ({ actions, columns, onSelect }) => {
+const BoothsTable = ({ actions, columns, isOwner, onSelect }) => {
   const [booths, setBooths] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const initializeTx = usePendingTransaction({
+    txMethod: TX_INITIALIZE_BOOTH,
+  });
+  const deactivateTx = usePendingTransaction({
+    txMethod: TX_DEACTIVATE_BOOTH,
+  });
 
   useEffect(() => {
     const getBooths = async () => {
@@ -18,16 +30,17 @@ const Table = ({ actions, columns, onSelect }) => {
       setIsLoading(false);
     };
     getBooths();
-  }, [setBooths]);
+  }, [setBooths, initializeTx.isPending, deactivateTx.isPending]);
 
   return (
     <TableStyle>
-      <TableHeader actions={actions} columns={columns} />
+      <TableHeader actions={actions} columns={columns} isOwner={isOwner} />
 
       <TableBody
         actions={actions}
         columns={columns}
         isLoading={isLoading}
+        isOwner={isOwner}
         results={booths.votingBooths ? booths.votingBooths : []}
         onSelect={onSelect}
       />
@@ -35,7 +48,7 @@ const Table = ({ actions, columns, onSelect }) => {
   );
 };
 
-export const TableHeader = ({ columns, actions }) => {
+export const TableHeader = ({ columns, isOwner }) => {
   return (
     <TableHeaderStyle>
       <tr>
@@ -43,9 +56,7 @@ export const TableHeader = ({ columns, actions }) => {
         {columns.map(({ label, key }) => {
           return <TableHeaderItem key={`th-${key}`} label={label} />;
         })}
-        {actions.length !== 0 ? (
-          <TableHeaderItemStyle>Actions</TableHeaderItemStyle>
-        ) : null}
+        {isOwner ? <TableHeaderItemStyle>Actions</TableHeaderItemStyle> : null}
       </tr>
     </TableHeaderStyle>
   );
@@ -59,6 +70,7 @@ export const TableBody = ({
   actions,
   columns,
   isLoading,
+  isOwner,
   results,
   onSelect,
 }) => {
@@ -86,9 +98,15 @@ export const TableBody = ({
           <tr key={`tr-${item.id}`}>
             <td>{index + 1}</td>
             <TableBodyItems columns={columns} values={item} />
-            <td>
-              <TableActions actions={actions} onSelect={onSelectAction} />
-            </td>
+            {isOwner ? (
+              <td>
+                {!item.deactivated ? (
+                  <TableActions actions={actions} onSelect={onSelectAction} />
+                ) : (
+                  translate('BoothsTable.alreadyDeactivated')
+                )}
+              </td>
+            ) : null}
           </tr>
         );
       })}
@@ -131,7 +149,11 @@ export const TableActions = ({ actions, onSelect }) => {
     };
 
     return (
-      <ButtonOutline key={`action-${index}`} onClick={onSelectAction}>
+      <ButtonOutline
+        isDangerous={true}
+        key={`action-${index}`}
+        onClick={onSelectAction}
+      >
         {action.label}
       </ButtonOutline>
     );
@@ -171,6 +193,14 @@ const TableBodyStyle = styled.tbody`
       background-color: ${styles.colors.grayLight};
     }
   }
+  td {
+    overflow: hidden;
+
+    max-width: 12rem;
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+  }
 `;
 
 const TableBodyMessageStyle = styled.tbody``;
@@ -184,9 +214,10 @@ const PropTypesAction = PropTypes.shape({
   label: PropTypes.string.isRequired,
 });
 
-Table.propTypes = {
+BoothsTable.propTypes = {
   actions: PropTypes.arrayOf(PropTypesAction).isRequired,
   columns: PropTypes.arrayOf(PropTypesColumn).isRequired,
+  isOwner: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
   searchParams: PropTypes.object,
 };
@@ -195,6 +226,7 @@ TableBody.propTypes = {
   actions: PropTypes.arrayOf(PropTypesAction).isRequired,
   columns: PropTypes.arrayOf(PropTypesColumn).isRequired,
   isLoading: PropTypes.bool.isRequired,
+  isOwner: PropTypes.bool.isRequired,
   onSelect: PropTypes.func.isRequired,
   results: PropTypes.array.isRequired,
 };
@@ -204,12 +236,12 @@ TableBodyMessage.propTypes = {
 };
 
 TableHeader.propTypes = {
-  actions: PropTypes.arrayOf(PropTypesAction).isRequired,
   columns: PropTypes.arrayOf(PropTypesColumn).isRequired,
+  isOwner: PropTypes.bool.isRequired,
 };
 
 TableHeaderItem.propTypes = {
   label: PropTypes.string.isRequired,
 };
 
-export default Table;
+export default BoothsTable;

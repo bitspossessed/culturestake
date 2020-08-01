@@ -74,7 +74,7 @@ const EthereumContainer = (props) => {
 };
 
 EthereumContainer.propTypes = {
-  children: PropTypes.node.isRequired,
+  children: PropTypes.node,
   isPending: PropTypes.bool,
 };
 
