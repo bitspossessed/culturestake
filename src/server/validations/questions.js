@@ -3,9 +3,9 @@ import { Joi, Segments } from 'celebrate';
 import { idValidation, paginationValidation } from '~/server/validations';
 
 const defaultValidation = {
-  title: Joi.string().max(128).required(),
+  artworkId: Joi.number().integer().allow(null),
   festivalId: Joi.number().integer().required(),
-  artworkId: Joi.number().integer(),
+  title: Joi.string().max(128).required(),
 };
 
 export default {

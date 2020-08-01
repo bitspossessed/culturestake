@@ -48,6 +48,8 @@ export const HorizontalSpacingStyle = styled.div`
 
 export const SpacingGroupStyle = styled.div`
   & > * {
+    display: block;
+
     margin-top: 1rem;
   }
 `;

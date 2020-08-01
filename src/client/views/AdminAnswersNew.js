@@ -1,24 +1,24 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import apiRequest from '~/client/services/api';
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FooterAdmin from '~/client/components/FooterAdmin';
+import FormAnswers from '~/client/components/FormAnswers';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
-import Finder from '~/client/components/Finder';
-import ButtonSubmit from '~/client/components/ButtonSubmit';
-import { useNewForm } from '~/client/hooks/forms';
+import apiRequest from '~/client/services/api';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
-import InputHiddenField from '~/client/components/InputHiddenField';
+import translate from '~/common/services/i18n';
+import { useNewForm } from '~/client/hooks/forms';
 
 const AdminAnswersNew = () => {
   const dispatch = useDispatch();
-  const { questionId } = useParams();
+  const params = useParams();
+  const questionId = parseInt(params.questionId, 10);
 
   const [isLoading, setIsLoading] = useState(true);
   const [question, setQuestion] = useState({});
@@ -30,9 +30,11 @@ const AdminAnswersNew = () => {
       const response = await apiRequest({
         path: ['questions', questionId],
       });
+
       setQuestion(response);
       setIsLoading(false);
     };
+
     getQuestion();
   }, [setQuestion, setIsLoading, questionId]);
 
@@ -59,13 +61,6 @@ const AdminAnswersNew = () => {
     },
   });
 
-  const filter = (item) => {
-    const filtered = item.festivals.filter(
-      (festival) => festival.id === question.festivalId,
-    );
-    return filtered.length >= 1;
-  };
-
   return (
     <Fragment>
       <HeaderAdmin>{translate('AdminAnswersNew.title')}</HeaderAdmin>
@@ -74,33 +69,12 @@ const AdminAnswersNew = () => {
         <Form>
           {!isLoading && question ? (
             <Fragment>
-              <InputHiddenField
-                label={'questionId'}
-                name={'questionId'}
-                value={{ value: questionId }}
+              <FormAnswers
+                festivalId={question.festivalId}
+                isArtworkAnswer={!!question.artworkId}
+                questionId={questionId}
               />
-              {!question.artworkId ? (
-                <Finder
-                  clientSideFilter={filter}
-                  label={translate('AdminAnswersNew.fieldArtwork')}
-                  name="artworkId"
-                  placeholder={translate(
-                    'AdminAnswersNew.fieldArtworkPlaceholder',
-                  )}
-                  queryPath={'artworks'}
-                  searchParam={'title'}
-                />
-              ) : (
-                <Finder
-                  label={translate('AdminAnswersNew.fieldProperty')}
-                  name="propertyId"
-                  placeholder={translate(
-                    'AdminAnswersNew.fieldPropertyPlaceholder',
-                  )}
-                  queryPath={'properties'}
-                  searchParam={'title'}
-                />
-              )}
+
               <ButtonSubmit />
             </Fragment>
           ) : null}
@@ -108,7 +82,7 @@ const AdminAnswersNew = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>

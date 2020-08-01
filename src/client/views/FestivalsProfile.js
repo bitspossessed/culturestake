@@ -80,6 +80,10 @@ const FestivalsProfile = () => {
       return acc;
     }, []);
 
+  const maxVotePower = !artworks
+    ? 0
+    : Math.max(...artworks.map((artwork) => artwork.votePower));
+
   // Get the sticker and color scheme
   const stickerImagePath = useStickerImage(festival.images);
   const { scheme } = useSticker(festival.sticker);
@@ -125,12 +129,12 @@ const FestivalsProfile = () => {
                       <FestivalProfileArtwork
                         artistName={artwork.artist.name}
                         artworkSlug={artwork.slug}
+                        credit={artwork.voteTokens}
                         festivalSlug={festival.slug}
                         key={artwork.id}
                         scheme={scheme}
                         title={artwork.title}
-                        votePower={artwork.votePower}
-                        voteTokens={artwork.voteTokens}
+                        total={maxVotePower}
                       />
                     );
                   })}
@@ -161,11 +165,7 @@ const FestivalProfileArtwork = (props) => {
       <HeadingSecondaryStyle>{props.title}</HeadingSecondaryStyle>
       <HeadingSecondaryStyle>{props.artistName}</HeadingSecondaryStyle>
 
-      <Slider
-        credit={props.voteTokens}
-        scheme={props.scheme}
-        total={props.votePower}
-      />
+      <Slider credit={props.credit} scheme={props.scheme} total={props.total} />
 
       <HorizontalSpacingStyle />
     </FestivalProfileArtworkStyle>
@@ -186,11 +186,11 @@ export const FestivalProfileArtworkButtonStyle = styled.div`
 FestivalProfileArtwork.propTypes = {
   artistName: PropTypes.string.isRequired,
   artworkSlug: PropTypes.string.isRequired,
+  credit: PropTypes.number.isRequired,
   festivalSlug: PropTypes.string.isRequired,
   scheme: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  votePower: PropTypes.number.isRequired,
-  voteTokens: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default FestivalsProfile;

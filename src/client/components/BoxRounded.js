@@ -3,7 +3,10 @@ import styled from 'styled-components';
 import React from 'react';
 
 import styles from '~/client/styles/variables';
-import { HeadingSecondaryStyle } from '~/client/styles/typography';
+import {
+  ParagraphStyle,
+  HeadingSecondaryStyle,
+} from '~/client/styles/typography';
 
 const BoxRounded = (props) => {
   return (
@@ -31,6 +34,13 @@ export const BoxRoundedStyle = styled.div`
     props.isDanger ? `${styles.colors.red} !important` : styles.colors.violet};
 
   ${HeadingSecondaryStyle} {
+    color: ${(props) =>
+      props.isDanger
+        ? `${styles.colors.red} !important`
+        : styles.colors.violet};
+  }
+
+  ${ParagraphStyle} {
     color: ${(props) =>
       props.isDanger
         ? `${styles.colors.red} !important`

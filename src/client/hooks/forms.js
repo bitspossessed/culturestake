@@ -224,7 +224,7 @@ export const useEditForm = ({
 
   const ButtonDelete = () => {
     return (
-      <ButtonOutline disabled={!canSubmit} isDangerous onClick={onClickDestroy}>
+      <ButtonOutline disabled={!canSubmit} isDanger onClick={onClickDestroy}>
         {translate('default.buttonDestroy')}
       </ButtonOutline>
     );

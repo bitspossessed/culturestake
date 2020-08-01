@@ -1,19 +1,22 @@
 import Joi from '@hapi/joi';
 import React, { Fragment } from 'react';
 
-import translate from '~/common/services/i18n';
-import InputField from '~/client/components/InputField';
-import { imagesValidation } from '~/common/helpers/validate';
-import InputTextareaField from '~/client/components/InputTextareaField';
 import InputCheckboxField from '~/client/components/InputCheckboxField';
+import InputField from '~/client/components/InputField';
+import InputTextareaField from '~/client/components/InputTextareaField';
 import InputUploadField from '~/client/components/InputUploadField';
+import translate from '~/common/services/i18n';
+import { imagesValidation } from '~/common/helpers/validate';
 
 const FormArtists = () => {
   const schema = {
-    name: Joi.string().max(128).required(),
     bio: Joi.string().max(2000).required(),
-    consentToDataReveal: Joi.boolean(),
-    images: imagesValidation.max(2),
+    consentToDataReveal: Joi.boolean()
+      .valid(true)
+      .required()
+      .error(new Error(translate('validations.consentRequired'))),
+    images: imagesValidation.max(3),
+    name: Joi.string().max(128).required(),
   };
 
   return (

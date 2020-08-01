@@ -75,7 +75,7 @@ const ContractsQuestionsDeactivate = ({ questionChainId }) => {
 
   return (
     <div>
-      <ButtonOutline isDangerous={true} onClick={onClick}>
+      <ButtonOutline isDanger={true} onClick={onClick}>
         {translate('ContractsQuestions.buttonDeactivateQuestion')}
       </ButtonOutline>
     </div>

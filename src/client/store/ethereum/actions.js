@@ -1,5 +1,7 @@
 import ActionTypes from '~/client/store/ethereum/types';
+import notify from '~/client/store/notifications/actions';
 import ownersModule from '~/common/services/contracts/owners';
+import translate from '~/common/services/i18n';
 import web3 from '~/common/services/web3';
 import { detectMetaMask, enableProvider } from '~/client/services/ethereum';
 
@@ -53,6 +55,13 @@ export function initializeProvider() {
 export function enableAccount() {
   return async (dispatch) => {
     const accounts = await enableProvider();
+
+    dispatch(
+      notify({
+        text: translate('ethereum.notificationAccountEnabled'),
+      }),
+    );
+
     dispatch(await handleAccountChange(accounts));
   };
 }

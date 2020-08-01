@@ -5,14 +5,18 @@ import { postRequest } from '~/client/store/api/actions';
 export const VOTE_ACCOUNT_NAME = 'vote';
 
 export function initializeVote(voteData) {
-  const { address } = getAccount(VOTE_ACCOUNT_NAME);
+  return (dispatch) => {
+    dispatch(resetVote());
 
-  return {
-    type: ActionTypes.VOTE_INITIALIZE,
-    meta: {
-      address,
-      ...voteData,
-    },
+    const { address } = getAccount(VOTE_ACCOUNT_NAME, true);
+
+    dispatch({
+      type: ActionTypes.VOTE_INITIALIZE,
+      meta: {
+        address,
+        ...voteData,
+      },
+    });
   };
 }
 

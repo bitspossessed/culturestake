@@ -89,6 +89,10 @@ const ArtworksProfile = () => {
       return acc;
     }, []);
 
+  const maxVotePower = !properties
+    ? 0
+    : Math.max(...properties.map((property) => property.votePower));
+
   // Get the sticker and color scheme
   const stickerImagePath = useStickerImage(artwork.images);
   const { scheme } = useSticker(artwork.sticker);
@@ -161,11 +165,11 @@ const ArtworksProfile = () => {
                   {properties.map((property) => {
                     return (
                       <ArtworksProfileProperty
+                        credit={property.voteTokens}
                         key={property.id}
                         scheme={scheme}
                         title={property.title}
-                        votePower={property.votePower}
-                        voteTokens={property.voteTokens}
+                        total={maxVotePower}
                       />
                     );
                   })}
@@ -195,11 +199,7 @@ const ArtworksProfileProperty = (props) => {
     <Fragment>
       <HeadingSecondaryStyle>{props.title}</HeadingSecondaryStyle>
 
-      <Slider
-        credit={props.voteTokens}
-        scheme={props.scheme}
-        total={props.votePower}
-      />
+      <Slider credit={props.credit} scheme={props.scheme} total={props.total} />
 
       <HorizontalSpacingStyle />
     </Fragment>
@@ -207,10 +207,10 @@ const ArtworksProfileProperty = (props) => {
 };
 
 ArtworksProfileProperty.propTypes = {
+  credit: PropTypes.number.isRequired,
   scheme: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  votePower: PropTypes.number.isRequired,
-  voteTokens: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
 };
 
 export default ArtworksProfile;

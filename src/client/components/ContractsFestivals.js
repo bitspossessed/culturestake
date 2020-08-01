@@ -1,55 +1,78 @@
 import PropTypes from 'prop-types';
-import React, { useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import DateTimePicker from 'react-datetime-picker';
-import styled from 'styled-components';
 
-import styles from '~/client/styles/variables';
-import translate from '~/common/services/i18n';
 import ButtonOutline from '~/client/components/ButtonOutline';
+import DateTimePicker from '~/client/components/DateTimePicker';
 import EthereumContainer from '~/client/components/EthereumContainer';
+import translate from '~/common/services/i18n';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
+import { ParagraphStyle } from '~/client/styles/typography';
 import {
-  isFestivalInitialized,
-  initializeFestival,
-  TX_INITIALIZE_FESTIVAL,
-  isFestivalDeactivated,
-  deactivateFestival,
   TX_DEACTIVATE_FESTIVAL,
+  TX_INITIALIZE_FESTIVAL,
+  deactivateFestival,
+  initializeFestival,
+  isFestivalDeactivated,
+  isFestivalInitialized,
 } from '~/common/services/contracts/festivals';
 import {
   usePendingTransaction,
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 
+const ContractsFestivals = ({ chainId }) => {
+  const initializeTx = usePendingTransaction({
+    txMethod: TX_INITIALIZE_FESTIVAL,
+    params: { chainId },
+  });
+  const deactivateTx = usePendingTransaction({
+    txMethod: TX_DEACTIVATE_FESTIVAL,
+    params: { chainId },
+  });
+
+  const [isInitialized, setIsInitialized] = useState(false);
+  const [isDeactivated, setIsDeactivated] = useState(false);
+
+  useEffect(() => {
+    const getInitializedStatus = async () => {
+      const state = await isFestivalInitialized(chainId);
+      setIsInitialized(state);
+    };
+
+    getInitializedStatus();
+  }, [chainId, initializeTx.isPending]);
+
+  useEffect(() => {
+    const getDeactivatedStatus = async () => {
+      const state = await isFestivalDeactivated(chainId);
+      setIsDeactivated(state);
+    };
+
+    getDeactivatedStatus();
+  }, [chainId, deactivateTx.isPending]);
+
+  return (
+    <EthereumContainer>
+      {isDeactivated ? (
+        <ParagraphStyle>
+          {translate('ContractsFestivals.bodyAlreadyDeactivated')}
+        </ParagraphStyle>
+      ) : !isInitialized ? (
+        <ContractsFestivalsInitialize chainId={chainId} />
+      ) : (
+        <ContractsFestivalsDeactivate chainId={chainId} />
+      )}
+    </EthereumContainer>
+  );
+};
+
 const ContractsFestivalsInitialize = ({ chainId }) => {
   const dispatch = useDispatch();
   const owner = useOwnerAddress();
 
-  const [festivalStartTime, setFestivalStartTime] = useState(
-    new Date(Date.now()),
-  );
-  const [festivalEndTime, setFestivalEndTime] = useState(new Date(Date.now()));
-
-  const StyledDateTimePicker = styled(DateTimePicker)`
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-
-    border: 1.5px solid ${styles.colors.violet};
-
-    color: ${styles.colors.violet};
-
-    .react-datetime-picker__wrapper {
-      border: none;
-    }
-
-    .react-datetime-picker__inputGroup__leadingZero {
-      color: black;
-    }
-  `;
+  const [festivalStartTime, setFestivalStartTime] = useState(new Date());
+  const [festivalEndTime, setFestivalEndTime] = useState(new Date());
 
   const onClick = async (event) => {
     event.preventDefault();
@@ -71,19 +94,26 @@ const ContractsFestivalsInitialize = ({ chainId }) => {
   };
 
   return (
-    <div>
-      <ButtonOutline onClick={onClick}>
-        {translate('ContractsFestivals.buttonInitializeFestival')}
-      </ButtonOutline>
-      <StyledDateTimePicker
+    <Fragment>
+      <ParagraphStyle>
+        {translate('ContractsFestivals.bodyFestivalStartTime')}
+      </ParagraphStyle>
+
+      <DateTimePicker
         value={festivalStartTime}
         onChange={setFestivalStartTime}
       />
-      <StyledDateTimePicker
-        value={festivalEndTime}
-        onChange={setFestivalEndTime}
-      />
-    </div>
+
+      <ParagraphStyle>
+        {translate('ContractsFestivals.bodyFestivalEndTime')}
+      </ParagraphStyle>
+
+      <DateTimePicker value={festivalEndTime} onChange={setFestivalEndTime} />
+
+      <ButtonOutline onClick={onClick}>
+        {translate('ContractsFestivals.buttonInitializeFestival')}
+      </ButtonOutline>
+    </Fragment>
   );
 };
 
@@ -106,53 +136,9 @@ const ContractsFestivalsDeactivate = ({ chainId }) => {
   };
 
   return (
-    <div>
-      <ButtonOutline isDangerous={true} onClick={onClick}>
-        {translate('ContractsFestivals.buttonDeactivateFestival')}
-      </ButtonOutline>
-    </div>
-  );
-};
-
-const ContractsFestivals = ({ chainId }) => {
-  const initializeTx = usePendingTransaction({
-    txMethod: TX_INITIALIZE_FESTIVAL,
-    params: { chainId },
-  });
-  const deactivateTx = usePendingTransaction({
-    txMethod: TX_DEACTIVATE_FESTIVAL,
-    params: { chainId },
-  });
-
-  const [isInitialized, setIsInitialized] = useState(false);
-  const [isDeactivated, setIsDeactivated] = useState(false);
-
-  useEffect(() => {
-    const getInitializedStatus = async () => {
-      const state = await isFestivalInitialized(chainId);
-      setIsInitialized(state);
-    };
-    getInitializedStatus();
-  }, [chainId, initializeTx.isPending]);
-
-  useEffect(() => {
-    const getDeactivatedStatus = async () => {
-      const state = await isFestivalDeactivated(chainId);
-      setIsDeactivated(state);
-    };
-    getDeactivatedStatus();
-  }, [chainId, deactivateTx.isPending]);
-
-  return (
-    <EthereumContainer>
-      {isDeactivated ? (
-        translate('ContractsFestivals.notificationAlreadyDeactivated')
-      ) : !isInitialized ? (
-        <ContractsFestivalsInitialize chainId={chainId} />
-      ) : (
-        <ContractsFestivalsDeactivate chainId={chainId} />
-      )}
-    </EthereumContainer>
+    <ButtonOutline isDanger={true} onClick={onClick}>
+      {translate('ContractsFestivals.buttonDeactivateFestival')}
+    </ButtonOutline>
   );
 };
 

@@ -22,7 +22,7 @@ export const ButtonClearStyle = styled(Button)`
   border: 0;
 
   color: ${(props) =>
-    props.isDangerous ? styles.colors.red : styles.colors.violet};
+    props.isDanger ? styles.colors.red : styles.colors.violet};
 
   background-color: transparent;
 
@@ -39,7 +39,7 @@ ButtonClear.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
-  isDangerous: PropTypes.bool,
+  isDanger: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
 };

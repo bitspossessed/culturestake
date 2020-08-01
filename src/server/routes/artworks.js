@@ -3,7 +3,9 @@ import express from 'express';
 import Artwork from '~/server/models/artwork';
 import artworksController from '~/server/controllers/artworks';
 import artworksValidation from '~/server/validations/artworks';
-import authMiddleware from '~/server/middlewares/passport';
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from '~/server/middlewares/passport';
 import isSearchableMiddleware from '~/server/middlewares/isSearchable';
 import resourcesMiddleware from '~/server/middlewares/resources';
 import validate from '~/server/services/validate';
@@ -23,6 +25,7 @@ router.put(
 
 router.get(
   '/',
+  optionalAuthMiddleware,
   validate(artworksValidation.readAll),
   isSearchableMiddleware,
   artworksController.readAll,
@@ -30,6 +33,7 @@ router.get(
 
 router.get(
   '/:slug',
+  optionalAuthMiddleware,
   validate(artworksValidation.read),
   getArtworkResource,
   artworksController.read,

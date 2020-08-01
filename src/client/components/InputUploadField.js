@@ -212,7 +212,7 @@ const InputUploadField = ({
 const InputUploadFieldItems = ({ files, onRemove }) => {
   return (
     <InputUploadFieldItemsStyle>
-      {files.map(({ id, fileName, fileType, base64, urlThumb }, index) => {
+      {files.map(({ id, fileName, fileType, base64, url, urlThumb }, index) => {
         const onClickRemove = () => {
           onRemove(id);
         };
@@ -224,7 +224,10 @@ const InputUploadFieldItems = ({ files, onRemove }) => {
             ) : null}
 
             <InputUploadFieldItemTextStyle>
-              {fileName} [{fileType}]
+              <a href={url} rel="noreferrer" target="_blank">
+                {fileName}
+              </a>{' '}
+              [{fileType}]
             </InputUploadFieldItemTextStyle>
 
             <ButtonOutline disabled={!id} onClick={onClickRemove}>
@@ -268,7 +271,15 @@ const InputUploadFieldImageStyle = styled.img`
   border-radius: 20px;
 `;
 
-const InputUploadFieldItemTextStyle = styled.span``;
+const InputUploadFieldItemTextStyle = styled.span`
+  a {
+    color: ${styles.colors.violet};
+
+    &:hover {
+      border-bottom: 1.5px solid ${styles.colors.violet};
+    }
+  }
+`;
 
 InputUploadField.propTypes = {
   isImageUpload: PropTypes.bool,
@@ -276,7 +287,6 @@ InputUploadField.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   validate: PropTypes.object.isRequired,
-  value: PropTypes.string,
 };
 
 InputUploadFieldItems.propTypes = {

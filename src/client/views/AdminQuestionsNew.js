@@ -1,22 +1,20 @@
 import React, { Fragment } from 'react';
-import translate from '~/common/services/i18n';
 import { useDispatch } from 'react-redux';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FooterAdmin from '~/client/components/FooterAdmin';
+import FormQuestions from '~/client/components/FormQuestions';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
-import Finder from '~/client/components/Finder';
-import FormQuestions from '~/client/components/FormQuestions';
-import ButtonSubmit from '~/client/components/ButtonSubmit';
-import { useNewForm } from '~/client/hooks/forms';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
+import translate from '~/common/services/i18n';
+import { useNewForm } from '~/client/hooks/forms';
 
 const AdminQuestionsNew = () => {
   const dispatch = useDispatch();
-
   const returnUrl = '/admin/questions';
 
   const { Form } = useNewForm({
@@ -49,28 +47,12 @@ const AdminQuestionsNew = () => {
       <ViewAdmin>
         <Form>
           <FormQuestions />
-          <Finder
-            label={translate('AdminQuestionsNew.fieldFestival')}
-            name="festivalId"
-            placeholder={translate(
-              'AdminQuestionsNew.fieldFestivalPlaceholder',
-            )}
-            queryPath={'festivals'}
-            searchParam={'title'}
-          />
-          <Finder
-            label={translate('AdminQuestionsNew.fieldArtwork')}
-            name="artworkId"
-            placeholder={translate('AdminQuestionsNew.fieldArtworkPlaceholder')}
-            queryPath={'artworks'}
-            searchParam={'title'}
-          />
           <ButtonSubmit />
         </Form>
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to={returnUrl}>
+        <ButtonIcon isIconFlipped to={returnUrl}>
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>
