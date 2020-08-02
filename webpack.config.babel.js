@@ -83,13 +83,13 @@ export default () => {
           use: ['style-loader', 'css-loader'],
         },
         {
-          test: /\.(png|jp(e?)g|gif|glb|woff(2?)|svg|ttf|eot)$/,
+          test: /\.(png|jp(e?)g|gif|woff(2?)|svg|ttf|eot)$/,
           exclude,
           use: [
             {
               loader: 'file-loader',
               options: {
-                name: `${filename}.[ext]`,
+                name: `[name].[ext]`,
                 publicPath: '/static/',
               },
             },
@@ -111,6 +111,7 @@ export default () => {
     },
     plugins: [
       new AssetsPlugin({
+        includeAllFileTypes: false,
         path: getPath('build'),
       }),
       new webpack.DefinePlugin({
