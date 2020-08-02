@@ -32,8 +32,8 @@ npm run test:watch
 npm run lint
 
 // Start local server and watch changes
-npm run server:watch
 npm run client:watch
+npm run server:watch
 
 // Build for production
 npm run build
