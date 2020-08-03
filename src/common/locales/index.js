@@ -72,6 +72,7 @@ const components = {
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
     fieldArtworks: 'Artworks:',
+    fieldUrl: 'Website:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
@@ -95,12 +96,14 @@ const components = {
     fieldImages: 'Artwork images',
     fieldSticker: 'Sticker',
     fieldTitle: 'Title:',
+    fieldUrl: 'Website:',
   },
   FormArtists: {
     fieldBio: 'Bio:',
     fieldConsentToDataReveal: 'Consent to data reveal:',
     fieldImages: 'Artist images',
     fieldName: 'Name:',
+    fieldUrl: 'Website:',
   },
   InputArtworksField: {
     fieldArtwork: 'Artwork:',

@@ -18,6 +18,7 @@ const FormArtworks = () => {
     images: imagesValidation.required().max(10),
     sticker: stickerValidation.required(),
     title: Joi.string().max(128).required(),
+    url: Joi.string().uri(),
   };
 
   return (
@@ -33,6 +34,13 @@ const FormArtworks = () => {
         label={translate('FormArtworks.fieldDescription')}
         name="description"
         validate={schema.description}
+      />
+
+      <InputField
+        label={translate('FormArtworks.fieldUrl')}
+        name="url"
+        type="text"
+        validate={schema.url}
       />
 
       <InputFinderField

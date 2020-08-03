@@ -17,6 +17,7 @@ const FormArtists = () => {
       .error(new Error(translate('validations.consentRequired'))),
     images: imagesValidation.max(3),
     name: Joi.string().max(128).required(),
+    url: Joi.string().uri(),
   };
 
   return (
@@ -32,6 +33,13 @@ const FormArtists = () => {
         label={translate('FormArtists.fieldBio')}
         name="bio"
         validate={schema.bio}
+      />
+
+      <InputField
+        label={translate('FormArtists.fieldUrl')}
+        name="url"
+        type="text"
+        validate={schema.url}
       />
 
       <InputCheckboxField
