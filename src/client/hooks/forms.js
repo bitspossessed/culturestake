@@ -24,12 +24,15 @@ const joiOptions = {
   },
 };
 
-export const useField = (fieldName, { validate: schema, ...fieldOptions }) => {
+export const useField = (
+  fieldName,
+  { validate: schema, defaultValue = undefined, ...fieldOptions },
+) => {
   return useReactFormField(
     fieldName,
     Object.assign({}, fieldOptions, {
       // Set a default value to prevent component to be disconnected when mounted
-      defaultValue: fieldOptions.defaultValue || '',
+      defaultValue: typeof defaultValue === 'undefined' ? '' : defaultValue,
 
       // Validate via Joi schema and take ValidationError message from it
       validate: (value) => {

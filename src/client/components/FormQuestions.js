@@ -15,7 +15,7 @@ const FormQuestions = ({ isFinderDisabled }) => {
       .error(new Error(translate('validations.festivalRequired'))),
     artworkId: Joi.number()
       .integer()
-      .allow(null, '')
+      .allow(null)
       .error(new Error(translate('validations.artworkRequired'))),
   };
 
@@ -45,6 +45,7 @@ const FormQuestions = ({ isFinderDisabled }) => {
         placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}
         queryPath={['artworks']}
         searchParam={'title'}
+        selectParam={'id'}
         validate={schema.artworkId}
       />
     </Fragment>

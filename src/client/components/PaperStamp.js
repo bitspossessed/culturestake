@@ -7,16 +7,17 @@ import styles from '~/client/styles/variables';
 import { useScheme } from '~/client/hooks/scheme';
 
 const PaperStamp = (props) => {
-  const { isAlternateColor, scheme } = useScheme(props.scheme);
+  const { isAlternateColor, scheme } = useScheme();
+  const innerScheme = isAlternateColor ? scheme : props.scheme;
 
   return (
     <PaperStampStyle
       isAlternateColor={isAlternateColor}
       isDisabled={props.isDisabled}
-      scheme={scheme}
+      scheme={innerScheme}
     >
       <PaperStampLine position="top" />
-      <Paper scheme={scheme}>{props.children}</Paper>
+      <Paper scheme={innerScheme}>{props.children}</Paper>
       <PaperStampLine position="bottom" />
     </PaperStampStyle>
   );
