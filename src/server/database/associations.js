@@ -16,7 +16,7 @@ const attachableMixin = {
 // Public API response fields
 
 export const answerFields = ['artworkId', 'propertyId', 'questionId'];
-export const artistFields = ['bio', 'name'];
+export const artistFields = ['bio', 'name', 'url'];
 export const artworkFields = [
   'artistId',
   'barcode',
@@ -24,6 +24,7 @@ export const artworkFields = [
   'sticker',
   'subtitle',
   'title',
+  'url',
 ];
 export const baseFileFields = ['fileName', 'fileType', 'url'];
 export const festivalFields = [
@@ -32,6 +33,7 @@ export const festivalFields = [
   'sticker',
   'subtitle',
   'title',
+  'url',
 ];
 export const imageFileFields = [
   ...baseFileFields,

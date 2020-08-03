@@ -13,6 +13,7 @@ const defaultValidation = {
   images: imagesValidation.max(10),
   sticker: stickerValidation.required(),
   title: Joi.string().max(128).required(),
+  url: Joi.string().uri(),
 };
 
 export default {
