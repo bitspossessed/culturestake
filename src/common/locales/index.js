@@ -16,6 +16,9 @@ const components = {
     buttonBurnBooth: 'Remove booth account',
     title: 'Voting booth setup',
   },
+  BoothsTable: {
+    alreadyDeactivated: 'deactivated',
+  },
   DangerZone: {
     title: 'Danger Zone',
   },
@@ -24,6 +27,12 @@ const components = {
     buttonAddNewOwner: 'Add',
     buttonRemoveOwner: 'Remove',
     fieldOwnerAddress: 'Add new address:',
+  },
+  ContractsBooths: {
+    buttonAddNewBooth: 'Initialize New Voting Booth',
+    fieldBoothAddress: 'Booth Address:',
+    fieldFestivalChainId: 'Festival Id:',
+    title: 'Add New Voting Booth',
   },
   ContractsFestivals: {
     bodyAlreadyDeactivated: 'This festival is deactivated',
@@ -234,6 +243,12 @@ const views = {
     notificationSuccess: 'You created the user {username}.',
     errorUniqueUser: 'A user with this email or username exists already.',
   },
+  AdminBooths: {
+    fieldAddress: 'Address',
+    fieldFestival: 'Festival',
+    fieldAction: 'Deactivate',
+    title: 'Voting Booths',
+  },
   AdminFestivals: {
     buttonNewFestival: 'Create new festival',
     fieldTitle: 'Title',
@@ -279,7 +294,7 @@ const views = {
     title: 'Edit answer',
   },
   AdminProperties: {
-    buttonNewQuestion: 'Create new property',
+    buttonNewProperty: 'Create new property',
     fieldTitle: 'Property',
     title: 'Properties',
   },

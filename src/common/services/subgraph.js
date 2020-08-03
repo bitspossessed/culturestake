@@ -33,3 +33,9 @@ export const adminsQuery = () => `{
     id
   }
 }`;
+
+export const boothsQuery = () => `{
+  votingBooths {
+    id inited, deactivated, festival { id }
+  }
+}`;
