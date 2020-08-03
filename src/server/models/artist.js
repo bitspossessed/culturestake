@@ -27,6 +27,9 @@ const Artist = db.define('artist', {
     allowNull: false,
     default: false,
   },
+  url: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Artist, {

@@ -42,6 +42,9 @@ const Festival = db.define('festival', {
   sticker: {
     type: DataTypes.STRING,
   },
+  url: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Festival, {

@@ -15,6 +15,7 @@ import {
   isQuestionDeactivated,
   isQuestionInitialized,
 } from '~/common/services/contracts/questions';
+import { isFestivalInitialized } from '~/common/services/contracts/festivals';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import {
   usePendingTransaction,
@@ -37,6 +38,17 @@ const ContractsQuestions = ({
   });
 
   const [isDeactivated, setIsDeactivated] = useState(false);
+  const [festivalInitialized, setIsFestivalInitialized] = useState(false);
+
+  useEffect(() => {
+    const getFestivalInitializedStatus = async () => {
+      if (festivalChainId !== '') {
+        const state = await isFestivalInitialized(festivalChainId);
+        setIsFestivalInitialized(state);
+      }
+    };
+    getFestivalInitializedStatus();
+  }, [festivalChainId, setIsFestivalInitialized]);
 
   useEffect(() => {
     const getInitializedStatus = async () => {
@@ -60,17 +72,23 @@ const ContractsQuestions = ({
 
   return (
     <EthereumContainer>
-      {isDeactivated ? (
-        <ParagraphStyle>
-          {translate('ContractsQuestions.notificationAlreadyDeactivated')}
-        </ParagraphStyle>
-      ) : !isInitialized ? (
-        <ContractsQuestionsInitialize
-          festivalChainId={festivalChainId}
-          questionChainId={questionChainId}
-        />
+      {festivalInitialized ? (
+        isDeactivated ? (
+          <ParagraphStyle>
+            {translate('ContractsQuestions.bodyAlreadyDeactivated')}
+          </ParagraphStyle>
+        ) : !isInitialized ? (
+          <ContractsQuestionsInitialize
+            festivalChainId={festivalChainId}
+            questionChainId={questionChainId}
+          />
+        ) : (
+          <ContractsQuestionsDeactivate questionChainId={questionChainId} />
+        )
       ) : (
-        <ContractsQuestionsDeactivate questionChainId={questionChainId} />
+        <ParagraphStyle>
+          {translate('ContractsQuestions.bodyFestivalNotInitialized')}
+        </ParagraphStyle>
       )}
     </EthereumContainer>
   );

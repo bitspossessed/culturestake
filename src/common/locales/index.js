@@ -43,6 +43,8 @@ const components = {
   },
   ContractsQuestions: {
     bodyAlreadyDeactivated: 'This question is deactivated',
+    bodyFestivalNotInitialized:
+      'The festival for this question still needs to be initialized',
     buttonDeactivateQuestion: 'Deactivate Question',
     buttonInitializeQuestion: 'Initialize Question',
   },
