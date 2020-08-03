@@ -23,6 +23,7 @@ const FormFestivals = () => {
     sticker: stickerValidation.required(),
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
+    url: Joi.string().uri(),
   };
 
   return (
@@ -39,6 +40,13 @@ const FormFestivals = () => {
         name="subtitle"
         type="text"
         validate={schema.subtitle}
+      />
+
+      <InputField
+        label={translate('FormFestivals.fieldUrl')}
+        name="url"
+        type="text"
+        validate={schema.url}
       />
 
       <InputTextareaField

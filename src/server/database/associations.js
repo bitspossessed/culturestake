@@ -16,7 +16,7 @@ const attachableMixin = {
 // Public API response fields
 
 export const answerFields = ['artworkId', 'propertyId', 'questionId'];
-export const artistFields = ['bio', 'name'];
+export const artistFields = ['bio', 'name', 'url'];
 export const artworkFields = [
   'artistId',
   'barcode',
@@ -24,6 +24,9 @@ export const artworkFields = [
   'sticker',
   'subtitle',
   'title',
+  'subtitle',
+  'url',
+  'documents',
 ];
 export const baseFileFields = ['fileName', 'fileType', 'url'];
 export const festivalFields = [
@@ -32,6 +35,7 @@ export const festivalFields = [
   'sticker',
   'subtitle',
   'title',
+  'url',
 ];
 export const imageFileFields = [
   ...baseFileFields,
@@ -68,6 +72,14 @@ export const ArtworkHasManyImages = Artwork.hasMany(Image, {
     attachableType: 'artwork',
   },
   as: 'images',
+});
+
+export const ArtworkHasManyDocuments = Artwork.hasMany(Document, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artwork',
+  },
+  as: 'documents',
 });
 
 // Answer

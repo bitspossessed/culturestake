@@ -4,21 +4,28 @@ import {
   ArtworkBelongsToArtist,
   ArtworkBelongsToManyFestivals,
   ArtworkHasManyImages,
+  ArtworkHasManyDocuments,
   artistFields,
   artworkFields,
   festivalFields,
   imageFileFields,
+  baseFileFields,
 } from '~/server/database/associations';
 
 const options = {
   model: Artwork,
   fields: [...artworkFields, 'images'],
-  include: [ArtworkHasManyImages],
+  include: [ArtworkHasManyImages, ArtworkHasManyDocuments],
   associations: [
     {
       association: ArtworkHasManyImages,
       destroyCascade: true,
       fields: [...imageFileFields],
+    },
+    {
+      association: ArtworkHasManyDocuments,
+      destroyCascade: true,
+      fields: [...baseFileFields],
     },
   ],
 };
@@ -30,6 +37,7 @@ const optionsRead = {
     ArtworkHasManyImages,
     ArtworkBelongsToArtist,
     ArtworkBelongsToManyFestivals,
+    ArtworkHasManyDocuments,
   ],
   associations: [
     {
@@ -46,6 +54,11 @@ const optionsRead = {
       association: ArtworkBelongsToManyFestivals,
       destroyCascade: false,
       fields: [...festivalFields],
+    },
+    {
+      association: ArtworkHasManyDocuments,
+      destroyCascade: true,
+      fields: [...baseFileFields],
     },
   ],
 };

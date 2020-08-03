@@ -21,7 +21,7 @@ const AdminArtistsEdit = () => {
   const dispatch = useDispatch();
 
   const { ButtonDelete, Form } = useEditForm({
-    fields: ['name', 'bio', 'images', 'consentToDataReveal'],
+    fields: ['name', 'bio', 'images', 'consentToDataReveal', 'url'],
     resourcePath: ['artists', slug],
     returnUrl,
     onNotFound: () => {

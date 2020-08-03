@@ -27,6 +27,7 @@ const AdminFestivalsNew = () => {
       'sticker',
       'subtitle',
       'title',
+      'url',
     ],
     resourcePath: ['festivals'],
     returnUrl,

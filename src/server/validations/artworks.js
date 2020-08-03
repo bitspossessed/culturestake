@@ -1,6 +1,10 @@
 import { Joi, Segments } from 'celebrate';
 
-import { imagesValidation, stickerValidation } from '~/common/helpers/validate';
+import {
+  imagesValidation,
+  documentsValidation,
+  stickerValidation,
+} from '~/common/helpers/validate';
 import {
   paginationValidation,
   queryValidation,
@@ -11,8 +15,11 @@ const defaultValidation = {
   artistId: Joi.number().integer().positive(),
   description: Joi.string().max(2000).required(),
   images: imagesValidation.max(10),
+  documents: documentsValidation.max(3),
   sticker: stickerValidation.required(),
   title: Joi.string().max(128).required(),
+  subtitle: Joi.string().max(255),
+  url: Joi.string().uri(),
 };
 
 export default {
