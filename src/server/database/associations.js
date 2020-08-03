@@ -26,6 +26,7 @@ export const artworkFields = [
   'title',
   'subtitle',
   'url',
+  'documents',
 ];
 export const baseFileFields = ['fileName', 'fileType', 'url'];
 export const festivalFields = [
@@ -71,6 +72,14 @@ export const ArtworkHasManyImages = Artwork.hasMany(Image, {
     attachableType: 'artwork',
   },
   as: 'images',
+});
+
+export const ArtworkHasManyDocuments = Artwork.hasMany(Document, {
+  ...attachableMixin,
+  scope: {
+    attachableType: 'artwork',
+  },
+  as: 'documents',
 });
 
 // Answer

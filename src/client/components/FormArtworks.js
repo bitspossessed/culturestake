@@ -7,7 +7,11 @@ import InputStickerField from '~/client/components/InputStickerField';
 import InputTextareaField from '~/client/components/InputTextareaField';
 import InputUploadField from '~/client/components/InputUploadField';
 import translate from '~/common/services/i18n';
-import { imagesValidation, stickerValidation } from '~/common/helpers/validate';
+import {
+  imagesValidation,
+  documentsValidation,
+  stickerValidation,
+} from '~/common/helpers/validate';
 
 const FormArtworks = () => {
   const schema = {
@@ -20,6 +24,7 @@ const FormArtworks = () => {
     title: Joi.string().max(128).required(),
     subtitle: Joi.string().max(255),
     url: Joi.string().uri(),
+    documents: documentsValidation.max(3),
   };
 
   return (
@@ -66,6 +71,14 @@ const FormArtworks = () => {
         label={translate('FormArtworks.fieldImages')}
         name="images"
         validate={schema.images}
+      />
+
+      <InputUploadField
+        isImageUpload={false}
+        label={translate('FormArtworks.fieldDocuments')}
+        maxFileCount={1}
+        name="documents"
+        validate={schema.documents}
       />
 
       <InputStickerField

@@ -93,6 +93,7 @@ const components = {
     fieldArtist: 'Artist:',
     fieldArtistPlaceholder: 'Search for artist name',
     fieldDescription: 'Description:',
+    fieldDocuments: 'Documents',
     fieldImages: 'Artwork images',
     fieldSticker: 'Sticker',
     fieldTitle: 'Title:',

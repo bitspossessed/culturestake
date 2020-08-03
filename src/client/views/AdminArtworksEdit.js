@@ -30,6 +30,7 @@ const AdminArtworksEdit = () => {
       'sticker',
       'url',
       'subtitle',
+      'documents',
     ],
     resourcePath: ['artworks', slug],
     returnUrl,

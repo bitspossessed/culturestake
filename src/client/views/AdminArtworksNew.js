@@ -26,6 +26,7 @@ const AdminArtworksNew = () => {
       'artistId',
       'url',
       'subtitle',
+      'documents',
     ],
     resourcePath: ['artworks'],
     returnUrl,
