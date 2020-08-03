@@ -22,7 +22,15 @@ const AdminArtworksEdit = () => {
   const dispatch = useDispatch();
 
   const { ButtonDelete, Form, resource, isResourceLoading } = useEditForm({
-    fields: ['title', 'description', 'images', 'artistId', 'sticker'],
+    fields: [
+      'title',
+      'description',
+      'images',
+      'artistId',
+      'sticker',
+      'url',
+      'subtitle',
+    ],
     resourcePath: ['artworks', slug],
     returnUrl,
     onNotFound: () => {

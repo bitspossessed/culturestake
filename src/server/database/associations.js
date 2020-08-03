@@ -24,6 +24,7 @@ export const artworkFields = [
   'sticker',
   'subtitle',
   'title',
+  'subtitle',
   'url',
 ];
 export const baseFileFields = ['fileName', 'fileType', 'url'];

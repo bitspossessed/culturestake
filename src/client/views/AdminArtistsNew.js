@@ -18,7 +18,7 @@ const AdminArtistsNew = () => {
   const returnUrl = '/admin/artists';
 
   const { Form } = useNewForm({
-    fields: ['name', 'bio', 'images', 'consentToDataReveal'],
+    fields: ['name', 'bio', 'images', 'consentToDataReveal', 'url'],
     resourcePath: ['artists'],
     returnUrl,
     onSuccess: ({ name }) => {

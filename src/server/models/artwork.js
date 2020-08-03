@@ -39,6 +39,9 @@ const Artwork = db.define('artwork', {
   sticker: {
     type: DataTypes.STRING,
   },
+  url: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Artwork, {

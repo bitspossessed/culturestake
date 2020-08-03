@@ -96,6 +96,7 @@ const components = {
     fieldImages: 'Artwork images',
     fieldSticker: 'Sticker',
     fieldTitle: 'Title:',
+    fieldSubtitle: 'Subtitle',
     fieldUrl: 'Website:',
   },
   FormArtists: {

@@ -40,6 +40,7 @@ const AdminFestivalsEditForm = () => {
       'sticker',
       'subtitle',
       'title',
+      'url',
     ],
     resourcePath: ['festivals', slug],
     returnUrl,

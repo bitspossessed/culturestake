@@ -18,7 +18,15 @@ const AdminArtworksNew = () => {
   const returnUrl = '/admin/artworks';
 
   const { Form } = useNewForm({
-    fields: ['title', 'description', 'images', 'sticker', 'artistId'],
+    fields: [
+      'title',
+      'description',
+      'images',
+      'sticker',
+      'artistId',
+      'url',
+      'subtitle',
+    ],
     resourcePath: ['artworks'],
     returnUrl,
     onSuccess: ({ title }) => {

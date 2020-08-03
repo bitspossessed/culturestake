@@ -18,6 +18,7 @@ const FormArtworks = () => {
     images: imagesValidation.required().max(10),
     sticker: stickerValidation.required(),
     title: Joi.string().max(128).required(),
+    subtitle: Joi.string().max(255),
     url: Joi.string().uri(),
   };
 
@@ -28,6 +29,13 @@ const FormArtworks = () => {
         name="title"
         type="text"
         validate={schema.title}
+      />
+
+      <InputField
+        label={translate('FormArtworks.fieldSubtitle')}
+        name="subtitle"
+        type="text"
+        validate={schema.subtitle}
       />
 
       <InputTextareaField
