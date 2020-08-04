@@ -31,7 +31,8 @@ const components = {
   ContractsBooths: {
     buttonAddNewBooth: 'Initialize New Voting Booth',
     fieldBoothAddress: 'Booth Address:',
-    fieldFestivalChainId: 'Festival Id:',
+    fieldFestivalChainId: 'Festival:',
+    fieldFestivalPlaceholder: 'Choose a festival',
     title: 'Add New Voting Booth',
   },
   ContractsFestivals: {

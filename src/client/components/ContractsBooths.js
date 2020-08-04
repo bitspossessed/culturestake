@@ -61,7 +61,7 @@ const ContractsBoothsForm = () => {
       <InputFinderField
         label={translate('ContractsBooths.fieldFestivalChainId')}
         name="festivalChainId"
-        placeholder={translate('ContractsBooths.fieldFestivalChainId')}
+        placeholder={translate('ContractsBooths.fieldFestivalPlaceholder')}
         queryPath={['festivals']}
         searchParam={'title'}
         selectParam={'chainId'}
