@@ -141,10 +141,28 @@ function getNestedColumn(values, path) {
 }
 
 export const TableBodyItems = ({ columns, values }) => {
-  return columns.map((column) => {
-    const value = getNestedColumn(values, column.key);
-    return <td key={`td-${values.id}-${column.key}`}>{value}</td>;
-  });
+  const [isLoading, setIsLoading] = useState(true);
+  const [results, setResults] = useState([]);
+
+  useEffect(() => {
+    // call out to translate data from the graph to something human readable, if necessary
+    const mapColumnData = async (columns, values) => {
+      const mappedData = await Promise.all(
+        columns.map((column) => {
+          return column.map(getNestedColumn(values, column.key));
+        }),
+      );
+      setResults(mappedData);
+      setIsLoading(false);
+    };
+    mapColumnData(columns, values);
+  }, [columns, values, setResults, setIsLoading]);
+
+  return !isLoading
+    ? results.map((result, index) => {
+        return <td key={`td-${values.id}-${columns[index].key}`}>{result}</td>;
+      })
+    : null;
 };
 
 export const TableActions = ({ actions, onSelect }) => {

@@ -12,17 +12,26 @@ import ViewAdmin from '~/client/components/ViewAdmin';
 import { deactivateVotingBooth } from '~/common/services/contracts/booths';
 import { useOwnerAddress } from '~/client/hooks/ethereum';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
+import apiRequest from '~/client/services/api';
 
 const table = {
-  path: ['artists'],
   columns: [
     {
       key: 'id',
       label: translate('AdminBooths.fieldAddress'),
+      map: (key) => {
+        return key;
+      },
     },
     {
       key: 'festival.id',
       label: translate('AdminBooths.fieldFestival'),
+      map: async (festival) => {
+        const resource = await apiRequest({
+          path: ['festivals', festival, 'questions'],
+        });
+        return resource.title;
+      },
     },
   ],
   actions: [{ label: translate('AdminBooths.fieldAction') }],
