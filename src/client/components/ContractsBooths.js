@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import InputField from '~/client/components/InputField';
+import InputFinderField from '~/client/components/InputFinderField';
 import { initializeVotingBooth } from '~/common/services/contracts/booths';
 import translate from '~/common/services/i18n';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
@@ -57,9 +58,13 @@ const ContractsBoothsForm = () => {
         validate={boothAddressSchema}
       />
 
-      <InputField
+      <InputFinderField
         label={translate('ContractsBooths.fieldFestivalChainId')}
         name="festivalChainId"
+        placeholder={translate('ContractsBooths.fieldFestivalChainId')}
+        queryPath={['festivals']}
+        searchParam={'title'}
+        selectParam={'chainId'}
         validate={festivalChainIdSchema}
       />
 
