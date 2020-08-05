@@ -30,14 +30,14 @@ export async function initializeQuestion(
   maxVoteTokens,
   festivalChainId,
 ) {
-  const txHash = await adminContract.methods
+  const { transactionHash: txHash } = await adminContract.methods
     .initQuestion(chainId, maxVoteTokens, festivalChainId)
     .send({ from: sender });
   return { txHash, txMethod: TX_INITIALIZE_QUESTION };
 }
 
 export async function deactivateQuestion(sender, questionAddress) {
-  const txHash = await adminContract.methods
+  const { transactionHash: txHash } = await adminContract.methods
     .deactivateQuestion(questionAddress)
     .send({ from: sender });
   return { txHash, txMethod: TX_DEACTIVATE_QUESTION };

@@ -33,7 +33,7 @@ export async function getAnswer(questionChainId, answerChainId) {
 
 export async function initializeAnswer(sender, questionChainId, answerChainId) {
   const question = await getQuestionContractFromChainId(questionChainId);
-  const txHash = await question.methods
+  const { transactionHash: txHash } = await question.methods
     .initAnswer(answerChainId)
     .send({ from: sender });
   return { txHash, txMethod: TX_INITIALIZE_ANSWER };
@@ -41,7 +41,7 @@ export async function initializeAnswer(sender, questionChainId, answerChainId) {
 
 export async function deactivateAnswer(sender, questionChainId, answerChainId) {
   const question = await getQuestionContractFromChainId(questionChainId);
-  const txHash = await question.methods
+  const { transactionHash: txHash } = await question.methods
     .deactivateAnswer(answerChainId)
     .send({ from: sender });
   return { txHash, txMethod: TX_DEACTIVATE_ANSWER };
