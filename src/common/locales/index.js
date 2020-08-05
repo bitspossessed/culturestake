@@ -176,6 +176,7 @@ const components = {
     },
     buttonNextStep: 'Next',
     buttonPreviousStep: 'Return',
+    buttonVoteResults: 'View the vote results so far',
     buttonToHomepage: 'Back to Homepage',
     buttonVote: 'Vote',
     errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
