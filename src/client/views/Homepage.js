@@ -14,6 +14,10 @@ import { ContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 
 const Homepage = () => {
+  const onClick = () => {
+    window.location.assign('https://www.furtherfield.org/');
+  };
+
   return (
     <Fragment>
       <View>
@@ -43,7 +47,7 @@ const Homepage = () => {
               {translate('Homepage.buttonViewFestivals')}
             </ButtonIcon>
 
-            <ButtonIcon to="https://www.furtherfield.org/">
+            <ButtonIcon onClick={onClick}>
               {translate('Homepage.buttonFurtherfield')}
             </ButtonIcon>
           </ContainerStyle>
