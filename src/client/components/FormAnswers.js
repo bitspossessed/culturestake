@@ -6,12 +6,7 @@ import InputFinderField from '~/client/components/InputFinderField';
 import InputHiddenField from '~/client/components/InputHiddenField';
 import translate from '~/common/services/i18n';
 
-const FormAnswers = ({
-  question,
-  festivalId,
-  isArtworkAnswer,
-  isDisabled,
-}) => {
+const FormAnswers = ({ question, festivalId, isArtworkAnswer, isDisabled }) => {
   const schema = {};
   if (!isArtworkAnswer) {
     schema.artworkId = Joi.number()
@@ -24,16 +19,11 @@ const FormAnswers = ({
   }
 
   const filter = (item) => {
-    console.log(isArtworkAnswer)
     const filterParam = !isArtworkAnswer ? 'artworkId' : 'propertyId';
-    console.log(filterParam)
-    const answerIds = question.answers.map(answer => answer[filterParam])
-    console.log(answerIds)
-    const filtered = item.festivals.filter(
-      (festival) => {
-        return festival.id === festivalId && !answerIds.includes(item.id)
-      }
-    );
+    const answerIds = question.answers.map((answer) => answer[filterParam]);
+    const filtered = item.festivals.filter((festival) => {
+      return festival.id === festivalId && !answerIds.includes(item.id);
+    });
     return filtered.length >= 1;
   };
 
