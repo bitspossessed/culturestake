@@ -364,6 +364,7 @@ const views = {
     bodyStatisticsArtworks: 'Artworks',
     bodyStatisticsFestivals: 'Festivals',
     buttonViewFestivals: 'View Festivals',
+    buttonFurtherfield: 'Find out more about Furtherfield',
   },
   NotFound: {
     title: 'Not Found',
