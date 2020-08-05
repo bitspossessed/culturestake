@@ -371,6 +371,10 @@ const VoteSession = ({
 
               <HorizontalLine />
 
+              <ButtonIcon to={`/festivals/${data.slug}`}>
+                {translate('VoteSession.buttonVoteResults')}
+              </ButtonIcon>
+
               <ButtonIcon to="/">
                 {translate('VoteSession.buttonToHomepage')}
               </ButtonIcon>

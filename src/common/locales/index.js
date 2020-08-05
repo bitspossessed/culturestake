@@ -1,6 +1,6 @@
 const components = {
   AnswersTable: {
-    buttonEdit: 'Show Snuggle panel',
+    buttonEdit: 'Edit',
     fieldTitle: 'Answer name',
   },
   Barcode: {
@@ -124,7 +124,7 @@ const components = {
     title: 'Instructions',
     titleStepOne: '1. Step',
     bodyStepOne:
-      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+      'CultureStake connects communities, artists and cultural organisations through playful collective decision-making.',
     titleStepTwo: '2. Step',
     bodyStepTwo:
       'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
@@ -176,6 +176,7 @@ const components = {
     },
     buttonNextStep: 'Next',
     buttonPreviousStep: 'Return',
+    buttonVoteResults: 'View the vote results so far',
     buttonToHomepage: 'Back to Homepage',
     buttonVote: 'Vote',
     errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
@@ -353,13 +354,18 @@ const views = {
   },
   Homepage: {
     bodyIntroduction:
-      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+      'CultureStake connects communities, artists and cultural organisations through playful collective decision-making.',
     bodyIntroductionSecondary:
-      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+      'Any cultural entity can set up a vote using the app and consult closely with the communities most impacted by their work. For example a city council might need to find out which new artwork should occupy a recently vacated public plinth. Or an arts organisation might need to know which artist on their shortlist should be next summer’s blockbuster.',
+    bodyIntroductionThird:
+      'The app can be used for in-person or online voting events that provide tasters for larger projects. People vote on the ones most meaningful to them and where they live, while arts organisations go on to commission them at scale - with support from CultureStake producers Furtherfield.',
+    bodyIntroductionFourth:
+      'CultureStake puts people and places at the centre of cultural programming.',
     bodyStatisticsArtists: 'Artists',
     bodyStatisticsArtworks: 'Artworks',
     bodyStatisticsFestivals: 'Festivals',
     buttonViewFestivals: 'View Festivals',
+    buttonFurtherfield: 'Find out more about Furtherfield',
   },
   NotFound: {
     title: 'Not Found',
