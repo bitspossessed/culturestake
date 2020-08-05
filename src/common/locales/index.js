@@ -1,6 +1,6 @@
 const components = {
   AnswersTable: {
-    buttonEdit: 'Show Snuggle panel',
+    buttonEdit: 'Edit',
     fieldTitle: 'Answer name',
   },
   Barcode: {
