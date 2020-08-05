@@ -37,7 +37,9 @@ export async function initializeQuestion(
 }
 
 export async function deactivateQuestion(sender, questionAddress) {
-  const { transactionHash: txHash } = await adminContract.methods
+  const {
+    transactionHash: txHash,
+  } = await adminContract.methods
     .deactivateQuestion(questionAddress)
     .send({ from: sender });
   return { txHash, txMethod: TX_DEACTIVATE_QUESTION };

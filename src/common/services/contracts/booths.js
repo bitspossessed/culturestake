@@ -21,14 +21,18 @@ export async function initializeVotingBooth(
   festivalChainId,
   boothAddress,
 ) {
-  const { transactionHash: txHash } = await adminContract.methods
+  const {
+    transactionHash: txHash,
+  } = await adminContract.methods
     .initVotingBooth(festivalChainId, boothAddress)
     .send({ from: sender });
   return { txHash, txMethod: TX_INITIALIZE_BOOTH };
 }
 
 export async function deactivateVotingBooth(sender, boothAddress) {
-  const { transactionHash: txHash } = await adminContract.methods
+  const {
+    transactionHash: txHash,
+  } = await adminContract.methods
     .deactivateVotingBooth(boothAddress)
     .send({ from: sender });
   return { txHash, txMethod: TX_DEACTIVATE_BOOTH };

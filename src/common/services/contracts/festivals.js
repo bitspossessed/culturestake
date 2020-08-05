@@ -36,7 +36,9 @@ export async function initializeFestival(sender, chainId, startTime, endTime) {
 }
 
 export async function deactivateFestival(sender, chainId) {
-  const { transactionHash: txHash } = await adminContract.methods
+  const {
+    transactionHash: txHash,
+  } = await adminContract.methods
     .deactivateFestival(chainId)
     .send({ from: sender });
   return { txHash, txMethod: TX_DEACTIVATE_FESTIVAL };
