@@ -7,7 +7,7 @@ import InputHiddenField from '~/client/components/InputHiddenField';
 import translate from '~/common/services/i18n';
 
 const FormAnswers = ({
-  questionId,
+  question,
   festivalId,
   isArtworkAnswer,
   isDisabled,
@@ -24,8 +24,15 @@ const FormAnswers = ({
   }
 
   const filter = (item) => {
+    console.log(isArtworkAnswer)
+    const filterParam = !isArtworkAnswer ? 'artworkId' : 'propertyId';
+    console.log(filterParam)
+    const answerIds = question.answers.map(answer => answer[filterParam])
+    console.log(answerIds)
     const filtered = item.festivals.filter(
-      (festival) => festival.id === festivalId,
+      (festival) => {
+        return festival.id === festivalId && !answerIds.includes(item.id)
+      }
     );
     return filtered.length >= 1;
   };
@@ -35,7 +42,7 @@ const FormAnswers = ({
       <InputHiddenField
         label={'questionId'}
         name={'questionId'}
-        value={{ value: questionId }}
+        value={{ value: question.id }}
       />
 
       {!isArtworkAnswer ? (
@@ -68,6 +75,6 @@ FormAnswers.propTypes = {
   festivalId: PropTypes.number,
   isArtworkAnswer: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
-  questionId: PropTypes.number.isRequired,
+  question: PropTypes.object.isRequired,
 };
 export default FormAnswers;

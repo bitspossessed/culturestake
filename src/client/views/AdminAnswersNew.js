@@ -72,7 +72,7 @@ const AdminAnswersNew = () => {
               <FormAnswers
                 festivalId={question.festivalId}
                 isArtworkAnswer={!!question.artworkId}
-                questionId={questionId}
+                question={question}
               />
 
               <ButtonSubmit />
