@@ -29,6 +29,14 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroductionSecondary')}
             </ParagraphStyle>
 
+            <ParagraphStyle>
+              {translate('Homepage.bodyIntroductionThird')}
+            </ParagraphStyle>
+
+            <ParagraphStyle>
+              {translate('Homepage.bodyIntroductionFourth')}
+            </ParagraphStyle>
+
             <HomepageStatistics />
 
             <ButtonIcon to="/festivals">
