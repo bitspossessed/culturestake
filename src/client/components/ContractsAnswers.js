@@ -20,7 +20,12 @@ import {
   useOwnerAddress,
 } from '~/client/hooks/ethereum';
 
-const ContractsAnswers = ({ questionChainId, answerChainId }) => {
+const ContractsAnswers = ({
+  questionChainId,
+  answerChainId,
+  setIsDeactivated,
+  isDeactivated,
+}) => {
   const initializeTx = usePendingTransaction({
     txMethod: TX_INITIALIZE_ANSWER,
     params: { answerChainId },
@@ -31,7 +36,6 @@ const ContractsAnswers = ({ questionChainId, answerChainId }) => {
   });
 
   const [isInitialized, setIsInitialized] = useState(false);
-  const [isDeactivated, setIsDeactivated] = useState(false);
 
   useEffect(() => {
     const getInitializedStatus = async () => {
@@ -51,7 +55,12 @@ const ContractsAnswers = ({ questionChainId, answerChainId }) => {
     };
 
     getDeactivatedStatus();
-  }, [questionChainId, answerChainId, deactivateTx.isPending]);
+  }, [
+    questionChainId,
+    answerChainId,
+    deactivateTx.isPending,
+    setIsDeactivated,
+  ]);
 
   return (
     <EthereumContainer>
@@ -144,7 +153,9 @@ ContractsAnswersDeactivate.propTypes = {
 
 ContractsAnswers.propTypes = {
   answerChainId: PropTypes.string.isRequired,
+  isDeactivated: PropTypes.bool.isRequired,
   questionChainId: PropTypes.string.isRequired,
+  setIsDeactivated: PropTypes.func.isRequired,
 };
 
 export default ContractsAnswers;

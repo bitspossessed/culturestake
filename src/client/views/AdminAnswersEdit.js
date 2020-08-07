@@ -10,15 +10,17 @@ import ViewAdmin from '~/client/components/ViewAdmin';
 import apiRequest from '~/client/services/api';
 import translate from '~/common/services/i18n';
 import { useEditForm } from '~/client/hooks/forms';
+import DangerZone from '~/client/components/DangerZone';
 
 const AdminAnswersEdit = () => {
   const { questionId, answerId } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [question, setQuestion] = useState({});
+  const [isDeactivated, setIsDeactivated] = useState(false);
 
   const returnUrl = `/admin/questions/${questionId}/edit`;
 
-  const { Form, isResourceLoading, resource } = useEditForm({
+  const { Form, isResourceLoading, resource, ButtonDelete } = useEditForm({
     fields: ['questionId', 'artworkId', 'propertyId'],
     resourcePath: ['answers', answerId],
     returnUrl,
@@ -52,9 +54,17 @@ const AdminAnswersEdit = () => {
                 questionId={resource.questionId}
               />
 
+              {isDeactivated ? (
+                <DangerZone>
+                  <ButtonDelete />
+                </DangerZone>
+              ) : null}
+
               <ContractsAnswers
                 answerChainId={resource.chainId}
+                isDeactivated={isDeactivated}
                 questionChainId={question.chainId}
+                setIsDeactivated={setIsDeactivated}
               />
             </Fragment>
           )}

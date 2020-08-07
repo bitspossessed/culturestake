@@ -32,6 +32,8 @@ export const ButtonIconStyle = styled(Button)`
   width: 100%;
   height: 3rem;
 
+  margin-top: 1rem;
+  margin-bottom: 1rem;
   padding: 0.5rem;
   padding-right: 3.5rem;
 

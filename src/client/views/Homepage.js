@@ -14,6 +14,10 @@ import { ContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 
 const Homepage = () => {
+  const onClick = () => {
+    window.location.assign('https://www.furtherfield.org/');
+  };
+
   return (
     <Fragment>
       <View>
@@ -29,10 +33,22 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroductionSecondary')}
             </ParagraphStyle>
 
+            <ParagraphStyle>
+              {translate('Homepage.bodyIntroductionThird')}
+            </ParagraphStyle>
+
+            <ParagraphStyle>
+              {translate('Homepage.bodyIntroductionFourth')}
+            </ParagraphStyle>
+
             <HomepageStatistics />
 
             <ButtonIcon to="/festivals">
               {translate('Homepage.buttonViewFestivals')}
+            </ButtonIcon>
+
+            <ButtonIcon onClick={onClick}>
+              {translate('Homepage.buttonFurtherfield')}
             </ButtonIcon>
           </ContainerStyle>
         </ColorSection>
