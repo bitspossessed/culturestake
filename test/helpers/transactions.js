@@ -9,6 +9,7 @@ export default async function sendTransaction(contract, data) {
   const gas = await web3.eth.estimateGas({
     to,
     data,
+    from: payer.address,
   });
   const nonce = await web3.eth.getTransactionCount(payer.address);
   const signed = await web3.eth.accounts.signTransaction(
