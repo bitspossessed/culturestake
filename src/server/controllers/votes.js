@@ -18,6 +18,7 @@ import { filterResponse } from '~/server/helpers/respond';
 import { filterResponseFields } from '~/server/controllers';
 import { getQuestion } from '~/common/services/contracts';
 import { respondWithSuccess } from '~/server/helpers/respond';
+import { quadratify } from '~/common/utils/math';
 
 const PUBLIC_TOP_ANSWERS = 3;
 
@@ -156,14 +157,14 @@ async function vote(req, res, next) {
       ...vote,
       answerChainIds: vote.festivalAnswerChainIds,
       questionAddress: festivalQuestionAddress,
-      voteTokens: vote.festivalVoteTokens,
+      voteTokens: vote.festivalVoteTokens.map((tokens) => quadratify(tokens)),
     });
 
     await dispatchVote({
       ...vote,
       answerChainIds: vote.artworkAnswerChainIds,
       questionAddress: artworkQuestionAddress,
-      voteTokens: vote.artworkVoteTokens,
+      voteTokens: vote.artworkVoteTokens.map((tokens) => quadratify(tokens)),
     });
 
     // ... and store it locally on database as well
