@@ -216,8 +216,9 @@ async function checkAnswers({
           .call();
 
         const isInitialized = result[0];
+        const isDeactivated = result[1];
 
-        if (!isInitialized) {
+        if (!isInitialized || isDeactivated) {
           throw Error('Invalid answer');
         }
       }),
