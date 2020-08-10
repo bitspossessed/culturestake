@@ -157,14 +157,16 @@ async function vote(req, res, next) {
       ...vote,
       answerChainIds: vote.festivalAnswerChainIds,
       questionAddress: festivalQuestionAddress,
-      voteTokens: vote.festivalVoteTokens.map((tokens) => quadratify(tokens)),
+      voteTokens: vote.festivalVoteTokens,
+      votePowers: vote.festivalVoteTokens.map((tokens) => quadratify(tokens)),
     });
 
     await dispatchVote({
       ...vote,
       answerChainIds: vote.artworkAnswerChainIds,
       questionAddress: artworkQuestionAddress,
-      voteTokens: vote.artworkVoteTokens.map((tokens) => quadratify(tokens)),
+      voteTokens: vote.artworkVoteTokens,
+      votePowers: vote.artworkVoteTokens.map((tokens) => quadratify(tokens)),
     });
 
     // ... and store it locally on database as well
