@@ -91,6 +91,7 @@
     "cors": "^2.8.5",
     "culturestake-contracts": "^1.0.24",
     "express": "^4.17.1",
+    "graphql": "^15.3.0",
     "graphql-request": "^3.0.0",
     "helmet": "^4.1.0",
     "http-status": "^1.4.2",
