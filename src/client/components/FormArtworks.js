@@ -19,12 +19,12 @@ const FormArtworks = () => {
       .required()
       .error(new Error(translate('validations.artistRequired'))),
     description: Joi.string().max(2000).required(),
+    documents: documentsValidation.required().max(3),
     images: imagesValidation.required().max(10),
     sticker: stickerValidation.required(),
-    title: Joi.string().max(128).required(),
     subtitle: Joi.string().max(255),
-    url: Joi.string().uri(),
-    documents: documentsValidation.max(3),
+    title: Joi.string().max(128).required(),
+    url: Joi.string().uri().allow(''),
   };
 
   return (

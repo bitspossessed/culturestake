@@ -12,7 +12,7 @@ const defaultValidation = {
   consentToDataReveal: Joi.boolean().valid(true).required(),
   images: imagesValidation.max(3),
   name: Joi.string().max(128).required(),
-  url: Joi.string().uri(),
+  url: Joi.string().uri().allow(''),
 };
 
 export default {

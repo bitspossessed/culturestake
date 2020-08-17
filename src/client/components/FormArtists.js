@@ -17,7 +17,7 @@ const FormArtists = () => {
       .error(new Error(translate('validations.consentRequired'))),
     images: imagesValidation.max(3),
     name: Joi.string().max(128).required(),
-    url: Joi.string().uri(),
+    url: Joi.string().uri().allow(''),
   };
 
   return (
