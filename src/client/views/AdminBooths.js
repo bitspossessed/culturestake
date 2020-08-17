@@ -1,18 +1,17 @@
 import React, { Fragment } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import translate from '~/common/services/i18n';
-
+import BoothsTable from '~/client/components/BoothsTable';
 import ButtonIcon from '~/client/components/ButtonIcon';
+import ContractsBooths from '~/client/components/ContractsBooths';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
-import BoothsTable from '~/client/components/BoothsTable';
-import ContractsBooths from '~/client/components/ContractsBooths';
 import ViewAdmin from '~/client/components/ViewAdmin';
+import apiRequest from '~/client/services/api';
+import translate from '~/common/services/i18n';
+import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import { deactivateVotingBooth } from '~/common/services/contracts/booths';
 import { useOwnerAddress } from '~/client/hooks/ethereum';
-import { addPendingTransaction } from '~/client/store/ethereum/actions';
-import apiRequest from '~/client/services/api';
 
 const table = {
   columns: [
@@ -69,7 +68,7 @@ const AdminBooths = () => {
       </ViewAdmin>
 
       <FooterAdmin>
-        <ButtonIcon to="/admin">
+        <ButtonIcon isIconFlipped to="/admin">
           {translate('default.buttonReturnToOverview')}
         </ButtonIcon>
       </FooterAdmin>
