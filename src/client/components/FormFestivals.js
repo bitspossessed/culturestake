@@ -23,7 +23,7 @@ const FormFestivals = () => {
     sticker: stickerValidation.required(),
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
-    url: Joi.string().uri(),
+    url: Joi.string().uri().allow(''),
   };
 
   return (
