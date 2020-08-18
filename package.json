@@ -89,7 +89,7 @@
     "celebrate": "^12.2.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
-    "culturestake-contracts": "^1.0.24",
+    "culturestake-contracts": "^1.0.28",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
     "graphql-request": "^3.0.0",

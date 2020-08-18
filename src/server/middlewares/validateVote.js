@@ -24,7 +24,6 @@ async function checkBooth({
     isDeactivated,
     festivalChainId,
   } = await getVotingBooth(vote.boothAddress);
-
   // Check if ..
   // 1. Voting booth is active
   // 2. Voting booth is actually connected to this festival

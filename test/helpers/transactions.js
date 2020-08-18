@@ -1,26 +1,25 @@
 import web3 from '~/common/services/web3';
 
-const payerPrivKey = process.env.PAYER_PRIV_KEY;
-const payer = web3.eth.accounts.privateKeyToAccount(`0x${payerPrivKey}`);
+const adminPrivKey = process.env.ADMIN_PRIV_KEY;
+const admin = web3.eth.accounts.privateKeyToAccount(`0x${adminPrivKey}`);
 
-export default async function sendTransaction(contract, data) {
+export default async function sendTransaction(contract, data, sender) {
   const to = contract.options.address;
-
   const gas = await web3.eth.estimateGas({
     to,
     data,
-    from: payer.address,
+    from: sender.address,
   });
-  const nonce = await web3.eth.getTransactionCount(payer.address);
+  const nonce = await web3.eth.getTransactionCount(sender.address);
   const signed = await web3.eth.accounts.signTransaction(
     {
-      from: payer.address,
+      from: sender.address,
       to,
       data,
       nonce,
-      gas: gas.toString(),
+      gas,
     },
-    payerPrivKey,
+    sender.privateKey,
   );
 
   return web3.eth.sendSignedTransaction(signed.rawTransaction);
@@ -30,7 +29,7 @@ export async function initFestival(adminContract, chainId, startTime, endTime) {
   const txData = adminContract.methods
     .initFestival(chainId, startTime, endTime)
     .encodeABI();
-  await sendTransaction(adminContract, txData);
+  await sendTransaction(adminContract, txData, admin);
 }
 
 export async function initVotingBooth(
@@ -41,7 +40,7 @@ export async function initVotingBooth(
   const txData = adminContract.methods
     .initVotingBooth(festivalChainId, boothAddress)
     .encodeABI();
-  await sendTransaction(adminContract, txData);
+  await sendTransaction(adminContract, txData, admin);
 }
 
 export async function initQuestion(
@@ -54,7 +53,7 @@ export async function initQuestion(
   const txData = adminContract.methods
     .initQuestion(chainId, maxVoteTokens, festivalChainId)
     .encodeABI();
-  await sendTransaction(adminContract, txData);
+  await sendTransaction(adminContract, txData, admin);
 
   // ... and retrieve contract address
   const logs = await adminContract.getPastEvents('InitQuestion', {
@@ -66,5 +65,5 @@ export async function initQuestion(
 
 export async function initAnswer(questionContract, chainId) {
   const txData = questionContract.methods.initAnswer(chainId).encodeABI();
-  await sendTransaction(questionContract, txData);
+  await sendTransaction(questionContract, txData, admin);
 }

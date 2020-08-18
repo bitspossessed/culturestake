@@ -7,6 +7,11 @@ export async function isValidVotingNonce(boothAddress, nonce) {
   return adminContract.methods.isValidVotingNonce(boothAddress, nonce).call();
 }
 
+export async function isVotingBoothInitialized(boothAddress) {
+  const booth = await getVotingBooth(boothAddress);
+  return booth.isInitialized;
+}
+
 export async function getVotingBooth(boothAddress) {
   const booth = await adminContract.methods.getVotingBooth(boothAddress).call();
   return {

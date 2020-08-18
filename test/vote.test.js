@@ -14,10 +14,18 @@ import buildVote from './helpers/buildVote';
 import festivalsData from './data/festivals';
 import getAccount from './helpers/getAccount';
 import propertiesData from './data/properties';
-import { initAnswer, initQuestion } from './helpers/transactions';
+import {
+  initAnswer,
+  initQuestion,
+  initFestival,
+  initVotingBooth
+} from './helpers/transactions';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
 import { refreshNonce } from './helpers/nonce';
+import { timestamp } from './helpers/constants';
+import { isFestivalInitialized } from '~/common/services/contracts/festivals';
+import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
 
 describe('Vote', () => {
   let anotherSender;
@@ -49,6 +57,21 @@ describe('Vote', () => {
 
     // Use chainId from contract migrations
     festivalData.chainId = web3.utils.sha3('festival');
+    const festivalInitialized = await isFestivalInitialized(
+      festivalData.chainId,
+    );
+    if (!festivalInitialized) {
+      await initFestival(
+        adminContract,
+        festivalData.chainId,
+        timestamp() + 20,
+        timestamp() + 100000,
+      );
+    }
+    const boothInitialized = await isVotingBoothInitialized(booth.address);
+    if (!boothInitialized) {
+      await initVotingBooth(adminContract, festivalData.chainId, booth.address);
+    }
   });
 
   describe('POST /api/votes', () => {
@@ -105,6 +128,7 @@ describe('Vote', () => {
     });
 
     it('should successfully vote', async () => {
+      const voter = await adminContract.methods.voteRelayer().call();
       await request(app)
         .post('/api/votes')
         .send(vote)

@@ -7,7 +7,12 @@ import createSupertest from './helpers/supertest';
 import festivalsData from './data/festivals';
 import getAccount from './helpers/getAccount';
 import propertyData from './data/properties';
-import { initAnswer, initQuestion } from './helpers/transactions';
+import {
+  initAnswer,
+  initQuestion,
+  initFestival,
+  initVotingBooth,
+} from './helpers/transactions';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
 
@@ -17,6 +22,9 @@ import {
   adminContract,
   getQuestionContract,
 } from '~/common/services/contracts';
+import { timestamp } from './helpers/constants';
+import { isFestivalInitialized } from '~/common/services/contracts/festivals';
+import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
 
 describe('Vote results', () => {
   let vote;
@@ -29,6 +37,10 @@ describe('Vote results', () => {
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
+
+    const booth = web3.eth.accounts.privateKeyToAccount(
+      `0x${process.env.BOOTH_PRIV_KEY}`,
+    );
 
     // Add test data
     artistData1 = await put('/api/artists', {
@@ -69,6 +81,22 @@ describe('Vote results', () => {
     const festivalData = await put('/api/festivals', festivalsData.barbeque);
     // Use chainId from contract migrations
     festivalData.chainId = web3.utils.sha3('festival');
+
+    const festivalInitialized = await isFestivalInitialized(
+      festivalData.chainId,
+    );
+    if (!festivalInitialized) {
+      await initFestival(
+        adminContract,
+        festivalData.chainId,
+        timestamp() + 20,
+        timestamp() + 100000,
+      );
+    }
+    const boothInitialized = await isVotingBoothInitialized(booth.address);
+    if (!boothInitialized) {
+      await initVotingBooth(adminContract, festivalData.chainId, booth.address);
+    }
 
     // Set up question contracts
     festivalQuestionData = await put('/api/questions', {
@@ -130,15 +158,12 @@ describe('Vote results', () => {
 
     // Create accounts for voting
     const sender = getAccount(1);
-    const booth = web3.eth.accounts.privateKeyToAccount(
-      `0x${process.env.BOOTH_PRIV_KEY}`,
-    );
 
     // Create the actual vote of an user
     vote = buildVote(booth, sender, {
       festivalQuestionId: festivalQuestionData.id,
       festivalAnswerIds,
-      festivalVoteTokens: [11, 2, 3, 4], // Davinci wins!
+      festivalVoteTokens: [11, 2, 0, 4], // Davinci wins!
       artworkQuestionId: artworkQuestionData.id,
       artworkAnswerIds,
       artworkVoteTokens: [9, 10],
@@ -169,7 +194,7 @@ describe('Vote results', () => {
             expect(answer.secret).toBeUndefined();
 
             // Check if the correct answers are anonymized (non top 3)
-            if (answer.votePower >= 3) {
+            if (answer.votePower >= 1) {
               expect(answer.artworkId).toBeDefined();
             } else {
               expect(answer.artworkId).toBeUndefined();
