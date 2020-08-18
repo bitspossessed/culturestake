@@ -18,7 +18,7 @@ import {
   initAnswer,
   initQuestion,
   initFestival,
-  initVotingBooth
+  initVotingBooth,
 } from './helpers/transactions';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
