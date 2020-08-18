@@ -23,7 +23,7 @@ const FormArtworks = () => {
     documents: documentsValidation.required().max(3),
     images: imagesValidation.required().max(10),
     sticker: stickerValidation.required(),
-    subtitle: Joi.string().max(255),
+    subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
     url: Joi.string().uri().allow(''),
   };

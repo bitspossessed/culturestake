@@ -19,7 +19,7 @@ const defaultValidation = {
   documents: documentsValidation.max(3),
   sticker: stickerValidation.required(),
   title: Joi.string().max(128).required(),
-  subtitle: Joi.string().max(255),
+  subtitle: Joi.string().max(255).required(),
   url: Joi.string().uri().allow(''),
 };
 

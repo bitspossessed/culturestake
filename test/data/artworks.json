@@ -1,44 +1,72 @@
 {
   "davinci": {
     "title": "Mona Lisa",
+    "subtitle": "Subtitle",
     "description": "by L. Davinci",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "|||"
   },
   "rothko": {
     "title": "untitled (black and grey)",
+    "subtitle": "Subtitle",
     "description": "by Rothko",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "|/|"
   },
   "goya": {
     "title": "Saturn devouring his son",
+    "subtitle": "Subtitle",
     "description": "by Goya",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "//|"
   },
   "bourgeois": {
     "title": "Spider",
+    "subtitle": "Subtitle",
     "description": "by L. Bourgeois",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "[/|"
   },
   "martin": {
     "title": "Little sister",
+    "subtitle": "Subtitle",
     "description": "by Martin",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "|||"
   },
   "duchamp": {
     "title": "Fountain",
+    "subtitle": "Subtitle",
     "description": "by Duchamp",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "[[/"
   },
   "o'keefe": {
     "title": "Pelvis IV",
+    "subtitle": "Subtitle",
     "description": "by O'keefe",
+    "descriptionCommission": "Test",
     "images": [],
+    "documents": [],
+    "url": "",
     "sticker": "|_|"
   }
 }
