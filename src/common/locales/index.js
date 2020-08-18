@@ -347,10 +347,17 @@ const views = {
     notificationSuccess: 'You edited the artist {name}.',
     title: 'Edit artist',
   },
+  Artworks: {
+    buttonBackToFestival: 'Back to festival',
+  },
   ArtworksProfile: {
     buttonBackToFestival: 'Back to festival',
+    buttonBackToFestivalArtworks: 'Back to artworks',
     titleArtistDescription: 'Artist bio',
     titleArtworkDescription: 'Artwork description',
+  },
+  FestivalsProfile: {
+    buttonShowAllArtworks: 'Show festival artworks',
   },
   Homepage: {
     bodyIntroduction:

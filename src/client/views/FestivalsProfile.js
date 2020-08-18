@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 
 import BoxFramed from '~/client/components/BoxFramed';
+import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonMore from '~/client/components/ButtonMore';
 import ColorSection from '~/client/components/ColorSection';
 import Legend from '~/client/components/Legend';
@@ -114,37 +115,45 @@ const FestivalsProfile = () => {
                 <HorizontalSpacingStyle isLarge />
               </Paper>
 
-              {questionTitle && artworks && artworks.length > 0 && (
-                <PaperTicket>
-                  <BoxFramed>
-                    <HeadingSecondaryStyle>
-                      {questionTitle}
-                    </HeadingSecondaryStyle>
-                  </BoxFramed>
+              <PaperTicket>
+                {questionTitle && artworks && artworks.length > 0 && (
+                  <Fragment>
+                    <BoxFramed>
+                      <HeadingSecondaryStyle>
+                        {questionTitle}
+                      </HeadingSecondaryStyle>
+                    </BoxFramed>
 
-                  <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle />
 
-                  {artworks.map((artwork) => {
-                    return (
-                      <FestivalProfileArtwork
-                        artistName={artwork.artist.name}
-                        artworkSlug={artwork.slug}
-                        credit={artwork.voteTokens}
-                        festivalSlug={festival.slug}
-                        key={artwork.id}
-                        scheme={scheme}
-                        title={artwork.title}
-                        total={maxVotePower}
-                      />
-                    );
-                  })}
+                    {artworks.map((artwork) => {
+                      return (
+                        <FestivalProfileArtwork
+                          artistName={artwork.artist.name}
+                          artworkSlug={artwork.slug}
+                          credit={artwork.voteTokens}
+                          festivalSlug={festival.slug}
+                          key={artwork.id}
+                          scheme={scheme}
+                          title={artwork.title}
+                          total={maxVotePower}
+                        />
+                      );
+                    })}
 
-                  <Legend
-                    scheme={scheme}
-                    title={translate('default.legendVotes')}
-                  />
-                </PaperTicket>
-              )}
+                    <Legend
+                      scheme={scheme}
+                      title={translate('default.legendVotes')}
+                    />
+                  </Fragment>
+                )}
+
+                <HorizontalSpacingStyle />
+
+                <ButtonIcon to={`/festivals/${festival.slug}/artworks`}>
+                  {translate('FestivalsProfile.buttonShowAllArtworks')}
+                </ButtonIcon>
+              </PaperTicket>
             </PaperContainerStyle>
           </Fragment>
         )}

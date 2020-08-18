@@ -2,12 +2,14 @@ import httpStatus from 'http-status';
 import { EmptyResultError } from 'sequelize';
 
 import APIError from '~/server/helpers/errors';
+import Artwork from '~/server/models/artwork';
 import Festival from '~/server/models/festival';
 import baseController from '~/server/controllers';
 import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
   ArtworkBelongsToArtist,
+  ArtworkBelongsToManyFestivals,
   ArtworkHasManyImages,
   FestivalBelongsToManyArtworks,
   FestivalHasManyDocuments,
@@ -121,6 +123,33 @@ const optionsWithQuestions = {
   ],
 };
 
+async function getArtworks(req, res, next) {
+  baseController.readAll({
+    model: Artwork,
+    fields: [...artworkFields, 'images', 'artist'],
+    associations: [
+      {
+        association: ArtworkBelongsToArtist,
+        fields: [...artistFields],
+      },
+      {
+        association: ArtworkHasManyImages,
+        fields: [...imageFileFields],
+      },
+    ],
+    include: [
+      {
+        association: ArtworkBelongsToManyFestivals,
+        where: {
+          slug: req.params.slug,
+        },
+      },
+      ArtworkBelongsToArtist,
+      ArtworkHasManyImages,
+    ],
+  })(req, res, next);
+}
+
 async function getQuestions(req, res, next) {
   // Request can be via `chainId` or database `id` or `slug`
   const where = {};
@@ -159,7 +188,7 @@ function create(req, res, next) {
 function readAll(req, res, next) {
   baseController.readAll({
     ...options,
-    isSearchable: true,
+    where: req.locals && req.locals.query,
   })(req, res, next);
 }
 
@@ -176,6 +205,7 @@ function destroy(req, res, next) {
 }
 
 export default {
+  getArtworks,
   getQuestions,
   create,
   read,

@@ -26,6 +26,7 @@ import AdminQuestionsNew from '~/client/views/AdminQuestionsNew';
 import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
 import AdminUsersNew from '~/client/views/AdminUsersNew';
+import Artworks from '~/client/views/Artworks';
 import ArtworksProfile from '~/client/views/ArtworksProfile';
 import Booth from '~/client/views/Booth';
 import Festivals from '~/client/views/Festivals';
@@ -96,6 +97,11 @@ const Routes = () => (
       component={FestivalsProfile}
       exact
       path="/festivals/:slug"
+    />
+    <PublicRoute
+      component={Artworks}
+      exact
+      path="/festivals/:festivalSlug/artworks"
     />
     <PublicRoute
       component={ArtworksProfile}

@@ -29,7 +29,7 @@ function create(req, res, next) {
 function readAll(req, res, next) {
   baseController.readAll({
     ...options,
-    isSearchable: true,
+    where: req.locals && req.locals.query,
   })(req, res, next);
 }
 

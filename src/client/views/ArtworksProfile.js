@@ -15,7 +15,6 @@ import StickerHeading from '~/client/components/StickerHeading';
 import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
 import {
-  ContainerStyle,
   HorizontalSpacingStyle,
   PaperContainerStyle,
 } from '~/client/styles/layout';
@@ -110,7 +109,7 @@ const ArtworksProfile = () => {
 
                 <StickerHeading
                   scheme={scheme}
-                  subtitle={`${artwork.artist.name} / ${festival.title}`}
+                  subtitle={`${artwork.subtitle} / ${artwork.artist.name} / ${festival.title}`}
                   title={artwork.title}
                 />
               </PaperTicket>
@@ -129,63 +128,70 @@ const ArtworksProfile = () => {
                   })}
 
                   {artwork.description && (
-                    <ContainerStyle>
+                    <Fragment>
                       <ParagraphStyle>
                         {translate('ArtworksProfile.titleArtworkDescription')}
                       </ParagraphStyle>
 
                       <ParagraphStyle>{artwork.description}</ParagraphStyle>
-                    </ContainerStyle>
+                    </Fragment>
                   )}
                 </PaperTicket>
               )}
 
               {artwork.artist.bio && (
                 <PaperTicket>
-                  <ContainerStyle>
-                    <ParagraphStyle>
-                      {translate('ArtworksProfile.titleArtistDescription')}
-                    </ParagraphStyle>
+                  <ParagraphStyle>
+                    {translate('ArtworksProfile.titleArtistDescription')}
+                  </ParagraphStyle>
 
-                    <ParagraphStyle>{artwork.artist.bio}</ParagraphStyle>
-                  </ContainerStyle>
+                  <ParagraphStyle>{artwork.artist.bio}</ParagraphStyle>
                 </PaperTicket>
               )}
 
-              {questionTitle && properties && (
-                <PaperTicket>
-                  <BoxFramed>
-                    <HeadingSecondaryStyle>
-                      {questionTitle}
-                    </HeadingSecondaryStyle>
-                  </BoxFramed>
+              <PaperTicket>
+                {questionTitle && properties && (
+                  <Fragment>
+                    <BoxFramed>
+                      <HeadingSecondaryStyle>
+                        {questionTitle}
+                      </HeadingSecondaryStyle>
+                    </BoxFramed>
 
-                  <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle />
 
-                  {properties.map((property) => {
-                    return (
-                      <ArtworksProfileProperty
-                        credit={property.voteTokens}
-                        key={property.id}
-                        scheme={scheme}
-                        title={property.title}
-                        total={maxVotePower}
-                      />
-                    );
-                  })}
+                    {properties.map((property) => {
+                      return (
+                        <ArtworksProfileProperty
+                          credit={property.voteTokens}
+                          key={property.id}
+                          scheme={scheme}
+                          title={property.title}
+                          total={maxVotePower}
+                        />
+                      );
+                    })}
 
-                  <Legend
-                    scheme={scheme}
-                    title={translate('default.legendVotes')}
-                  />
+                    <Legend
+                      scheme={scheme}
+                      title={translate('default.legendVotes')}
+                    />
+                  </Fragment>
+                )}
 
-                  <HorizontalSpacingStyle />
+                <HorizontalSpacingStyle />
 
-                  <ButtonIcon isIconFlipped to={`/festivals/${festival.slug}`}>
-                    {translate('ArtworksProfile.buttonBackToFestival')}
-                  </ButtonIcon>
-                </PaperTicket>
-              )}
+                <ButtonIcon
+                  isIconFlipped
+                  to={`/festivals/${festival.slug}/artworks`}
+                >
+                  {translate('ArtworksProfile.buttonBackToFestivalArtworks')}
+                </ButtonIcon>
+
+                <ButtonIcon isIconFlipped to={`/festivals/${festival.slug}`}>
+                  {translate('ArtworksProfile.buttonBackToFestival')}
+                </ButtonIcon>
+              </PaperTicket>
             </PaperContainerStyle>
           </Fragment>
         )}

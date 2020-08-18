@@ -39,6 +39,13 @@ router.get(
 );
 
 router.get(
+  '/:slug/artworks',
+  optionalAuthMiddleware,
+  validate(festivalsValidation.getArtworks),
+  festivalsController.getArtworks,
+);
+
+router.get(
   '/:slug',
   optionalAuthMiddleware,
   validate(festivalsValidation.read),
