@@ -74,7 +74,27 @@ app.use(bodyParser.json());
 
 // Use CORS and security middlewares
 app.use(cors());
-app.use(helmet());
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'none'"],
+        baseUri: ["'self'"],
+        scriptSrc: ["'self' 'unsafe-inline'"],
+        styleSrc: ["'self' 'unsafe-inline'"],
+        imgSrc: [
+          `'self' ${
+            process.env.BARCODE_URL && process.env.BARCODE_URL.split('/')[0]
+          }`,
+        ],
+        fontSrc: ["'self'"],
+        formAction: ["'self'"],
+        connectSrc: ["'self'"],
+        upgradeInsecureRequests: [],
+      },
+    },
+  }),
+);
 
 // Passport authentication middleware
 app.use(passport.initialize());
