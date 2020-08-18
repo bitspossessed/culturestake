@@ -89,8 +89,9 @@ app.use(
         ],
         fontSrc: ["'self'"],
         formAction: ["'self'"],
-        connectSrc: ["'self'"],
-        upgradeInsecureRequests: [],
+        connectSrc: [
+          `'self' ${process.env.ETHEREUM_NODE_ENDPOINT} ${process.env.GRAPH_NODE_ENDPOINT}`,
+        ],
       },
     },
   }),
