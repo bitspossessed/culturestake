@@ -3,8 +3,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import InputFieldset from '~/client/components/InputFieldset';
-import { useField } from '~/client/hooks/forms';
 import styles from '~/client/styles/variables';
+import { useField } from '~/client/hooks/forms';
 
 // eslint-disable-next-line react/display-name
 const InputTextareaField = React.forwardRef(

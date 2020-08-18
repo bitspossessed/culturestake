@@ -219,9 +219,9 @@ const InputUploadFieldItems = ({ files, onRemove }) => {
 
         return (
           <InputUploadFieldItemStyle key={index}>
-            {isImage(fileType) ? (
+            {isImage(fileType) && (
               <InputUploadFieldImageStyle src={base64 || urlThumb} width={50} />
-            ) : null}
+            )}
 
             <InputUploadFieldItemTextStyle>
               <a href={url} rel="noreferrer" target="_blank">

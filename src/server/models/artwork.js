@@ -29,7 +29,11 @@ const Artwork = db.define('artwork', {
     type: DataTypes.STRING,
   },
   description: {
-    type: DataTypes.STRING(2000),
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  descriptionCommission: {
+    type: DataTypes.TEXT,
     allowNull: true,
   },
   artistId: {

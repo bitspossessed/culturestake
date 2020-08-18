@@ -14,6 +14,7 @@ import {
 const defaultValidation = {
   artistId: Joi.number().integer().positive(),
   description: Joi.string().max(2000).required(),
+  descriptionCommission: Joi.string().max(2000).required(),
   images: imagesValidation.max(10),
   documents: documentsValidation.max(3),
   sticker: stickerValidation.required(),

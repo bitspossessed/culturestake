@@ -23,14 +23,15 @@ const AdminArtworksEdit = () => {
 
   const { ButtonDelete, Form, resource, isResourceLoading } = useEditForm({
     fields: [
-      'title',
-      'description',
-      'images',
       'artistId',
-      'sticker',
-      'url',
-      'subtitle',
+      'description',
+      'descriptionCommission',
       'documents',
+      'images',
+      'sticker',
+      'subtitle',
+      'title',
+      'url',
     ],
     resourcePath: ['artworks', slug],
     returnUrl,

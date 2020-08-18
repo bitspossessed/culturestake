@@ -19,6 +19,7 @@ const FormArtworks = () => {
       .required()
       .error(new Error(translate('validations.artistRequired'))),
     description: Joi.string().max(2000).required(),
+    descriptionCommission: Joi.string().max(2000).required(),
     documents: documentsValidation.required().max(3),
     images: imagesValidation.required().max(10),
     sticker: stickerValidation.required(),
@@ -47,6 +48,12 @@ const FormArtworks = () => {
         label={translate('FormArtworks.fieldDescription')}
         name="description"
         validate={schema.description}
+      />
+
+      <InputTextareaField
+        label={translate('FormArtworks.fieldDescriptionCommission')}
+        name="descriptionCommission"
+        validate={schema.descriptionCommission}
       />
 
       <InputField

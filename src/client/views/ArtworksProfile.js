@@ -114,7 +114,9 @@ const ArtworksProfile = () => {
                 />
               </PaperTicket>
 
-              {(artwork.images.length > 0 || artwork.description) && (
+              {(artwork.images.length > 0 ||
+                artwork.description ||
+                artwork.descriptionCommission) && (
                 <PaperTicket>
                   {artwork.images.map((image) => {
                     return (
@@ -134,6 +136,20 @@ const ArtworksProfile = () => {
                       </ParagraphStyle>
 
                       <ParagraphStyle>{artwork.description}</ParagraphStyle>
+                    </Fragment>
+                  )}
+
+                  {artwork.descriptionCommission && (
+                    <Fragment>
+                      <ParagraphStyle>
+                        {translate(
+                          'ArtworksProfile.titleArtworkDescriptionCommission',
+                        )}
+                      </ParagraphStyle>
+
+                      <ParagraphStyle>
+                        {artwork.descriptionCommission}
+                      </ParagraphStyle>
                     </Fragment>
                   )}
                 </PaperTicket>

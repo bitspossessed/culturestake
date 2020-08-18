@@ -93,7 +93,8 @@ const components = {
   FormArtworks: {
     fieldArtist: 'Artist:',
     fieldArtistPlaceholder: 'Search for artist name',
-    fieldDescription: 'Description:',
+    fieldDescription: 'Activity Description:',
+    fieldDescriptionCommission: 'Commission Description:',
     fieldDocuments: 'Documents',
     fieldImages: 'Artwork images',
     fieldSticker: 'Sticker',
@@ -354,7 +355,8 @@ const views = {
     buttonBackToFestival: 'Back to festival',
     buttonBackToFestivalArtworks: 'Back to artworks',
     titleArtistDescription: 'Artist bio',
-    titleArtworkDescription: 'Artwork description',
+    titleArtworkDescription: 'Artwork activity description',
+    titleArtworkDescriptionCommission: 'Artwork commission description',
   },
   FestivalsProfile: {
     buttonShowAllArtworks: 'Show festival artworks',

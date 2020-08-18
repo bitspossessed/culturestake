@@ -19,14 +19,15 @@ const AdminArtworksNew = () => {
 
   const { Form } = useNewForm({
     fields: [
-      'title',
+      'artistId',
       'description',
+      'descriptionCommission',
+      'documents',
       'images',
       'sticker',
-      'artistId',
-      'url',
       'subtitle',
-      'documents',
+      'title',
+      'url',
     ],
     resourcePath: ['artworks'],
     returnUrl,
