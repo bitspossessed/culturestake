@@ -66,7 +66,7 @@ const ContractsAnswers = ({
     <EthereumContainer>
       {isDeactivated ? (
         <ParagraphStyle>
-          {translate('ContractsAnswers.notificationAlreadyDeactivated')}
+          {translate('ContractsAnswers.bodyAlreadyDeactivated')}
         </ParagraphStyle>
       ) : !isInitialized ? (
         <ContractsAnswersInitialize

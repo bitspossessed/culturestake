@@ -31,11 +31,9 @@ const AdminAnswersEdit = () => {
       const response = await apiRequest({
         path: ['questions', questionId],
       });
-
       setQuestion(response);
       setIsLoading(false);
     };
-
     getQuestion();
   }, [setQuestion, setIsLoading, questionId]);
 
@@ -51,7 +49,7 @@ const AdminAnswersEdit = () => {
                 festivalId={resource.festivalId}
                 isArtworkAnswer={!!resource.artwork}
                 isDisabled
-                questionId={resource.questionId}
+                question={question}
               />
 
               {isDeactivated ? (
