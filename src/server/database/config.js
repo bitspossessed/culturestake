@@ -14,4 +14,5 @@ module.exports = {
   url,
   dialect: process.env.DATABASE_DIALECT || 'postgres',
   timezone: '+00:00',
+  seederStorage: 'sequelize',
 };
