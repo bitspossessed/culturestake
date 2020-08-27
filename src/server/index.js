@@ -82,6 +82,7 @@ app.use(
         baseUri: ["'self'"],
         scriptSrc: ["'self' 'unsafe-inline'"],
         styleSrc: ["'self' 'unsafe-inline'"],
+        objectSrc: ["'self'"],
         imgSrc: [
           `'self' ${
             process.env.BARCODE_URL && process.env.BARCODE_URL.split('/')[0]
