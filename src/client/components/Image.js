@@ -25,6 +25,9 @@ export const ImageStyle = styled.svg`
   width: 100%;
   height: 50rem;
 
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
   cursor: crosshair;
 `;
 
