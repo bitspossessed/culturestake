@@ -79,6 +79,13 @@ const { hostname: hostnameBarcode } = new URL(process.env.BARCODE_URL);
 app.use(
   cors({
     origin: [hostname, new RegExp(`.${hostname}`, 'i')],
+    allowedHeaders: [
+      'Authorization',
+      'Content-Length',
+      'Content-Type',
+      'Origin',
+    ],
+    methods: ['GET', 'PUT', 'POST', 'DELETE'],
   }),
 );
 
