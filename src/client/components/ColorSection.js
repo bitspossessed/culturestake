@@ -148,7 +148,7 @@ export const ColorSectionStyle = styled.div`
         const { foreground, background } = styles.schemes[props.scheme];
         return props.isInverted ? background : foreground;
       }};
-    };
+    }
   }
 
   ${/* sc-selector */ ButtonMoreStyle},
