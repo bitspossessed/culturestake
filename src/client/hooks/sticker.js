@@ -34,7 +34,9 @@ export const useStickerImage = (images) => {
     images.length > 0 &&
     'urlThresholdThumb' in images[0]
   ) {
-    return images[0].urlThresholdThumb;
+    return images.sort(({ id: itemA }, { id: itemB }) => {
+      return itemA - itemB;
+    })[0].urlThresholdThumb;
   }
 
   if (typeof images === 'string') {
