@@ -110,50 +110,58 @@ const FestivalsProfile = () => {
               <Paper>
                 <ContainerStyle>
                   <ParagraphStyle>{festival.description}</ParagraphStyle>
+
+                  {festival.url && (
+                    <ButtonIcon href={festival.url}>
+                      {translate('FestivalsProfile.buttonGoToWebsite')}
+                    </ButtonIcon>
+                  )}
                 </ContainerStyle>
 
                 <HorizontalSpacingStyle isLarge />
               </Paper>
 
-              <PaperTicket>
-                {questionTitle && artworks && artworks.length > 0 && (
-                  <Fragment>
-                    <BoxFramed>
-                      <HeadingSecondaryStyle>
-                        {questionTitle}
-                      </HeadingSecondaryStyle>
-                    </BoxFramed>
+              {artworks && artworks.length > 0 && (
+                <PaperTicket>
+                  {questionTitle && (
+                    <Fragment>
+                      <BoxFramed>
+                        <HeadingSecondaryStyle>
+                          {questionTitle}
+                        </HeadingSecondaryStyle>
+                      </BoxFramed>
 
-                    <HorizontalSpacingStyle />
+                      <HorizontalSpacingStyle />
 
-                    {artworks.map((artwork) => {
-                      return (
-                        <FestivalProfileArtwork
-                          artistName={artwork.artist.name}
-                          artworkSlug={artwork.slug}
-                          credit={artwork.voteTokens}
-                          festivalSlug={festival.slug}
-                          key={artwork.id}
-                          scheme={scheme}
-                          title={artwork.title}
-                          total={maxVotePower}
-                        />
-                      );
-                    })}
+                      {artworks.map((artwork) => {
+                        return (
+                          <FestivalProfileArtwork
+                            artistName={artwork.artist.name}
+                            artworkSlug={artwork.slug}
+                            credit={artwork.voteTokens}
+                            festivalSlug={festival.slug}
+                            key={artwork.id}
+                            scheme={scheme}
+                            title={artwork.title}
+                            total={maxVotePower}
+                          />
+                        );
+                      })}
 
-                    <Legend
-                      scheme={scheme}
-                      title={translate('default.legendVotes')}
-                    />
-                  </Fragment>
-                )}
+                      <Legend
+                        scheme={scheme}
+                        title={translate('default.legendVotes')}
+                      />
 
-                <HorizontalSpacingStyle />
+                      <HorizontalSpacingStyle />
+                    </Fragment>
+                  )}
 
-                <ButtonIcon to={`/festivals/${festival.slug}/artworks`}>
-                  {translate('FestivalsProfile.buttonShowAllArtworks')}
-                </ButtonIcon>
-              </PaperTicket>
+                  <ButtonIcon to={`/festivals/${festival.slug}/artworks`}>
+                    {translate('FestivalsProfile.buttonShowAllArtworks')}
+                  </ButtonIcon>
+                </PaperTicket>
+              )}
             </PaperContainerStyle>
           </Fragment>
         )}

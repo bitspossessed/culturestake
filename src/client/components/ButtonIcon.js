@@ -83,6 +83,7 @@ ButtonIcon.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
   disabled: PropTypes.bool,
+  href: PropTypes.string,
   isIconFlipped: PropTypes.bool,
   isIconLeft: PropTypes.bool,
   onClick: PropTypes.func,

@@ -164,6 +164,12 @@ const ArtworksProfile = () => {
                   </ParagraphStyle>
 
                   <ParagraphStyle>{artwork.artist.bio}</ParagraphStyle>
+
+                  {artwork.artist.url && (
+                    <ButtonIcon href={artwork.artist.url}>
+                      {translate('ArtworksProfile.buttonGoToArtistWebsite')}
+                    </ButtonIcon>
+                  )}
                 </PaperTicket>
               )}
 
@@ -198,6 +204,12 @@ const ArtworksProfile = () => {
                 )}
 
                 <HorizontalSpacingStyle />
+
+                {artwork.url && (
+                  <ButtonIcon href={artwork.url}>
+                    {translate('ArtworksProfile.buttonGoToArtworkWebsite')}
+                  </ButtonIcon>
+                )}
 
                 <ButtonIcon
                   isIconFlipped

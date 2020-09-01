@@ -13,11 +13,9 @@ import translate from '~/common/services/i18n';
 import { ContainerStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 
-const Homepage = () => {
-  const onClick = () => {
-    window.location.assign('https://www.furtherfield.org/');
-  };
+const FURTHERFIELD_URL = 'https://www.furtherfield.org';
 
+const Homepage = () => {
   return (
     <Fragment>
       <View>
@@ -47,7 +45,7 @@ const Homepage = () => {
               {translate('Homepage.buttonViewFestivals')}
             </ButtonIcon>
 
-            <ButtonIcon onClick={onClick}>
+            <ButtonIcon href={FURTHERFIELD_URL}>
               {translate('Homepage.buttonFurtherfield')}
             </ButtonIcon>
           </ContainerStyle>

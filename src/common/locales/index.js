@@ -354,11 +354,14 @@ const views = {
   ArtworksProfile: {
     buttonBackToFestival: 'Back to festival',
     buttonBackToFestivalArtworks: 'Back to artworks',
+    buttonGoToArtistWebsite: 'Visit artist website',
+    buttonGoToArtworkWebsite: 'Visit artwork website',
     titleArtistDescription: 'Artist bio',
     titleArtworkDescription: 'Artwork activity description',
     titleArtworkDescriptionCommission: 'Artwork commission description',
   },
   FestivalsProfile: {
+    buttonGoToWebsite: 'Visit festival website',
     buttonShowAllArtworks: 'Show festival artworks',
   },
   Homepage: {
