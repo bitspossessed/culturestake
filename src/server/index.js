@@ -93,7 +93,7 @@ app.use(
         // We have to allow unsafe-inline for styled-components ...
         styleSrc: ["'self'", "'unsafe-inline'"],
         objectSrc: ["'self'"],
-        imgSrc: ["'self'", hostnameBarcode],
+        imgSrc: ["'self'", 'data:', hostnameBarcode],
         fontSrc: ["'self'"],
         formAction: ["'self'"],
         connectSrc: [
