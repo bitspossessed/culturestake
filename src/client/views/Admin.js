@@ -10,6 +10,7 @@ import HeaderAdmin from '~/client/components/HeaderAdmin';
 import PayerBalance from '~/client/components/PayerBalance';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import translate from '~/common/services/i18n';
+import { ParagraphStyle } from '~/client/styles/typography';
 
 const Admin = () => {
   return (
@@ -48,8 +49,10 @@ const Admin = () => {
             </ButtonOutline>
           </AdminNavigationStyle>
         </BoxRounded>
+
         <PayerBalance />
         <ContractsOwners />
+        <ParagraphStyle>v{process.env.RELEASE_VERSION}</ParagraphStyle>
       </ViewAdmin>
     </Fragment>
   );
