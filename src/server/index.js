@@ -72,10 +72,17 @@ app.use(compression());
 app.use(methodOverride());
 app.use(bodyParser.json());
 
-// Use CORS and security middlewares
+// Configure CORS
 const { hostname } = new URL(process.env.BASE_PATH);
 const { hostname: hostnameBarcode } = new URL(process.env.BARCODE_URL);
-app.use(cors());
+
+app.use(
+  cors({
+    origin: [hostname, `*.${hostname}`],
+  }),
+);
+
+// Configure HTTP headers / CSP
 app.use(
   helmet({
     contentSecurityPolicy: {
