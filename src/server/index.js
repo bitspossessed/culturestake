@@ -73,6 +73,8 @@ app.use(methodOverride());
 app.use(bodyParser.json());
 
 // Use CORS and security middlewares
+const { hostname } = new URL(process.env.BASE_PATH);
+const { hostname: hostnameBarcode } = new URL(process.env.BARCODE_URL);
 app.use(cors());
 app.use(
   helmet({
@@ -80,18 +82,19 @@ app.use(
       directives: {
         defaultSrc: ["'none'"],
         baseUri: ["'self'"],
-        scriptSrc: ["'self' 'unsafe-inline'"],
-        styleSrc: ["'self' 'unsafe-inline'"],
+        scriptSrc: ["'self'"],
+        // We have to allow unsafe-inline for styled-components ...
+        styleSrc: ["'self'", "'unsafe-inline'"],
         objectSrc: ["'self'"],
-        imgSrc: [
-          `'self' ${
-            process.env.BARCODE_URL && process.env.BARCODE_URL.split('/')[0]
-          }`,
-        ],
+        imgSrc: ["'self'", hostnameBarcode],
         fontSrc: ["'self'"],
         formAction: ["'self'"],
         connectSrc: [
-          `'self' ${process.env.ETHEREUM_NODE_ENDPOINT} ${process.env.GRAPH_NODE_ENDPOINT}`,
+          "'self'",
+          hostname,
+          `*.${hostname}`,
+          process.env.ETHEREUM_NODE_ENDPOINT,
+          process.env.GRAPH_NODE_ENDPOINT,
         ],
       },
     },
