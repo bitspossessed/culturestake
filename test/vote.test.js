@@ -128,7 +128,7 @@ describe('Vote', () => {
     });
 
     it('should successfully vote', async () => {
-      const voter = await adminContract.methods.voteRelayer().call();
+      await adminContract.methods.voteRelayer().call();
       await request(app)
         .post('/api/votes')
         .send(vote)
