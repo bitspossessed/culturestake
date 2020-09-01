@@ -129,6 +129,8 @@ const ArtworksProfile = () => {
                     );
                   })}
 
+                  <HorizontalSpacingStyle />
+
                   {artwork.description && (
                     <Fragment>
                       <ParagraphStyle>
