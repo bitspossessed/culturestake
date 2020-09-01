@@ -86,6 +86,7 @@ app.use(
       'Origin',
     ],
     methods: ['GET', 'PUT', 'POST', 'DELETE'],
+    credentials: true,
   }),
 );
 
