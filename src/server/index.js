@@ -78,7 +78,7 @@ const { hostname: hostnameBarcode } = new URL(process.env.BARCODE_URL);
 
 app.use(
   cors({
-    origin: [hostname, `*.${hostname}`],
+    origin: [hostname, new RegExp(`.${hostname}`, 'i')],
   }),
 );
 
@@ -135,7 +135,6 @@ app.use(
   `/${UPLOAD_FOLDER_NAME}`,
   express.static(UPLOAD_FOLDER_PATH, {
     index: false,
-    // redirect: false,
     maxAge: ASSETS_MAX_AGE,
   }),
 );
