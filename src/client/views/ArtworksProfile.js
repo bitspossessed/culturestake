@@ -154,6 +154,12 @@ const ArtworksProfile = () => {
                       </ParagraphStyle>
                     </Fragment>
                   )}
+
+                  {artwork.url && (
+                    <ButtonIcon href={artwork.url}>
+                      {translate('ArtworksProfile.buttonGoToArtworkWebsite')}
+                    </ButtonIcon>
+                  )}
                 </PaperTicket>
               )}
 
@@ -205,12 +211,6 @@ const ArtworksProfile = () => {
 
                 <HorizontalSpacingStyle />
 
-                {artwork.url && (
-                  <ButtonIcon href={artwork.url}>
-                    {translate('ArtworksProfile.buttonGoToArtworkWebsite')}
-                  </ButtonIcon>
-                )}
-
                 <ButtonIcon
                   isIconFlipped
                   to={`/festivals/${festival.slug}/artworks`}
@@ -234,9 +234,7 @@ const ArtworksProfileProperty = (props) => {
   return (
     <Fragment>
       <HeadingSecondaryStyle>{props.title}</HeadingSecondaryStyle>
-
       <Slider credit={props.credit} scheme={props.scheme} total={props.total} />
-
       <HorizontalSpacingStyle />
     </Fragment>
   );
