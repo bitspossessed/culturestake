@@ -19,7 +19,7 @@ function initializeMetamaskProvider() {
 
 const provider =
   typeof window !== 'undefined'
-    ? initializeMetamaskProvider()
+    ? window.ethereum || initializeMetamaskProvider()
     : new Web3.providers.HttpProvider(process.env.ETHEREUM_NODE_ENDPOINT);
 
 const web3 = new Web3(provider);
