@@ -132,9 +132,6 @@ app.use(
   }),
 );
 
-// Optionally protect page with HTTP Basic authentication
-app.use(basicAuthMiddleware);
-
 // Static assets hosting
 app.use(
   `/${ASSETS_FOLDER_NAME}`,
@@ -158,7 +155,7 @@ app.use(
 app.use('/api', require('~/server/routes'));
 
 // Handle every other route with index.html
-app.get('*', (req, res) => {
+app.get('*', basicAuthMiddleware, (req, res) => {
   res.render('index', {
     assets: require(assetsManifestoPath),
   });

@@ -5,7 +5,7 @@ export default function basicAuthMiddleware(req, res, next) {
     return basicAuth({
       users: { admin: process.env.BASIC_AUTH_PASSWORD },
       challenge: true,
-      realm: 'protected12',
+      realm: 'protected',
     })(req, res, next);
   } else {
     return next();
