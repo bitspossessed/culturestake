@@ -33,7 +33,7 @@ export default function authMiddleware(req, res, next) {
 export function optionalAuthMiddleware(req, res, next) {
   const auth = req.get('Authorization');
 
-  if (!auth) {
+  if (!auth || !auth.includes('Bearer')) {
     return next();
   }
 

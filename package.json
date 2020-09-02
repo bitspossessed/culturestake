@@ -83,7 +83,6 @@
   },
   "dependencies": {
     "@metamask/detect-provider": "^1.1.0",
-    "@metamask/inpage-provider": "^6.2.0",
     "@zxing/library": "^0.17.1",
     "animation-frame": "^0.3.0",
     "bcrypt": "^5.0.0",
@@ -93,6 +92,7 @@
     "cors": "^2.8.5",
     "culturestake-contracts": "^1.0.28",
     "express": "^4.17.1",
+    "express-basic-auth": "^1.2.0",
     "graphql": "^15.3.0",
     "graphql-request": "^3.0.0",
     "helmet": "^4.1.0",
@@ -110,7 +110,6 @@
     "passport-local": "^1.0.0",
     "pepjs": "^0.5.2",
     "pg": "^8.3.3",
-    "post-message-stream": "^3.0.0",
     "pug": "^3.0.0",
     "qrcode": "^1.4.4",
     "react": "^16.13.1",

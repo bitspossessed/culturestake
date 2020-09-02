@@ -11,6 +11,7 @@ import morgan from 'morgan';
 
 dotenv.config();
 
+import basicAuthMiddleware from '~/server/middlewares/basicAuth';
 import db from '~/server/database';
 import errorsMiddleware from '~/server/middlewares/errors';
 import logger from '~/server/helpers/logger';
@@ -97,7 +98,9 @@ app.use(
       directives: {
         defaultSrc: ["'none'"],
         baseUri: ["'self'"],
-        scriptSrc: ["'self'"],
+        // We have to allow unsafe-eval for MetaMask in Firefox ...
+        // https://github.com/MetaMask/metamask-extension/issues/3133
+        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
         // We have to allow unsafe-inline for styled-components ...
         styleSrc: ["'self'", "'unsafe-inline'"],
         objectSrc: ["'self'"],
@@ -109,6 +112,7 @@ app.use(
           hostname,
           `*.${hostname}`,
           process.env.ETHEREUM_NODE_ENDPOINT,
+          process.env.ETHEREUM_NODE_ENDPOINT_WS,
           process.env.GRAPH_NODE_ENDPOINT,
         ],
       },
@@ -127,6 +131,9 @@ app.use(
     },
   }),
 );
+
+// Optionally protect page with HTTP Basic authentication
+app.use(basicAuthMiddleware);
 
 // Static assets hosting
 app.use(
