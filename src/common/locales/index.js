@@ -101,6 +101,7 @@ const components = {
     fieldTitle: 'Title:',
     fieldSubtitle: 'Subtitle',
     fieldUrl: 'Website:',
+    fieldImageCredits: 'Image Credits:',
   },
   FormArtists: {
     fieldBio: 'Bio:',

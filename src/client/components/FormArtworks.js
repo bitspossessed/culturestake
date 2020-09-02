@@ -26,6 +26,7 @@ const FormArtworks = () => {
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
     url: Joi.string().uri().allow(''),
+    imageCredits: Joi.string().max(500),
   };
 
   return (
@@ -78,6 +79,13 @@ const FormArtworks = () => {
         label={translate('FormArtworks.fieldImages')}
         name="images"
         validate={schema.images}
+      />
+
+      <InputField
+        label={translate('FormArtworks.fieldImageCredits')}
+        name="imageCredits"
+        type="text"
+        validate={schema.imageCredits}
       />
 
       <InputUploadField

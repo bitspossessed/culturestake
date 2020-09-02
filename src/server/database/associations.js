@@ -28,6 +28,7 @@ export const artworkFields = [
   'subtitle',
   'url',
   'documents',
+  'imageCredits',
 ];
 export const baseFileFields = ['fileName', 'fileType', 'url'];
 export const festivalFields = [
