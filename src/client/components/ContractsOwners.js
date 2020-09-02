@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { Fragment, useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 
@@ -29,9 +29,6 @@ import { web3Validators } from '~/common/helpers/validate';
 const ownerAddressSchema = web3Validators.web3().address().required();
 
 const ContractsOwners = () => {
-  const dispatch = useDispatch();
-  const senderAddress = useOwnerAddress();
-
   const { isPending: isRemovePending } = usePendingTransaction({
     txMethod: TX_REMOVE_OWNER,
   });
@@ -39,6 +36,22 @@ const ContractsOwners = () => {
   const { isPending: isAddPending } = usePendingTransaction({
     txMethod: TX_ADD_OWNER,
   });
+
+  const isPending = isAddPending || isRemovePending;
+
+  return (
+    <EthereumContainer isPending={isPending}>
+      <ContractsOwnersInner
+        isAddPending={isAddPending}
+        isRemovePending={isRemovePending}
+      />
+    </EthereumContainer>
+  );
+};
+
+const ContractsOwnersInner = ({ isAddPending, isRemovePending }) => {
+  const dispatch = useDispatch();
+  const senderAddress = useOwnerAddress();
 
   const [owners, setOwners] = useState([]);
 
@@ -68,10 +81,8 @@ const ContractsOwners = () => {
     updateOwnersList();
   }, [isAddPending, isRemovePending]);
 
-  const isPending = isAddPending || isRemovePending;
-
   return (
-    <EthereumContainer isPending={isPending}>
+    <Fragment>
       <ParagraphStyle>{translate('ContractsOwners.title')}</ParagraphStyle>
 
       {owners.length > 0 && (
@@ -83,7 +94,7 @@ const ContractsOwners = () => {
       )}
 
       <ContractsOwnersForm />
-    </EthereumContainer>
+    </Fragment>
   );
 };
 
@@ -160,6 +171,11 @@ ContractsOwnersList.propTypes = {
   isDisabled: PropTypes.bool.isRequired,
   onRemove: PropTypes.func.isRequired,
   owners: PropTypes.array.isRequired,
+};
+
+ContractsOwnersInner.propTypes = {
+  isAddPending: PropTypes.bool.isRequired,
+  isRemovePending: PropTypes.bool.isRequired,
 };
 
 ContractsOwnersListItem.propTypes = {
