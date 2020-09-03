@@ -4,8 +4,12 @@ import { useDispatch } from 'react-redux';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import InputField from '~/client/components/InputField';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 import InputFinderField from '~/client/components/InputFinderField';
 import { initializeVotingBooth } from '~/common/services/contracts/booths';
+import { isFestivalInitialized } from '~/common/services/contracts/festivals';
 import translate from '~/common/services/i18n';
 import { addPendingTransaction } from '~/client/store/ethereum/actions';
 import { useContractsForm } from '~/client/hooks/forms';
@@ -32,6 +36,17 @@ const ContractsBoothsForm = () => {
 
   const { Form, meta, reset } = useContractsForm({
     onSubmit: async ({ boothAddress, festivalChainId }) => {
+      const festivalInitialized = await isFestivalInitialized(festivalChainId);
+      if (!festivalInitialized) {
+        dispatch(
+          notify({
+            text: translate('ContractsBooths.errorNotInitialized'),
+            type: NotificationsTypes.ERROR,
+          }),
+        );
+        reset();
+        return;
+      }
       const { txHash, txMethod } = await initializeVotingBooth(
         owner,
         festivalChainId,
