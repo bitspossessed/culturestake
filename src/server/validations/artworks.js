@@ -21,6 +21,7 @@ const defaultValidation = {
   title: Joi.string().max(128).required(),
   subtitle: Joi.string().max(255).required(),
   url: Joi.string().uri().allow(''),
+  imageCredits: Joi.string().max(500),
 };
 
 export default {
