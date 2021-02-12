@@ -13,6 +13,9 @@ CultureStake democratises arts commissioning by providing communities and artist
 
 ## Usage
 
+Support for local docker development is available in:
+[`bitspossessed/culturestake-provisioning`](https://github.com/bitspossessed/culturestake-provisioning)
+
 ```
 // Install dependencies
 npm install
