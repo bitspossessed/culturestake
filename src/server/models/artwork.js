@@ -46,6 +46,9 @@ const Artwork = db.define('artwork', {
   url: {
     type: DataTypes.STRING,
   },
+  imageCredits: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Artwork, {

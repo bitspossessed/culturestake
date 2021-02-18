@@ -33,6 +33,7 @@ const components = {
     fieldBoothAddress: 'Booth Address:',
     fieldFestivalChainId: 'Festival:',
     fieldFestivalPlaceholder: 'Choose a festival',
+    errorNotInitialized: 'Festival must be initialized',
     title: 'Add New Voting Booth',
   },
   ContractsFestivals: {
@@ -101,6 +102,7 @@ const components = {
     fieldTitle: 'Title:',
     fieldSubtitle: 'Subtitle',
     fieldUrl: 'Website:',
+    fieldImageCredits: 'Image Credits:',
   },
   FormArtists: {
     fieldBio: 'Bio:',

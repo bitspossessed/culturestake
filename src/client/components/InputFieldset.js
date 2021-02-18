@@ -37,7 +37,7 @@ export const InputFieldsetLabelStyle = styled.label`
   color: ${styles.colors.violet};
 `;
 
-const InputFieldsetErrorStyle = styled.p`
+export const InputFieldsetErrorStyle = styled.p`
   margin-bottom: 1rem;
   padding: 0.5rem;
   padding-left: 0.8rem;
