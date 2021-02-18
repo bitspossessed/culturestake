@@ -13,6 +13,7 @@ db.authenticate()
       repeat: {
         cron: CRON_NIGHTLY,
       },
+    });
   })
   .catch(() => {
     logger.error('Unable to connect to database');

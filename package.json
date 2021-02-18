@@ -23,8 +23,8 @@
     "test:watch": "npm run test -- --watch",
     "backend:start": "concurrently --prefix '{pid}-{name}' --names 'API,WORKERS' --kill-others 'npm run server:start' 'npm run worker:start'",
     "backend:watch": "concurrently --prefix '{pid}-{name}' --names 'API,WORKERS' --kill-others 'npm run server:watch' 'npm run worker:watch'",
-    "worker:build": "cross-env NODE_ENV=production node ./build/worker.js",
-    "worker:start": "cross-env NODE_ENV=production node ./build/worker.js",
+    "worker:serve": "NODE_ENV=development babel-node -r dotenv/config ./src/server/worker.js --source-maps inline",
+    "worker:start": "cross-env NODE_ENV=production node ./build/server/worker.js",
     "worker:watch": "nodemon --watch ./src --exec npm run worker:serve"
   },
   "repository": {
@@ -95,6 +95,7 @@
     "bull": "^3.20.1",
     "celebrate": "^12.2.0",
     "compression": "^1.7.4",
+    "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "culturestake-contracts": "^1.0.28",
     "express": "^4.17.1",
