@@ -5,6 +5,7 @@ import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
 import FestivalArtwork from '~/server/models/festivalArtwork';
 import Image from '~/server/models/image';
+// import Organisation from '~/server/models/organisation';
 import Property from '~/server/models/property';
 import Question from '~/server/models/question';
 
@@ -45,6 +46,7 @@ export const imageFileFields = [
   'urlThresholdThumb',
   'urlThumb',
 ];
+export const organisationFields = ['description', 'name', 'url'];
 export const propertyFields = ['title'];
 export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
 export const userFields = ['username', 'email'];
