@@ -9,3 +9,7 @@ export default new Sequelize(config.url, {
     logger.debug(msg);
   },
 });
+
+Sequelize.postgres.DECIMAL.parse = function (value) {
+  return parseFloat(value);
+};

@@ -61,10 +61,8 @@ describe('Voteweights', () => {
         .expect((response) => {
           const { location, strength, radius } = response.body.data;
           expect(strength).toBe(voteweights.locationVoteweight.strength);
-          //expect(radius).toBe(voteweights.locationVoteweight.radius);
-          expect(location).toEqual(
-            voteweights.locationVoteweight.location,
-          );
+          expect(radius).toBe(voteweights.locationVoteweight.radius);
+          expect(location).toEqual(voteweights.locationVoteweight.location);
         });
     });
   });
