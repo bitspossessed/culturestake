@@ -7,6 +7,7 @@ import authMiddleware, {
 import voteweightsController from '~/server/controllers/voteweights';
 import voteweightsValidation from '~/server/validations/voteweights';
 import resourcesMiddleware from '~/server/middlewares/resources';
+import locationsMiddleware from '~/server/middlewares/locationFormatting';
 import validate from '~/server/services/validate';
 
 const router = express.Router();
@@ -21,6 +22,7 @@ router.put(
   '/',
   authMiddleware,
   validate(voteweightsValidation.create),
+  locationsMiddleware,
   voteweightsController.create,
 );
 
@@ -44,6 +46,7 @@ router.post(
   authMiddleware,
   validate(voteweightsValidation.update),
   getVoteweightResource,
+  locationsMiddleware,
   voteweightsController.update,
 );
 
