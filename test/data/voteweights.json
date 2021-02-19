@@ -2,17 +2,16 @@
   "hotspotVoteweight": {
     "strength": 4,
     "type": "hotspot",
-    "location": null,
+    "latitude": null,
+    "longitude": null,
     "radius": null,
     "hotspot": "0x554acab4c4a6b1c86f63ab299e192e51de6e8c41"
   },
   "locationVoteweight": {
     "strength": 4,
     "type": "location",
-    "location": {
-        "latitude": 51.570214462716365,
-        "longitude": -0.10121572326888219
-    },
+    "latitude": 51.570214462716365,
+    "longitude": -0.10121572326888219,
     "radius": 5.55,
     "hotspot": null
   }

@@ -1,8 +1,8 @@
 export default async function locationFormatting(req, res, next) {
-  if (req.body && req.body.location) {
+  if (req.body && req.body.latitude && req.body.longitude) {
     req.body.location = {
       type: 'Point',
-      coordinates: [req.body.location.latitude, req.body.location.longitude],
+      coordinates: [req.body.latitude, req.body.longitude],
     };
   }
   next();

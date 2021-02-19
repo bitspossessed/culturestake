@@ -1,8 +1,7 @@
 import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
-
-export const VOTEWEIGHT_TYPES = ['location', 'hotspot', 'organisation'];
+import { VOTEWEIGHT_TYPES } from '~/common/helpers/validate';
 
 const Voteweight = db.define('voteweights', {
   id: {

@@ -10,12 +10,14 @@ const options = {
 };
 
 function locationFilter(req, data) {
-  const location = {
-    latitude: data.dataValues.location.coordinates[0],
-    longitude: data.dataValues.location.coordinates[1],
-  };
+  const latitude = data.dataValues.location.coordinates[0];
+  const longitude = data.dataValues.location.coordinates[1];
 
-  data.set('location', location, {
+  data.set('latitude', latitude, {
+    raw: true,
+  });
+
+  data.set('longitude', longitude, {
     raw: true,
   });
 

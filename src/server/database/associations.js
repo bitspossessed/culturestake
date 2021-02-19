@@ -55,7 +55,8 @@ export const voteweightFields = [
   'festivalId',
   'type',
   'radius',
-  'location',
+  'latitude',
+  'longitude',
   'hotspot',
   'organisationId',
 ];
