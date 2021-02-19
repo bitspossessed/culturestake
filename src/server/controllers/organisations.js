@@ -1,21 +1,10 @@
 import Organisation from '~/server/models/organisation';
 import baseController from '~/server/controllers';
-import {
-  organisationFields,
-  // imageFileFields,
-} from '~/server/database/associations';
+import { organisationFields } from '~/server/database/associations';
 
 const options = {
   model: Organisation,
-  fields: [...organisationFields, 'images'],
-  //   include: [OrganisationHasManyImages],
-  //   associations: [
-  //     {
-  //       association: OrganisationHasManyImages,
-  //       destroyCascade: true,
-  //       fields: [...imageFileFields],
-  //     },
-  //   ],
+  fields: [...organisationFields],
 };
 
 function create(req, res, next) {
@@ -32,14 +21,6 @@ function readAll(req, res, next) {
 function read(req, res, next) {
   baseController.read({
     ...options,
-    // include: [OrganisationHasManyImages],
-    associations: [
-      {
-        // association: OrganisationHasManyImages,
-        destroyCascade: true,
-        // fields: [...imageFileFields],
-      },
-    ],
   })(req, res, next);
 }
 
