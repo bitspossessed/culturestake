@@ -4,7 +4,7 @@ import db from '~/server/database';
 
 export const VOTEWEIGHT_TYPES = ['location', 'hotspot', 'organisation'];
 
-const Voteweights = db.define('voteweights', {
+const Voteweight = db.define('voteweights', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -41,4 +41,4 @@ const Voteweights = db.define('voteweights', {
   },
 });
 
-export default Voteweights;
+export default Voteweight;
