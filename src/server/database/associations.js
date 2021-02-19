@@ -7,6 +7,7 @@ import FestivalArtwork from '~/server/models/festivalArtwork';
 import Image from '~/server/models/image';
 import Property from '~/server/models/property';
 import Question from '~/server/models/question';
+import Voteweight from '~/server/models/voteweight';
 
 const attachableMixin = {
   foreignKey: 'attachableId',
@@ -49,6 +50,15 @@ export const organisationFields = ['description', 'name'];
 export const propertyFields = ['title'];
 export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
 export const userFields = ['username', 'email'];
+export const voteweightFields = [
+  'strength',
+  'festivalId',
+  'type',
+  'radius',
+  'location',
+  'hotspot',
+  'organisationId',
+];
 
 // Artwork
 
@@ -144,6 +154,12 @@ export const FestivalBelongsToManyArtworks = Festival.belongsToMany(Artwork, {
   otherKey: 'artworkId',
 });
 
+export const FestivalHasManyVoteweights = Festival.hasMany(Voteweight, {
+  ...attachableMixin,
+  foreignKey: 'festivalId',
+  as: 'voteweights',
+});
+
 // Property
 
 export const PropertyHasManyAnswers = Property.hasMany(Answer);
@@ -169,3 +185,7 @@ export const QuestionHasManyAnswers = Question.hasMany(Answer, {
   foreignKey: 'questionId',
   as: 'answers',
 });
+
+// Voteweights
+
+export const VoteweightBelongsToFestival = Voteweight.belongsTo(Festival);
