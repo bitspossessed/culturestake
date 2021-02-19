@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 

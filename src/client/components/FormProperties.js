@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import React, { Fragment } from 'react';
 
 import translate from '~/common/services/i18n';

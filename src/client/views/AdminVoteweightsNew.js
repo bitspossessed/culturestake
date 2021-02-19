@@ -77,7 +77,7 @@ const AdminVoteweightsNew = () => {
         <Form>
           {!isLoading && festival ? (
             <Fragment>
-              <FormVoteweights festival={festival} />
+              <FormVoteweights festival={festival} type={'hotspot'} />
               <ButtonSubmit />
             </Fragment>
           ) : null}

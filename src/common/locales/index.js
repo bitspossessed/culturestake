@@ -115,6 +115,14 @@ const components = {
     fieldDescription: 'Description:',
     fieldName: 'Name:',
   },
+  FormVoteweights: {
+    fieldType: 'Type:',
+    fieldStrength: 'Strength',
+    fieldLatitude: 'Latitude',
+    fieldLongitude: 'Longitude',
+    fieldRadius: 'Radius',
+    fieldHotspot: 'Hotspot Address:',
+  },
   InputArtworksField: {
     fieldArtwork: 'Artwork:',
     fieldArtworkPlaceholder: 'Search for artwork to add',
