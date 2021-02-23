@@ -379,6 +379,10 @@ const views = {
     notificationSuccess: 'You edited the organisation {name}.',
     title: 'Edit organisation',
   },
+  AdminVoteweightsNew: {
+    notificationSuccess: 'You created a new vote weight.',
+    title: 'Create new vote weight',
+  },
   Artworks: {
     buttonBackToFestival: 'Back to festival',
   },

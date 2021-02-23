@@ -53,7 +53,7 @@ const AdminVoteweightsNew = () => {
     onSuccess: ({ title }) => {
       dispatch(
         notify({
-          text: translate('AdminAnswersNew.notificationSuccess', {
+          text: translate('AdminVoteweightsNew.notificationSuccess', {
             title,
           }),
         }),
@@ -80,7 +80,7 @@ const AdminVoteweightsNew = () => {
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminAnswersNew.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('AdminVoteweightsNew.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>

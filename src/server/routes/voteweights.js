@@ -41,15 +41,6 @@ router.get(
   voteweightsController.read,
 );
 
-router.post(
-  '/:id',
-  authMiddleware,
-  validate(voteweightsValidation.update),
-  getVoteweightResource,
-  locationsMiddleware,
-  voteweightsController.update,
-);
-
 router.delete(
   '/:id',
   authMiddleware,

@@ -39,10 +39,6 @@ function read(req, res, next) {
   baseController.read(options)(req, res, next);
 }
 
-async function update(req, res, next) {
-  baseController.update(options)(req, res, next);
-}
-
 function destroy(req, res, next) {
   baseController.destroy(options)(req, res, next);
 }
@@ -51,6 +47,5 @@ export default {
   create,
   read,
   readAll,
-  update,
   destroy,
 };
