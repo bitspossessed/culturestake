@@ -4,12 +4,15 @@ import React, { Fragment } from 'react';
 
 import InputField from '~/client/components/InputField';
 import InputHiddenField from '~/client/components/InputHiddenField';
-import InputSelectField from '~/client/components/InputSelectField';
+import {
+  InputSelectFieldInnerStyle,
+  InputSelectFieldStyle,
+} from '~/client/components/InputSelectField';
 import translate from '~/common/services/i18n';
 import { web3Validators } from '~/common/helpers/validate';
 import { VOTEWEIGHT_TYPES } from '~/common/helpers/validate';
 
-const FormVoteweights = ({ festival, type }) => {
+const FormVoteweights = ({ festival, type, onChange }) => {
   const schema = {
     festivalId: Joi.number().integer().required(),
     strength: Joi.number().integer().required(),
@@ -58,19 +61,21 @@ const FormVoteweights = ({ festival, type }) => {
         validate={schema.strength}
       />
 
-      <InputSelectField
-        label={translate('FormVoteweights.fieldType')}
-        name="type"
-        validate={schema.type}
-      >
-        {Object.values(VOTEWEIGHT_TYPES).map((value) => {
-          return (
-            <option key={value} value={value}>
-              {value}
-            </option>
-          );
-        })}
-      </InputSelectField>
+      <InputSelectFieldStyle label={translate('FormVoteweights.fieldType')}>
+        <InputSelectFieldInnerStyle
+          defaultValue={type}
+          name="type"
+          onChange={onChange}
+        >
+          {Object.values(VOTEWEIGHT_TYPES).map((value) => {
+            return (
+              <option key={value} value={value}>
+                {value}
+              </option>
+            );
+          })}
+        </InputSelectFieldInnerStyle>
+      </InputSelectFieldStyle>
 
       {type === 'location' ? (
         <Fragment>
@@ -115,6 +120,7 @@ const FormVoteweights = ({ festival, type }) => {
 
 FormVoteweights.propTypes = {
   festival: PropTypes.object.isRequired,
+  onChange: PropTypes.func,
   type: PropTypes.string,
 };
 

@@ -22,6 +22,7 @@ const AdminVoteweightsNew = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [festival, setFestival] = useState({});
+  const [type, setType] = useState('');
 
   const returnUrl = `/admin/festivals/${slug}/edit`;
 
@@ -37,6 +38,14 @@ const AdminVoteweightsNew = () => {
 
     getFestival();
   }, [setFestival, setIsLoading, slug]);
+
+  const onChange = (event) => {
+    event.preventDefault();
+    console.log(event.target) // eslint-disable-line
+    console.log(event.target.value) // eslint-disable-line
+
+    setType(event.target.value);
+  };
 
   const { Form } = useNewForm({
     fields: [
@@ -77,7 +86,11 @@ const AdminVoteweightsNew = () => {
         <Form>
           {!isLoading && festival ? (
             <Fragment>
-              <FormVoteweights festival={festival} type={'hotspot'} />
+              <FormVoteweights
+                festival={festival}
+                type={type}
+                onChange={onChange}
+              />
               <ButtonSubmit />
             </Fragment>
           ) : null}
