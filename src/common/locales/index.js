@@ -216,6 +216,11 @@ const components = {
     titleAdmin: 'Admin',
     titleStartVote: 'Start vote session',
   },
+  VoteweightsTable: {
+    buttonDelete: 'Delete',
+    fieldType: 'Type',
+    fieldStrength: 'Strength',
+  },
 };
 
 const middlewares = {

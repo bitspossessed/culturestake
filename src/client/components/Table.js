@@ -368,7 +368,11 @@ export const TableActions = ({ actions, onSelect }) => {
     };
 
     return (
-      <ButtonOutline key={`action-${index}`} onClick={onSelectAction}>
+      <ButtonOutline
+        isDanger={action.isDangerous}
+        key={`action-${index}`}
+        onClick={onSelectAction}
+      >
         {action.label}
       </ButtonOutline>
     );
