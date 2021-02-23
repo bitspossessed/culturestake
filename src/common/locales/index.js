@@ -216,6 +216,10 @@ const components = {
     titleAdmin: 'Admin',
     titleStartVote: 'Start vote session',
   },
+  VoteweightsContainer: {
+    title: 'Vote weights',
+    buttonNewVoteweight: 'Add a new vote weight to this festival',
+  },
   VoteweightsTable: {
     buttonDelete: 'Delete',
     fieldType: 'Type',

@@ -486,7 +486,7 @@ Table.propTypes = {
   onSelect: PropTypes.func.isRequired,
   pageSize: PropTypes.number,
   path: PropTypes.arrayOf(PropTypes.string).isRequired,
-  query: PropTypes.string,
+  query: PropTypes.any,
   queryParam: PropTypes.string,
 };
 

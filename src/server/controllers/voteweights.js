@@ -32,7 +32,10 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  baseController.readAll(options)(req, res, next);
+  baseController.readAll({
+    ...options,
+    where: req.locals && req.locals.query,
+  })(req, res, next);
 }
 
 function read(req, res, next) {

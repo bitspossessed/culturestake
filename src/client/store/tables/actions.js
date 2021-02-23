@@ -24,7 +24,6 @@ export function requestTable({
     orderDirection,
     orderKey,
   };
-
   if (queryParam && query) {
     params = {
       ...params,
