@@ -18,11 +18,10 @@ import { useNewForm } from '~/client/hooks/forms';
 const AdminVoteweightsNew = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
-  //const questionId = parseInt(params.questionId, 10);
 
   const [isLoading, setIsLoading] = useState(true);
   const [festival, setFestival] = useState({});
-  const [type, setType] = useState('');
+  const [type, setType] = useState('location');
 
   const returnUrl = `/admin/festivals/${slug}/edit`;
 
@@ -39,15 +38,7 @@ const AdminVoteweightsNew = () => {
     getFestival();
   }, [setFestival, setIsLoading, slug]);
 
-  const onChange = (event) => {
-    event.preventDefault();
-    console.log(event.target) // eslint-disable-line
-    console.log(event.target.value) // eslint-disable-line
-
-    setType(event.target.value);
-  };
-
-  const { Form } = useNewForm({
+  const { Form, setFieldValue } = useNewForm({
     fields: [
       'festivalId',
       'strength',
@@ -77,6 +68,15 @@ const AdminVoteweightsNew = () => {
       );
     },
   });
+
+  const onChange = (event) => {
+    event.preventDefault();
+    setFieldValue('longitude', null);
+    setFieldValue('latitude', null);
+    setFieldValue('radius', null);
+    setFieldValue('hotspot', null);
+    setType(event.target.value);
+  };
 
   return (
     <Fragment>
