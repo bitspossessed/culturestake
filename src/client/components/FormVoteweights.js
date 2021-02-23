@@ -62,9 +62,9 @@ const FormVoteweights = ({ festival, type, onChange }) => {
         label={translate('FormVoteweights.fieldType')}
         name="type"
         validate={schema.type}
-        value={type}
         onChange={onChange}
       >
+        <option disabled value="" />
         {Object.values(VOTEWEIGHT_TYPES).map((value) => {
           return (
             <option key={value} value={value}>
