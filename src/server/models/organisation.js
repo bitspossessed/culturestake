@@ -22,9 +22,6 @@ const Organisation = db.define('organisation', {
     type: DataTypes.STRING(2000),
     allowNull: true,
   },
-  url: {
-    type: DataTypes.STRING,
-  },
 });
 
 SequelizeSlugify.slugifyModel(Organisation, {
