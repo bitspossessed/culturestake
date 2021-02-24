@@ -17,6 +17,9 @@ import AdminFestivals from '~/client/views/AdminFestivals';
 import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
 import AdminLogin from '~/client/views/AdminLogin';
+import AdminOrganisations from '~/client/views/AdminOrganisations';
+import AdminOrganisationsEdit from '~/client/views/AdminOrganisationsEdit';
+import AdminOrganisationsNew from '~/client/views/AdminOrganisationsNew';
 import AdminProperties from '~/client/views/AdminProperties';
 import AdminPropertiesEdit from '~/client/views/AdminPropertiesEdit';
 import AdminPropertiesNew from '~/client/views/AdminPropertiesNew';
@@ -232,6 +235,21 @@ const Routes = () => (
       component={AdminArtistsEdit}
       exact
       path="/admin/artists/:slug/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminOrganisations}
+      exact
+      path="/admin/organisations"
+    />
+    <AuthenticatedRoute
+      component={AdminOrganisationsNew}
+      exact
+      path="/admin/organisations/new"
+    />
+    <AuthenticatedRoute
+      component={AdminOrganisationsEdit}
+      exact
+      path="/admin/organisations/:slug/edit"
     />
     <Route
       component={NotFound}
