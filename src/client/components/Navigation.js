@@ -119,6 +119,14 @@ const Navigation = ({ onClickItem, isExpanded }) => {
             </NavigationMenuItemStyle>
 
             <NavigationMenuItemStyle>
+              <NavigationLink to="/admin/organisations" onClick={onClickItem}>
+                <ParagraphStyle>
+                  {translate('Navigation.linkAdminOrganisations')}
+                </ParagraphStyle>
+              </NavigationLink>
+            </NavigationMenuItemStyle>
+
+            <NavigationMenuItemStyle>
               <NavigationLink to="/admin/properties" onClick={onClickItem}>
                 <ParagraphStyle>
                   {translate('Navigation.linkAdminProperties')}
