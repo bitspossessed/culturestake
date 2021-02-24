@@ -26,6 +26,10 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       type: {
         type: Sequelize.ENUM,
         values: ['organisation', 'hotspot', 'location'],

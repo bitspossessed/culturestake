@@ -41,6 +41,7 @@ const AdminVoteweightsNew = () => {
   const { Form, setFieldValue } = useNewForm({
     fields: [
       'festivalId',
+      'name',
       'strength',
       'type',
       'latitude',
@@ -71,10 +72,10 @@ const AdminVoteweightsNew = () => {
 
   const onChange = (event) => {
     event.preventDefault();
-    setFieldValue('longitude', null);
-    setFieldValue('latitude', null);
-    setFieldValue('radius', null);
-    setFieldValue('hotspot', null);
+    setFieldValue('longitude', undefined);
+    setFieldValue('latitude', undefined);
+    setFieldValue('radius', undefined);
+    setFieldValue('hotspot', undefined);
     setType(event.target.value);
   };
 

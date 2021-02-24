@@ -104,7 +104,7 @@ export const useNewForm = ({
   const history = useHistory();
   const requestId = useRequestId();
 
-  const { Form, setFieldValue, values } = useRequestForm({
+  const { Form, setFieldValue } = useRequestForm({
     requestId,
     onSubmit: (values) => {
       dispatch(
@@ -135,7 +135,6 @@ export const useNewForm = ({
   return {
     Form,
     setFieldValue,
-    values,
   };
 };
 

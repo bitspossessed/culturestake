@@ -23,14 +23,14 @@ const table = {
   ],
   columns: [
     {
+      key: 'name',
+      isOrderKey: false,
+      label: translate('VoteweightsTable.fieldName'),
+    },
+    {
       key: 'type',
       isOrderKey: false,
       label: translate('VoteweightsTable.fieldType'),
-    },
-    {
-      key: 'strength',
-      isOrderKey: false,
-      label: translate('VoteweightsTable.fieldStrength'),
     },
   ],
 };

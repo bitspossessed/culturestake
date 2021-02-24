@@ -18,6 +18,10 @@ const Voteweight = db.define('voteweights', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   type: {
     type: DataTypes.ENUM,
     values: VOTEWEIGHT_TYPES,

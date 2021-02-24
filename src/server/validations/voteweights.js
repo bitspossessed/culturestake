@@ -6,6 +6,7 @@ import { web3Validators } from '~/common/helpers/validate';
 const defaultValidation = Joi.alternatives().try(
   Joi.object().keys({
     festivalId: Joi.number().integer().required(),
+    name: Joi.string().required(),
     strength: Joi.number().integer().required(),
     type: Joi.string().valid('hotspot').required(),
     latitude: Joi.any().valid(null),
@@ -16,6 +17,7 @@ const defaultValidation = Joi.alternatives().try(
   }),
   Joi.object().keys({
     festivalId: Joi.number().integer().required(),
+    name: Joi.string().required(),
     strength: Joi.number().integer().required(),
     type: Joi.string().valid('location').required(),
     latitude: Joi.number().min(-90).max(90).required(),

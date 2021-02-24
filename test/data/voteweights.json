@@ -1,6 +1,7 @@
 {
   "hotspotVoteweight": {
     "strength": 4,
+    "name": "hotspot weight",
     "type": "hotspot",
     "latitude": null,
     "longitude": null,
@@ -9,6 +10,7 @@
   },
   "locationVoteweight": {
     "strength": 4,
+    "name": "location weight",
     "type": "location",
     "latitude": 51.570214462716365,
     "longitude": -0.10121572326888219,

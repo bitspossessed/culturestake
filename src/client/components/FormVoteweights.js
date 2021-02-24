@@ -13,6 +13,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
   const schema = {
     festivalId: Joi.number().integer().required(),
     strength: Joi.number().integer().required(),
+    name: Joi.string().required(),
     type: Joi.string()
       .valid(...VOTEWEIGHT_TYPES)
       .required(),
@@ -49,6 +50,13 @@ const FormVoteweights = ({ festival, type, onChange }) => {
         label={'festivalId'}
         name={'festivalId'}
         value={{ value: festival.id }}
+      />
+
+      <InputField
+        label={translate('FormVoteweights.fieldName')}
+        name="name"
+        type="text"
+        validate={schema.name}
       />
 
       <InputField

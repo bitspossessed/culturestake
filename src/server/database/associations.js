@@ -52,6 +52,7 @@ export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
 export const userFields = ['username', 'email'];
 export const voteweightFields = [
   'strength',
+  'name',
   'festivalId',
   'type',
   'radius',

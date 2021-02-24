@@ -59,8 +59,15 @@ describe('Voteweights', () => {
         .get(`/api/voteweights/${voteweightData.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
-          const { latitude, longitude, strength, radius } = response.body.data;
+          const {
+            latitude,
+            longitude,
+            strength,
+            radius,
+            name,
+          } = response.body.data;
           expect(strength).toBe(voteweights.locationVoteweight.strength);
+          expect(name).toBe(voteweights.locationVoteweight.name);
           expect(radius).toBe(voteweights.locationVoteweight.radius);
           expect(latitude).toBe(voteweights.locationVoteweight.latitude);
           expect(longitude).toBe(voteweights.locationVoteweight.longitude);

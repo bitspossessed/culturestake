@@ -117,10 +117,11 @@ const components = {
   },
   FormVoteweights: {
     fieldType: 'Type:',
-    fieldStrength: 'Strength',
-    fieldLatitude: 'Latitude',
-    fieldLongitude: 'Longitude',
-    fieldRadius: 'Radius',
+    fieldName: 'Name:',
+    fieldStrength: 'Strength:',
+    fieldLatitude: 'Latitude:',
+    fieldLongitude: 'Longitude:',
+    fieldRadius: 'Radius:',
     fieldHotspot: 'Hotspot Address:',
   },
   InputArtworksField: {
@@ -223,7 +224,7 @@ const components = {
   VoteweightsTable: {
     buttonDelete: 'Delete',
     fieldType: 'Type',
-    fieldStrength: 'Strength',
+    fieldName: 'Name',
   },
 };
 
