@@ -45,6 +45,7 @@ export const imageFileFields = [
   'urlThresholdThumb',
   'urlThumb',
 ];
+export const organisationFields = ['description', 'name'];
 export const propertyFields = ['title'];
 export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
 export const userFields = ['username', 'email'];
