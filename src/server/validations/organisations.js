@@ -9,7 +9,6 @@ import {
 const defaultValidation = {
   description: Joi.string().max(2000).required(),
   name: Joi.string().max(128).required(),
-  url: Joi.string().uri().allow(''),
 };
 
 export default {
