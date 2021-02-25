@@ -342,7 +342,7 @@ const views = {
     title: 'Edit artwork',
   },
   AdminArtists: {
-    buttonNewQuestion: 'Create new artist',
+    buttonNewArtist: 'Create new artist',
     fieldName: 'Name',
     title: 'Artists',
   },
@@ -357,7 +357,7 @@ const views = {
     title: 'Edit artist',
   },
   AdminOrganisations: {
-    buttonNewQuestion: 'Create new organisation',
+    buttonNewOrganisation: 'Create new organisation',
     fieldName: 'Name',
     title: 'Organisations',
   },
