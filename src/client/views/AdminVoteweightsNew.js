@@ -48,6 +48,7 @@ const AdminVoteweightsNew = () => {
       'longitude',
       'radius',
       'hotspot',
+      'organisationId',
     ],
     resourcePath: ['voteweights'],
     returnUrl,
@@ -76,6 +77,7 @@ const AdminVoteweightsNew = () => {
     setFieldValue('latitude', undefined);
     setFieldValue('radius', undefined);
     setFieldValue('hotspot', undefined);
+    setFieldValue('organisationId', undefined);
     setType(event.target.value);
   };
 

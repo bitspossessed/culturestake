@@ -123,6 +123,8 @@ const components = {
     fieldLongitude: 'Longitude:',
     fieldRadius: 'Radius:',
     fieldHotspot: 'Hotspot Address:',
+    fieldOrganisation: 'Organisation:',
+    fieldOrganisationPlaceholder: 'Search for an organisation to add',
   },
   InputArtworksField: {
     fieldArtwork: 'Artwork:',

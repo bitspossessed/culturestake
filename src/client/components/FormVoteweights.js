@@ -8,6 +8,7 @@ import InputSelectField from '~/client/components/InputSelectField';
 import translate from '~/common/services/i18n';
 import { web3Validators } from '~/common/helpers/validate';
 import { VOTEWEIGHT_TYPES } from '~/common/helpers/validate';
+import InputFinderField from '~/client/components/InputFinderField';
 
 const FormVoteweights = ({ festival, type, onChange }) => {
   const schema = {
@@ -117,6 +118,20 @@ const FormVoteweights = ({ festival, type, onChange }) => {
           name="hotspot"
           type="text"
           validate={schema.hotspot}
+        />
+      ) : null}
+
+      {type === 'organisation' ? (
+        <InputFinderField
+          label={translate('FormVoteweights.fieldOrganisation')}
+          name="organisationId"
+          placeholder={translate(
+            'FormVoteweights.fieldOrganisationPlaceholder',
+          )}
+          queryPath={['organisations']}
+          searchParam={'name'}
+          selectParam={'id'}
+          validate={schema.organisationId}
         />
       ) : null}
     </Fragment>

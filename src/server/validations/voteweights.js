@@ -26,6 +26,17 @@ const defaultValidation = Joi.alternatives().try(
     organisationId: Joi.any().valid(null),
     hotspot: Joi.any().valid(null),
   }),
+  Joi.object().keys({
+    festivalId: Joi.number().integer().required(),
+    name: Joi.string().required(),
+    strength: Joi.number().integer().required(),
+    type: Joi.string().valid('organisation').required(),
+    latitude: Joi.any().valid(null),
+    longitude: Joi.any().valid(null),
+    radius: Joi.any().valid(null),
+    organisationId: Joi.number().integer().required(),
+    hotspot: Joi.any().valid(null),
+  }),
 );
 
 export default {
