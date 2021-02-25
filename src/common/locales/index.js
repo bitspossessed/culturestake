@@ -457,6 +457,7 @@ export default {
     consentRequired: 'is required to be checked',
     festivalRequired: 'is required',
     propertyRequired: 'is required',
+    organisationRequired: 'is required',
   },
   ...components,
   ...middlewares,

@@ -33,16 +33,27 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       then: Joi.number().required(),
       otherwise: Joi.any().valid(null),
     }),
-    organisationId: Joi.alternatives().conditional('.type', {
-      is: Joi.string().valid('organisation'),
-      then: Joi.number().required(),
-      otherwise: Joi.any().valid(null),
-    }),
+    organisationId: Joi.alternatives()
+      .conditional('.type', {
+        is: Joi.string().valid('organisation'),
+        then: Joi.number().required(),
+        otherwise: Joi.any().valid(null),
+      })
+      .error(new Error(translate('validations.organisationRequired'))),
     hotspot: Joi.alternatives().conditional('.type', {
       is: Joi.string().valid('hotspot'),
       then: web3Validators.web3().address().required(),
       otherwise: Joi.any().valid(null),
     }),
+  };
+
+  const filter = (item) => {
+    const organisationIds = festival.voteweights.map((voteweight) => {
+      if (voteweight.type === 'organisation') {
+        return voteweight['organisationId'];
+      }
+    });
+    return !organisationIds.includes(item.id);
   };
 
   return (
@@ -123,6 +134,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
 
       {type === 'organisation' ? (
         <InputFinderField
+          clientSideFilter={filter}
           label={translate('FormVoteweights.fieldOrganisation')}
           name="organisationId"
           placeholder={translate(
