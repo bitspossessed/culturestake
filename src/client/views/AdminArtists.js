@@ -50,7 +50,7 @@ const AdminArtists = () => {
       <FooterAdmin>
         <SpacingGroupStyle>
           <ButtonIcon to="/admin/artists/new" url={swirl}>
-            {translate('AdminArtists.buttonNewQuestion')}
+            {translate('AdminArtists.buttonNewArtist')}
           </ButtonIcon>
 
           <ButtonIcon isIconFlipped to="/admin">
