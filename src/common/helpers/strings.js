@@ -1,3 +1,7 @@
+export const isString = (x) => {
+  return typeof x === 'string';
+};
+
 export function uppercaseFirst(str) {
   return `${str[0].toUpperCase()}${str.substr(1)}`;
 }
