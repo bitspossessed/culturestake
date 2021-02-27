@@ -33,13 +33,16 @@ export function encodeVoteData({
   festivalAnswerIds,
   festivalQuestionId,
   nonce,
+  organisationId = null,
 }) {
   return [
     web3.utils.utf8ToHex(
       [
         festivalAnswerIds.join(VOTE_DATA_SEPARATOR),
         VOTE_DATA_FESTIVAL_TOKEN,
-        [nonce, festivalQuestionId].join(VOTE_DATA_SEPARATOR),
+        [nonce, festivalQuestionId, organisationId ? organisationId : ''].join(
+          VOTE_DATA_SEPARATOR,
+        ),
       ].join(''),
     ),
     VOTE_DATA_SIGNATURE_TOKEN,
@@ -71,7 +74,7 @@ export function decodeVoteData(code) {
         return parseInt(value, 10);
       });
 
-    const [nonce, festivalQuestionId] = metaParts[1]
+    const [nonce, festivalQuestionId, organisationId] = metaParts[1]
       .split(VOTE_DATA_SEPARATOR)
       .map((value) => {
         return parseInt(value, 10);
@@ -103,6 +106,7 @@ export function decodeVoteData(code) {
       festivalQuestionId,
       nonce,
       boothSignature,
+      organisationId,
     };
   } catch (error) {
     throw new Error('Could not decode vote data');
