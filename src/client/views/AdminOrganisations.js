@@ -11,12 +11,12 @@ import translate from '~/common/services/i18n';
 import { SpacingGroupStyle } from '~/client/styles/layout';
 
 const table = {
-  path: ['artists'],
+  path: ['organisations'],
   columns: [
     {
       isOrderKey: true,
       key: 'name',
-      label: translate('AdminArtists.fieldName'),
+      label: translate('AdminOrganisations.fieldName'),
     },
   ],
   actions: [
@@ -27,16 +27,16 @@ const table = {
   ],
 };
 
-const AdminArtists = () => {
+const AdminOrganisations = () => {
   const history = useHistory();
 
   const onSelect = ({ item: { slug } }) => {
-    history.push(`/admin/artists/${slug}/edit`);
+    history.push(`/admin/organisations/${slug}/edit`);
   };
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminArtists.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('AdminOrganisations.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Table
@@ -49,8 +49,8 @@ const AdminArtists = () => {
 
       <FooterAdmin>
         <SpacingGroupStyle>
-          <ButtonIcon to="/admin/artists/new" url={swirl}>
-            {translate('AdminArtists.buttonNewArtist')}
+          <ButtonIcon to="/admin/organisations/new" url={swirl}>
+            {translate('AdminOrganisations.buttonNewOrganisation')}
           </ButtonIcon>
 
           <ButtonIcon isIconFlipped to="/admin">
@@ -62,4 +62,4 @@ const AdminArtists = () => {
   );
 };
 
-export default AdminArtists;
+export default AdminOrganisations;

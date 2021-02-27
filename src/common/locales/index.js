@@ -111,6 +111,10 @@ const components = {
     fieldName: 'Name:',
     fieldUrl: 'Website:',
   },
+  FormOrganisations: {
+    fieldDescription: 'Description:',
+    fieldName: 'Name:',
+  },
   InputArtworksField: {
     fieldArtwork: 'Artwork:',
     fieldArtworkPlaceholder: 'Search for artwork to add',
@@ -144,6 +148,7 @@ const components = {
     linkAdminBooths: 'Booths',
     linkAdminDashboard: 'Dashboard',
     linkAdminFestivals: 'Festivals',
+    linkAdminOrganisations: 'Organisations',
     linkAdminProperties: 'Properties',
     linkAdminQuestions: 'Questions',
     linkAdminSignOut: '🚪',
@@ -230,6 +235,7 @@ const views = {
     linkAdminBooths: 'Booths',
     linkAdminDashboard: 'Dashboard',
     linkAdminFestivals: 'Festivals',
+    linkAdminOrganisations: 'Organisations',
     linkAdminProperties: 'Properties',
     linkAdminQuestions: 'Questions',
     linkAdminUsers: 'Users',
@@ -336,7 +342,7 @@ const views = {
     title: 'Edit artwork',
   },
   AdminArtists: {
-    buttonNewQuestion: 'Create new artist',
+    buttonNewArtist: 'Create new artist',
     fieldName: 'Name',
     title: 'Artists',
   },
@@ -349,6 +355,21 @@ const views = {
     notificationDestroySuccess: 'You deleted the artist {name}.',
     notificationSuccess: 'You edited the artist {name}.',
     title: 'Edit artist',
+  },
+  AdminOrganisations: {
+    buttonNewOrganisation: 'Create new organisation',
+    fieldName: 'Name',
+    title: 'Organisations',
+  },
+  AdminOrganisationsNew: {
+    title: 'Create new organisation',
+    notificationSuccess: 'You created the organisation {name}.',
+  },
+  AdminOrganisationsEdit: {
+    errorNotFound: 'This organisation does not exist.',
+    notificationDestroySuccess: 'You deleted the organisation {name}.',
+    notificationSuccess: 'You edited the organisation {name}.',
+    title: 'Edit organisation',
   },
   Artworks: {
     buttonBackToFestival: 'Back to festival',

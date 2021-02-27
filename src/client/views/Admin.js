@@ -40,6 +40,10 @@ const Admin = () => {
               {translate('Admin.linkAdminArtworks')}
             </ButtonOutline>
 
+            <ButtonOutline to="/admin/organisations">
+              {translate('Admin.linkAdminOrganisations')}
+            </ButtonOutline>
+
             <ButtonOutline to="/admin/properties">
               {translate('Admin.linkAdminProperties')}
             </ButtonOutline>
