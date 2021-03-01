@@ -9,3 +9,6 @@ uploads/documents/*
 
 # Dependencies
 node_modules
+
+# lsp
+.log
