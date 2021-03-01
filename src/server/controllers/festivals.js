@@ -15,6 +15,7 @@ import {
   FestivalHasManyDocuments,
   FestivalHasManyImages,
   FestivalHasManyQuestions,
+  FestivalHasManyVoteweights,
   QuestionBelongsToArtwork,
   QuestionHasManyAnswers,
   answerFields,
@@ -25,18 +26,20 @@ import {
   imageFileFields,
   propertyFields,
   questionFields,
+  voteweightFields,
 } from '~/server/database/associations';
 import { filterResponseFields } from '~/server/controllers';
 import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: [...festivalFields, 'images', 'artworks'],
+  fields: [...festivalFields, 'images', 'artworks', 'voteweights'],
   fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
     FestivalHasManyImages,
+    FestivalHasManyVoteweights,
   ],
   associations: [
     {
@@ -50,6 +53,10 @@ const options = {
     {
       association: FestivalBelongsToManyArtworks,
       fields: [...artworkFields],
+    },
+    {
+      association: FestivalHasManyVoteweights,
+      fields: [...voteweightFields],
     },
   ],
 };

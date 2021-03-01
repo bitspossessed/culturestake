@@ -115,6 +115,17 @@ const components = {
     fieldDescription: 'Description:',
     fieldName: 'Name:',
   },
+  FormVoteweights: {
+    fieldType: 'Type:',
+    fieldName: 'Name:',
+    fieldStrength: 'Strength:',
+    fieldLatitude: 'Latitude:',
+    fieldLongitude: 'Longitude:',
+    fieldRadius: 'Radius:',
+    fieldHotspot: 'Hotspot Address:',
+    fieldOrganisation: 'Organisation:',
+    fieldOrganisationPlaceholder: 'Search for an organisation to add',
+  },
   InputArtworksField: {
     fieldArtwork: 'Artwork:',
     fieldArtworkPlaceholder: 'Search for artwork to add',
@@ -207,6 +218,15 @@ const components = {
     notificationAddedArtwork: 'Activated {title}',
     titleAdmin: 'Admin',
     titleStartVote: 'Start vote session',
+  },
+  VoteweightsContainer: {
+    title: 'Vote weights',
+    buttonNewVoteweight: 'Add a new vote weight to this festival',
+  },
+  VoteweightsTable: {
+    buttonDelete: 'Delete',
+    fieldType: 'Type',
+    fieldName: 'Name',
   },
 };
 
@@ -371,6 +391,10 @@ const views = {
     notificationSuccess: 'You edited the organisation {name}.',
     title: 'Edit organisation',
   },
+  AdminVoteweightsNew: {
+    notificationSuccess: 'You created a new vote weight.',
+    title: 'Create new vote weight',
+  },
   Artworks: {
     buttonBackToFestival: 'Back to festival',
   },
@@ -433,6 +457,7 @@ export default {
     consentRequired: 'is required to be checked',
     festivalRequired: 'is required',
     propertyRequired: 'is required',
+    organisationRequired: 'is required',
   },
   ...components,
   ...middlewares,

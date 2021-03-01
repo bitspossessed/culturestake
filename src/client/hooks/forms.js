@@ -1,4 +1,4 @@
-import Joi from '@hapi/joi';
+import Joi from 'joi';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -104,7 +104,7 @@ export const useNewForm = ({
   const history = useHistory();
   const requestId = useRequestId();
 
-  const { Form } = useRequestForm({
+  const { Form, setFieldValue } = useRequestForm({
     requestId,
     onSubmit: (values) => {
       dispatch(
@@ -134,6 +134,7 @@ export const useNewForm = ({
 
   return {
     Form,
+    setFieldValue,
   };
 };
 

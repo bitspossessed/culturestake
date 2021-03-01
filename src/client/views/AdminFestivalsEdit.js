@@ -8,6 +8,7 @@ import ContractsFestivals from '~/client/components/ContractsFestivals';
 import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
+import VoteweightsContainer from '~/client/components/VoteweightsContainer';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import notify, {
@@ -84,6 +85,10 @@ const AdminFestivalsEditForm = () => {
       <ViewAdmin>
         <Form>
           <FormFestivals />
+
+          {!isResourceLoading && (
+            <VoteweightsContainer festivalId={resource.id} />
+          )}
 
           <DangerZone>
             <ButtonDelete />

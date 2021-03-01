@@ -1,5 +1,5 @@
 import httpStatus from 'http-status';
-import { isCelebrate as isValidationError } from 'celebrate';
+import { isCelebrateError as isValidationError } from 'celebrate';
 
 import APIError from '~/server/helpers/errors';
 import logger from '~/server/helpers/logger';
@@ -9,19 +9,19 @@ import { respondWithError } from '~/server/helpers/respond';
 export default function errorsMiddleware(err, req, res, next) {
   // Check if error is public facing and known to us
   if (isValidationError(err)) {
-    const { joi } = err;
+    const { details } = err;
 
-    logger.debug(joi);
+    logger.debug(details);
 
     // Show validation errors to user
     err = new APIError(httpStatus.BAD_REQUEST);
 
-    if (joi.details) {
+    if (details) {
       err.data = {
-        fields: joi.details.map((detail) => {
+        fields: details.forEach((det) => {
           return {
-            path: detail.path,
-            message: detail.message,
+            path: det.path,
+            message: det.message,
           };
         }),
       };

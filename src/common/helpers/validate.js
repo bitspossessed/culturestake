@@ -2,6 +2,8 @@ import { Joi } from 'celebrate';
 
 import web3 from '~/common/services/web3';
 
+export const VOTEWEIGHT_TYPES = ['location', 'hotspot', 'organisation'];
+
 // Attachements validations
 
 const filesBaseValidation = {
