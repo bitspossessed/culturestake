@@ -39,6 +39,29 @@ const options = {
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
     FestivalHasManyImages,
+  ],
+  associations: [
+    {
+      association: FestivalHasManyImages,
+      fields: [...imageFileFields],
+    },
+    {
+      association: FestivalHasManyDocuments,
+      fields: [...baseFileFields],
+    },
+    {
+      association: FestivalBelongsToManyArtworks,
+      fields: [...artworkFields],
+    },
+  ],
+};
+
+const optionsRead = {
+  ...options,
+  include: [
+    FestivalBelongsToManyArtworks,
+    FestivalHasManyDocuments,
+    FestivalHasManyImages,
     FestivalHasManyVoteweights,
   ],
   associations: [
@@ -194,13 +217,13 @@ function create(req, res, next) {
 
 function readAll(req, res, next) {
   baseController.readAll({
-    ...options,
+    ...optionsRead,
     where: req.locals && req.locals.query,
   })(req, res, next);
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read(optionsRead)(req, res, next);
 }
 
 function update(req, res, next) {
