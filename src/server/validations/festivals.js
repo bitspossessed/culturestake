@@ -14,6 +14,7 @@ const defaultValidation = {
   description: Joi.string().max(2000).required(),
   documents: documentsValidation.max(3),
   images: imagesValidation.max(10),
+  online: Joi.boolean(),
   sticker: stickerValidation.required(),
   subtitle: Joi.string().max(255).required(),
   title: Joi.string().max(128).required(),
