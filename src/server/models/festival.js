@@ -39,6 +39,11 @@ const Festival = db.define('festival', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  online: {
+    type: DataTypes.BOOLEAN,
+    allowNull: true,
+    default: false,
+  },
   sticker: {
     type: DataTypes.STRING,
   },
