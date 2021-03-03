@@ -7,6 +7,12 @@ module.exports = {
         primaryKey: true,
         autoIncrement: true,
       },
+      createdAt: {
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        type: Sequelize.DATE,
+      },
       voteId: {
         type: Sequelize.INTEGER,
       },

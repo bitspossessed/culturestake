@@ -54,9 +54,7 @@ export default async function resolveChainIdsMiddleware(req, res, next) {
       artworkQuestionId,
     ).then((question) => question.chainId);
 
-    const festivalQuestionChainId = await Question.findByPk(
-      festivalQuestionId,
-    ).then((question) => question.chainId);
+    const festivalQuestion = await Question.findByPk(festivalQuestionId);
 
     // Store changed vote in locals
     req.locals = req.locals || {};
@@ -64,7 +62,8 @@ export default async function resolveChainIdsMiddleware(req, res, next) {
       artworkAnswerChainIds,
       artworkQuestionChainId,
       festivalAnswerChainIds,
-      festivalQuestionChainId,
+      festivalQuestionChainId: festivalQuestion.chainId,
+      festivalId: festivalQuestion.festivalId,
     });
 
     next();

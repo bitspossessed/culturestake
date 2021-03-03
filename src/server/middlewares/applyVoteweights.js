@@ -2,17 +2,32 @@ import httpStatus from 'http-status';
 
 import APIError from '~/server/helpers/errors';
 import logger from '~/server/helpers/logger';
+import Voteweight from '~/server/models/voteweight';
+
+async function apply(vote, multiplier) {
+  vote.festivalVoteTokens.map((tokens) => tokens * multiplier);
+  vote.artworkVoteTokens.map((tokens) => tokens * multiplier);
+}
 
 async function checkHotspot(vote) {
-  return true;
+  return vote;
 }
 
 async function checkOrganisation(vote) {
-  return true;
+  if (vote.organisation) {
+    const voteweight = await Voteweight.findOne({
+      where: {
+        festivalId: vote.festivalId,
+        organisationId: vote.organisationId,
+      },
+    });
+    if (!voteweight) return;
+    apply(vote, voteweight.strength);
+  }
 }
 
 async function checkLocation(vote) {
-  return true;
+  return vote;
 }
 
 export default async function applyVoteweightsMiddleware(req, res, next) {
