@@ -70,6 +70,7 @@ const components = {
     fieldDescription: 'Description:',
     fieldDocuments: 'Documents',
     fieldImages: 'Images',
+    fieldOnline: 'Online',
     fieldSticker: 'Sticker',
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',

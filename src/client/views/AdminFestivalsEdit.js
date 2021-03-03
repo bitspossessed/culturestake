@@ -38,6 +38,7 @@ const AdminFestivalsEditForm = () => {
       'description',
       'documents',
       'images',
+      'online',
       'sticker',
       'subtitle',
       'title',

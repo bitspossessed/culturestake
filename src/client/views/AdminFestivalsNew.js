@@ -24,6 +24,7 @@ const AdminFestivalsNew = () => {
       'description',
       'documents',
       'images',
+      'online',
       'sticker',
       'subtitle',
       'title',
