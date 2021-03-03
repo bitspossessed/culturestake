@@ -21,7 +21,7 @@ processor(mailing).process(
 );
 
 export const testEmail = (to = 'me@example.org', data = { name: 'Meesix' }) =>
-  submitJob(mailing, {
+  submitJob(mailing, to, {
     subject: 'Testing the email sending',
     template: 'test',
     to,
