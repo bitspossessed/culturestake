@@ -7,6 +7,7 @@ import mailer, {
   prodTransporter,
   devTransporter,
 } from '~/server/services/mailer';
+import submitJob from '~/server/tasks/submitJob';
 
 const mailing = new Queue('Send mails', redisUrl, {
   settings: redisLongRunningOptions,
@@ -20,7 +21,7 @@ processor(mailing).process(
 );
 
 export const testEmail = (to = 'me@example.org', data = { name: 'Meesix' }) =>
-  mailing.add({
+  submitJob(mailing, {
     subject: 'Testing the email sending',
     template: 'test',
     to,
