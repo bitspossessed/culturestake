@@ -77,6 +77,9 @@ const components = {
     fieldArtworks: 'Artworks:',
     fieldUrl: 'Website:',
   },
+  FormScheduleEmail: {
+    fieldRecipients: 'Recipients:',
+  },
   FormUsers: {
     fieldEmail: 'Email-address:',
     fieldPassword: 'Password:',
@@ -260,6 +263,7 @@ const views = {
     linkAdminProperties: 'Properties',
     linkAdminQuestions: 'Questions',
     linkAdminUsers: 'Users',
+    linkAdminEmails: 'Schedule Invitations',
   },
   AdminLogin: {
     buttonSubmit: 'Login',
@@ -308,6 +312,12 @@ const views = {
     buttonNewQuestion: 'Create new question',
     fieldTitle: 'Title',
     title: 'Questions',
+  },
+  AdminEmails: {
+    buttonSendEmails: 'Schedule Emails',
+    title: 'Schedule Email',
+    notificationSuccess: 'Scheduled {amount} emails.',
+    fileUpload: 'Drag a file with recipients here or click to select.',
   },
   AdminQuestionsNew: {
     title: 'Create new question',
