@@ -23,6 +23,7 @@ const AdminArtworksNew = () => {
       'description',
       'descriptionCommission',
       'documents',
+      'imageCredits',
       'images',
       'sticker',
       'subtitle',
