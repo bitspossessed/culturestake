@@ -61,6 +61,8 @@ export const voteFields = [
   'artworkQuestionChainId',
   'artworkAnswerChainIds',
   'artworkVoteTokens',
+  'latitude',
+  'longitude',
 ];
 export const voteweightFields = [
   'strength',

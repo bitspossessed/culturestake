@@ -2,14 +2,14 @@ import httpStatus from 'http-status';
 
 import Question from '~/server/models/question';
 import Vote from '~/server/models/vote';
-import baseController from '~/server/controllers';
+import baseController, { handleAssociations } from '~/server/controllers';
 import dispatchVote from '~/server/services/dispatcher';
 import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
   ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
-  VoteHasManyVoteWeights,
+  VoteBelongsToManyVoteweights,
   artistFields,
   artworkFields,
   propertyFields,
@@ -22,6 +22,7 @@ import { filterResponseFields } from '~/server/controllers';
 import { getQuestion } from '~/common/services/contracts';
 import { respondWithSuccess } from '~/server/helpers/respond';
 import { quadratify } from '~/common/utils/math';
+import { locationFilter } from '~/server/helpers/filters';
 
 const PUBLIC_TOP_ANSWERS = 3;
 
@@ -53,10 +54,11 @@ const options = {
   associations: [
     {
       fields: [...voteweightFields],
-      association: VoteHasManyVoteWeights,
+      association: VoteBelongsToManyVoteweights,
     },
   ],
-  include: [VoteHasManyVoteWeights],
+  include: [VoteBelongsToManyVoteweights],
+  customFilter: locationFilter,
 };
 
 const optionsResults = {
@@ -185,9 +187,10 @@ async function vote(req, res, next) {
     });
 
     // ... and store it locally on database as well
-    await Vote.create(vote);
+    const stored = await Vote.create(vote);
+    await handleAssociations(stored, options.associations, vote);
 
-    respondWithSuccess(res, null, httpStatus.CREATED);
+    respondWithSuccess(res, stored, httpStatus.CREATED);
   } catch (error) {
     return next(error);
   }

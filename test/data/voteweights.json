@@ -16,5 +16,15 @@
     "longitude": -0.10121572326888219,
     "radius": 5.55,
     "hotspot": null
+  },
+  "organisationVoteweight": {
+    "strength": 4,
+    "name": "organisation weight",
+    "type": "organisation",
+    "latitude": null,
+    "longitude": null,
+    "radius": null,
+    "hotspot": null,
+    "organisationId": 1
   }
 }

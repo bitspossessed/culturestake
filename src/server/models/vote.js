@@ -63,6 +63,10 @@ const Vote = db.define('vote', {
   artworkVoteTokens: {
     type: DataTypes.JSONB,
   },
+  location: {
+    type: DataTypes.GEOGRAPHY('POINT', 4326),
+    allowNull: true,
+  },
 });
 
 export default Vote;

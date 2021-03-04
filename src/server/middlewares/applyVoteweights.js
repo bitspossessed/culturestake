@@ -5,30 +5,42 @@ import logger from '~/server/helpers/logger';
 import Voteweight from '~/server/models/voteweight';
 
 async function apply(vote, multiplier) {
-  vote.festivalVoteTokens.map((tokens) => tokens * multiplier);
-  vote.artworkVoteTokens.map((tokens) => tokens * multiplier);
+  vote.festivalVoteTokens = vote.festivalVoteTokens.map(
+    (tokens) => tokens * multiplier,
+  );
+  vote.artworkVoteTokens = vote.artworkVoteTokens.map(
+    (tokens) => tokens * multiplier,
+  );
 }
 
 function accumulate(weights) {
-  return weights.reduce((a, b) => a + b, 0) / weights.length;
+  const sum = weights.reduce((a, b) => a + b, 0);
+  return sum ? sum / weights.length : 1;
 }
 
 async function checkHotspot(vote, accumulatedWeights) {
-  return vote;
+  const voteweight = await Voteweight.findOne({
+    where: {
+      festivalId: vote.festivalId,
+      hotspot: vote.boothAddress,
+    },
+  });
+  if (!voteweight) return;
+  vote.voteweights.push(voteweight.id);
+  accumulatedWeights.push(voteweight.strength);
 }
 
 async function checkOrganisation(vote, accumulatedWeights) {
-  if (vote.organisation) {
-    const voteweight = await Voteweight.findOne({
-      where: {
-        festivalId: vote.festivalId,
-        organisationId: vote.organisationId,
-      },
-    });
-    if (!voteweight) return;
-    vote.voteweights.push(voteweight.id);
-    accumulatedWeights.push(voteweight.strength);
-  }
+  if (!vote.organisationId) return;
+  const voteweight = await Voteweight.findOne({
+    where: {
+      festivalId: vote.festivalId,
+      organisationId: vote.organisationId,
+    },
+  });
+  if (!voteweight) return;
+  vote.voteweights.push(voteweight.id);
+  accumulatedWeights.push(voteweight.strength);
 }
 
 async function checkLocation(vote, accumulatedWeights) {

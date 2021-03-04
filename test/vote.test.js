@@ -8,6 +8,7 @@ import {
   getQuestionContract,
 } from '~/common/services/contracts';
 import { packBooth, packVote } from '~/common/services/encoding';
+import createSupertest from './helpers/supertest';
 
 import artworksData from './data/artworks';
 import buildVote from './helpers/buildVote';
@@ -26,8 +27,11 @@ import { refreshNonce } from './helpers/nonce';
 import { timestamp } from './helpers/constants';
 import { isFestivalInitialized } from '~/common/services/contracts/festivals';
 import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
+import organisationsData from './data/organisations';
+import voteweightsData from './data/voteweights';
 
 describe('Vote', () => {
+  let authRequest;
   let anotherSender;
   let artworkData;
   let artworkQuestionContract;
@@ -42,6 +46,7 @@ describe('Vote', () => {
 
   beforeAll(async () => {
     await initializeDatabase();
+    authRequest = await createSupertest();
 
     // Accounts for voting
     sender = getAccount(1);
@@ -325,6 +330,74 @@ describe('Vote', () => {
           status: 'error',
           code: 422,
           message: 'Duplicate answer',
+        });
+    });
+
+    it('should store the location if sent', async () => {
+      vote.latitude = 4.5;
+      vote.longitude = -3;
+
+      const voteData = await request(app).post('/api/votes').send(vote);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const { latitude, longitude } = response.body.data;
+          expect(latitude).toBe(vote.latitude);
+          expect(longitude).toBe(vote.longitude);
+        });
+    });
+
+    it('should apply and store the organisation vote weight', async () => {
+      const org = await put(
+        '/api/organisations',
+        organisationsData.collectivise,
+      );
+      await put('/api/voteweights', {
+        ...voteweightsData.organisationVoteweight,
+        organisationId: org.id,
+        festivalId: festivalData.id,
+      });
+
+      vote.organisationId = org.id;
+
+      const voteData = await request(app).post('/api/votes').send(vote);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const { voteweights, festivalVoteTokens } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return item * voteweightsData.organisationVoteweight.strength;
+            }),
+          );
+        });
+    });
+
+    it('should apply and store the organisation vote weight', async () => {
+      await put('/api/voteweights', {
+        ...voteweightsData.hotspotVoteweight,
+        hotspot: vote.boothAddress,
+        festivalId: festivalData.id,
+      });
+
+      const voteData = await request(app).post('/api/votes').send(vote);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const { voteweights, festivalVoteTokens } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return item * voteweightsData.hotspotVoteweight.strength;
+            }),
+          );
         });
     });
   });
