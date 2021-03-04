@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
@@ -16,8 +16,13 @@ import { useNewForm } from '~/client/hooks/forms';
 const AdminQuestionsNew = () => {
   const dispatch = useDispatch();
   const returnUrl = '/admin/questions';
+  const [festivalIdCache, setFestivalIdCache] = useState();
 
-  const { Form } = useNewForm({
+  const {
+    Form,
+    setValues,
+    values: { title, festivalId },
+  } = useNewForm({
     fields: ['title', 'festivalId', 'artworkId'],
     resourcePath: ['questions'],
     returnUrl,
@@ -40,13 +45,24 @@ const AdminQuestionsNew = () => {
     },
   });
 
+  // Artworks are chosen based on the festival. When selecting a new festival we
+  // want to invalidate the select artwork since a different festival has
+  // different artworks to choose from. To achieve this I cache the selected
+  // festivalId and forcefully invalidate the artworkId if it changes.
+  useEffect(() => {
+    if (festivalId != festivalIdCache) {
+      setFestivalIdCache(festivalId);
+      setValues({ title, festivalId, artworkId: null });
+    }
+  }, [setValues, title, festivalId, festivalIdCache]);
+
   return (
     <Fragment>
       <HeaderAdmin>{translate('AdminQuestionsNew.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>
-          <FormQuestions />
+          <FormQuestions festivalId={festivalId} />
           <ButtonSubmit />
         </Form>
       </ViewAdmin>
