@@ -9,11 +9,15 @@ async function apply(vote, multiplier) {
   vote.artworkVoteTokens.map((tokens) => tokens * multiplier);
 }
 
-async function checkHotspot(vote) {
+function accumulate(weights) {
+  return weights.reduce((a, b) => a + b, 0) / weights.length;
+}
+
+async function checkHotspot(vote, accumulatedWeights) {
   return vote;
 }
 
-async function checkOrganisation(vote) {
+async function checkOrganisation(vote, accumulatedWeights) {
   if (vote.organisation) {
     const voteweight = await Voteweight.findOne({
       where: {
@@ -22,16 +26,20 @@ async function checkOrganisation(vote) {
       },
     });
     if (!voteweight) return;
-    apply(vote, voteweight.strength);
+    vote.voteweights.push(voteweight.id);
+    accumulatedWeights.push(voteweight.strength);
   }
 }
 
-async function checkLocation(vote) {
+async function checkLocation(vote, accumulatedWeights) {
   return vote;
 }
 
 export default async function applyVoteweightsMiddleware(req, res, next) {
   const { vote } = req.locals;
+
+  vote.voteweights = [];
+  const accumulatedWeights = [];
 
   try {
     for (const voteweightType of [
@@ -39,8 +47,11 @@ export default async function applyVoteweightsMiddleware(req, res, next) {
       checkOrganisation,
       checkHotspot,
     ]) {
-      await voteweightType(vote);
+      await voteweightType(vote, accumulatedWeights);
     }
+
+    const weight = accumulate(accumulatedWeights);
+    apply(vote, weight);
 
     next();
   } catch (error) {
