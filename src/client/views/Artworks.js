@@ -31,6 +31,7 @@ const Artworks = () => {
             return (
               <ArtworksItem
                 festivalSlug={params.festivalSlug}
+                imageCredits={artwork.imageCredits}
                 images={artwork.images}
                 key={artwork.id}
                 slug={artwork.slug}
