@@ -34,8 +34,13 @@ npm run test:watch
 // Check code formatting
 npm run lint
 
-// Start local server and watch changes
+// Before running the local server or running the tests, build the client assets at least once.
+// Build the client assets and watch for changes (recommended during development).
 npm run client:watch
+// Or, build the client assets once.
+npm run client:build
+
+// Start local server and watch changes
 npm run server:watch
 
 // Build for production
