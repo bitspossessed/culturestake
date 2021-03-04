@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { slugValidation } from '~/server/validations';
+import { slugValidation, idValidation } from '~/server/validations';
 import { web3Validators } from '~/common/helpers/validate';
 
 export default {
@@ -25,6 +25,11 @@ export default {
   results: {
     [Segments.PARAMS]: {
       ...slugValidation,
+    },
+  },
+  read: {
+    [Segments.PARAMS]: {
+      ...idValidation,
     },
   },
 };

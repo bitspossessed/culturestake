@@ -52,6 +52,16 @@ export const organisationFields = ['description', 'name'];
 export const propertyFields = ['title'];
 export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
 export const userFields = ['username', 'email'];
+export const voteFields = [
+  'boothAddress',
+  'senderAddress',
+  'festivalQuestionChainId',
+  'festivalAnswerChainIds',
+  'festivalVoteTokens',
+  'artworkQuestionChainId',
+  'artworkAnswerChainIds',
+  'artworkVoteTokens',
+];
 export const voteweightFields = [
   'strength',
   'name',

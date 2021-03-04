@@ -1,6 +1,7 @@
 import express from 'express';
 
 import Question from '~/server/models/question';
+import Vote from '~/server/models/vote';
 import fetchFromGraph from '~/server/middlewares/fetchFromGraph';
 import resolveChainIdsMiddleware from '~/server/middlewares/resolveChainIds';
 import resourcesMiddleware from '~/server/middlewares/resources';
@@ -9,13 +10,19 @@ import validateVoteMiddleware from '~/server/middlewares/validateVote';
 import applyVoteweightsMiddleware from '~/server/middlewares/applyVoteweights';
 import voteController from '~/server/controllers/votes';
 import voteValidation from '~/server/validations/votes';
-import { optionalAuthMiddleware } from '~/server/middlewares/passport';
+import authMiddleware, {
+  optionalAuthMiddleware,
+} from '~/server/middlewares/passport';
 import { questionQuery } from '~/common/services/subgraph';
 
 const router = express.Router();
 
 const getQuestionResource = resourcesMiddleware({
   model: Question,
+});
+
+const getVoteResource = resourcesMiddleware({
+  model: Vote,
 });
 
 const getQuestionGraphData = (req, res, next) => {
@@ -35,7 +42,15 @@ router.post(
 );
 
 router.get(
-  '/:slug',
+  '/:id',
+  authMiddleware,
+  validate(voteValidation.read),
+  getVoteResource,
+  voteController.read,
+);
+
+router.get(
+  '/:slug/results',
   optionalAuthMiddleware,
   validate(voteValidation.results),
   getQuestionResource,

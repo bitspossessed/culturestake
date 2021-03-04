@@ -178,7 +178,7 @@ describe('Vote results', () => {
   describe('GET /api/votes', () => {
     it('should return answer info for top three answers for public request', async () => {
       await request(app)
-        .get(`/api/votes/${festivalQuestionData.slug}`)
+        .get(`/api/votes/${festivalQuestionData.slug}/results`)
         .expect(httpStatus.OK)
         .expect((response) => {
           const { data } = response.body;
@@ -205,7 +205,7 @@ describe('Vote results', () => {
 
     it('should return answer info for all answers for auth request', async () => {
       await authRequest
-        .get(`/api/votes/${festivalQuestionData.slug}`)
+        .get(`/api/votes/${festivalQuestionData.slug}/results`)
         .expect(httpStatus.OK)
         .expect((response) => {
           // Authenticated users should see sensitive vote data as well

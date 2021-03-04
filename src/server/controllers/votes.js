@@ -9,10 +9,13 @@ import {
   AnswerBelongsToProperty,
   ArtworkBelongsToArtist,
   QuestionHasManyAnswers,
+  VoteHasManyVoteWeights,
   artistFields,
   artworkFields,
   propertyFields,
   questionFields,
+  voteFields,
+  voteweightFields,
 } from '~/server/database/associations';
 import { filterResponse } from '~/server/helpers/respond';
 import { filterResponseFields } from '~/server/controllers';
@@ -45,6 +48,18 @@ const answerAssociation = {
 };
 
 const options = {
+  model: Vote,
+  fields: [...voteFields, 'voteweights'],
+  associations: [
+    {
+      fields: [...voteweightFields],
+      association: VoteHasManyVoteWeights,
+    },
+  ],
+  include: [VoteHasManyVoteWeights],
+};
+
+const optionsResults = {
   model: Question,
   fields: [...questionFields, 'answers'],
   associations: [
@@ -135,7 +150,7 @@ function topThreeFilter(req, data) {
   });
 
   return filterResponseFields(req, data, {
-    ...options,
+    ...optionsResults,
     associations: [],
   });
 }
@@ -180,10 +195,15 @@ async function vote(req, res, next) {
 
 // Read vote results (Question with anonymized answers)
 async function results(req, res, next) {
+  baseController.read(optionsResults)(req, res, next);
+}
+
+function read(req, res, next) {
   baseController.read(options)(req, res, next);
 }
 
 export default {
   vote,
   results,
+  read,
 };

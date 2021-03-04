@@ -55,7 +55,7 @@ const FestivalsProfile = () => {
 
   // ... to load the vote results!
   const [results] = useResource(
-    festivalQuestion ? ['votes', festivalQuestion.slug] : [],
+    festivalQuestion ? ['votes', festivalQuestion.slug, 'results'] : [],
     {
       onError: () => {
         history.push('/404');
