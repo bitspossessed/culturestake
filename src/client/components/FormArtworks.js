@@ -21,12 +21,12 @@ const FormArtworks = () => {
     description: Joi.string().max(2000).required(),
     descriptionCommission: Joi.string().max(2000).required(),
     documents: documentsValidation.required().max(3),
+    imageCredits: Joi.string().max(500).allow(''),
     images: imagesValidation.required().max(10),
     sticker: stickerValidation.required(),
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
     url: Joi.string().uri().allow(''),
-    imageCredits: Joi.string().max(500).allow(''),
   };
 
   return (
