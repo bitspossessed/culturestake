@@ -6,6 +6,7 @@ import resolveChainIdsMiddleware from '~/server/middlewares/resolveChainIds';
 import resourcesMiddleware from '~/server/middlewares/resources';
 import validate from '~/server/services/validate';
 import validateVoteMiddleware from '~/server/middlewares/validateVote';
+import applyVoteweightsMiddleware from '~/server/middlewares/applyVoteweights';
 import voteController from '~/server/controllers/votes';
 import voteValidation from '~/server/validations/votes';
 import { optionalAuthMiddleware } from '~/server/middlewares/passport';
@@ -29,6 +30,7 @@ router.post(
   validate(voteValidation.vote),
   resolveChainIdsMiddleware,
   validateVoteMiddleware,
+  applyVoteweightsMiddleware,
   voteController.vote,
 );
 
