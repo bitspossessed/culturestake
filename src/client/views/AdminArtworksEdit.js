@@ -27,6 +27,7 @@ const AdminArtworksEdit = () => {
       'description',
       'descriptionCommission',
       'documents',
+      'imageCredits',
       'images',
       'sticker',
       'subtitle',
