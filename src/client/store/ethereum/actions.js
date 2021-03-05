@@ -5,10 +5,14 @@ import notify, {
 import translate from '~/common/services/i18n';
 import web3 from '~/common/services/web3';
 import { detectMetaMask, enableProvider } from '~/client/services/ethereum';
+import { isContract } from '~/common/services/contracts';
 import { isOwner } from '~/common/services/contracts/owners';
 
 async function handleAccountChange(accounts, dispatch) {
   try {
+    if (!(await isContract(process.env.ADMIN_CONTRACT)))
+      throw new Error('No smart contract found for this account.');
+
     const isOwnerState =
       accounts && accounts.length > 0 ? await isOwner(accounts[0]) : false;
 
@@ -28,7 +32,9 @@ async function handleAccountChange(accounts, dispatch) {
   } catch (e) {
     dispatch(
       notify({
-        text: translate('ethereum.notificationAccountFailure'),
+        text: `${translate('ethereum.notificationAccountFailure')}: ${
+          e.message
+        }`,
         type: NotificationsTypes.ERROR,
       }),
     );

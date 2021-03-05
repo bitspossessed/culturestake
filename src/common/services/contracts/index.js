@@ -17,6 +17,14 @@ export function getQuestionContract(address) {
   return getContract(QuestionContract.abi, address);
 }
 
+export async function isContract(address) {
+  const code = await web3.eth.getCode(address);
+  // A valid contract is a string with `0x` as a prefix. If no other characters
+  // follow the prefix it is an invalid contract.
+  if (/^0x.+/.test(code)) return true;
+  return false;
+}
+
 // Admin contract methods
 
 export const adminContract = getAdminContract(process.env.ADMIN_CONTRACT);
