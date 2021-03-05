@@ -3,14 +3,15 @@ import httpStatus from 'http-status';
 import APIError from '~/server/helpers/errors';
 import logger from '~/server/helpers/logger';
 import Voteweight from '~/server/models/voteweight';
+import db from '~/server/database';
 
 async function apply(vote, multiplier) {
-  vote.festivalVoteTokens = vote.festivalVoteTokens.map(
-    (tokens) => tokens * multiplier,
-  );
-  vote.artworkVoteTokens = vote.artworkVoteTokens.map(
-    (tokens) => tokens * multiplier,
-  );
+  vote.festivalVoteTokens = vote.festivalVoteTokens.map((tokens) => {
+    return Math.floor(tokens * multiplier);
+  });
+  vote.artworkVoteTokens = vote.artworkVoteTokens.map((tokens) => {
+    return Math.floor(tokens * multiplier);
+  });
 }
 
 function accumulate(weights) {
@@ -44,7 +45,22 @@ async function checkOrganisation(vote, accumulatedWeights) {
 }
 
 async function checkLocation(vote, accumulatedWeights) {
-  return vote;
+  if (!vote.longitude || !vote.latitude) return;
+  const sql = `SELECT id, name, strength FROM voteweights
+    WHERE (
+      ST_DWithin(
+        ST_SetSRID(ST_Point(${vote.longitude}, ${vote.latitude}),4326),
+        voteweights.location,
+        voteweights.radius
+      )
+    )
+    AND "festivalId"=${parseInt(vote.festivalId)});`;
+  const [voteweights] = await db.query(sql);
+  if (voteweights.length === 0) return;
+  voteweights.map((weight) => {
+    vote.voteweights.push(weight.id);
+    accumulatedWeights.push(weight.strength);
+  });
 }
 
 export default async function applyVoteweightsMiddleware(req, res, next) {

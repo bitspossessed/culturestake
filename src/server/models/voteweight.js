@@ -15,7 +15,7 @@ const Voteweight = db.define('voteweights', {
     allowNull: true,
   },
   strength: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.DECIMAL(13, 2),
     allowNull: false,
   },
   name: {

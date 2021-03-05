@@ -125,10 +125,10 @@ describe('Vote', () => {
       vote = buildVote(booth, sender, {
         festivalQuestionId: festivalQuestionData.id,
         festivalAnswerIds: [festivalAnswerData.id],
-        festivalVoteTokens: [1],
+        festivalVoteTokens: [10],
         artworkQuestionId: artworkQuestionData.id,
         artworkAnswerIds: [propertyAnswerData.id],
-        artworkVoteTokens: [1],
+        artworkVoteTokens: [10],
       });
     });
 
@@ -337,7 +337,10 @@ describe('Vote', () => {
       vote.latitude = 4.5;
       vote.longitude = -3;
 
-      const voteData = await request(app).post('/api/votes').send(vote);
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
 
       await authRequest
         .get(`/api/votes/${voteData.body.data.id}`)
@@ -349,12 +352,12 @@ describe('Vote', () => {
         });
     });
 
-    it('should apply and store the organisation vote weight', async () => {
+    it('should apply and store a organisation vote weight', async () => {
       const org = await put(
         '/api/organisations',
         organisationsData.collectivise,
       );
-      await put('/api/voteweights', {
+      const voteweight = await put('/api/voteweights', {
         ...voteweightsData.organisationVoteweight,
         organisationId: org.id,
         festivalId: festivalData.id,
@@ -362,67 +365,151 @@ describe('Vote', () => {
 
       vote.organisationId = org.id;
 
-      const voteData = await request(app).post('/api/votes').send(vote);
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
 
       await authRequest
         .get(`/api/votes/${voteData.body.data.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
-          const { voteweights, festivalVoteTokens } = response.body.data;
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return item * voteweightsData.organisationVoteweight.strength;
+              return Math.floor(item * voteweight.strength);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.strength);
             }),
           );
         });
     });
 
-    it('should apply and store the organisation vote weight', async () => {
-      await put('/api/voteweights', {
+    it('should apply and store a hotspot vote weight', async () => {
+      const voteweight = await put('/api/voteweights', {
         ...voteweightsData.hotspotVoteweight,
         hotspot: vote.boothAddress,
         festivalId: festivalData.id,
       });
 
-      const voteData = await request(app).post('/api/votes').send(vote);
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
 
       await authRequest
         .get(`/api/votes/${voteData.body.data.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
-          const { voteweights, festivalVoteTokens } = response.body.data;
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return item * voteweightsData.hotspotVoteweight.strength;
+              return Math.floor(item * voteweight.strength);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.strength);
+            }),
+          );
+        });
+
+      await authRequest.delete(`/api/voteweights/${voteweight.id}`);
+    });
+
+    it('should apply and store a location vote weight', async () => {
+      const latitude = 4.56;
+      const longitude = -78.4;
+
+      const voteweight = await put('/api/voteweights', {
+        ...voteweightsData.locationVoteweight,
+        festivalId: festivalData.id,
+        strength: 3.75,
+        latitude,
+        longitude,
+        radius: 1000,
+      });
+
+      vote.latitude = latitude;
+      vote.longitude = longitude;
+
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.strength);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.strength);
             }),
           );
         });
     });
 
     it('should apply and store a negative vote weight', async () => {
-      await put('/api/voteweights', {
+      const voteweight = await put('/api/voteweights', {
         ...voteweightsData.hotspotVoteweight,
         hotspot: vote.boothAddress,
         festivalId: festivalData.id,
         strength: 0.75,
       });
 
-      const voteData = await request(app).post('/api/votes').send(vote);
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
 
       await authRequest
         .get(`/api/votes/${voteData.body.data.id}`)
         .expect(httpStatus.OK)
         .expect((response) => {
-          const { voteweights, festivalVoteTokens } = response.body.data;
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return item * voteweightsData.hotspotVoteweight.strength;
+              return Math.floor(item * voteweight.strength);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.strength);
             }),
           );
         });
+
+      await authRequest.delete(`/api/voteweights/${voteweight.id}`);
     });
   });
 });

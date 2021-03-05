@@ -8,8 +8,8 @@ export function locationFilter(req, data, options) {
     });
   }
 
-  const latitude = data.dataValues.location.coordinates[0];
-  const longitude = data.dataValues.location.coordinates[1];
+  const longitude = data.dataValues.location.coordinates[0];
+  const latitude = data.dataValues.location.coordinates[1];
 
   data.set('latitude', latitude, {
     raw: true,
