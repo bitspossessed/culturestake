@@ -53,7 +53,6 @@ async function checkLocation(vote, accumulatedWeights) {
         voteweights.location,
         voteweights.radius
       )
-    )
     AND "festivalId"=${parseInt(vote.festivalId)});`;
   const [voteweights] = await db.query(sql);
   if (voteweights.length === 0) return;

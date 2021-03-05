@@ -245,10 +245,11 @@ describe('Vote', () => {
 
       // Repeat request (same nonce) but with different sender
       vote.senderSignature = web3.eth.accounts.sign(
-        packVote([festivalAnswerData.id], [1], [propertyAnswerData.id], [1]),
+        packVote([festivalAnswerData.id], [10], [propertyAnswerData.id], [10]),
         anotherSender.privateKey,
       ).signature;
       vote.senderAddress = anotherSender.address;
+
       await request(app)
         .post('/api/votes')
         .send(vote)
@@ -267,7 +268,7 @@ describe('Vote', () => {
           [festivalAnswerData.id],
           voteTokens,
           [propertyAnswerData.id],
-          [1],
+          [10],
         ),
         sender.privateKey,
       ).signature;
@@ -291,7 +292,7 @@ describe('Vote', () => {
           [festivalAnswerData.id],
           voteTokens,
           [propertyAnswerData.id],
-          [1],
+          [10],
         ),
         sender.privateKey,
       ).signature;
@@ -312,7 +313,7 @@ describe('Vote', () => {
       const voteAnswerIds = [festivalAnswerData.id, festivalAnswerData.id];
 
       vote.senderSignature = web3.eth.accounts.sign(
-        packVote(voteAnswerIds, voteTokens, [propertyAnswerData.id], [1]),
+        packVote(voteAnswerIds, voteTokens, [propertyAnswerData.id], [10]),
         sender.privateKey,
       ).signature;
       vote.festivalAnswerIds = voteAnswerIds;
