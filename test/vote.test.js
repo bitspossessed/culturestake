@@ -400,5 +400,29 @@ describe('Vote', () => {
           );
         });
     });
+
+    it('should apply and store a negative vote weight', async () => {
+      await put('/api/voteweights', {
+        ...voteweightsData.hotspotVoteweight,
+        hotspot: vote.boothAddress,
+        festivalId: festivalData.id,
+        strength: 0.75,
+      });
+
+      const voteData = await request(app).post('/api/votes').send(vote);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const { voteweights, festivalVoteTokens } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return item * voteweightsData.hotspotVoteweight.strength;
+            }),
+          );
+        });
+    });
   });
 });

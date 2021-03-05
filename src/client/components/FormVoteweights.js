@@ -13,7 +13,7 @@ import InputFinderField from '~/client/components/InputFinderField';
 const FormVoteweights = ({ festival, type, onChange }) => {
   const schema = {
     festivalId: Joi.number().integer().required(),
-    strength: Joi.number().integer().required(),
+    strength: Joi.number().min(0.01).required(),
     name: Joi.string().required(),
     type: Joi.string()
       .valid(...VOTEWEIGHT_TYPES)
