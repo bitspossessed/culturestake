@@ -104,7 +104,7 @@ export const useNewForm = ({
   const history = useHistory();
   const requestId = useRequestId();
 
-  const { Form, setFieldValue } = useRequestForm({
+  const { Form, setFieldValue, setValues, values } = useRequestForm({
     requestId,
     onSubmit: (values) => {
       dispatch(
@@ -135,6 +135,8 @@ export const useNewForm = ({
   return {
     Form,
     setFieldValue,
+    setValues,
+    values,
   };
 };
 
@@ -166,6 +168,7 @@ export const useEditForm = ({
 
   const {
     Form,
+    values,
     meta: { canSubmit },
   } = useRequestForm({
     requestId,
@@ -239,6 +242,7 @@ export const useEditForm = ({
     Form,
     isResourceLoading,
     resource,
+    values,
   };
 };
 
