@@ -14,8 +14,16 @@ async function apply(vote, multiplier) {
 }
 
 function accumulate(weights) {
-  const sum = weights.reduce((a, b) => a + b, 0);
-  return sum ? sum / weights.length : 1;
+  const negativeweights = weights.reduce((a, b) => {
+    if (b < 1) return a + b;
+    return a;
+  }, 0);
+  const postiveweights = weights.reduce((a, b) => {
+    if (b > 1) return a + (b - 1);
+    return a;
+  }, 1);
+  const sum = 1 + postiveweights - (1 + negativeweights);
+  return sum ? sum : 1;
 }
 
 async function checkHotspot(vote, accumulatedWeights) {
