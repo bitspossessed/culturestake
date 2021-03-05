@@ -48,6 +48,7 @@ const Artwork = db.define('artwork', {
   },
   imageCredits: {
     type: DataTypes.STRING,
+    allowNull: true,
   },
 });
 
