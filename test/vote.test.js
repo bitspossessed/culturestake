@@ -84,6 +84,7 @@ describe('Vote', () => {
       // Set up first question contract for artwork answers on an festival
       const festivalQuestionData = await put('/api/questions', {
         title: 'What was your favorite artwork of this festival?',
+        type: 'festival',
         festivalId: festivalData.id,
       });
 
@@ -97,6 +98,7 @@ describe('Vote', () => {
       // Set up second question contract for property answers on an artwork
       const artworkQuestionData = await put('/api/questions', {
         title: 'What aspect of this artwork did you like and how much?',
+        type: 'artwork',
         festivalId: festivalData.id,
         artworkId: artworkData.id,
       });

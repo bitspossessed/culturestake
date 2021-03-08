@@ -30,11 +30,13 @@ describe('Answers', () => {
 
     questionData1 = await put('/api/questions', {
       title: 'Why is this necessary?',
+      type: 'festival',
       festivalId: festivalData.id,
     });
 
     questionData2 = await put('/api/questions', {
       title: 'How many?',
+      type: 'artwork',
       artworkId: artworkData.id,
       festivalId: festivalData.id,
     });

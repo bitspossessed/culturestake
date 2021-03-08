@@ -3,8 +3,10 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import InputField from '~/client/components/InputField';
+import InputHiddenField from '~/client/components/InputHiddenField';
 import InputFinderField from '~/client/components/InputFinderField';
 import translate from '~/common/services/i18n';
+import { QUESTION_TYPES } from '~/common/helpers/validate';
 
 const FormQuestions = ({ isFinderDisabled, festivalId }) => {
   const hasFestival = !!festivalId;
@@ -18,6 +20,7 @@ const FormQuestions = ({ isFinderDisabled, festivalId }) => {
       .integer()
       .allow(null)
       .error(new Error(translate('validations.artworkRequired'))),
+    type: Joi.valid(...QUESTION_TYPES).required(),
   };
 
   const filter = (item) => {
@@ -58,6 +61,8 @@ const FormQuestions = ({ isFinderDisabled, festivalId }) => {
         selectParam={'id'}
         validate={schema.artworkId}
       />
+
+      <InputHiddenField name="type" value={{ value: 'festival' }} />
     </Fragment>
   );
 };
