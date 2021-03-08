@@ -21,9 +21,9 @@ const AdminQuestionsNew = () => {
   const {
     Form,
     setValues,
-    values: { title, festivalId },
+    values: { title, festivalId, artworkId, type },
   } = useNewForm({
-    fields: ['title', 'festivalId', 'artworkId'],
+    fields: ['title', 'festivalId', 'artworkId', 'type'],
     resourcePath: ['questions'],
     returnUrl,
     onSuccess: ({ title }) => {
@@ -52,9 +52,16 @@ const AdminQuestionsNew = () => {
   useEffect(() => {
     if (festivalId != festivalIdCache) {
       setFestivalIdCache(festivalId);
-      setValues({ title, festivalId, artworkId: null });
+      setValues({ title, festivalId, type: 'festival', artworkId: undefined });
     }
-  }, [setValues, title, festivalId, festivalIdCache]);
+  }, [setValues, title, festivalId, type, festivalIdCache]);
+
+  // Switch over the type of the question to an artwork question once we set an artwork.
+  useEffect(() => {
+    if (artworkId != null) {
+      setValues({ title, festivalId, artworkId, type: 'artwork' });
+    }
+  }, [setValues, title, festivalId, artworkId]);
 
   return (
     <Fragment>

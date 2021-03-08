@@ -1,8 +1,10 @@
 {
   "questionFestival": {
-    "title": "what do you think about frogs?"
+    "title": "what do you think about frogs?",
+    "type": "festival"
   },
   "questionArtwork": {
-    "title": "what planet do we live on?"
+    "title": "what planet do we live on?",
+    "type": "artwork"
   }
 }
