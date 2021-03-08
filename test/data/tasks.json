@@ -1,0 +1,6 @@
+{
+  "voteInvitation": {
+    "kind": "vote_invitations",
+    "data": [{ "to": "aaa@example.org" }, { "to": "bbb@example.org" }]
+  }
+}

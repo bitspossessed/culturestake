@@ -13,6 +13,7 @@ import AdminArtworks from '~/client/views/AdminArtworks';
 import AdminArtworksEdit from '~/client/views/AdminArtworksEdit';
 import AdminArtworksNew from '~/client/views/AdminArtworksNew';
 import AdminBooths from '~/client/views/AdminBooths';
+import AdminEmails from '~/client/views/AdminEmails';
 import AdminFestivals from '~/client/views/AdminFestivals';
 import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
@@ -196,6 +197,11 @@ const Routes = () => (
       component={AdminAnswersEdit}
       exact
       path="/admin/questions/:questionId/answers/:answerId/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminEmails}
+      exact
+      path="/admin/emails"
     />
     <AuthenticatedRoute
       component={AdminProperties}

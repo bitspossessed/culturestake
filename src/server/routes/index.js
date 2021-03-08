@@ -15,6 +15,7 @@ import uploadsRouter from '~/server/routes/uploads';
 import usersRouter from '~/server/routes/users';
 import votesRouter from '~/server/routes/votes';
 import voteweightsRouter from '~/server/routes/voteweights';
+import tasksRouter from '~/server/routes/tasks';
 import { respondWithSuccess } from '~/server/helpers/respond';
 
 const router = express.Router();
@@ -46,6 +47,8 @@ router.use('/answers', answersRouter);
 router.use('/organisations', organisationsRouter);
 
 router.use('/voteweights', voteweightsRouter);
+
+router.use('/tasks', tasksRouter);
 
 router.use(() => {
   throw new APIError(httpStatus.NOT_FOUND);

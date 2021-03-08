@@ -1,5 +1,9 @@
 import logger from '~/server/helpers/logger';
+import { isTest } from '~/common/utils/constants';
 
+// The default job options don't work very well during unit tests. Jobs don't
+// complete in time. We will use these default job options only if we are not in
+// a test environment.
 const jobDefaultOptions = {
   timeout: 1000 * 60 * 40,
   attempts: 100,
@@ -18,7 +22,7 @@ export default function submitJob(queue, id, data = {}, jobOptions = {}) {
 
     return queue.add(
       { id, ...data },
-      { jobId: id, ...jobDefaultOptions, ...jobOptions },
+      { jobId: id, ...(isTest ? {} : jobDefaultOptions), ...jobOptions },
     );
   });
 }
