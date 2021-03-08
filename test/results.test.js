@@ -102,6 +102,7 @@ describe('Vote results', () => {
     festivalQuestionData = await put('/api/questions', {
       title: 'What do you think about frogs?',
       festivalId: festivalData.id,
+      type: 'festival',
     });
     const festivalQuestionAddress = await initQuestion(
       adminContract,
@@ -117,6 +118,7 @@ describe('Vote results', () => {
       title: 'What aspect of this frogwork did you like and how much?',
       festivalId: festivalData.id,
       artworkId: artworkIds[0], // Create artwork question for Davinci
+      type: 'artwork',
     });
     const artworkQuestionAddress = await initQuestion(
       adminContract,
