@@ -1,20 +1,48 @@
 import ActionTypes from '~/client/store/ethereum/types';
-import notify from '~/client/store/notifications/actions';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 import translate from '~/common/services/i18n';
 import web3 from '~/common/services/web3';
 import { detectMetaMask, enableProvider } from '~/client/services/ethereum';
+import { isContract } from '~/common/services/contracts';
 import { isOwner } from '~/common/services/contracts/owners';
 
-async function handleAccountChange(accounts) {
-  const isOwnerState =
-    accounts && accounts.length > 0 ? await isOwner(accounts[0]) : false;
-  return {
-    type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
-    meta: {
-      account: accounts[0],
-      isOwner: isOwnerState,
-    },
-  };
+async function handleAccountChange(accounts, dispatch) {
+  try {
+    if (!(await isContract(process.env.ADMIN_CONTRACT)))
+      throw new Error('No smart contract found for this account.');
+
+    const isOwnerState =
+      accounts && accounts.length > 0 ? await isOwner(accounts[0]) : false;
+
+    dispatch(
+      notify({
+        text: translate('ethereum.notificationAccountEnabled'),
+      }),
+    );
+
+    return {
+      type: ActionTypes.ETHEREUM_ACCOUNT_CHANGED,
+      meta: {
+        account: accounts[0],
+        isOwner: isOwnerState,
+      },
+    };
+  } catch (e) {
+    dispatch(
+      notify({
+        text: `${translate('ethereum.notificationAccountFailure')}: ${
+          e.message
+        }`,
+        type: NotificationsTypes.ERROR,
+      }),
+    );
+
+    return {
+      type: ActionTypes.ETHEREUM_ACCOUNT_FAILURE,
+    };
+  }
 }
 
 // Helper method to generate string identifier for pending transactions
@@ -40,7 +68,7 @@ export function initializeProvider() {
 
     if (hasProvider) {
       provider.on('accountsChanged', async (accounts) => {
-        dispatch(await handleAccountChange(accounts));
+        dispatch(await handleAccountChange(accounts, dispatch));
       });
     }
 
@@ -57,13 +85,7 @@ export function enableAccount() {
   return async (dispatch) => {
     const accounts = await enableProvider();
 
-    dispatch(
-      notify({
-        text: translate('ethereum.notificationAccountEnabled'),
-      }),
-    );
-
-    dispatch(await handleAccountChange(accounts));
+    dispatch(await handleAccountChange(accounts, dispatch));
   };
 }
 

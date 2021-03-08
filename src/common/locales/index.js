@@ -247,6 +247,8 @@ const store = {
   },
   ethereum: {
     notificationAccountEnabled: 'Activated Smart Contracts Snuggle Panel',
+    notificationAccountFailure:
+      'Failed to activate Smart Contracts Snuggle Panel',
   },
 };
 
