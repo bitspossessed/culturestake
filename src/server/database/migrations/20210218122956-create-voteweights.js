@@ -22,7 +22,7 @@ module.exports = {
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE',
       },
-      strength: {
+      multiplier: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },

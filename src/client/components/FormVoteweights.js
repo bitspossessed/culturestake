@@ -74,6 +74,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       <InputField
         label={translate('FormVoteweights.fieldMultiplier')}
         name="multiplier"
+        placeholder="eg. 1.00"
         type="text"
         validate={schema.multiplier}
       />
