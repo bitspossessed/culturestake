@@ -383,12 +383,12 @@ describe('Vote', () => {
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
           expect(artworkVoteTokens).toStrictEqual(
             vote.artworkVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
         });
@@ -418,12 +418,12 @@ describe('Vote', () => {
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
           expect(artworkVoteTokens).toStrictEqual(
             vote.artworkVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
         });
@@ -438,7 +438,7 @@ describe('Vote', () => {
       const voteweight = await put('/api/voteweights', {
         ...voteweightsData.locationVoteweight,
         festivalId: festivalData.id,
-        strength: 3.75,
+        multiplier: 3.75,
         latitude,
         longitude,
         radius: 1000,
@@ -464,12 +464,12 @@ describe('Vote', () => {
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
           expect(artworkVoteTokens).toStrictEqual(
             vote.artworkVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
         });
@@ -480,7 +480,7 @@ describe('Vote', () => {
         ...voteweightsData.hotspotVoteweight,
         hotspot: vote.boothAddress,
         festivalId: festivalData.id,
-        strength: 0.75,
+        multiplier: 0.75,
       });
 
       const voteData = await request(app)
@@ -500,12 +500,12 @@ describe('Vote', () => {
           expect(voteweights.length).toBe(1);
           expect(festivalVoteTokens).toStrictEqual(
             vote.festivalVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
           expect(artworkVoteTokens).toStrictEqual(
             vote.artworkVoteTokens.map((item) => {
-              return Math.floor(item * voteweight.strength);
+              return Math.floor(item * voteweight.multiplier);
             }),
           );
         });
