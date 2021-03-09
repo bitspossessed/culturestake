@@ -14,7 +14,7 @@ const Voteweight = db.define('voteweights', {
     type: DataTypes.INTEGER,
     allowNull: true,
   },
-  strength: {
+  multiplier: {
     type: DataTypes.DECIMAL(13, 2),
     allowNull: false,
   },

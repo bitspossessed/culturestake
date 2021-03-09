@@ -122,10 +122,10 @@ const components = {
   FormVoteweights: {
     fieldType: 'Type:',
     fieldName: 'Name:',
-    fieldStrength: 'Strength:',
+    fieldMultiplier: 'Multiplier:',
     fieldLatitude: 'Latitude:',
     fieldLongitude: 'Longitude:',
-    fieldRadius: 'Radius:',
+    fieldRadius: 'Radius in metres:',
     fieldHotspot: 'Hotspot Address:',
     fieldOrganisation: 'Organisation:',
     fieldOrganisationPlaceholder: 'Search for an organisation to add',

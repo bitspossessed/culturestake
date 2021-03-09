@@ -5,7 +5,7 @@ import logger from '~/server/helpers/logger';
 import Voteweight from '~/server/models/voteweight';
 import db from '~/server/database';
 
-async function apply(vote, multiplier) {
+async function applyWeight(vote, multiplier) {
   vote.festivalVoteTokens = vote.festivalVoteTokens.map((tokens) => {
     return Math.floor(tokens * multiplier);
   });
@@ -28,7 +28,7 @@ async function checkHotspot(vote, accumulatedWeights) {
   });
   if (!voteweight) return;
   vote.voteweights.push(voteweight.id);
-  accumulatedWeights.push(voteweight.strength);
+  accumulatedWeights.push(voteweight.multiplier);
 }
 
 async function checkOrganisation(vote, accumulatedWeights) {
@@ -41,12 +41,12 @@ async function checkOrganisation(vote, accumulatedWeights) {
   });
   if (!voteweight) return;
   vote.voteweights.push(voteweight.id);
-  accumulatedWeights.push(voteweight.strength);
+  accumulatedWeights.push(voteweight.multiplier);
 }
 
 async function checkLocation(vote, accumulatedWeights) {
   if (!vote.longitude || !vote.latitude) return;
-  const sql = `SELECT id, name, strength FROM voteweights
+  const sql = `SELECT id, name, multiplier FROM voteweights
     WHERE (
       ST_DWithin(
         ST_SetSRID(ST_Point(${vote.longitude}, ${vote.latitude}),4326),
@@ -58,7 +58,7 @@ async function checkLocation(vote, accumulatedWeights) {
   if (voteweights.length === 0) return;
   voteweights.map((weight) => {
     vote.voteweights.push(weight.id);
-    accumulatedWeights.push(weight.strength);
+    accumulatedWeights.push(weight.multiplier);
   });
 }
 
@@ -78,7 +78,7 @@ export default async function applyVoteweightsMiddleware(req, res, next) {
     }
 
     const weight = accumulate(accumulatedWeights);
-    apply(vote, weight);
+    applyWeight(vote, weight);
 
     next();
   } catch (error) {

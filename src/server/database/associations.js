@@ -65,7 +65,7 @@ export const voteFields = [
   'longitude',
 ];
 export const voteweightFields = [
-  'strength',
+  'multiplier',
   'name',
   'festivalId',
   'type',
