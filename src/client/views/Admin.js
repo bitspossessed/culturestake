@@ -51,6 +51,10 @@ const Admin = () => {
             <ButtonOutline to="/admin/questions">
               {translate('Admin.linkAdminQuestions')}
             </ButtonOutline>
+
+            <ButtonOutline to="/admin/emails">
+              {translate('Admin.linkAdminEmails')}
+            </ButtonOutline>
           </AdminNavigationStyle>
         </BoxRounded>
 

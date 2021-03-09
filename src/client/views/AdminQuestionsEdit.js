@@ -25,7 +25,13 @@ const AdminQuestionsEdit = () => {
   const dispatch = useDispatch();
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
+  const {
+    ButtonDelete,
+    Form,
+    isResourceLoading,
+    resource,
+    values: { festivalId },
+  } = useEditForm({
     fields: ['artworkId', 'festivalId', 'title'],
     resourcePath: ['questions', questionId],
     returnUrl,
@@ -70,7 +76,7 @@ const AdminQuestionsEdit = () => {
 
       <ViewAdmin>
         <Form>
-          <FormQuestions isFinderDisabled />
+          <FormQuestions festivalId={festivalId} isFinderDisabled />
 
           <BoxRounded title={translate(`AdminQuestionsEdit.bodyAnswers`)}>
             <AnswersTable

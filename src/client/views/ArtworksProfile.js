@@ -62,7 +62,7 @@ const ArtworksProfile = () => {
 
   // ... to load the vote results!
   const [results] = useResource(
-    artworkQuestion ? ['votes', artworkQuestion.slug] : [],
+    artworkQuestion ? ['votes', artworkQuestion.slug, 'results'] : [],
     {
       onError: () => {
         history.push('/404');

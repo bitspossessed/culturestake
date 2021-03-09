@@ -42,7 +42,7 @@ const AdminVoteweightsNew = () => {
     fields: [
       'festivalId',
       'name',
-      'strength',
+      'multiplier',
       'type',
       'latitude',
       'longitude',

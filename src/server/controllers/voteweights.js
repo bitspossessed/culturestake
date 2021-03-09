@@ -1,31 +1,13 @@
 import Voteweight from '~/server/models/voteweight';
 import baseController from '~/server/controllers';
 import { voteweightFields } from '~/server/database/associations';
-import { filterResponseFields } from '~/server/controllers';
+import { locationFilter } from '~/server/helpers/filters';
 
 const options = {
   model: Voteweight,
   fields: [...voteweightFields],
   customFilter: locationFilter,
 };
-
-function locationFilter(req, data) {
-  const latitude = data.dataValues.location.coordinates[0];
-  const longitude = data.dataValues.location.coordinates[1];
-
-  data.set('latitude', latitude, {
-    raw: true,
-  });
-
-  data.set('longitude', longitude, {
-    raw: true,
-  });
-
-  return filterResponseFields(req, data, {
-    ...options,
-    associations: [],
-  });
-}
 
 function create(req, res, next) {
   baseController.create(options)(req, res, next);

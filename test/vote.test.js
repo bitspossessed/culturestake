@@ -8,6 +8,7 @@ import {
   getQuestionContract,
 } from '~/common/services/contracts';
 import { packBooth, packVote } from '~/common/services/encoding';
+import createSupertest from './helpers/supertest';
 
 import artworksData from './data/artworks';
 import buildVote from './helpers/buildVote';
@@ -26,8 +27,11 @@ import { refreshNonce } from './helpers/nonce';
 import { timestamp } from './helpers/constants';
 import { isFestivalInitialized } from '~/common/services/contracts/festivals';
 import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
+import organisationsData from './data/organisations';
+import voteweightsData from './data/voteweights';
 
 describe('Vote', () => {
+  let authRequest;
   let anotherSender;
   let artworkData;
   let artworkQuestionContract;
@@ -42,6 +46,7 @@ describe('Vote', () => {
 
   beforeAll(async () => {
     await initializeDatabase();
+    authRequest = await createSupertest();
 
     // Accounts for voting
     sender = getAccount(1);
@@ -120,10 +125,10 @@ describe('Vote', () => {
       vote = buildVote(booth, sender, {
         festivalQuestionId: festivalQuestionData.id,
         festivalAnswerIds: [festivalAnswerData.id],
-        festivalVoteTokens: [1],
+        festivalVoteTokens: [10],
         artworkQuestionId: artworkQuestionData.id,
         artworkAnswerIds: [propertyAnswerData.id],
-        artworkVoteTokens: [1],
+        artworkVoteTokens: [10],
       });
     });
 
@@ -240,10 +245,11 @@ describe('Vote', () => {
 
       // Repeat request (same nonce) but with different sender
       vote.senderSignature = web3.eth.accounts.sign(
-        packVote([festivalAnswerData.id], [1], [propertyAnswerData.id], [1]),
+        packVote([festivalAnswerData.id], [10], [propertyAnswerData.id], [10]),
         anotherSender.privateKey,
       ).signature;
       vote.senderAddress = anotherSender.address;
+
       await request(app)
         .post('/api/votes')
         .send(vote)
@@ -262,7 +268,7 @@ describe('Vote', () => {
           [festivalAnswerData.id],
           voteTokens,
           [propertyAnswerData.id],
-          [1],
+          [10],
         ),
         sender.privateKey,
       ).signature;
@@ -286,7 +292,7 @@ describe('Vote', () => {
           [festivalAnswerData.id],
           voteTokens,
           [propertyAnswerData.id],
-          [1],
+          [10],
         ),
         sender.privateKey,
       ).signature;
@@ -307,7 +313,7 @@ describe('Vote', () => {
       const voteAnswerIds = [festivalAnswerData.id, festivalAnswerData.id];
 
       vote.senderSignature = web3.eth.accounts.sign(
-        packVote(voteAnswerIds, voteTokens, [propertyAnswerData.id], [1]),
+        packVote(voteAnswerIds, voteTokens, [propertyAnswerData.id], [10]),
         sender.privateKey,
       ).signature;
       vote.festivalAnswerIds = voteAnswerIds;
@@ -326,6 +332,185 @@ describe('Vote', () => {
           code: 422,
           message: 'Duplicate answer',
         });
+    });
+
+    it('should store the location if sent', async () => {
+      vote.latitude = 4.5;
+      vote.longitude = -3;
+
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const { latitude, longitude } = response.body.data;
+          expect(latitude).toBe(vote.latitude);
+          expect(longitude).toBe(vote.longitude);
+        });
+    });
+
+    it('should apply and store a organisation vote weight', async () => {
+      const org = await put(
+        '/api/organisations',
+        organisationsData.collectivise,
+      );
+      const voteweight = await put('/api/voteweights', {
+        ...voteweightsData.organisationVoteweight,
+        organisationId: org.id,
+        festivalId: festivalData.id,
+      });
+
+      vote.organisationId = org.id;
+
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+        });
+    });
+
+    it('should apply and store a hotspot vote weight', async () => {
+      const voteweight = await put('/api/voteweights', {
+        ...voteweightsData.hotspotVoteweight,
+        hotspot: vote.boothAddress,
+        festivalId: festivalData.id,
+      });
+
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+        });
+
+      await authRequest.delete(`/api/voteweights/${voteweight.id}`);
+    });
+
+    it('should apply and store a location vote weight', async () => {
+      const latitude = 4.56;
+      const longitude = -78.4;
+
+      const voteweight = await put('/api/voteweights', {
+        ...voteweightsData.locationVoteweight,
+        festivalId: festivalData.id,
+        multiplier: 3.75,
+        latitude,
+        longitude,
+        radius: 1000,
+      });
+
+      vote.latitude = latitude;
+      vote.longitude = longitude;
+
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+        });
+    });
+
+    it('should apply and store a negative vote weight', async () => {
+      const voteweight = await put('/api/voteweights', {
+        ...voteweightsData.hotspotVoteweight,
+        hotspot: vote.boothAddress,
+        festivalId: festivalData.id,
+        multiplier: 0.75,
+      });
+
+      const voteData = await request(app)
+        .post('/api/votes')
+        .send(vote)
+        .expect(httpStatus.CREATED);
+
+      await authRequest
+        .get(`/api/votes/${voteData.body.data.id}`)
+        .expect(httpStatus.OK)
+        .expect((response) => {
+          const {
+            voteweights,
+            festivalVoteTokens,
+            artworkVoteTokens,
+          } = response.body.data;
+          expect(voteweights.length).toBe(1);
+          expect(festivalVoteTokens).toStrictEqual(
+            vote.festivalVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+          expect(artworkVoteTokens).toStrictEqual(
+            vote.artworkVoteTokens.map((item) => {
+              return Math.floor(item * voteweight.multiplier);
+            }),
+          );
+        });
+
+      await authRequest.delete(`/api/voteweights/${voteweight.id}`);
     });
   });
 });

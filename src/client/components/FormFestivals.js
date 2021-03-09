@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import InputArtworksField from '~/client/components/InputArtworksField';
+import InputCheckboxField from '~/client/components/InputCheckboxField';
 import InputField from '~/client/components/InputField';
 import InputStickerField from '~/client/components/InputStickerField';
 import InputTextareaField from '~/client/components/InputTextareaField';
@@ -20,6 +21,7 @@ const FormFestivals = () => {
     description: Joi.string().max(2000).required(),
     documents: documentsValidation.max(3),
     images: imagesValidation.max(10),
+    online: Joi.boolean().falsy(''),
     sticker: stickerValidation.required(),
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
@@ -53,6 +55,12 @@ const FormFestivals = () => {
         label={translate('FormFestivals.fieldDescription')}
         name="description"
         validate={schema.description}
+      />
+
+      <InputCheckboxField
+        label={translate('FormFestivals.fieldOnline')}
+        name="online"
+        validate={schema.online}
       />
 
       <InputUploadField

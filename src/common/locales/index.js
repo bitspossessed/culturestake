@@ -70,11 +70,15 @@ const components = {
     fieldDescription: 'Description:',
     fieldDocuments: 'Documents',
     fieldImages: 'Images',
+    fieldOnline: 'Online',
     fieldSticker: 'Sticker',
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
     fieldArtworks: 'Artworks:',
     fieldUrl: 'Website:',
+  },
+  FormScheduleEmail: {
+    fieldRecipients: 'Recipients:',
   },
   FormUsers: {
     fieldEmail: 'Email-address:',
@@ -118,10 +122,10 @@ const components = {
   FormVoteweights: {
     fieldType: 'Type:',
     fieldName: 'Name:',
-    fieldStrength: 'Strength:',
+    fieldMultiplier: 'Multiplier:',
     fieldLatitude: 'Latitude:',
     fieldLongitude: 'Longitude:',
-    fieldRadius: 'Radius:',
+    fieldRadius: 'Radius in metres:',
     fieldHotspot: 'Hotspot Address:',
     fieldOrganisation: 'Organisation:',
     fieldOrganisationPlaceholder: 'Search for an organisation to add',
@@ -243,6 +247,8 @@ const store = {
   },
   ethereum: {
     notificationAccountEnabled: 'Activated Smart Contracts Snuggle Panel',
+    notificationAccountFailure:
+      'Failed to activate Smart Contracts Snuggle Panel',
   },
 };
 
@@ -259,6 +265,7 @@ const views = {
     linkAdminProperties: 'Properties',
     linkAdminQuestions: 'Questions',
     linkAdminUsers: 'Users',
+    linkAdminEmails: 'Schedule Invitations',
   },
   AdminLogin: {
     buttonSubmit: 'Login',
@@ -307,6 +314,12 @@ const views = {
     buttonNewQuestion: 'Create new question',
     fieldTitle: 'Title',
     title: 'Questions',
+  },
+  AdminEmails: {
+    buttonSendEmails: 'Schedule Emails',
+    title: 'Schedule Email',
+    notificationSuccess: 'Scheduled {amount} emails.',
+    fileUpload: 'Drag a file with recipients here or click to select.',
   },
   AdminQuestionsNew: {
     title: 'Create new question',

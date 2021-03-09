@@ -15,13 +15,13 @@ const defaultValidation = {
   artistId: Joi.number().integer().positive(),
   description: Joi.string().max(2000).required(),
   descriptionCommission: Joi.string().max(2000).required(),
+  imageCredits: Joi.string().max(500).allow(''),
   images: imagesValidation.max(10),
   documents: documentsValidation.max(3),
   sticker: stickerValidation.required(),
   title: Joi.string().max(128).required(),
   subtitle: Joi.string().max(255).required(),
   url: Joi.string().uri().allow(''),
-  imageCredits: Joi.string().max(500),
 };
 
 export default {

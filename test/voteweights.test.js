@@ -62,11 +62,11 @@ describe('Voteweights', () => {
           const {
             latitude,
             longitude,
-            strength,
+            multiplier,
             radius,
             name,
           } = response.body.data;
-          expect(strength).toBe(voteweights.locationVoteweight.strength);
+          expect(multiplier).toBe(voteweights.locationVoteweight.multiplier);
           expect(name).toBe(voteweights.locationVoteweight.name);
           expect(radius).toBe(voteweights.locationVoteweight.radius);
           expect(latitude).toBe(voteweights.locationVoteweight.latitude);

@@ -146,7 +146,7 @@ async function handleAssociation(instance, options, items) {
   return Promise.all([...removePromises, ...addPromises]);
 }
 
-async function handleAssociations(instance, associations, data) {
+export async function handleAssociations(instance, associations, data) {
   if (!associations) {
     return;
   }

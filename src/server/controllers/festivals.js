@@ -33,8 +33,31 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: [...festivalFields, 'images', 'artworks', 'voteweights'],
+  fields: [...festivalFields, 'images', 'artworks', 'online', 'voteweights'],
   fieldsProtected: ['documents', 'chainId'],
+  include: [
+    FestivalBelongsToManyArtworks,
+    FestivalHasManyDocuments,
+    FestivalHasManyImages,
+  ],
+  associations: [
+    {
+      association: FestivalHasManyImages,
+      fields: [...imageFileFields],
+    },
+    {
+      association: FestivalHasManyDocuments,
+      fields: [...baseFileFields],
+    },
+    {
+      association: FestivalBelongsToManyArtworks,
+      fields: [...artworkFields],
+    },
+  ],
+};
+
+const optionsRead = {
+  ...options,
   include: [
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
@@ -194,13 +217,13 @@ function create(req, res, next) {
 
 function readAll(req, res, next) {
   baseController.readAll({
-    ...options,
+    ...optionsRead,
     where: req.locals && req.locals.query,
   })(req, res, next);
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read(optionsRead)(req, res, next);
 }
 
 function update(req, res, next) {

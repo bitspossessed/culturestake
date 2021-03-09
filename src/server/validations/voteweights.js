@@ -7,7 +7,7 @@ const defaultValidation = Joi.alternatives().try(
   Joi.object().keys({
     festivalId: Joi.number().integer().required(),
     name: Joi.string().required(),
-    strength: Joi.number().integer().required(),
+    multiplier: Joi.number().min(0.01).required(),
     type: Joi.string().valid('hotspot').required(),
     latitude: Joi.any().valid(null),
     longitude: Joi.any().valid(null),
@@ -18,7 +18,7 @@ const defaultValidation = Joi.alternatives().try(
   Joi.object().keys({
     festivalId: Joi.number().integer().required(),
     name: Joi.string().required(),
-    strength: Joi.number().integer().required(),
+    multiplier: Joi.number().min(0.01).required(),
     type: Joi.string().valid('location').required(),
     latitude: Joi.number().min(-90).max(90).required(),
     longitude: Joi.number().min(-180).max(180).required(),
@@ -29,7 +29,7 @@ const defaultValidation = Joi.alternatives().try(
   Joi.object().keys({
     festivalId: Joi.number().integer().required(),
     name: Joi.string().required(),
-    strength: Joi.number().integer().required(),
+    multiplier: Joi.number().min(0.01).required(),
     type: Joi.string().valid('organisation').required(),
     latitude: Joi.any().valid(null),
     longitude: Joi.any().valid(null),

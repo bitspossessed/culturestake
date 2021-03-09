@@ -1,6 +1,6 @@
 import { Joi, Segments } from 'celebrate';
 
-import { slugValidation } from '~/server/validations';
+import { slugValidation, idValidation } from '~/server/validations';
 import { web3Validators } from '~/common/helpers/validate';
 
 export default {
@@ -17,11 +17,19 @@ export default {
       nonce: Joi.number().required(),
       senderAddress: web3Validators.web3().address().required(),
       senderSignature: web3Validators.web3().signature().required(),
+      latitude: Joi.number().min(-90).max(90),
+      longitude: Joi.number().min(-180).max(180),
+      organisationId: Joi.number().positive(),
     },
   },
   results: {
     [Segments.PARAMS]: {
       ...slugValidation,
+    },
+  },
+  read: {
+    [Segments.PARAMS]: {
+      ...idValidation,
     },
   },
 };

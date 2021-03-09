@@ -13,7 +13,7 @@ import InputFinderField from '~/client/components/InputFinderField';
 const FormVoteweights = ({ festival, type, onChange }) => {
   const schema = {
     festivalId: Joi.number().integer().required(),
-    strength: Joi.number().integer().required(),
+    multiplier: Joi.number().min(0.01).required(),
     name: Joi.string().required(),
     type: Joi.string()
       .valid(...VOTEWEIGHT_TYPES)
@@ -72,10 +72,11 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       />
 
       <InputField
-        label={translate('FormVoteweights.fieldStrength')}
-        name="strength"
+        label={translate('FormVoteweights.fieldMultiplier')}
+        name="multiplier"
+        placeholder="eg. 1.00"
         type="text"
-        validate={schema.strength}
+        validate={schema.multiplier}
       />
 
       <InputSelectField

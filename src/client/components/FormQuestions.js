@@ -6,7 +6,8 @@ import InputField from '~/client/components/InputField';
 import InputFinderField from '~/client/components/InputFinderField';
 import translate from '~/common/services/i18n';
 
-const FormQuestions = ({ isFinderDisabled }) => {
+const FormQuestions = ({ isFinderDisabled, festivalId }) => {
+  const hasFestival = !!festivalId;
   const schema = {
     title: Joi.string().max(128).required(),
     festivalId: Joi.number()
@@ -17,6 +18,14 @@ const FormQuestions = ({ isFinderDisabled }) => {
       .integer()
       .allow(null)
       .error(new Error(translate('validations.artworkRequired'))),
+  };
+
+  const filter = (item) => {
+    const filtered = item.festivals.filter(
+      (festival) => festival.id === festivalId,
+    );
+
+    return filtered.length >= 1;
   };
 
   return (
@@ -39,7 +48,8 @@ const FormQuestions = ({ isFinderDisabled }) => {
       />
 
       <InputFinderField
-        isDisabled={isFinderDisabled}
+        clientSideFilter={filter}
+        isDisabled={isFinderDisabled || !hasFestival}
         label={translate('FormQuestions.fieldArtwork')}
         name="artworkId"
         placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}
@@ -53,6 +63,7 @@ const FormQuestions = ({ isFinderDisabled }) => {
 };
 
 FormQuestions.propTypes = {
+  festivalId: PropTypes.number,
   isFinderDisabled: PropTypes.bool,
 };
 
