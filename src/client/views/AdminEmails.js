@@ -9,6 +9,7 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
+import ContractsEmailSigner from '~/client/components/ContractsEmailSigner';
 import translate from '~/common/services/i18n';
 import { HelpCopyStyle, SpacingGroupStyle } from '~/client/styles/layout';
 import { ParagraphStyle, PreStyle } from '~/client/styles/typography';
@@ -116,12 +117,12 @@ const AdminEmails = () => {
       <HeaderAdmin>{translate('AdminEmails.title')}</HeaderAdmin>
 
       <ViewAdmin>
+        <ContractsEmailSigner />
         <HelpCopyStyle>
           <ParagraphStyle>{translate('AdminEmails.copy')}</ParagraphStyle>
           <ParagraphStyle>{translate('AdminEmails.copyUpload')}</ParagraphStyle>
           <PreStyle>{translate('AdminEmails.example')}</PreStyle>
         </HelpCopyStyle>
-
         <Form>
           <FormScheduleEmail />
 
