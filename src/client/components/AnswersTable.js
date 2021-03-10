@@ -3,12 +3,19 @@ import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import Table, { ACTION_EDIT } from '~/client/components/Table';
+import Table, {
+  ACTION_ANSWER_INITIALIZE,
+  ACTION_EDIT,
+} from '~/client/components/Table';
 import translate from '~/common/services/i18n';
 
 const table = {
   path: ['answers'],
   actions: [
+    {
+      label: "WON'T BE USED - see TableActionInitializeAnswer component",
+      key: ACTION_ANSWER_INITIALIZE,
+    },
     {
       label: translate('AnswersTable.buttonEdit'),
       key: ACTION_EDIT,
