@@ -3,14 +3,42 @@ import baseController from '~/server/controllers';
 import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
+  AnswerBelongsToQuestion,
 } from '~/server/database/associations';
 
 import { answerFields } from '~/server/database/associations';
 
 const options = {
   model: Answer,
-  fields: [...answerFields, 'artwork', 'property'],
+  fields: [...answerFields, 'artwork', 'property', 'question'],
   fieldsProtected: ['chainId'],
+};
+
+const readOptions = {
+  ...options,
+
+  include: [
+    AnswerBelongsToProperty,
+    AnswerBelongsToArtwork,
+    AnswerBelongsToQuestion,
+  ],
+  associations: [
+    {
+      association: AnswerBelongsToProperty,
+      destroyCascade: false,
+      fields: ['title'],
+    },
+    {
+      association: AnswerBelongsToArtwork,
+      destroyCascade: false,
+      fields: ['title'],
+    },
+    {
+      association: AnswerBelongsToQuestion,
+      destroyCascade: false,
+      fields: ['title', 'chainId'],
+    },
+  ],
 };
 
 function create(req, res, next) {
@@ -19,26 +47,13 @@ function create(req, res, next) {
 
 function readAll(req, res, next) {
   baseController.readAll({
-    ...options,
+    ...readOptions,
     where: req.locals && req.locals.query,
-    include: [AnswerBelongsToProperty, AnswerBelongsToArtwork],
-    associations: [
-      {
-        association: AnswerBelongsToProperty,
-        destroyCascade: false,
-        fields: ['title'],
-      },
-      {
-        association: AnswerBelongsToArtwork,
-        destroyCascade: false,
-        fields: ['title'],
-      },
-    ],
   })(req, res, next);
 }
 
 function read(req, res, next) {
-  baseController.read(options)(req, res, next);
+  baseController.read(readOptions)(req, res, next);
 }
 
 function destroy(req, res, next) {

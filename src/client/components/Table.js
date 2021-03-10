@@ -6,6 +6,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import ButtonOutline from '~/client/components/ButtonOutline';
+import InitializeAnswer from '~/client/components/InitializeAnswer';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { getCached } from '~/client/services/cache';
@@ -24,6 +25,7 @@ export const PARAM_PAGE_INDEX = 'page';
 export const ACTION_DESTROY = Symbol('select-destroy');
 export const ACTION_EDIT = Symbol('select-edit');
 export const ACTION_SELECT = Symbol('select-action');
+export const ACTION_ANSWER_INITIALIZE = Symbol('answer-initialize-action');
 
 const DEFAULT_HEADERS = [
   {
@@ -320,7 +322,11 @@ export const TableBody = ({
             <TableBodyItems columns={columns} values={item} />
             <td>
               {actions.length !== 0 ? (
-                <TableActions actions={actions} onSelect={onSelectAction} />
+                <TableActions
+                  actions={actions}
+                  item={item}
+                  onSelect={onSelectAction}
+                />
               ) : null}
             </td>
           </tr>
@@ -360,12 +366,17 @@ export const TableBodyItems = ({ columns, values }) => {
   });
 };
 
-export const TableActions = ({ actions, onSelect }) => {
+export const TableActions = ({ actions, onSelect, item }) => {
   return actions.map((action, index) => {
     const onSelectAction = (event) => {
       event.stopPropagation();
       onSelect(action.key);
     };
+
+    if (action.key === ACTION_ANSWER_INITIALIZE)
+      return (
+        <TableActionInitializeAnswer item={item} key={`action-${index}`} />
+      );
 
     return (
       <ButtonOutline
@@ -419,6 +430,35 @@ export const TableFooter = ({
   );
 };
 
+export const TableActionInitializeAnswer = ({ item }) => {
+  return (
+    <InitializeAnswer
+      answerChainId={item.chainId}
+      questionChainId={item.question.chainId}
+    >
+      {({ isInitialized, isDeactivated, onInitialize, onDeactivate }) => {
+        return (
+          <>
+            {isDeactivated ? (
+              <DeactivatedStyle>
+                {translate('Table.answerAlreadyDeactivated')}
+              </DeactivatedStyle>
+            ) : isInitialized ? (
+              <ButtonOutline isDanger={true} onClick={onDeactivate}>
+                {translate('Table.buttonDeactivateAnswer')}
+              </ButtonOutline>
+            ) : (
+              <ButtonOutline onClick={onInitialize}>
+                {translate('Table.buttonInitializeAnswer')}
+              </ButtonOutline>
+            )}
+          </>
+        );
+      }}
+    </InitializeAnswer>
+  );
+};
+
 export const TableStyle = styled.table`
   width: 100%;
 
@@ -460,6 +500,12 @@ const TableFooterStyle = styled.tfoot`
   tr {
     margin-top: 1rem;
   }
+`;
+
+const DeactivatedStyle = styled.span`
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-right: 0.5rem;
 `;
 
 const PropTypesAction = PropTypes.shape({
@@ -530,6 +576,10 @@ TableFooter.propTypes = {
   onSelect: PropTypes.func.isRequired,
   pageIndex: PropTypes.number.isRequired,
   pagesTotal: PropTypes.number.isRequired,
+};
+
+TableActionInitializeAnswer.propTypes = {
+  item: PropTypes.object.isRequired,
 };
 
 export default Table;
