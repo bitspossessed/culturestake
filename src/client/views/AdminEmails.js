@@ -10,7 +10,8 @@ import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import translate from '~/common/services/i18n';
-import { SpacingGroupStyle } from '~/client/styles/layout';
+import { HelpCopyStyle, SpacingGroupStyle } from '~/client/styles/layout';
+import { ParagraphStyle, PreStyle } from '~/client/styles/typography';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
@@ -30,7 +31,10 @@ const AdminEmails = () => {
 
   const textareaToRecipients = (value) =>
     [
-      ...value.split('\n').reduce((memo, email) => memo.add(email), new Set()),
+      ...value
+        .split('\n')
+        .filter((line) => line !== '')
+        .reduce((memo, email) => memo.add(email), new Set()),
     ].sort();
 
   const recipientsToTextarea = (recipients, existing = []) =>
@@ -112,8 +116,15 @@ const AdminEmails = () => {
       <HeaderAdmin>{translate('AdminEmails.title')}</HeaderAdmin>
 
       <ViewAdmin>
+        <HelpCopyStyle>
+          <ParagraphStyle>{translate('AdminEmails.copy')}</ParagraphStyle>
+          <ParagraphStyle>{translate('AdminEmails.copyUpload')}</ParagraphStyle>
+          <PreStyle>{translate('AdminEmails.example')}</PreStyle>
+        </HelpCopyStyle>
+
         <Form>
           <FormScheduleEmail />
+
           <FileUpload
             accept={['text/plain', 'text/csv', 'text/x-csv']}
             uploadText={translate('AdminEmails.fileUpload')}

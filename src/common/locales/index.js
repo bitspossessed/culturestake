@@ -319,6 +319,12 @@ const views = {
     title: 'Questions',
   },
   AdminEmails: {
+    copy: `You can add recipients by inserting emails into the text box below, one email per line.`,
+    copyUpload: `Or, upload a text file containing email addresses, again one email per line. Optionally, you can use the first line of the file as a header. For example this is a valid file to upload:`,
+    example: `Emails
+aaa@example.org
+bbb@example.org
+ccc@example.org`,
     buttonSendEmails: 'Schedule Emails',
     title: 'Schedule Email',
     notificationSuccess: 'Scheduled {amount} emails.',
