@@ -53,3 +53,7 @@ export const SpacingGroupStyle = styled.div`
     margin-top: 1rem;
   }
 `;
+
+export const HelpCopyStyle = styled.div`
+  margin: 1rem 0 2rem 0;
+`;

@@ -60,3 +60,7 @@ export const HeadingSecondaryStyle = styled.h2`
 
   line-height: 0.9;
 `;
+
+export const PreStyle = styled.pre`
+  white-space: pre-line;
+`;
