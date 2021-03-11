@@ -13,6 +13,10 @@ function create(req, res, next) {
   baseController.create(options)(req, res, next);
 }
 
+function update(req, res, next) {
+  baseController.update(options)(req, res, next);
+}
+
 function readAll(req, res, next) {
   baseController.readAll({
     ...options,
@@ -30,6 +34,7 @@ function destroy(req, res, next) {
 
 export default {
   create,
+  update,
   read,
   readAll,
   destroy,
