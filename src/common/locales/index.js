@@ -229,6 +229,7 @@ const components = {
   },
   VoteweightsTable: {
     buttonDelete: 'Delete',
+    buttonEdit: 'Edit',
     fieldType: 'Type',
     fieldName: 'Name',
   },
@@ -407,6 +408,14 @@ const views = {
   AdminVoteweightsNew: {
     notificationSuccess: 'You created a new vote weight.',
     title: 'Create new vote weight',
+    fieldName: 'Name',
+  },
+  AdminVoteweightsEdit: {
+    errorNotFound: 'This voteweight does not exist.',
+    notificationDestroySuccess: 'You deleted the voteweight {name}.',
+    notificationSuccess: 'You edited the voteweight {name}.',
+    title: 'Edit vote weight',
+    buttonBackToFestival: 'Back to festival',
   },
   Artworks: {
     buttonBackToFestival: 'Back to festival',
