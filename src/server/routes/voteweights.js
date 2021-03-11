@@ -27,6 +27,15 @@ router.put(
   voteweightsController.create,
 );
 
+router.post(
+  '/:id',
+  authMiddleware,
+  validate(voteweightsValidation.update),
+  locationsMiddleware,
+  getVoteweightResource,
+  voteweightsController.update,
+);
+
 router.get(
   '/',
   optionalAuthMiddleware,
