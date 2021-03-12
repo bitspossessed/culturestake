@@ -5,6 +5,7 @@ import React, { Fragment } from 'react';
 import InputArtworksField from '~/client/components/InputArtworksField';
 import InputCheckboxField from '~/client/components/InputCheckboxField';
 import InputField from '~/client/components/InputField';
+import InputHiddenField from '~/client/components/InputHiddenField';
 import InputStickerField from '~/client/components/InputStickerField';
 import InputTextareaField from '~/client/components/InputTextareaField';
 import InputUploadField from '~/client/components/InputUploadField';
@@ -26,6 +27,10 @@ const FormFestivals = () => {
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
     url: Joi.string().uri().allow(''),
+    question: {
+      title: Joi.string().max(128).required(),
+      type: Joi.valid('festival').required(),
+    },
   };
 
   return (
@@ -55,6 +60,21 @@ const FormFestivals = () => {
         label={translate('FormFestivals.fieldDescription')}
         name="description"
         validate={schema.description}
+      />
+
+      <InputField
+        label={translate('FormFestivals.fieldQuestion')}
+        name="question.title"
+        type="text"
+        validate={schema.question.title}
+      />
+
+      <InputHiddenField
+        label={translate('FormFestivals.fieldQuestion')}
+        name="question.type"
+        type="text"
+        value={{ value: 'festival' }}
+        validate={schema.question.type}
       />
 
       <InputCheckboxField
