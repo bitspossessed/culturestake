@@ -50,7 +50,13 @@ export const imageFileFields = [
 ];
 export const organisationFields = ['description', 'name'];
 export const propertyFields = ['title'];
-export const questionFields = ['title', 'chainId', 'artworkId', 'festivalId'];
+export const questionFields = [
+  'title',
+  'chainId',
+  'artworkId',
+  'festivalId',
+  'type',
+];
 export const userFields = ['username', 'email'];
 export const voteFields = [
   'boothAddress',

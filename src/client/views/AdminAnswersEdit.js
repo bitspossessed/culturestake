@@ -33,7 +33,6 @@ const AdminAnswersEdit = () => {
             <Fragment>
               <FormAnswers
                 festivalId={resource.festivalId}
-                isArtworkAnswer={!!resource.artwork}
                 isDisabled
                 question={resource.question}
               />
