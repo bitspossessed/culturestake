@@ -29,9 +29,21 @@ describe('Questions', () => {
         .put('/api/questions')
         .send({
           title: 'What was your favorite artwork of this festival?',
+          type: 'festival',
           festivalId: festivalData.id,
         })
         .expect(httpStatus.CREATED);
+    });
+
+    it('should fail creating two questions for a single festival', async () => {
+      await authRequest
+        .put('/api/questions')
+        .send({
+          title: 'What was your favorite artwork of this festival?',
+          type: 'festival',
+          festivalId: festivalData.id,
+        })
+        .expect(httpStatus.CONFLICT);
     });
   });
 
@@ -42,7 +54,9 @@ describe('Questions', () => {
     beforeAll(async () => {
       questionData = await put('/api/questions', {
         title: 'What is your favorite color?',
+        type: 'artwork',
         festivalId: festivalData.id,
+        artworkId: artworkData.id,
       });
 
       answerData = await put('/api/answers', {

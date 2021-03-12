@@ -58,32 +58,39 @@ describe('Vote', () => {
     // Add test data
     artworkData = await put('/api/artworks', artworksData.davinci);
     propertyData = await put('/api/properties', propertiesData.aProperty);
-    festivalData = await put('/api/festivals', festivalsData.barbeque);
-
-    // Use chainId from contract migrations
-    festivalData.chainId = web3.utils.sha3('festival');
-    const festivalInitialized = await isFestivalInitialized(
-      festivalData.chainId,
-    );
-    if (!festivalInitialized) {
-      await initFestival(
-        adminContract,
-        festivalData.chainId,
-        timestamp() + 20,
-        timestamp() + 100000,
-      );
-    }
-    const boothInitialized = await isVotingBoothInitialized(booth.address);
-    if (!boothInitialized) {
-      await initVotingBooth(adminContract, festivalData.chainId, booth.address);
-    }
   });
 
   describe('POST /api/votes', () => {
     beforeEach(async () => {
+      // Add test data
+      festivalData = await put('/api/festivals', festivalsData.barbeque);
+
+      // Use chainId from contract migrations
+      festivalData.chainId = web3.utils.sha3('festival');
+      const festivalInitialized = await isFestivalInitialized(
+        festivalData.chainId,
+      );
+      if (!festivalInitialized) {
+        await initFestival(
+          adminContract,
+          festivalData.chainId,
+          timestamp() + 20,
+          timestamp() + 100000,
+        );
+      }
+      const boothInitialized = await isVotingBoothInitialized(booth.address);
+      if (!boothInitialized) {
+        await initVotingBooth(
+          adminContract,
+          festivalData.chainId,
+          booth.address,
+        );
+      }
+
       // Set up first question contract for artwork answers on an festival
       const festivalQuestionData = await put('/api/questions', {
         title: 'What was your favorite artwork of this festival?',
+        type: 'festival',
         festivalId: festivalData.id,
       });
 
@@ -97,6 +104,7 @@ describe('Vote', () => {
       // Set up second question contract for property answers on an artwork
       const artworkQuestionData = await put('/api/questions', {
         title: 'What aspect of this artwork did you like and how much?',
+        type: 'artwork',
         festivalId: festivalData.id,
         artworkId: artworkData.id,
       });

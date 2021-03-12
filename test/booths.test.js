@@ -53,6 +53,7 @@ describe('Voting booth', () => {
     festivalQuestionData = await put('/api/questions', {
       title: 'What do you think about dogs?',
       festivalId: festivalData.id,
+      type: 'festival',
     });
 
     // Set up question contract
@@ -60,6 +61,7 @@ describe('Voting booth', () => {
       title: 'What and how much?',
       festivalId: festivalData.id,
       artworkId: artworkIds[0], // Create artwork question for Davinci
+      type: 'artwork',
     });
 
     // Add answers to API
