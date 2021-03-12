@@ -71,7 +71,6 @@ const AdminAnswersNew = () => {
             <Fragment>
               <FormAnswers
                 festivalId={question.festivalId}
-                isArtworkAnswer={!!question.artworkId}
                 question={question}
               />
 

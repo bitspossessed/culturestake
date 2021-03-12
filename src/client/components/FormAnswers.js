@@ -6,9 +6,9 @@ import InputFinderField from '~/client/components/InputFinderField';
 import InputHiddenField from '~/client/components/InputHiddenField';
 import translate from '~/common/services/i18n';
 
-const FormAnswers = ({ question, festivalId, isArtworkAnswer, isDisabled }) => {
+const FormAnswers = ({ question, festivalId, isDisabled }) => {
   const schema = {};
-  if (!isArtworkAnswer) {
+  if (question.type === 'festival') {
     schema.artworkId = Joi.number()
       .required()
       .error(new Error(translate('validations.artworkRequired')));
@@ -19,7 +19,8 @@ const FormAnswers = ({ question, festivalId, isArtworkAnswer, isDisabled }) => {
   }
 
   const filter = (item) => {
-    const filterParam = !isArtworkAnswer ? 'artworkId' : 'propertyId';
+    const filterParam =
+      question.type === 'festival' ? 'artworkId' : 'propertyId';
     const answerIds = question.answers.map((answer) => answer[filterParam]);
     const filtered = item.festivals.filter((festival) => {
       return festival.id === festivalId && !answerIds.includes(item.id);
@@ -35,7 +36,7 @@ const FormAnswers = ({ question, festivalId, isArtworkAnswer, isDisabled }) => {
         value={{ value: question.id }}
       />
 
-      {!isArtworkAnswer ? (
+      {question.type === 'festival' ? (
         <InputFinderField
           clientSideFilter={filter}
           isDisabled={isDisabled}
@@ -63,7 +64,6 @@ const FormAnswers = ({ question, festivalId, isArtworkAnswer, isDisabled }) => {
 
 FormAnswers.propTypes = {
   festivalId: PropTypes.number,
-  isArtworkAnswer: PropTypes.bool.isRequired,
   isDisabled: PropTypes.bool,
   question: PropTypes.object.isRequired,
 };
