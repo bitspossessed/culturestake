@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
-// import ButtonSubmit from '~/client/components/ButtonSubmit';
 import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormVoteweights from '~/client/components/FormVoteweights';
@@ -22,7 +21,7 @@ const AdminVoteweightsView = () => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [festival, setFestival] = useState({});
-  const [type] = useState('location');
+  const [type, setType] = useState('location');
 
   const returnUrl = `/admin/festivals/${slug}/edit`;
 
@@ -79,10 +78,10 @@ const AdminVoteweightsView = () => {
     },
   });
 
-  // const onChange = (event) => {
-  //   event.preventDefault();
-  //   setType(event.target.value);
-  // };
+  const onChange = (event) => {
+    event.preventDefault();
+    setType(event.target.value);
+  };
 
   return (
     <Fragment>
@@ -95,12 +94,11 @@ const AdminVoteweightsView = () => {
               <FormVoteweights
                 festival={festival}
                 type={type}
-                // onChange={onChange}
+                onChange={onChange}
               />
               <DangerZone>
                 <ButtonDelete />
               </DangerZone>
-              {/* <ButtonSubmit /> */}
             </Fragment>
           ) : null}
         </Form>
