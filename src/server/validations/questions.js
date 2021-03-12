@@ -7,6 +7,10 @@ const defaultValidation = {
   artworkId: Joi.number().integer().allow(null),
   festivalId: Joi.number().integer().required(),
   title: Joi.string().max(128).required(),
+};
+
+const createValidation = {
+  ...defaultValidation,
   type: Joi.alternatives()
     .conditional('artworkId', {
       is: undefined,
@@ -20,7 +24,7 @@ const defaultValidation = {
 export default {
   create: {
     [Segments.BODY]: {
-      ...defaultValidation,
+      ...createValidation,
     },
   },
   readAll: {
