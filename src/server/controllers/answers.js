@@ -36,7 +36,8 @@ const readOptions = {
     {
       association: AnswerBelongsToQuestion,
       destroyCascade: false,
-      fields: ['title', 'chainId'],
+      fields: ['title'],
+      fieldsProtected: ['chainId'],
     },
   ],
 };
