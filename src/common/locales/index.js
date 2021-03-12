@@ -416,7 +416,7 @@ ccc@example.org`,
     title: 'Create new vote weight',
   },
   AdminVoteweightsView: {
-    wrrorNotFound: 'This voteweight does not exist.',
+    errorNotFound: 'This voteweight does not exist.',
     notificationDestroySuccess: 'You deleted the voteweight {name}.',
     title: 'View vote weight',
     buttonBackToFestival: 'Back to festival.',
