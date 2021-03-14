@@ -229,7 +229,6 @@ const components = {
   },
   VoteweightsTable: {
     buttonDelete: 'Delete',
-    buttonView: 'View',
     fieldType: 'Type',
     fieldName: 'Name',
   },

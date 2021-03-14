@@ -246,52 +246,6 @@ export const useEditForm = ({
   };
 };
 
-export const useViewForm = ({ onNotFound, resourcePath, returnUrl }) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const requestIdDelete = useRequestId();
-
-  const [resource, isResourceLoading] = useResource(resourcePath, {
-    onError: () => {
-      if (onNotFound) {
-        onNotFound();
-      }
-
-      history.push(returnUrl);
-    },
-  });
-
-  const onClickDestroy = (event) => {
-    event.preventDefault();
-
-    if (!window.confirm(translate('default.areYouSure'))) {
-      return;
-    }
-
-    dispatch(
-      destroyRequest({
-        id: requestIdDelete,
-        path: resourcePath,
-      }),
-    );
-  };
-
-  const ButtonDelete = () => {
-    return (
-      <ButtonOutline isDanger onClick={onClickDestroy}>
-        {translate('default.buttonDestroy')}
-      </ButtonOutline>
-    );
-  };
-
-  return {
-    ButtonDelete,
-    isResourceLoading,
-    resource,
-  };
-};
-
 export const useContractsForm = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const [txMethod, setTxMethod] = useState();
