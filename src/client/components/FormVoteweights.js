@@ -67,6 +67,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       <InputField
         label={translate('FormVoteweights.fieldName')}
         name="name"
+        readOnly="false"
         type="text"
         validate={schema.name}
       />
@@ -75,6 +76,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
         label={translate('FormVoteweights.fieldMultiplier')}
         name="multiplier"
         placeholder="eg. 1.00"
+        readOnly="false"
         type="text"
         validate={schema.multiplier}
       />
@@ -82,6 +84,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       <InputSelectField
         label={translate('FormVoteweights.fieldType')}
         name="type"
+        readOnly="false"
         validate={schema.type}
         onChange={onChange}
       >
@@ -101,6 +104,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
             allowNull={true}
             label={translate('FormVoteweights.fieldLatitude')}
             name="latitude"
+            readOnly="false"
             type="text"
             validate={schema.latitude}
           />
@@ -109,6 +113,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
             allowNull={true}
             label={translate('FormVoteweights.fieldLongitude')}
             name="longitude"
+            readOnly="false"
             type="text"
             validate={schema.longitude}
           />
@@ -117,6 +122,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
             allowNull={true}
             label={translate('FormVoteweights.fieldRadius')}
             name="radius"
+            readOnly="false"
             type="text"
             validate={schema.radius}
           />
@@ -128,6 +134,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
           allowNull={true}
           label={translate('FormVoteweights.fieldHotspot')}
           name="hotspot"
+          readOnly="false"
           type="text"
           validate={schema.hotspot}
         />
@@ -142,6 +149,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
             'FormVoteweights.fieldOrganisationPlaceholder',
           )}
           queryPath={['organisations']}
+          readOnly="false"
           searchParam={'name'}
           selectParam={'id'}
           validate={schema.organisationId}
@@ -154,6 +162,7 @@ const FormVoteweights = ({ festival, type, onChange }) => {
 FormVoteweights.propTypes = {
   festival: PropTypes.object.isRequired,
   onChange: PropTypes.func,
+  readOnly: PropTypes.bool,
   type: PropTypes.string,
 };
 
