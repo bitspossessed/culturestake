@@ -31,7 +31,7 @@ const AdminVoteweightsView = () => {
         path: ['festivals', slug],
       });
 
-      setFestival(response);
+      setFestival(response); // this is failing
       setIsLoading(false);
     };
 
@@ -50,7 +50,7 @@ const AdminVoteweightsView = () => {
       'hotspot',
       'organisationId',
     ],
-    resourcePath: ['voteweights', slug],
+    resourcePath: ['organisations'], // this never gets called
     returnUrl,
     onNotFound: () => {
       dispatch(

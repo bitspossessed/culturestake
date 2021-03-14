@@ -1,13 +1,13 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Table, { ACTION_EDIT } from '~/client/components/Table';
 import translate from '~/common/services/i18n';
-import { getRequest } from '~/client/store/api/actions';
+// import { getRequest } from '~/client/store/api/actions';
 import { HeadingSecondaryStyle } from '~/client/styles/typography';
 import styles from '~/client/styles/variables';
 import swirl from '~/client/assets/images/swirl.svg';
@@ -17,7 +17,7 @@ const table = {
   path: ['voteweights'],
   actions: [
     {
-      label: translate('VoteweightsTable.buttonView'),
+      label: translate('default.tableActionView'),
       key: ACTION_EDIT,
     },
   ],
@@ -36,22 +36,18 @@ const table = {
 };
 
 const VoteweightsContainer = ({ festivalId }) => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const history = useHistory();
   const { slug } = useParams();
 
   const onSelect = ({ item }) => {
-    // if (!window.confirm(translate('default.areYouSure'))) {
-    //   return;
-    // }
+    history.push(`/admin/festivals/${slug}/voteweights/${item.id}/edit`);
 
-    history.push(`/admin/festivals/${slug}/voteweights/${item.id}/view`);
-
-    dispatch(
-      getRequest({
-        path: ['voteweights', item.id],
-      }),
-    );
+    // dispatch(
+    //   getRequest({
+    //     path: ['voteweights', item.id],
+    //   }),
+    // );
   };
 
   return (

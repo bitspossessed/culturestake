@@ -177,7 +177,7 @@ const Routes = () => (
     <AuthenticatedRoute
       component={AdminVoteweightsView}
       exact
-      path="/admin/festivals/:slug/voteweights/:voteweightId/view"
+      path="/admin/festivals/:slug/voteweights/:voteweightId"
     />
     <AuthenticatedRoute
       component={AdminQuestions}
