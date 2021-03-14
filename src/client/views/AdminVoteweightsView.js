@@ -17,27 +17,26 @@ import { useEditForm } from '~/client/hooks/forms';
 
 const AdminVoteweightsView = () => {
   const dispatch = useDispatch();
-  const { festivalId, voteweightId } = useParams();
-  // const { slug } = useParams();
+  const { slug, voteweightId } = useParams();
 
   const [isLoading, setIsLoading] = useState(true);
   const [festival, setFestival] = useState({});
   const [type, setType] = useState('location');
 
-  const returnUrl = `/admin/festivals/${festivalId}/edit`;
+  const returnUrl = `/admin/festivals/${slug}/edit`;
 
   useEffect(() => {
     const getFestival = async () => {
       const response = await apiRequest({
-        path: ['festivals', festivalId],
+        path: ['festivals', slug],
       });
 
-      setFestival(response); // this is failing
+      setFestival(response);
       setIsLoading(false);
     };
 
     getFestival();
-  }, [setFestival, setIsLoading, festivalId]);
+  }, [setFestival, setIsLoading, slug]);
 
   const { ButtonDelete, Form } = useEditForm({
     fields: [
@@ -51,7 +50,7 @@ const AdminVoteweightsView = () => {
       'hotspot',
       'organisationId',
     ],
-    resourcePath: ['voteweights', voteweightId], // this needs the item.id
+    resourcePath: ['voteweights', voteweightId],
     returnUrl,
     onNotFound: () => {
       dispatch(
