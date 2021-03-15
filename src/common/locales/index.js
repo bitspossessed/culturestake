@@ -414,6 +414,12 @@ ccc@example.org`,
     notificationSuccess: 'You created a new vote weight.',
     title: 'Create new vote weight',
   },
+  AdminVoteweightsView: {
+    errorNotFound: 'This voteweight does not exist.',
+    notificationDestroySuccess: 'You deleted the voteweight {name}.',
+    title: 'View vote weight',
+    buttonBackToFestival: 'Back to festival.',
+  },
   Artworks: {
     buttonBackToFestival: 'Back to festival',
   },
@@ -459,6 +465,7 @@ export default {
   default: {
     areYouSure: 'Are you sure you really want to do this?',
     buttonDestroy: 'Delete',
+    buttonView: 'View',
     buttonLoadMore: 'Load more',
     buttonReturnToDashboard: 'Return to dashboard',
     buttonReturnToOverview: 'Return to overview',
@@ -469,6 +476,7 @@ export default {
     legendVotes: 'Votes',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',
+    tableActionView: 'View',
   },
   validations: {
     artistRequired: 'is required',

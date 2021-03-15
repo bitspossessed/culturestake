@@ -1,12 +1,13 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import Table, { ACTION_DESTROY } from '~/client/components/Table';
+import Table, { ACTION_EDIT } from '~/client/components/Table';
 import translate from '~/common/services/i18n';
-import { destroyRequest } from '~/client/store/api/actions';
+import { getRequest } from '~/client/store/api/actions';
 import { HeadingSecondaryStyle } from '~/client/styles/typography';
 import styles from '~/client/styles/variables';
 import swirl from '~/client/assets/images/swirl.svg';
@@ -16,9 +17,8 @@ const table = {
   path: ['voteweights'],
   actions: [
     {
-      label: translate('VoteweightsTable.buttonDelete'),
-      isDangerous: true,
-      key: ACTION_DESTROY,
+      label: translate('default.tableActionView'),
+      key: ACTION_EDIT,
     },
   ],
   columns: [
@@ -37,15 +37,14 @@ const table = {
 
 const VoteweightsContainer = ({ festivalId }) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { slug } = useParams();
 
   const onSelect = ({ item }) => {
-    if (!window.confirm(translate('default.areYouSure'))) {
-      return;
-    }
+    history.push(`/admin/festivals/${slug}/voteweights/${item.id}`);
 
     dispatch(
-      destroyRequest({
+      getRequest({
         path: ['voteweights', item.id],
       }),
     );
