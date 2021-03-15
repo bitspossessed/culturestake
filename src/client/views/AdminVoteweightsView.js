@@ -93,7 +93,8 @@ const AdminVoteweightsView = () => {
             <Fragment>
               <FormVoteweights
                 festival={festival}
-                readOnly="true"
+                isDisabled={true}
+                readOnly={true}
                 type={type}
                 onChange={onChange}
               />
