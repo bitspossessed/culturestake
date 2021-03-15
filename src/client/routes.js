@@ -31,6 +31,7 @@ import AdminUsers from '~/client/views/AdminUsers';
 import AdminUsersEdit from '~/client/views/AdminUsersEdit';
 import AdminUsersNew from '~/client/views/AdminUsersNew';
 import AdminVoteweightsNew from '~/client/views/AdminVoteweightsNew';
+import AdminVoteweightsView from '~/client/views/AdminVoteweightsView';
 import Artworks from '~/client/views/Artworks';
 import ArtworksProfile from '~/client/views/ArtworksProfile';
 import Booth from '~/client/views/Booth';
@@ -172,6 +173,11 @@ const Routes = () => (
       component={AdminVoteweightsNew}
       exact
       path="/admin/festivals/:slug/voteweights/new"
+    />
+    <AuthenticatedRoute
+      component={AdminVoteweightsView}
+      exact
+      path="/admin/festivals/:slug/voteweights/:voteweightId"
     />
     <AuthenticatedRoute
       component={AdminQuestions}

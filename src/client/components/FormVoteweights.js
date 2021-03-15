@@ -10,7 +10,13 @@ import { web3Validators } from '~/common/helpers/validate';
 import { VOTEWEIGHT_TYPES } from '~/common/helpers/validate';
 import InputFinderField from '~/client/components/InputFinderField';
 
-const FormVoteweights = ({ festival, type, onChange }) => {
+const FormVoteweights = ({
+  festival,
+  isDisabled = false,
+  readOnly = false,
+  type,
+  onChange,
+}) => {
   const schema = {
     festivalId: Joi.number().integer().required(),
     multiplier: Joi.number().min(0.01).required(),
@@ -65,21 +71,26 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       />
 
       <InputField
+        isDisabled={isDisabled}
         label={translate('FormVoteweights.fieldName')}
         name="name"
+        readOnly={readOnly}
         type="text"
         validate={schema.name}
       />
 
       <InputField
+        isDisabled={isDisabled}
         label={translate('FormVoteweights.fieldMultiplier')}
         name="multiplier"
         placeholder="eg. 1.00"
+        readOnly={readOnly}
         type="text"
         validate={schema.multiplier}
       />
 
       <InputSelectField
+        disabled={isDisabled}
         label={translate('FormVoteweights.fieldType')}
         name="type"
         validate={schema.type}
@@ -99,24 +110,30 @@ const FormVoteweights = ({ festival, type, onChange }) => {
         <Fragment>
           <InputField
             allowNull={true}
+            isDisabled={isDisabled}
             label={translate('FormVoteweights.fieldLatitude')}
             name="latitude"
+            readOnly={readOnly}
             type="text"
             validate={schema.latitude}
           />
 
           <InputField
             allowNull={true}
+            isDisabled={isDisabled}
             label={translate('FormVoteweights.fieldLongitude')}
             name="longitude"
+            readOnly={readOnly}
             type="text"
             validate={schema.longitude}
           />
 
           <InputField
             allowNull={true}
+            isDisabled={isDisabled}
             label={translate('FormVoteweights.fieldRadius')}
             name="radius"
+            readOnly={readOnly}
             type="text"
             validate={schema.radius}
           />
@@ -126,8 +143,10 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       {type === 'hotspot' ? (
         <InputField
           allowNull={true}
+          isDisabled={isDisabled}
           label={translate('FormVoteweights.fieldHotspot')}
           name="hotspot"
+          readOnly={readOnly}
           type="text"
           validate={schema.hotspot}
         />
@@ -136,12 +155,14 @@ const FormVoteweights = ({ festival, type, onChange }) => {
       {type === 'organisation' ? (
         <InputFinderField
           clientSideFilter={filter}
+          isDisabled={isDisabled}
           label={translate('FormVoteweights.fieldOrganisation')}
           name="organisationId"
           placeholder={translate(
             'FormVoteweights.fieldOrganisationPlaceholder',
           )}
           queryPath={['organisations']}
+          readOnly={readOnly}
           searchParam={'name'}
           selectParam={'id'}
           validate={schema.organisationId}
@@ -153,7 +174,9 @@ const FormVoteweights = ({ festival, type, onChange }) => {
 
 FormVoteweights.propTypes = {
   festival: PropTypes.object.isRequired,
+  isDisabled: PropTypes.bool,
   onChange: PropTypes.func,
+  readOnly: PropTypes.bool,
   type: PropTypes.string,
 };
 
