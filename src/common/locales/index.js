@@ -187,6 +187,9 @@ const components = {
     bodyLoading: 'Loading ...',
     columnCreatedAt: 'Created at',
     columnUpdatedAt: 'Updated at',
+    answerAlreadyDeactivated: 'Deactivated',
+    buttonDeactivateAnswer: 'Deactivate',
+    buttonInitializeAnswer: 'Initialize',
   },
   VoteCreditsBar: {
     voteCredits: 'Vote Credits',
