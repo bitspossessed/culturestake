@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { Fragment, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Joi from 'joi';
 
@@ -27,6 +27,12 @@ const AdminEmails = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const requestId = useRequestId();
+  const booth = useSelector((state) => state.booth);
+  const [isReadyToSign, setIsReadyToSign] = useState(false);
+
+  useEffect(() => {
+    setIsReadyToSign(booth.address && booth.isInitialized && !booth.isDisabled);
+  }, [booth, setIsReadyToSign]);
 
   const returnUrl = '/admin';
 
@@ -117,17 +123,18 @@ const AdminEmails = () => {
       <HeaderAdmin>{translate('AdminEmails.title')}</HeaderAdmin>
 
       <ViewAdmin>
-        <ContractsEmailSigner />
+        <ContractsEmailSigner booth={booth} isReadyToSign={isReadyToSign} />
         <HelpCopyStyle>
           <ParagraphStyle>{translate('AdminEmails.copy')}</ParagraphStyle>
           <ParagraphStyle>{translate('AdminEmails.copyUpload')}</ParagraphStyle>
           <PreStyle>{translate('AdminEmails.example')}</PreStyle>
         </HelpCopyStyle>
         <Form>
-          <FormScheduleEmail />
+          <FormScheduleEmail disabled={!isReadyToSign} />
 
           <FileUpload
             accept={['text/plain', 'text/csv', 'text/x-csv']}
+            disabled={!isReadyToSign}
             uploadText={translate('AdminEmails.fileUpload')}
             onError={handleFileUploadError}
             onUpload={handleFileUpload}

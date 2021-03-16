@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import EthereumContainer from '~/client/components/EthereumContainer';
@@ -23,20 +24,27 @@ import ButtonOutline from '~/client/components/ButtonOutline';
 const boothAddressSchema = web3Validators.web3().address().required();
 const festivalChainIdSchema = web3Validators.web3().sha3().required();
 
-const ContractsEmailSigner = () => {
+const ContractsEmailSigner = ({ booth, isReadyToSign = false }) => {
   return (
     <EthereumContainer>
-      <ParagraphStyle>{translate('ContractsBooths.title')}</ParagraphStyle>
+      {isReadyToSign ? (
+        <ParagraphStyle>
+          {translate('ContractsEmailSigner.finishTitle')}
+        </ParagraphStyle>
+      ) : (
+        <ParagraphStyle>
+          {translate('ContractsEmailSigner.startTitle')}
+        </ParagraphStyle>
+      )}
 
-      <ContractsBoothsForm />
+      <ContractsBoothsForm booth={booth} />
     </EthereumContainer>
   );
 };
 
-const ContractsBoothsForm = () => {
+const ContractsBoothsForm = ({ booth }) => {
   const dispatch = useDispatch();
   const owner = useOwnerAddress();
-  const booth = useSelector((state) => state.booth);
 
   const onCreateBooth = () => {
     dispatch(initializeBooth());
@@ -48,7 +56,7 @@ const ContractsBoothsForm = () => {
       if (!festivalInitialized) {
         dispatch(
           notify({
-            text: translate('ContractsBooths.errorNotInitialized'),
+            text: translate('ContractsEmailSigner.errorNotInitialized'),
             type: NotificationsTypes.ERROR,
           }),
         );
@@ -76,16 +84,16 @@ const ContractsBoothsForm = () => {
   return booth.address && !booth.isInitialized && !booth.isDeactivated ? (
     <Form>
       <InputHiddenField
-        label={translate('ContractsBooths.fieldBoothAddress')}
+        label={translate('ContractsEmailSigner.fieldBoothAddress')}
         name="boothAddress"
         validate={boothAddressSchema}
         value={{ value: booth.address }}
       />
 
       <InputFinderField
-        label={translate('ContractsBooths.fieldFestivalChainId')}
+        label={translate('ContractsEmailSigner.fieldFestivalChainId')}
         name="festivalChainId"
-        placeholder={translate('ContractsBooths.fieldFestivalPlaceholder')}
+        placeholder={translate('ContractsEmailSigner.fieldFestivalPlaceholder')}
         queryPath={['festivals']}
         searchParam={'title'}
         selectParam={'chainId'}
@@ -93,21 +101,30 @@ const ContractsBoothsForm = () => {
       />
 
       <ButtonSubmit disabled={meta.request.isPending}>
-        {translate('ContractsBooths.buttonAddNewBooth')}
+        {translate('ContractsEmailSigner.buttonAddNewBooth')}
       </ButtonSubmit>
     </Form>
   ) : booth.isInitialized ? (
     <Fragment>
       <ParagraphStyle>
-        {translate('BoothContainer.notfound')}
+        {translate('ContractsEmailSigner.addressLabel')}
         <Pill>{booth.address}</Pill>
       </ParagraphStyle>
     </Fragment>
   ) : (
     <ButtonOutline onClick={onCreateBooth}>
-      {translate('BoothContainer.buttonInitializeBooth')}
+      {translate('ContractsEmailSigner.buttonInitializeBooth')}
     </ButtonOutline>
   );
+};
+
+ContractsEmailSigner.propTypes = {
+  booth: PropTypes.object.isRequired,
+  isReadyToSign: PropTypes.bool,
+};
+
+ContractsBoothsForm.propTypes = {
+  booth: PropTypes.object.isRequired,
 };
 
 export default ContractsEmailSigner;

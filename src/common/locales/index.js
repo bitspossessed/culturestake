@@ -36,6 +36,17 @@ const components = {
     errorNotInitialized: 'Festival must be initialized',
     title: 'Add New Voting Booth',
   },
+  ContractsEmailSigner: {
+    addressLabel: 'Booth address:',
+    buttonAddNewBooth: 'Create New Voting Booth',
+    buttonInitializeBooth: 'Initialize',
+    fieldBoothAddress: 'Booth Address:',
+    fieldFestivalChainId: 'Festival:',
+    fieldFestivalPlaceholder: 'Choose a festival',
+    errorNotInitialized: 'Festival must be initialized',
+    startTitle: 'Add New Voting Booth',
+    finishTitle: 'Booth is ready',
+  },
   ContractsFestivals: {
     bodyAlreadyDeactivated: 'This festival is deactivated',
     bodyFestivalStartTime: 'From date:',

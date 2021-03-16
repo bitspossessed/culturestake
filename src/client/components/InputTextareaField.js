@@ -36,6 +36,8 @@ export const InputTextareaFieldStyle = styled.textarea`
   color: ${styles.colors.violet};
 
   background-color: transparent;
+
+  opacity: ${(props) => (props.disabled ? 0.2 : 1)};
 `;
 
 InputTextareaField.propTypes = {

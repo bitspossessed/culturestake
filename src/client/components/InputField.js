@@ -34,7 +34,7 @@ export const InputFieldStyle = styled.input`
 
   background-color: transparent;
 
-  opacity: ${(props) => (props.isDisabled ? 0.2 : 1)};
+  opacity: ${(props) => (props.disabled ? 0.2 : 1)};
 `;
 
 InputField.propTypes = {
