@@ -24,7 +24,11 @@ import ButtonOutline from '~/client/components/ButtonOutline';
 const boothAddressSchema = web3Validators.web3().address().required();
 const festivalChainIdSchema = web3Validators.web3().sha3().required();
 
-const ContractsEmailSigner = ({ booth, isReadyToSign = false }) => {
+const ContractsEmailSigner = ({
+  booth,
+  isReadyToSign = false,
+  setFestival,
+}) => {
   return (
     <EthereumContainer>
       {isReadyToSign ? (
@@ -42,7 +46,7 @@ const ContractsEmailSigner = ({ booth, isReadyToSign = false }) => {
   );
 };
 
-const ContractsBoothsForm = ({ booth }) => {
+const ContractsBoothsForm = ({ booth, setFestival }) => {
   const dispatch = useDispatch();
   const owner = useOwnerAddress();
 
@@ -98,6 +102,7 @@ const ContractsBoothsForm = ({ booth }) => {
         searchParam={'title'}
         selectParam={'chainId'}
         validate={festivalChainIdSchema}
+        onChangeCallback={setFestival}
       />
 
       <ButtonSubmit disabled={meta.request.isPending}>
@@ -121,10 +126,12 @@ const ContractsBoothsForm = ({ booth }) => {
 ContractsEmailSigner.propTypes = {
   booth: PropTypes.object.isRequired,
   isReadyToSign: PropTypes.bool,
+  setFestival: PropTypes.func.isRequired,
 };
 
 ContractsBoothsForm.propTypes = {
   booth: PropTypes.object.isRequired,
+  setFestival: PropTypes.func.isRequired,
 };
 
 export default ContractsEmailSigner;

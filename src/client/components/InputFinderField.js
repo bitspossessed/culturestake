@@ -11,6 +11,7 @@ const InputFinderField = ({
   isDisabled = false,
   label,
   name,
+  onChangeCallback = null,
   placeholder,
   queryPath,
   searchParam,
@@ -27,6 +28,10 @@ const InputFinderField = ({
       setValue(item[selectParam]);
     } else {
       setValue(null);
+    }
+
+    if (onChangeCallback) {
+      onChangeCallback(item);
     }
 
     setMeta({
@@ -59,6 +64,7 @@ InputFinderField.propTypes = {
   isDisabled: PropTypes.bool,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
+  onChangeCallback: PropTypes.func,
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.arrayOf(PropTypes.string).isRequired,
   searchParam: PropTypes.string.isRequired,

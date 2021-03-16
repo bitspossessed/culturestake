@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useState, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Joi from 'joi';
@@ -22,6 +22,8 @@ import FormScheduleEmail, {
   schema,
 } from '~/client/components/FormScheduleEmail';
 import { useRequestForm } from '~/client/hooks/forms';
+import { useResource } from '~/client/hooks/requests';
+import { signBooth } from '~/common/services/vote';
 
 const AdminEmails = () => {
   const dispatch = useDispatch();
@@ -29,6 +31,50 @@ const AdminEmails = () => {
   const requestId = useRequestId();
   const booth = useSelector((state) => state.booth);
   const [isReadyToSign, setIsReadyToSign] = useState(false);
+  const [selectedFestival, setSelectedFestival] = useState(null);
+
+  const [festival, isFestivalLoading] = useResource(
+    ['festivals', selectedFestival.chainId, 'questions'],
+    {
+      onError: () => {
+        dispatch(
+          notify({
+            text: translate('VoteSessionCreator.errorUnknownFestivalChainId'),
+            type: NotificationsTypes.ERROR,
+          }),
+        );
+      },
+    },
+  );
+
+  const answers = useMemo(() => {
+    if (!festival.questions) {
+      return [];
+    }
+
+    try {
+      const result = festival.questions.reduce((acc, question) => {
+        if (question.artworkId === null) {
+          question.answers.forEach((answer) => {
+            acc.push(answer.id);
+          });
+        }
+
+        return acc;
+      }, []);
+
+      return result;
+    } catch {
+      dispatch(
+        notify({
+          text: translate('VoteSessionCreator.errorInvalidData'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
+
+      return [];
+    }
+  }, [dispatch, festival]);
 
   useEffect(() => {
     setIsReadyToSign(booth.address && booth.isInitialized && !booth.isDisabled);
@@ -68,7 +114,14 @@ const AdminEmails = () => {
           path: ['tasks'],
           body: {
             kind: 'vote_invitations',
-            data: textareaToRecipients(values.recipients).map((to) => ({ to })),
+            data: textareaToRecipients(values.recipients).map((to, index) => {
+              const boothSignature = signBooth(
+                answers,
+                booth.privateKey,
+                index
+              );
+              return { to, boothSignature };
+            }),
           },
         }),
       );
@@ -123,7 +176,11 @@ const AdminEmails = () => {
       <HeaderAdmin>{translate('AdminEmails.title')}</HeaderAdmin>
 
       <ViewAdmin>
-        <ContractsEmailSigner booth={booth} isReadyToSign={isReadyToSign} />
+        <ContractsEmailSigner
+          booth={booth}
+          isReadyToSign={isReadyToSign}
+          setFestival={setSelectedFestival}
+        />
         <HelpCopyStyle>
           <ParagraphStyle>{translate('AdminEmails.copy')}</ParagraphStyle>
           <ParagraphStyle>{translate('AdminEmails.copyUpload')}</ParagraphStyle>
@@ -139,7 +196,7 @@ const AdminEmails = () => {
             onError={handleFileUploadError}
             onUpload={handleFileUpload}
           />
-          <ButtonSubmit disabled={!isValid} />
+          <ButtonSubmit disabled={!isValid && !isFestivalLoading} />
         </Form>
       </ViewAdmin>
 
