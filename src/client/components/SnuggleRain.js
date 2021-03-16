@@ -69,7 +69,7 @@ function resetParticle(particle) {
 
 function updateParticles(frameIndex, dimensions) {
   particles.forEach((particle) => {
-    if (!particle.isActive && isRequestingSnugglepunk) {
+    if (!particle.isActive && isRequestingSnugglepunk && snuggleness > 0) {
       // Spawn a snugglepunk!
       particle.x =
         (dimensions.width / particles.length) *
