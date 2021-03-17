@@ -46,6 +46,14 @@ router.get(
 );
 
 router.get(
+  '/:slug/votes',
+  optionalAuthMiddleware,
+  validate(festivalsValidation.getVotes),
+  getFestivalResource,
+  festivalsController.getVotes,
+);
+
+router.get(
   '/:slug',
   optionalAuthMiddleware,
   validate(festivalsValidation.read),

@@ -27,6 +27,11 @@ export default {
       ...slugValidation,
     },
   },
+  getVotes: {
+    [Segments.PARAMS]: {
+      ...slugValidation,
+    },
+  },
   getQuestions: {
     [Segments.PARAMS]: {
       idOrChainId: Joi.alternatives().try(
