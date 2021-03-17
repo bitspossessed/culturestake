@@ -10,6 +10,7 @@ export function locationFilter(req, data, options) {
 
   const longitude = data.dataValues.location.coordinates[0];
   const latitude = data.dataValues.location.coordinates[1];
+  const radius = data.dataValues.radius / 1000;
 
   data.set('latitude', latitude, {
     raw: true,
@@ -18,6 +19,8 @@ export function locationFilter(req, data, options) {
   data.set('longitude', longitude, {
     raw: true,
   });
+
+  data.set('radius', radius);
 
   return filterResponseFields(req, data, {
     ...options,
