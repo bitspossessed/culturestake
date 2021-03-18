@@ -22,8 +22,10 @@ import FormScheduleEmail, {
   schema,
 } from '~/client/components/FormScheduleEmail';
 import { useRequestForm } from '~/client/hooks/forms';
-import { useResource } from '~/client/hooks/requests';
+import apiRequest from '~/client/services/api';
 import { signBooth } from '~/common/services/vote';
+import { BOOTH_ACCOUNT_NAME } from '~/client/store/booth/actions';
+import { getPrivateKey } from '~/client/services/wallet';
 
 const AdminEmails = () => {
   const dispatch = useDispatch();
@@ -32,29 +34,53 @@ const AdminEmails = () => {
   const booth = useSelector((state) => state.booth);
   const [isReadyToSign, setIsReadyToSign] = useState(false);
   const [selectedFestival, setSelectedFestival] = useState(null);
+  const [festivalQuestionId, setFestivalQuestionId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [privateKey, setPrivateKey] = useState(false);
 
-  const [festival, isFestivalLoading] = useResource(
-    ['festivals', selectedFestival.chainId, 'questions'],
-    {
-      onError: () => {
-        dispatch(
-          notify({
-            text: translate('VoteSessionCreator.errorUnknownFestivalChainId'),
-            type: NotificationsTypes.ERROR,
-          }),
-        );
-      },
-    },
-  );
+  useEffect(() => {
+    if (isReadyToSign) {
+      setIsLoading(true);
+      const resolve = async () => {
+        try {
+          const resources = await apiRequest({
+            path: ['festivals', booth.festivalChainId, 'questions'],
+          });
+          setSelectedFestival(resources);
+          setIsLoading(false);
+          setPrivateKey(getPrivateKey(BOOTH_ACCOUNT_NAME));
+        } catch (error) {
+          dispatch(
+            notify({
+              text: translate('VoteSessionCreator.errorUnknownFestivalChainId'),
+              type: NotificationsTypes.ERROR,
+            }),
+          );
+        }
+      };
 
-  const answers = useMemo(() => {
-    if (!festival.questions) {
+      resolve();
+    }
+  }, [
+    booth,
+    isReadyToSign,
+    setSelectedFestival,
+    setIsLoading,
+    dispatch,
+    setPrivateKey,
+  ]);
+
+  const festivalAnswerIds = useMemo(() => {
+    if (!selectedFestival) return [];
+
+    if (!selectedFestival.questions) {
       return [];
     }
 
     try {
-      const result = festival.questions.reduce((acc, question) => {
+      const result = selectedFestival.questions.reduce((acc, question) => {
         if (question.artworkId === null) {
+          setFestivalQuestionId(question.id);
           question.answers.forEach((answer) => {
             acc.push(answer.id);
           });
@@ -74,7 +100,7 @@ const AdminEmails = () => {
 
       return [];
     }
-  }, [dispatch, festival]);
+  }, [dispatch, selectedFestival]);
 
   useEffect(() => {
     setIsReadyToSign(booth.address && booth.isInitialized && !booth.isDisabled);
@@ -108,6 +134,15 @@ const AdminEmails = () => {
     requestId,
     schema,
     onSubmit: (values) => {
+      if (festivalAnswerIds.length == 0) {
+        return dispatch(
+          notify({
+            text: translate('VoteSessionCreator.errorInvalidData'),
+            type: NotificationsTypes.ERROR,
+          }),
+        );
+      }
+
       dispatch(
         putRequest({
           id: requestId,
@@ -115,12 +150,21 @@ const AdminEmails = () => {
           body: {
             kind: 'vote_invitations',
             data: textareaToRecipients(values.recipients).map((to, index) => {
-              const boothSignature = signBooth(
-                answers,
-                booth.privateKey,
-                index
-              );
-              return { to, boothSignature };
+              const nonce = index;
+              const boothSignature = signBooth({
+                festivalAnswerIds,
+                privateKey,
+                nonce,
+              });
+              return {
+                to,
+                booth: booth.address,
+                boothSignature,
+                festivalAnswerIds,
+                festivalQuestionId,
+                nonce,
+                organisationId: null,
+              };
             }),
           },
         }),
@@ -196,7 +240,7 @@ const AdminEmails = () => {
             onError={handleFileUploadError}
             onUpload={handleFileUpload}
           />
-          <ButtonSubmit disabled={!isValid && !isFestivalLoading} />
+          <ButtonSubmit disabled={!isValid && !isLoading} />
         </Form>
       </ViewAdmin>
 

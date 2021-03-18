@@ -41,7 +41,7 @@ const ContractsEmailSigner = ({
         </ParagraphStyle>
       )}
 
-      <ContractsBoothsForm booth={booth} />
+      <ContractsBoothsForm booth={booth} setFestival={setFestival} />
     </EthereumContainer>
   );
 };
