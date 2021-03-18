@@ -9,6 +9,7 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
+import InputFinderField from '~/client/components/InputFinderField';
 import ContractsEmailSigner from '~/client/components/ContractsEmailSigner';
 import translate from '~/common/services/i18n';
 import { HelpCopyStyle, SpacingGroupStyle } from '~/client/styles/layout';
@@ -37,6 +38,10 @@ const AdminEmails = () => {
   const [festivalQuestionId, setFestivalQuestionId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [privateKey, setPrivateKey] = useState(false);
+
+  const organisationSchema = Joi.number()
+    .allow(null)
+    .error(new Error(translate('validations.artworkRequired')));
 
   useEffect(() => {
     if (isReadyToSign) {
@@ -163,7 +168,7 @@ const AdminEmails = () => {
                 festivalAnswerIds,
                 festivalQuestionId,
                 nonce,
-                organisationId: null,
+                organisationId: values.organisationId,
               };
             }),
           },
@@ -231,6 +236,16 @@ const AdminEmails = () => {
           <PreStyle>{translate('AdminEmails.example')}</PreStyle>
         </HelpCopyStyle>
         <Form>
+          <InputFinderField
+            isDisabled={!isReadyToSign}
+            label={translate('AdminEmails.fieldOrganisationId')}
+            name="organisationId"
+            placeholder={translate('AdminEmails.fieldOrganisationPlaceholder')}
+            queryPath={['organisations']}
+            searchParam={'name'}
+            selectParam={'id'}
+            validate={organisationSchema}
+          />
           <FormScheduleEmail disabled={!isReadyToSign} />
 
           <FileUpload

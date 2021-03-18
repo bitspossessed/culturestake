@@ -337,6 +337,8 @@ aaa@example.org
 bbb@example.org
 ccc@example.org`,
     buttonSendEmails: 'Schedule Emails',
+    fieldOrganisationPlaceholder: 'Organisation',
+    fieldOrganisationId: 'Search for an organisation',
     title: 'Schedule Email',
     notificationSuccess: 'Scheduled {amount} emails.',
     fileUpload: 'Drag a file with recipients here or click to select.',

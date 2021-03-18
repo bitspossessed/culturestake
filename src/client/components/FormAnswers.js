@@ -39,7 +39,7 @@ const FormAnswers = ({ question, festivalId, isDisabled }) => {
       {question.type === 'festival' ? (
         <InputFinderField
           clientSideFilter={filter}
-          isDisabled={isDisabled}
+          disabled={isDisabled}
           label={translate('AdminAnswersNew.fieldArtwork')}
           name="artworkId"
           placeholder={translate('AdminAnswersNew.fieldArtworkPlaceholder')}
@@ -49,7 +49,7 @@ const FormAnswers = ({ question, festivalId, isDisabled }) => {
         />
       ) : (
         <InputFinderField
-          isDisabled={isDisabled}
+          disabled={isDisabled}
           label={translate('AdminAnswersNew.fieldProperty')}
           name="propertyId"
           placeholder={translate('AdminAnswersNew.fieldPropertyPlaceholder')}

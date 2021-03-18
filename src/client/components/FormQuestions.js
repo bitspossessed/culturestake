@@ -41,7 +41,7 @@ const FormQuestions = ({ isFinderDisabled, festivalId }) => {
       />
 
       <InputFinderField
-        isDisabled={isFinderDisabled}
+        disabled={isFinderDisabled}
         label={translate('FormQuestions.fieldFestival')}
         name="festivalId"
         placeholder={translate('FormQuestions.fieldFestivalPlaceholder')}
@@ -52,7 +52,7 @@ const FormQuestions = ({ isFinderDisabled, festivalId }) => {
 
       <InputFinderField
         clientSideFilter={filter}
-        isDisabled={isFinderDisabled || !hasFestival}
+        disabled={isFinderDisabled || !hasFestival}
         label={translate('FormQuestions.fieldArtwork')}
         name="artworkId"
         placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}
