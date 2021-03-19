@@ -344,7 +344,7 @@ ccc@example.org`,
     notificationSuccess: 'Scheduled {amount} emails.',
     fileUpload: 'Drag a file with recipients here or click to select.',
     errorUnknownFestivalChainId: 'No known festival connected to this booth',
-    errorInvalidData: 'Invalid data to create booth',
+    errorInvalidData: 'Invalid data: festival question and answers must exist',
   },
   AdminQuestionsNew: {
     title: 'Create new question',
