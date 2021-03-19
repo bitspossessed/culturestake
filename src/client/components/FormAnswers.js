@@ -22,10 +22,13 @@ const FormAnswers = ({ question, festivalId, isDisabled }) => {
     const filterParam =
       question.type === 'festival' ? 'artworkId' : 'propertyId';
     const answerIds = question.answers.map((answer) => answer[filterParam]);
-    const filtered = item.festivals.filter((festival) => {
-      return festival.id === festivalId && !answerIds.includes(item.id);
-    });
-    return filtered.length >= 1;
+
+    if (filterParam === 'artworkId') {
+      const filtered = item.festivals.filter((festival) => {
+        return festival.id === festivalId && !answerIds.includes(item.id);
+      });
+      return filtered.length >= 1;
+    } else return !answerIds.includes(item.id);
   };
 
   return (
@@ -49,7 +52,8 @@ const FormAnswers = ({ question, festivalId, isDisabled }) => {
         />
       ) : (
         <InputFinderField
-          disabled={isDisabled}
+          clientSideFilter={filter}
+          isDisabled={isDisabled}
           label={translate('AdminAnswersNew.fieldProperty')}
           name="propertyId"
           placeholder={translate('AdminAnswersNew.fieldPropertyPlaceholder')}
