@@ -43,6 +43,12 @@ const AdminEmails = () => {
     .allow(null)
     .error(new Error(translate('validations.artworkRequired')));
 
+  const returnUrl = '/admin';
+
+  useEffect(() => {
+    setIsReadyToSign(booth.address && booth.isInitialized && !booth.isDisabled);
+  }, [booth, setIsReadyToSign]);
+
   useEffect(() => {
     if (isReadyToSign) {
       setIsLoading(true);
@@ -106,12 +112,6 @@ const AdminEmails = () => {
       return [];
     }
   }, [dispatch, selectedFestival]);
-
-  useEffect(() => {
-    setIsReadyToSign(booth.address && booth.isInitialized && !booth.isDisabled);
-  }, [booth, setIsReadyToSign]);
-
-  const returnUrl = '/admin';
 
   const textareaToRecipients = (value) =>
     [
