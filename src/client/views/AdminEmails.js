@@ -25,7 +25,7 @@ import FormScheduleEmail, {
 import { useRequestForm } from '~/client/hooks/forms';
 import apiRequest from '~/client/services/api';
 import { signBooth } from '~/common/services/vote';
-import { BOOTH_ACCOUNT_NAME } from '~/client/store/booth/actions';
+import { BOOTH_ACCOUNT_NAME, resetBooth } from '~/client/store/booth/actions';
 import { getPrivateKey } from '~/client/services/wallet';
 
 const AdminEmails = () => {
@@ -54,6 +54,7 @@ const AdminEmails = () => {
       setIsLoading(true);
       const resolve = async () => {
         try {
+          if (!booth.festivalChainId) return;
           const resources = await apiRequest({
             path: ['festivals', booth.festivalChainId, 'questions'],
           });
@@ -63,7 +64,7 @@ const AdminEmails = () => {
         } catch (error) {
           dispatch(
             notify({
-              text: translate('VoteSessionCreator.errorUnknownFestivalChainId'),
+              text: translate('AdminEmails.errorUnknownFestivalChainId'),
               type: NotificationsTypes.ERROR,
             }),
           );
@@ -104,7 +105,7 @@ const AdminEmails = () => {
     } catch {
       dispatch(
         notify({
-          text: translate('VoteSessionCreator.errorInvalidData'),
+          text: translate('AdminEmails.errorInvalidData'),
           type: NotificationsTypes.ERROR,
         }),
       );
@@ -142,7 +143,7 @@ const AdminEmails = () => {
       if (festivalAnswerIds.length == 0) {
         return dispatch(
           notify({
-            text: translate('VoteSessionCreator.errorInvalidData'),
+            text: translate('AdminEmails.errorInvalidData'),
             type: NotificationsTypes.ERROR,
           }),
         );
@@ -184,6 +185,7 @@ const AdminEmails = () => {
       );
     },
     onSuccess: () => {
+      dispatch(resetBooth());
       dispatch(
         notify({
           text: translate('AdminEmails.notificationSuccess', {

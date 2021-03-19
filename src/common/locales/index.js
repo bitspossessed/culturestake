@@ -39,6 +39,7 @@ const components = {
   ContractsEmailSigner: {
     addressLabel: 'Booth address:',
     buttonAddNewBooth: 'Create New Voting Booth',
+    buttonBurnBooth: 'Delete Booth',
     buttonInitializeBooth: 'Initialize',
     fieldBoothAddress: 'Booth Address:',
     fieldFestivalChainId: 'Festival:',
@@ -232,7 +233,7 @@ const components = {
     buttonReset: 'Reset',
     buttonVoteOnBooth: 'Vote here',
     errorInvalidData: 'Inconsistent data to create vote',
-    errorUnknownFestivalChainId: 'No know festival connected to this booth',
+    errorUnknownFestivalChainId: 'No known festival connected to this booth',
     notificationAddedArtwork: 'Activated {title}',
     titleAdmin: 'Admin',
     titleStartVote: 'Start vote session',
@@ -330,7 +331,7 @@ const views = {
     title: 'Questions',
   },
   AdminEmails: {
-    copy: `You can add recipients in the text box below, one email per line.`,
+    copy: `After setting up a booth, you can add recipients in the text box below, one email per line.`,
     copyUpload: `Or, upload a text file containing email addresses, again one email per line. Optionally, you can use the first line of the file as a header. For example this is a valid file to upload:`,
     example: `Emails
 aaa@example.org
@@ -342,6 +343,8 @@ ccc@example.org`,
     title: 'Schedule Email',
     notificationSuccess: 'Scheduled {amount} emails.',
     fileUpload: 'Drag a file with recipients here or click to select.',
+    errorUnknownFestivalChainId: 'No known festival connected to this booth',
+    errorInvalidData: 'Invalid data to create booth',
   },
   AdminQuestionsNew: {
     title: 'Create new question',

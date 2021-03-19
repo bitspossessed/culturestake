@@ -18,7 +18,7 @@ import { useContractsForm } from '~/client/hooks/forms';
 import { useOwnerAddress } from '~/client/hooks/ethereum';
 import { web3Validators } from '~/common/helpers/validate';
 import { ParagraphStyle } from '~/client/styles/typography';
-import { initializeBooth } from '~/client/store/booth/actions';
+import { initializeBooth, resetBooth } from '~/client/store/booth/actions';
 import ButtonOutline from '~/client/components/ButtonOutline';
 
 const boothAddressSchema = web3Validators.web3().address().required();
@@ -52,6 +52,14 @@ const ContractsBoothsForm = ({ booth, setFestival }) => {
 
   const onCreateBooth = () => {
     dispatch(initializeBooth());
+  };
+
+  const onBurnBooth = () => {
+    if (!window.confirm(translate('default.areYouSure'))) {
+      return;
+    }
+
+    dispatch(resetBooth());
   };
 
   const { Form, meta, reset } = useContractsForm({
@@ -112,9 +120,11 @@ const ContractsBoothsForm = ({ booth, setFestival }) => {
   ) : booth.isInitialized ? (
     <Fragment>
       <ParagraphStyle>
-        {translate('ContractsEmailSigner.addressLabel')}
         <Pill>{booth.address}</Pill>
       </ParagraphStyle>
+      <ButtonOutline isDanger={true} onClick={onBurnBooth}>
+        {translate('ContractsEmailSigner.buttonBurnBooth')}
+      </ButtonOutline>
     </Fragment>
   ) : (
     <ButtonOutline onClick={onCreateBooth}>
