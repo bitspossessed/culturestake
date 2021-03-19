@@ -1,6 +1,20 @@
 {
   "voteInvitation": {
     "kind": "vote_invitations",
-    "data": [{ "to": "aaa@example.org" }, { "to": "bbb@example.org" }]
+    "data": [
+        {
+            "to": "aaa@example.org",
+            "festivalAnswerIds": [0, 1],
+            "festivalQuestionId": 1,
+            "nonce": 0,
+            "organisationId": 1
+        },
+        {
+            "to": "bbb@example.org",
+            "festivalAnswerIds": [0, 1],
+            "festivalQuestionId": 1,
+            "nonce": 1
+        }
+    ]
   }
 }
