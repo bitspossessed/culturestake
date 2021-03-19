@@ -1,9 +1,9 @@
-export const downloadAsFile = (contentType, contents) => {
+export const downloadAsFile = (contentType, filename, contents) => {
   const blob = new Blob([contents], { type: contentType });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `votes-${festival}.csv`;
+  a.download = filename;
 
   const clickHandler = () => {
     setTimeout(() => {

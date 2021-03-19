@@ -6,6 +6,7 @@ import APIError from '~/server/helpers/errors';
 import Artwork from '~/server/models/artwork';
 import Festival from '~/server/models/festival';
 import Vote from '~/server/models/vote';
+import Question from '~/server/models/question';
 import baseController from '~/server/controllers';
 import {
   AnswerBelongsToArtwork,
@@ -185,18 +186,26 @@ async function getArtworks(req, res, next) {
 async function getVotes(req, res, next) {
   if (req.get('Content-Type') === 'text/csv') {
     const { slug } = req.params;
+    const { resource } = req.locals;
 
     try {
-      // FIXME: The model invocation is just a stub and not the right way
-      //        to get all votes.
-      const { dataValues: votes } = await Vote.findAll({
+      const question = await Question.findOne({
         rejectOnEmpty: true,
+        where: { festivalId: resource.id },
+      });
+
+      const votes = await Vote.findAll({
+        rejectOnEmpty: true,
+        where: { festivalQuestionChainId: question.chainId },
       });
 
       res.header('Content-Type', 'text/csv');
       res.attachment(`votes-${slug}.csv`);
 
-      stringify([votes], { header: true }).pipe(res);
+      stringify(
+        (votes || []).map((instance) => instance.get({ plain: true })),
+        { header: true },
+      ).pipe(res);
     } catch (error) {
       if (error instanceof EmptyResultError) {
         next(new APIError(httpStatus.NOT_FOUND));

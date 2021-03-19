@@ -39,6 +39,14 @@ router.get(
   questionsController.read,
 );
 
+router.get(
+  '/:id/votes',
+  optionalAuthMiddleware,
+  validate(questionsValidation.getVotes),
+  getQuestionResource,
+  questionsController.getVotes,
+);
+
 router.post(
   '/:id',
   authMiddleware,

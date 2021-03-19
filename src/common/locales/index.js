@@ -65,6 +65,7 @@ const components = {
   ExportVotesContainer: {
     title: 'Export Votes',
     buttonDownload: 'Download votes as a CSV',
+    csvEmpty: 'No votes available to export.',
   },
   FormLogin: {
     fieldEmail: 'Your Email-address:',

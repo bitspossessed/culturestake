@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
 
 import translate from '~/common/services/i18n';
 import apiRequest from '~/client/services/api';
@@ -9,21 +10,43 @@ import styles from '~/client/styles/variables';
 import swirl from '~/client/assets/images/swirl.svg';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import { downloadAsFile } from '~/client/utils/downloads';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
 
-const ExportVotesContainer = ({ path }) => {
+const ExportVotesContainer = ({ name, path }) => {
+  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+
+  const handleError = (e) => {
+    const msg =
+      e.response.code === 404
+        ? translate('ExportVotesContainer.csvEmpty')
+        : translate('default.errorMessage');
+
+    dispatch(
+      notify({
+        text: msg,
+        type: NotificationsTypes.ERROR,
+      }),
+    );
+  };
 
   const getVotesCsv = async (event) => {
     event.stopPropagation();
     event.preventDefault();
     setIsLoading(true);
 
-    const response = await apiRequest({
-      path,
-      headers: { 'Content-Type': 'text/csv' },
-    });
+    try {
+      const response = await apiRequest({
+        path,
+        headers: { 'Content-Type': 'text/csv' },
+      });
 
-    downloadAsFile('text/csv', response);
+      downloadAsFile('text/csv', `votes-${name}.csv`, response);
+    } catch (e) {
+      handleError(e);
+    }
 
     setIsLoading(false);
   };
@@ -34,7 +57,7 @@ const ExportVotesContainer = ({ path }) => {
         {translate('ExportVotesContainer.title')}
       </HeadingSecondaryStyle>
 
-      <ButtonIcon onClick={getVotesCsv} url={swirl} disabled={isLoading}>
+      <ButtonIcon disabled={isLoading} url={swirl} onClick={getVotesCsv}>
         {translate('ExportVotesContainer.buttonDownload')}
       </ButtonIcon>
     </VoteweightsContainerStyle>
@@ -57,7 +80,8 @@ export const VoteweightsContainerStyle = styled.section`
 `;
 
 ExportVotesContainer.propTypes = {
-  path: PropTypes.arrayOf(PropTypes.string).required,
+  name: PropTypes.string.isRequired,
+  path: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default ExportVotesContainer;

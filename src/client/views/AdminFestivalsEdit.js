@@ -93,7 +93,10 @@ const AdminFestivalsEditForm = () => {
           )}
 
           {!isResourceLoading && (
-            <ExportVotesContainer path={['festivals', festival, 'votes']} />
+            <ExportVotesContainer
+              name={slug}
+              path={['festivals', slug, 'votes']}
+            />
           )}
 
           <DangerZone>
