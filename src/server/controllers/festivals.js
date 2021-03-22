@@ -33,7 +33,7 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: [...festivalFields, 'images', 'artworks', 'online', 'voteweights'],
+  fields: [...festivalFields, 'images', 'artworks', 'voteweights'],
   fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
