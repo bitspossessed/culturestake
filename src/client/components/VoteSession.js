@@ -117,7 +117,7 @@ const VoteSession = ({
       setLongitude(position.coords.longitude);
     }
     function getLocation() {
-      if (navigator.geolocation) {
+      if (navigator.geolocation && data && data.online) {
         navigator.geolocation.getCurrentPosition(showPosition);
       }
     }
