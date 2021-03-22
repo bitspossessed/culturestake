@@ -5,5 +5,8 @@ export default async function locationFormatting(req, res, next) {
       coordinates: [req.body.longitude, req.body.latitude],
     };
   }
+  if (req.body && req.body.radius) {
+    req.body.radius = req.body.radius * 1000;
+  }
   next();
 }

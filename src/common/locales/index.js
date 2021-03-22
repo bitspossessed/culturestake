@@ -125,7 +125,7 @@ const components = {
     fieldMultiplier: 'Multiplier:',
     fieldLatitude: 'Latitude:',
     fieldLongitude: 'Longitude:',
-    fieldRadius: 'Radius in metres:',
+    fieldRadius: 'Radius in km:',
     fieldHotspot: 'Hotspot Address:',
     fieldOrganisation: 'Organisation:',
     fieldOrganisationPlaceholder: 'Search for an organisation to add',
