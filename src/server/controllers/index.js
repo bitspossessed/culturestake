@@ -77,7 +77,11 @@ export function filterResponseFields(req, data, options) {
 
 export function filterResponseFieldsAll(req, arr, options) {
   return arr.map((data) => {
-    return filterResponseFields(req, data, options);
+    const filter = options.customFilter
+      ? options.customFilter
+      : filterResponseFields;
+
+    return filter(req, data, options);
   });
 }
 
