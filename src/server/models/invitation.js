@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 
 import db from '~/server/database';
 
-const VoteInvitation = db.define('voteInvitation', {
+const Invitation = db.define('invitation', {
   id: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -45,4 +45,4 @@ const VoteInvitation = db.define('voteInvitation', {
   },
 });
 
-export default VoteInvitation;
+export default Invitation;
