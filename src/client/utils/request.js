@@ -12,7 +12,7 @@ export default async function request(customOptions) {
   } = customOptions;
 
   const defaultHeaders = {};
-  if (!(body instanceof FormData)) {
+  if (!(body instanceof FormData) && !headers['Content-Type']) {
     defaultHeaders['Content-Type'] = 'application/json';
   }
 

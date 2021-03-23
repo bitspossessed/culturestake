@@ -6,9 +6,8 @@ export default async function apiRequest({
   method = 'GET',
   token = null,
   body = null,
+  headers = {},
 }) {
-  const headers = {};
-
   // Add JWT authorization token when given
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
