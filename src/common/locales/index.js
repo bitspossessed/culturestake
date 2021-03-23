@@ -82,6 +82,9 @@ const components = {
   FormAnswers: {
     notificationPropertySuccess: 'Created property {title}',
   },
+  FormInvitations: {
+    fieldEmail: 'Your Email-address:',
+  },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
@@ -478,6 +481,10 @@ ccc@example.org`,
     bodyStatisticsFestivals: 'Festivals',
     buttonViewFestivals: 'View Festivals',
     buttonFurtherfield: 'Find out more about Furtherfield',
+  },
+  Invitations: {
+    buttonSubmit: 'Begin voting',
+    title: 'Welcome to Culturestake!',
   },
   NotFound: {
     title: 'Not Found',

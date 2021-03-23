@@ -2,35 +2,34 @@ import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 
 import ButtonSubmit from '~/client/components/ButtonSubmit';
-import FormLogin from '~/client/components/FormLogin';
+import FormInvitations from '~/client/components/FormInvitations';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import translate from '~/common/services/i18n';
-import { requestToken, TOKEN_REQUEST_ID } from '~/client/store/app/actions';
+
 import { useRequestForm } from '~/client/hooks/forms';
 
-const AdminLogin = () => {
+const Invitations = () => {
   const dispatch = useDispatch();
 
   const { Form } = useRequestForm({
-    requestId: TOKEN_REQUEST_ID,
-    onSubmit: ({ email, password }) => {
-      dispatch(requestToken(email, password));
+    onSubmit: () => {
+      dispatch();
     },
   });
 
   return (
     <Fragment>
-      <HeaderAdmin>{translate('AdminLogin.title')}</HeaderAdmin>
+      <HeaderAdmin>{translate('Invitations.title')}</HeaderAdmin>
 
       <ViewAdmin>
         <Form>
-          <FormLogin />
-          <ButtonSubmit>{translate('AdminLogin.buttonSubmit')}</ButtonSubmit>
+          <FormInvitations />
+          <ButtonSubmit>{translate('Invitations.buttonSubmit')}</ButtonSubmit>
         </Form>
       </ViewAdmin>
     </Fragment>
   );
 };
 
-export default AdminLogin;
+export default Invitations;
