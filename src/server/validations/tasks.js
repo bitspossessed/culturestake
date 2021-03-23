@@ -15,6 +15,7 @@ const defaultValidation = {
               to: Joi.string().email().required(),
               booth: web3Validators.web3().address().required(),
               boothSignature: Joi.string().required(),
+              festivalSlug: Joi.string().required(),
               festivalAnswerIds: Joi.array().required().items(Joi.number()),
               festivalQuestionId: Joi.number().required(),
               nonce: Joi.number().required(),

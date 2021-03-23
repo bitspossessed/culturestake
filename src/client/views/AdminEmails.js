@@ -166,6 +166,7 @@ const AdminEmails = () => {
                 to,
                 booth: booth.address,
                 boothSignature,
+                festivalSlug: selectedFestival.slug,
                 festivalAnswerIds,
                 festivalQuestionId,
                 nonce,
