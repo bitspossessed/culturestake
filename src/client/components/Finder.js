@@ -116,7 +116,7 @@ const Finder = ({
 
       <InputFieldStyle
         autoComplete="off"
-        isDisabled={isDisabled}
+        disabled={isDisabled}
         label={label}
         name={name}
         placeholder={placeholder}
