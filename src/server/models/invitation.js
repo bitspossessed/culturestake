@@ -32,6 +32,10 @@ const Invitation = db.define('invitation', {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  festivalSlug: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   festivalQuestionId: {
     type: DataTypes.INTEGER,
     allowNull: false,

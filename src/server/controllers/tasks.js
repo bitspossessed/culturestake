@@ -1,7 +1,7 @@
 import httpStatus from 'http-status';
 
-import { respondWithSuccess } from '~/server/helpers/respond';
-import { voteInvitationEmail } from '~/server/tasks/sendmail';
+import { respondWithSuccess, respondWithError } from '~/server/helpers/respond';
+import { voteInvitationEmail, voteEmail } from '~/server/tasks/sendmail';
 import Invitation from '~/server/models/invitation';
 
 async function create(req, res) {
@@ -15,6 +15,22 @@ async function create(req, res) {
           return voteInvitationEmail(to, rest);
         }),
       );
+      break;
+    }
+    case 'vote': {
+      const invitation = await Invitation.findOne({
+        email: data.to,
+        festivalSlug: data.festivalSlug,
+      });
+      if (!invitation) {
+        return respondWithError(
+          res,
+          'No vote invitation found',
+          httpStatus.NOT_FOUND,
+        );
+      }
+      voteEmail(data.to, invitation);
+      break;
     }
   }
 

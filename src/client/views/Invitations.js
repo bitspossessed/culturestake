@@ -8,15 +8,47 @@ import ViewAdmin from '~/client/components/ViewAdmin';
 import { HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 import translate from '~/common/services/i18n';
+import { useRequestId } from '~/client/hooks/requests';
+import { putRequest } from '~/client/store/api/actions';
+import notify, {
+  NotificationsTypes,
+} from '~/client/store/notifications/actions';
+//import { useParams } from 'react-router-dom';
 
 import { useRequestForm } from '~/client/hooks/forms';
 
 const Invitations = () => {
   const dispatch = useDispatch();
+  const requestId = useRequestId();
+  //const params = useParams();
 
-  const { Form } = useRequestForm({
+  const { Form, values } = useRequestForm({
     onSubmit: () => {
-      dispatch();
+      dispatch(
+        putRequest({
+          id: requestId,
+          path: ['tasks'],
+          body: {
+            kind: 'vote',
+            data: values,
+          },
+        }),
+      );
+    },
+    onError: () => {
+      dispatch(
+        notify({
+          text: translate('default.errorMessage'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
+    },
+    onSuccess: () => {
+      dispatch(
+        notify({
+          text: translate('Invitations.notificationSuccess'),
+        }),
+      );
     },
   });
 
