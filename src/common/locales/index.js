@@ -89,6 +89,7 @@ const components = {
     fieldQuestion: 'Question:',
     fieldArtworks: 'Artworks:',
     fieldUrl: 'Website:',
+    buttonEditQuestion: 'Manage',
   },
   FormScheduleEmail: {
     fieldRecipients: 'Recipients:',

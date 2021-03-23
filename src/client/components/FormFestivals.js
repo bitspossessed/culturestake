@@ -9,14 +9,17 @@ import InputHiddenField from '~/client/components/InputHiddenField';
 import InputStickerField from '~/client/components/InputStickerField';
 import InputTextareaField from '~/client/components/InputTextareaField';
 import InputUploadField from '~/client/components/InputUploadField';
+import BoxRounded from '~/client/components/BoxRounded';
+import ButtonIcon from '~/client/components/ButtonIcon';
 import translate from '~/common/services/i18n';
+import swirl from '~/client/assets/images/swirl.svg';
 import {
   documentsValidation,
   imagesValidation,
   stickerValidation,
 } from '~/common/helpers/validate';
 
-const FormFestivals = () => {
+const FormFestivals = ({ questionId }) => {
   const schema = {
     artworks: Joi.array().required().max(30),
     description: Joi.string().max(2000).required(),
@@ -62,26 +65,52 @@ const FormFestivals = () => {
         validate={schema.description}
       />
 
-      <InputField
-        label={translate('FormFestivals.fieldQuestion')}
-        name="question.title"
-        type="text"
-        validate={schema.question.title}
-      />
-
-      <InputHiddenField
-        label={translate('FormFestivals.fieldQuestion')}
-        name="question.type"
-        type="text"
-        value={{ value: 'festival' }}
-        validate={schema.question.type}
-      />
-
       <InputCheckboxField
         label={translate('FormFestivals.fieldOnline')}
         name="online"
         validate={schema.online}
       />
+
+      {questionId ? (
+        <BoxRounded title={translate('FormFestivals.fieldQuestion')}>
+          <InputField
+            label={translate('FormFestivals.fieldQuestion')}
+            name="question.title"
+            type="text"
+            validate={schema.question.title}
+            disabled={true}
+          />
+
+          <InputHiddenField
+            label={translate('FormFestivals.fieldQuestion')}
+            name="question.type"
+            type="text"
+            validate={schema.question.type}
+            value={{ value: 'festival' }}
+          />
+
+          <ButtonIcon to={`/admin/questions/${questionId}/edit`} url={swirl}>
+            {translate('FormFestivals.buttonEditQuestion')}
+          </ButtonIcon>
+        </BoxRounded>
+      ) : (
+        <>
+          <InputField
+            label={translate('FormFestivals.fieldQuestion')}
+            name="question.title"
+            type="text"
+            validate={schema.question.title}
+          />
+
+          <InputHiddenField
+            label={translate('FormFestivals.fieldQuestion')}
+            name="question.type"
+            type="text"
+            validate={schema.question.type}
+            value={{ value: 'festival' }}
+          />
+        </>
+      )}
 
       <InputUploadField
         isImageUpload
@@ -116,6 +145,7 @@ const FormFestivals = () => {
 
 FormFestivals.propTypes = {
   isPasswordHidden: PropTypes.bool,
+  questionId: PropTypes.number,
 };
 
 export default FormFestivals;
