@@ -52,6 +52,7 @@ const VoteSession = ({
   festivalQuestionId,
   nonce,
   senderAddress,
+  organisationId = null,
 }) => {
   const dispatch = useDispatch();
   const { isAlternateColor } = useSelector((state) => state.app);
@@ -61,6 +62,9 @@ const VoteSession = ({
 
   // How happy is our SnuggleRain component?
   const [snuggleness, setSnuggleness] = useState(0.0);
+
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   // Actual quadratic vote states, divided by the two separate vote steps
   const [creditLeft, setCreditLeft] = useState({
@@ -106,6 +110,19 @@ const VoteSession = ({
       return question.artworkId === winnerArtworkId;
     });
   }, [winnerArtworkId, data]);
+
+  useEffect(() => {
+    function showPosition(position) {
+      setLatitude(position.coords.latitude);
+      setLongitude(position.coords.longitude);
+    }
+    function getLocation() {
+      if (navigator.geolocation && data && data.online) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+      }
+    }
+    getLocation();
+  });
 
   useEffect(() => {
     if (!artworkQuestionData || !artworkQuestionData.answers) {
@@ -327,6 +344,9 @@ const VoteSession = ({
       nonce,
       senderAddress,
       senderSignature,
+      organisationId,
+      latitude,
+      longitude,
     };
 
     setIsVoting(true);
@@ -557,6 +577,7 @@ VoteSession.propTypes = {
   festivalAnswerIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   festivalQuestionId: PropTypes.number.isRequired,
   nonce: PropTypes.number.isRequired,
+  organisationId: PropTypes.number,
   senderAddress: PropTypes.string.isRequired,
 };
 
