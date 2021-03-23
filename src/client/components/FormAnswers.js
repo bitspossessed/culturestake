@@ -42,7 +42,7 @@ const FormAnswers = ({ question, festivalId, isDisabled }) => {
       {question.type === 'festival' ? (
         <InputFinderField
           clientSideFilter={filter}
-          isDisabled={isDisabled}
+          disabled={isDisabled}
           label={translate('AdminAnswersNew.fieldArtwork')}
           name="artworkId"
           placeholder={translate('AdminAnswersNew.fieldArtworkPlaceholder')}

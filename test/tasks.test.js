@@ -6,6 +6,8 @@ import { initializeDatabase } from './helpers/database';
 import queue from '../src/server/tasks/sendmail';
 import { delay } from './helpers/utils';
 import { expectNoTasks, expectCompletedTasks } from './helpers/tasks';
+import web3 from '~/common/services/web3';
+import { packBooth } from '~/common/services/encoding';
 
 describe('Tasks', () => {
   let authRequest;
@@ -43,9 +45,23 @@ describe('Tasks', () => {
       it('should succeed creating new email tasks', async () => {
         await expectNoTasks(queue);
 
+        const booth = web3.eth.accounts.create();
+        const voteInvitationsData = tasksData.voteInvitation.data.map(
+          (invitation) => {
+            return {
+              ...invitation,
+              booth: booth.address,
+              boothSignature: web3.eth.accounts.sign(
+                packBooth([invitation.festivalAnswerIds], invitation.nonce),
+                booth.privateKey,
+              ).signature,
+            };
+          },
+        );
+
         await authRequest
           .put('/api/tasks')
-          .send(tasksData.voteInvitation)
+          .send({ ...tasksData.voteInvitation, data: voteInvitationsData })
           .expect(httpStatus.CREATED);
 
         // Give the task queue time to work through it's issues.
