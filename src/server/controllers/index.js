@@ -194,7 +194,9 @@ async function destroyAssociations(instance, associations) {
 function create(options) {
   return async (req, res, next) => {
     try {
-      const instance = await options.model.create(req.body);
+      const instance = await options.model.create(req.body, {
+        include: options.include,
+      });
 
       await handleAssociations(instance, options.associations, req.body);
 

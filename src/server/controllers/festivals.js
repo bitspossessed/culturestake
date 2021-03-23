@@ -12,6 +12,7 @@ import {
   ArtworkBelongsToManyFestivals,
   ArtworkHasManyImages,
   FestivalBelongsToManyArtworks,
+  FestivalHasOneQuestion,
   FestivalHasManyDocuments,
   FestivalHasManyImages,
   FestivalHasManyQuestions,
@@ -33,12 +34,20 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: [...festivalFields, 'images', 'artworks', 'online', 'voteweights'],
+  fields: [
+    ...festivalFields,
+    'images',
+    'artworks',
+    'online',
+    'voteweights',
+    'question',
+  ],
   fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
     FestivalHasManyImages,
+    FestivalHasOneQuestion,
   ],
   associations: [
     {
@@ -63,6 +72,7 @@ const optionsRead = {
     FestivalHasManyDocuments,
     FestivalHasManyImages,
     FestivalHasManyVoteweights,
+    FestivalHasOneQuestion,
   ],
   associations: [
     {
