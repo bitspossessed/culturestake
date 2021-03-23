@@ -77,17 +77,19 @@ const optionsRead = {
 
 async function getVotes(req, res, next) {
   if (req.get('Content-Type') === 'text/csv') {
-    const { resource } = req.locals;
+    const { resource: question } = req.locals;
 
     try {
-      const question = await Question.findOne({
-        rejectOnEmpty: true,
-        where: { festivalId: resource.id },
-      });
-
       const votes = await Vote.findAll({
         rejectOnEmpty: true,
-        where: { festivalQuestionChainId: question.chainId },
+        where: {
+          ...(question.type === 'festival'
+            ? { festivalQuestionChainId: question.chainId }
+            : undefined),
+          ...(question.type === 'artwork'
+            ? { artworkQuestionChainId: question.chainId }
+            : undefined),
+        },
       });
 
       res.header('Content-Type', 'text/csv');
