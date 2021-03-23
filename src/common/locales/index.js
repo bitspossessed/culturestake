@@ -485,6 +485,8 @@ ccc@example.org`,
   Invitations: {
     buttonSubmit: 'Begin voting',
     title: 'Welcome to Culturestake!',
+    locationDescription:
+      'The following page will request your location because votes are weighted by the localities they are placed from. You are free to deny location access, your vote will still be processed.',
   },
   NotFound: {
     title: 'Not Found',
