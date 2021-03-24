@@ -27,25 +27,7 @@ export const ACTION_EDIT = Symbol('select-edit');
 export const ACTION_SELECT = Symbol('select-action');
 export const ACTION_ANSWER_INITIALIZE = Symbol('answer-initialize-action');
 
-const DEFAULT_HEADERS = [
-  {
-    isOrderKey: true,
-    key: 'id',
-    label: 'ID',
-  },
-  {
-    isOrderKey: true,
-    isDate: true,
-    key: 'createdAt',
-    label: translate('Table.columnCreatedAt'),
-  },
-  {
-    isOrderKey: true,
-    isDate: true,
-    key: 'updatedAt',
-    label: translate('Table.columnUpdatedAt'),
-  },
-];
+const DEFAULT_HEADERS = [];
 
 const Table = ({
   actions,
@@ -466,6 +448,8 @@ export const TableStyle = styled.table`
     padding: 1rem;
 
     color: ${styles.colors.violet};
+
+    text-align: centre;
   }
 `;
 
@@ -487,14 +471,21 @@ export const TableHeaderItemStyle = styled.th`
 
 export const TableBodyStyle = styled.tbody`
   tr {
+    text-align: centre;
+
     cursor: pointer;
     &:hover {
       background-color: ${styles.colors.grayLight};
     }
+    td {
+      text-align: centre;
+    }
   }
 `;
 
-export const TableBodyMessageStyle = styled.tbody``;
+export const TableBodyMessageStyle = styled.tbody`
+  text-align: centre;
+`;
 
 const TableFooterStyle = styled.tfoot`
   tr {
@@ -506,6 +497,8 @@ const DeactivatedStyle = styled.span`
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding-right: 0.5rem;
+
+  text-align: centre;
 `;
 
 const PropTypesAction = PropTypes.shape({
