@@ -27,7 +27,13 @@ export const ACTION_EDIT = Symbol('select-edit');
 export const ACTION_SELECT = Symbol('select-action');
 export const ACTION_ANSWER_INITIALIZE = Symbol('answer-initialize-action');
 
-const DEFAULT_HEADERS = [];
+const DEFAULT_HEADERS = [
+  {
+    isOrderKey: true,
+    key: 'id',
+    label: 'ID',
+  },
+];
 
 const Table = ({
   actions,
