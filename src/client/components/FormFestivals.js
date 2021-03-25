@@ -73,8 +73,8 @@ const FormFestivals = () => {
         label={translate('FormFestivals.fieldQuestion')}
         name="question.type"
         type="text"
-        value={{ value: 'festival' }}
         validate={schema.question.type}
+        value={{ value: 'festival' }}
       />
 
       <InputCheckboxField
