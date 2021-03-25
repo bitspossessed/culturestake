@@ -216,6 +216,7 @@ function create(options) {
 function readAll(options) {
   return async (req, res, next) => {
     const {
+      assoc = false,
       limit = DEFAULT_LIMIT,
       offset = 0,
       orderDirection = DEFAULT_ORDER_DIRECTION,
@@ -226,7 +227,11 @@ function readAll(options) {
       const response = await options.model.findAndCountAll({
         limit,
         offset,
-        order: [[...orderKey, orderDirection.toUpperCase()]],
+        order: [
+          assoc
+            ? [assoc, orderKey, orderDirection.toUpperCase()]
+            : [orderKey, orderDirection.toUpperCase()],
+        ],
         include: options.include,
         distinct: true,
         where: options.where,
