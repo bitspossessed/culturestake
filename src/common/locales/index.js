@@ -79,6 +79,9 @@ const components = {
     buttonDownload: 'Download votes as a CSV',
     csvEmpty: 'No votes available to export.',
   },
+  FormAnswers: {
+    notificationPropertySuccess: 'Created property {title}',
+  },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
