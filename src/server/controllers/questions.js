@@ -116,7 +116,7 @@ function create(req, res, next) {
 }
 
 function readAll(req, res, next) {
-  if (req.query.orderKey.includes('.')) {
+  if (req.query.orderKey && req.query.orderKey.includes('.')) {
     req.query.assoc = req.query.orderKey.split('.')[0];
     req.query.orderKey = req.query.orderKey.split('.')[1];
   }
