@@ -226,7 +226,7 @@ function readAll(options) {
       const response = await options.model.findAndCountAll({
         limit,
         offset,
-        order: [[orderKey, orderDirection.toUpperCase()]],
+        order: [[...orderKey, orderDirection.toUpperCase()]],
         include: options.include,
         distinct: true,
         where: options.where,
