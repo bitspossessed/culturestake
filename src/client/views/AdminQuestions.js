@@ -19,7 +19,7 @@ const table = {
       label: translate('AdminQuestions.fieldTitle'),
     },
     {
-      isOrderKey: true,
+      isOrderKey: false,
       key: 'festival.title',
       label: translate('AdminQuestions.fieldFestival'),
     },
