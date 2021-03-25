@@ -21,6 +21,7 @@ const Finder = ({
   selectParam = searchParam,
   onChange,
   value,
+  onCreate,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [isQueryEmpty, setIsQueryEmpty] = useState(true);
@@ -106,6 +107,13 @@ const Finder = ({
     search(query);
   }, [query, value]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const createItem = async () => {
+    setIsLoading(true);
+    const resource = await onCreate(query);
+    if (resource) onSelect(resource);
+    setIsLoading(false);
+  };
+
   return (
     <FinderStyle>
       {isLoading && (
@@ -132,6 +140,14 @@ const Finder = ({
         searchParam={searchParam}
         onClick={onSelect}
       />
+
+      {onCreate && !isQueryEmpty && searchResults.length === 0 && (
+        <FinderResultStyle>
+          <FinderResultItemStyle onClick={createItem}>
+            Create &quot;{query}&quot;
+          </FinderResultItemStyle>
+        </FinderResultStyle>
+      )}
     </FinderStyle>
   );
 };
@@ -180,6 +196,7 @@ Finder.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  onCreate: PropTypes.func,
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.arrayOf(PropTypes.string).isRequired,
   searchParam: PropTypes.string.isRequired,
