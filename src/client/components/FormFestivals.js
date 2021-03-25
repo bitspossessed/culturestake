@@ -74,11 +74,11 @@ const FormFestivals = ({ questionId }) => {
       {questionId ? (
         <BoxRounded title={translate('FormFestivals.fieldQuestion')}>
           <InputField
+            disabled={true}
             label={translate('FormFestivals.fieldQuestion')}
             name="question.title"
             type="text"
             validate={schema.question.title}
-            disabled={true}
           />
 
           <InputHiddenField

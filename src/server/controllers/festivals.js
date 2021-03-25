@@ -65,6 +65,11 @@ const options = {
   ],
 };
 
+const optionsCreate = {
+  ...options,
+  include: [FestivalHasOneQuestion],
+};
+
 const optionsRead = {
   ...options,
   include: [
@@ -222,7 +227,7 @@ async function getQuestions(req, res, next) {
 }
 
 function create(req, res, next) {
-  baseController.create(options)(req, res, next);
+  baseController.create(optionsCreate, { include: true })(req, res, next);
 }
 
 function readAll(req, res, next) {

@@ -191,11 +191,20 @@ async function destroyAssociations(instance, associations) {
   return Promise.all(promises);
 }
 
-function create(options) {
+/*
+ * When setting `include` to true make sure to only include associations in
+ * `options.include` that are meant to be created inline. Associations that are
+ * in fact already created will raise a UniqueContraintError error instead.
+ */
+function create(options, { include } = { include: false }) {
   return async (req, res, next) => {
     try {
       const instance = await options.model.create(req.body, {
-        include: options.include,
+        ...(include
+          ? {
+              include: options.include,
+            }
+          : undefined),
       });
 
       await handleAssociations(instance, options.associations, req.body);
