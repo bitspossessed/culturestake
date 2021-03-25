@@ -299,7 +299,7 @@ export const TableBody = ({
         };
 
         return (
-          <tr key={`tr-${item.id}`} onClick={onSelectItem}>
+          <tr align="center" key={`tr-${item.id}`} onClick={onSelectItem}>
             <td>{index + offset + 1}</td>
             <TableBodyItems columns={columns} values={item} />
             <td>
@@ -448,8 +448,6 @@ export const TableStyle = styled.table`
     padding: 1rem;
 
     color: ${styles.colors.violet};
-
-    text-align: centre;
   }
 `;
 
@@ -471,21 +469,14 @@ export const TableHeaderItemStyle = styled.th`
 
 export const TableBodyStyle = styled.tbody`
   tr {
-    text-align: centre;
-
     cursor: pointer;
     &:hover {
       background-color: ${styles.colors.grayLight};
     }
-    td {
-      text-align: centre;
-    }
   }
 `;
 
-export const TableBodyMessageStyle = styled.tbody`
-  text-align: centre;
-`;
+export const TableBodyMessageStyle = styled.tbody``;
 
 const TableFooterStyle = styled.tfoot`
   tr {
@@ -497,8 +488,6 @@ const DeactivatedStyle = styled.span`
   margin-top: 1rem;
   margin-bottom: 1rem;
   padding-right: 0.5rem;
-
-  text-align: centre;
 `;
 
 const PropTypesAction = PropTypes.shape({
