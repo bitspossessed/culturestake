@@ -38,6 +38,7 @@ import Booth from '~/client/views/Booth';
 import Festivals from '~/client/views/Festivals';
 import FestivalsProfile from '~/client/views/FestivalsProfile';
 import Invitations from '~/client/views/Invitations';
+import RemoteVote from '~/client/views/RemoteVote';
 import Homepage from '~/client/views/Homepage';
 import NotFound from '~/client/views/NotFound';
 import Vote from '~/client/views/Vote';
@@ -114,6 +115,11 @@ const Routes = () => (
       component={Invitations}
       exact
       path="/festivals/:festivalSlug/invitations"
+    />
+    <PublicRoute
+      component={RemoteVote}
+      exact
+      path="/festivals/:festivalSlug/invitations/:token"
     />
     <PublicRoute
       component={ArtworksProfile}
