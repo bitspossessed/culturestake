@@ -35,6 +35,10 @@ export const StickerHeadingStyle = styled.div`
   position: relative;
 
   top: -2rem;
+
+  padding-top: 1rem;
+  padding-right: 4rem;
+  padding-left: 4rem;
 `;
 
 export const StickerHeadingTitleStyle = styled.h3`
