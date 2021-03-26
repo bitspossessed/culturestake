@@ -38,6 +38,7 @@ export const StickerHeadingStyle = styled.div`
 
   padding-top: 1rem;
   padding-right: 4rem;
+  padding-bottom: 1rem;
   padding-left: 4rem;
 `;
 

@@ -135,6 +135,11 @@ const PaperTicketStyle = styled.div`
   }
 
   ${PaperStyle} {
+    @media ${styles.media.tablet} {
+      padding-right: 3rem;
+      padding-left: 3rem;
+    }
+
     margin-bottom: 2px;
     padding: 2rem;
     padding-top: 5rem;

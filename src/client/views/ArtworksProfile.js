@@ -194,7 +194,7 @@ const ArtworksProfile = () => {
                       </HeadingSecondaryStyle>
                     </BoxFramed>
 
-                    <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle isLarge />
 
                     {properties.map((property) => {
                       return (

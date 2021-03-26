@@ -133,7 +133,7 @@ const FestivalsProfile = () => {
                       </HeadingSecondaryStyle>
                     </BoxFramed>
 
-                    <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle isLarge />
 
                     {artworks.map((artwork) => {
                       return (
