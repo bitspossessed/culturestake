@@ -137,8 +137,8 @@ const PaperTicketStyle = styled.div`
   ${PaperStyle} {
     margin-bottom: 2px;
     padding: 2rem;
-    padding-top: 6rem;
-    padding-bottom: 7rem;
+    padding-top: 5rem;
+    padding-bottom: 5rem;
   }
 `;
 
