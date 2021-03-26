@@ -32,7 +32,7 @@ const BoxFramedStyle = styled.div`
 
   display: flex;
 
-  height: 14rem;
+  min-height: 14rem;
 
   padding: 2rem;
 
@@ -40,6 +40,10 @@ const BoxFramedStyle = styled.div`
 
   align-items: center;
   justify-content: center;
+
+  h2 {
+    margin: 0;
+  }
 `;
 
 export const BoxFramedCornerStyle = styled.div`
