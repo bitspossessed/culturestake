@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import InlineSVG from '~/client/components/InlineSVG';
 import corner from '~/client/assets/images/corner.svg';
+import styles from '~/client/styles/variables';
 
 const BoxFramed = ({ children, ...props }) => {
   return (
@@ -42,6 +43,10 @@ const BoxFramedStyle = styled.div`
   justify-content: center;
 
   h2 {
+    @media ${styles.media.tablet} {
+      font-size: 2em;
+    }
+
     margin: 0;
   }
 `;
