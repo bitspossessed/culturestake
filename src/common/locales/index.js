@@ -488,7 +488,7 @@ ccc@example.org`,
       'We just sent you an unique vote link, please check your email!',
     title: 'Welcome to Culturestake!',
     locationDescription:
-      'The following page will request your location because votes are weighted by the localities they are placed from. You are free to deny location access, your vote will still be processed.',
+      'The vote page will request your location because votes are weighted by the localities they are placed from. You are free to deny location access, your vote will still be processed.',
   },
   NotFound: {
     title: 'Not Found',

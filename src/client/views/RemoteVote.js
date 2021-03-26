@@ -1,46 +1,36 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import Scanner from '~/client/components/Scanner';
 import View from '~/client/components/View';
 import VoteSession from '~/client/components/VoteSession';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
 import translate from '~/common/services/i18n';
-import { decodeVoteData } from '~/common/services/vote';
 import { initializeVote, resetVote } from '~/client/store/vote/actions';
+import { useParams } from 'react-router-dom';
+import { useResource } from '~/client/hooks/requests';
+import Spinner from '~/client/components/Spinner';
 
 const RemoteVote = () => {
   const dispatch = useDispatch();
+  const params = useParams();
   const vote = useSelector((state) => state.vote);
-  const [voteDataEncoded, setVoteDataEncoded] = useState(null);
 
   const isVoteReady = !!vote.address;
 
-  const onQRScanned = (data) => {
-    setVoteDataEncoded(data);
-  };
-
-  const onScannerError = (error) => {
-    dispatch(
-      notify({
-        text: translate('Vote.errorScannerFailure', {
-          error: error.message || 'Unknown error',
-        }),
-        type: NotificationsTypes.ERROR,
-      }),
-    );
-  };
+  const [invitation, isInvitationLoading] = useResource([
+    'invitations',
+    params.token,
+  ]);
 
   useEffect(() => {
-    if (!voteDataEncoded) {
+    if (isInvitationLoading) {
       return;
     }
 
     try {
-      const voteData = decodeVoteData(voteDataEncoded);
-      dispatch(initializeVote(voteData));
+      dispatch(initializeVote(invitation));
     } catch (error) {
       dispatch(
         notify({
@@ -49,7 +39,7 @@ const RemoteVote = () => {
         }),
       );
     }
-  }, [dispatch, voteDataEncoded]);
+  }, [dispatch, invitation, isInvitationLoading]);
 
   useEffect(() => {
     return () => {
@@ -60,7 +50,7 @@ const RemoteVote = () => {
   return (
     <Fragment>
       <View>
-        {isVoteReady ? (
+        {isVoteReady && !isInvitationLoading ? (
           <VoteSession
             boothSignature={vote.boothSignature}
             festivalAnswerIds={vote.festivalAnswerIds}
@@ -69,7 +59,7 @@ const RemoteVote = () => {
             senderAddress={vote.address}
           />
         ) : (
-          <Scanner onDetected={onQRScanned} onError={onScannerError} />
+          <Spinner />
         )}
       </View>
     </Fragment>

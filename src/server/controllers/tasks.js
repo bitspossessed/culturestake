@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import { respondWithSuccess, respondWithError } from '~/server/helpers/respond';
 import { voteInvitationEmail, voteEmail } from '~/server/tasks/sendmail';
 import Invitation from '~/server/models/invitation';
-import redis from '~/server/services/redis';
+import { setInRedis } from '~/server/services/redis';
 import { generateRandomString } from '~/server/services/crypto';
 
 // tasks which can only be submitted by a logged-in admin user
@@ -45,7 +45,12 @@ async function create(req, res) {
         );
       }
       const random = generateRandomString(32);
-      redis.set(random, `${data.email}:${data.festivalSlug}`, 'EX', 60 * 15); // expiring in 15 minutes
+      await setInRedis(
+        random,
+        `${data.email}:${data.festivalSlug}`,
+        'EX',
+        60 * 15, // expiring in 15 minutes
+      );
       voteEmail(data.email, { ...data, random });
       break;
     }

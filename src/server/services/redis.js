@@ -8,6 +8,24 @@ client.on('error', function (error) {
   logger.error(error);
 });
 
+export function getFromRedis(key) {
+  return new Promise((res, rej) => {
+    client.get(key, (err, result) => {
+      if (err) rej(err);
+      res(result);
+    });
+  });
+}
+
+export function setInRedis(key, value, ...opts) {
+  return new Promise((res, rej) => {
+    client.set(key, value, ...opts, (err, result) => {
+      if (err) rej(err);
+      res(result);
+    });
+  });
+}
+
 export default client;
 
 export const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
