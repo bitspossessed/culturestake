@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
@@ -41,13 +42,15 @@ const Homepage = () => {
 
             <HomepageStatistics />
 
-            <ButtonIcon to="/festivals">
-              {translate('Homepage.buttonViewFestivals')}
-            </ButtonIcon>
+            <ButtonGroup>
+              <ButtonIcon to="/festivals">
+                {translate('Homepage.buttonViewFestivals')}
+              </ButtonIcon>
 
-            <ButtonIcon href={FURTHERFIELD_URL}>
-              {translate('Homepage.buttonFurtherfield')}
-            </ButtonIcon>
+              <ButtonIcon href={FURTHERFIELD_URL}>
+                {translate('Homepage.buttonFurtherfield')}
+              </ButtonIcon>
+            </ButtonGroup>
           </ContainerStyle>
         </ColorSection>
       </View>

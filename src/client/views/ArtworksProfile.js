@@ -3,6 +3,7 @@ import React, { Fragment, useMemo } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import BoxFramed from '~/client/components/BoxFramed';
+import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import Image from '~/client/components/Image';
@@ -211,21 +212,23 @@ const ArtworksProfile = () => {
                       scheme={scheme}
                       title={translate('default.legendVotes')}
                     />
+
+                    <HorizontalSpacingStyle />
                   </Fragment>
                 )}
 
-                <HorizontalSpacingStyle />
+                <ButtonGroup>
+                  <ButtonIcon
+                    isIconFlipped
+                    to={`/festivals/${festival.slug}/artworks`}
+                  >
+                    {translate('ArtworksProfile.buttonBackToFestivalArtworks')}
+                  </ButtonIcon>
 
-                <ButtonIcon
-                  isIconFlipped
-                  to={`/festivals/${festival.slug}/artworks`}
-                >
-                  {translate('ArtworksProfile.buttonBackToFestivalArtworks')}
-                </ButtonIcon>
-
-                <ButtonIcon isIconFlipped to={`/festivals/${festival.slug}`}>
-                  {translate('ArtworksProfile.buttonBackToFestival')}
-                </ButtonIcon>
+                  <ButtonIcon isIconFlipped to={`/festivals/${festival.slug}`}>
+                    {translate('ArtworksProfile.buttonBackToFestival')}
+                  </ButtonIcon>
+                </ButtonGroup>
               </PaperTicket>
             </PaperContainerStyle>
           </Fragment>
