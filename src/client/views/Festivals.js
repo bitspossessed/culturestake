@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
+import Loading from '~/client/components/Loading';
 import Paper from '~/client/components/Paper';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
@@ -14,34 +15,43 @@ import { usePaginatedResource } from '~/client/hooks/requests';
 import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const Festivals = () => {
-  const [festivals, loadMoreFestivals, hasMore] = usePaginatedResource([
-    'festivals',
-  ]);
+  const [
+    festivals,
+    loadMoreFestivals,
+    hasMore,
+    isPending,
+  ] = usePaginatedResource(['festivals']);
 
   return (
     <View>
       <ColorSection>
-        <PaperContainerStyle>
-          {festivals.map((festival) => {
-            return (
-              <FestivalsItem
-                images={festival.images}
-                key={festival.id}
-                slug={festival.slug}
-                stickerCode={festival.sticker}
-                subtitle={festival.subtitle}
-                title={festival.title}
-              />
-            );
-          })}
-        </PaperContainerStyle>
+        {isPending ? (
+          <Loading />
+        ) : (
+          <Fragment>
+            <PaperContainerStyle>
+              {festivals.map((festival) => {
+                return (
+                  <FestivalsItem
+                    images={festival.images}
+                    key={festival.id}
+                    slug={festival.slug}
+                    stickerCode={festival.sticker}
+                    subtitle={festival.subtitle}
+                    title={festival.title}
+                  />
+                );
+              })}
+            </PaperContainerStyle>
 
-        {hasMore && (
-          <ContainerStyle>
-            <ButtonIcon onClick={loadMoreFestivals}>
-              ${translate('default.buttonLoadMore')}
-            </ButtonIcon>
-          </ContainerStyle>
+            {hasMore && (
+              <ContainerStyle>
+                <ButtonIcon onClick={loadMoreFestivals}>
+                  ${translate('default.buttonLoadMore')}
+                </ButtonIcon>
+              </ContainerStyle>
+            )}
+          </Fragment>
         )}
       </ColorSection>
     </View>
