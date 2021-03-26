@@ -335,6 +335,7 @@ const views = {
   },
   AdminQuestions: {
     buttonNewQuestion: 'Create new question',
+    fieldFestival: 'Festival',
     fieldTitle: 'Title',
     title: 'Questions',
   },
