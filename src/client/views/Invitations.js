@@ -1,3 +1,4 @@
+import Joi from 'joi';
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -13,24 +14,36 @@ import { putRequest } from '~/client/store/api/actions';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
-//import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useRequestForm } from '~/client/hooks/forms';
 
 const Invitations = () => {
   const dispatch = useDispatch();
   const requestId = useRequestId();
-  //const params = useParams();
+  const params = useParams();
 
-  const { Form, values } = useRequestForm({
-    onSubmit: () => {
+  const schema = {
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .required(),
+    festivalSlug: Joi.string().required(),
+  };
+
+  const { Form } = useRequestForm({
+    requestId,
+    schema,
+    onSubmit: (values) => {
       dispatch(
         putRequest({
           id: requestId,
           path: ['tasks'],
           body: {
             kind: 'vote',
-            data: values,
+            data: {
+              ...values,
+              ...params,
+            },
           },
         }),
       );

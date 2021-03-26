@@ -102,7 +102,7 @@ const AdminEmails = () => {
       }, []);
 
       return result;
-    } catch {
+    } catch (error) {
       dispatch(
         notify({
           text: translate('AdminEmails.errorInvalidData'),

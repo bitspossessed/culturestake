@@ -15,8 +15,6 @@ const mailing = new Queue('Send mails', redisUrl, {
 
 processor(mailing).process(
   async ({ data: { to, subject, template, data = {} } }) => {
-    //console.log(to)
-    console.log(data)
     const send = mailer(isDev || isTest ? devTransporter : prodTransporter);
     return send(to, subject, template, data);
   },
