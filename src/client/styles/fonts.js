@@ -4,6 +4,8 @@ import styles from '~/client/styles/variables';
 
 import data70Woff from '~/client/assets/fonts/data70-regular.woff';
 import data70Woff2 from '~/client/assets/fonts/data70-regular.woff2';
+import montserratMediumWoff from '~/client/assets/fonts/montserrat-medium.woff';
+import montserratMediumWoff2 from '~/client/assets/fonts/montserrat-medium.woff2';
 import montserratWoff from '~/client/assets/fonts/montserrat-regular.woff';
 import montserratWoff2 from '~/client/assets/fonts/montserrat-regular.woff2';
 import myriadProWoff from '~/client/assets/fonts/myriadpro-regular.woff';
@@ -18,6 +20,16 @@ export default createGlobalStyle`
     src:
       url(${montserratWoff2}) format('woff2'),
       url(${montserratWoff}) format('woff');
+  }
+
+  @font-face {
+    font-weight: ${styles.typography.weightMedium};
+    font-style: ${styles.typography.style};
+    font-family: ${styles.typography.family};
+
+    src:
+      url(${montserratMediumWoff2}) format('woff2'),
+      url(${montserratMediumWoff}) format('woff');
   }
 
   @font-face {
