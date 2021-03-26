@@ -5,13 +5,14 @@ import { useParams, useHistory } from 'react-router-dom';
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
-import Legend from '~/client/components/Legend';
 import Image from '~/client/components/Image';
+import Legend from '~/client/components/Legend';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import Slider from '~/client/components/Slider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
+import UnderlineLink from '~/client/components/UnderlineLink';
 import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
 import {
@@ -156,9 +157,11 @@ const ArtworksProfile = () => {
                   )}
 
                   {artwork.url && (
-                    <ButtonIcon href={artwork.url}>
-                      {translate('ArtworksProfile.buttonGoToArtworkWebsite')}
-                    </ButtonIcon>
+                    <ParagraphStyle>
+                      <UnderlineLink href={artwork.url}>
+                        {translate('ArtworksProfile.buttonGoToArtworkWebsite')}
+                      </UnderlineLink>
+                    </ParagraphStyle>
                   )}
                 </PaperTicket>
               )}
@@ -172,9 +175,11 @@ const ArtworksProfile = () => {
                   <ParagraphStyle>{artwork.artist.bio}</ParagraphStyle>
 
                   {artwork.artist.url && (
-                    <ButtonIcon href={artwork.artist.url}>
-                      {translate('ArtworksProfile.buttonGoToArtistWebsite')}
-                    </ButtonIcon>
+                    <ParagraphStyle>
+                      <UnderlineLink href={artwork.artist.url}>
+                        {translate('ArtworksProfile.buttonGoToArtistWebsite')}
+                      </UnderlineLink>
+                    </ParagraphStyle>
                   )}
                 </PaperTicket>
               )}
