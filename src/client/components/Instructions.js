@@ -63,6 +63,14 @@ const Instructions = () => {
 };
 
 const InstructionsStyle = styled.div`
+  @media ${styles.media.tablet} {
+    ${/* sc-selector */ HeadingSecondaryStyle} {
+      margin-bottom: 2rem;
+
+      font-size: 2em;
+    }
+  }
+
   position: fixed;
 
   top: 0;
