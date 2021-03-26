@@ -138,7 +138,13 @@ const HomepageStatisticsItemNumberStyle = styled(ParagraphStyle)`
 `;
 
 const HomepageStatisticsItemLabelStyle = styled(ParagraphStyle)`
-  font-size: 3em !important;
+  @media ${styles.media.tablet} {
+    font-size: 5em !important;
+  }
+
+  margin: 0;
+
+  font-size: 2.5em !important;
   font-family: ${styles.typography.familyHeading}, sans-serif;
 `;
 

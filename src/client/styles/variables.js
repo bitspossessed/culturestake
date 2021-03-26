@@ -36,6 +36,7 @@ const typography = {
   lineHeight: 1.15,
   size: '1.4em',
   style: 'normal',
+  weightMedium: 300,
   weight: 400,
   weightBold: 900,
 };

@@ -25,6 +25,11 @@ const ButtonIcon = React.forwardRef(
 );
 
 export const ButtonIconStyle = styled(Button)`
+  @media ${styles.media.tablet} {
+    font-weight: ${styles.typography.weightMedium};
+    font-size: 1.2em;
+  }
+
   position: relative;
 
   overflow: hidden;
