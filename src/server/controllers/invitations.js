@@ -3,7 +3,7 @@ import httpStatus from 'http-status';
 import Invitation from '~/server/models/invitation';
 import { filterResponseFields } from '~/server/controllers';
 import { invitationFields } from '~/server/database/associations';
-import { getFromRedis } from '~/server/services/redis';
+import { getFromRedis, expireFromRedis } from '~/server/services/redis';
 import { respondWithError, respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
@@ -25,6 +25,9 @@ async function read(req, res) {
       httpStatus.NOT_FOUND,
     );
   }
+
+  await expireFromRedis(req.params.token);
+
   const { email, festivalSlug } = decodeKey(key);
   const invitation = await Invitation.findOne({
     where: {

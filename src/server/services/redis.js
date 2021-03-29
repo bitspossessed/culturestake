@@ -26,6 +26,15 @@ export function setInRedis(key, value, ...opts) {
   });
 }
 
+export function expireFromRedis(key) {
+  return new Promise((res, rej) => {
+    client.expire(key, 0, (err, result) => {
+      if (err) rej(err);
+      res(result);
+    });
+  });
+}
+
 export default client;
 
 export const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
