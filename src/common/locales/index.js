@@ -200,6 +200,11 @@ const components = {
     bodyPayerAddress: 'Address:',
     title: 'Payer Balance',
   },
+  RemoteVote: {
+    errorNotFound: 'Invalid or expired vote link',
+    errorInvalidVoteData: 'Invalid vote data',
+    notFoundTitle: 'Not Found',
+  },
   Scanner: {
     bodyDescription: 'Use camera to scan code',
     notificationError: 'Camera could not be activated: {error}',
