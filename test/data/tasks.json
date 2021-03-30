@@ -4,8 +4,6 @@
     "data": [
         {
             "to": "aaa@example.org",
-            "booth": "0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8",
-            "boothSignature": "0x1cc4774547777cd864764ddf7d2c9965aac31865f4490938a50e6868f84f21ab",
             "festivalSlug": "a-festival",
             "festivalAnswerIds": [0, 1],
             "festivalQuestionId": 1,
@@ -14,13 +12,19 @@
         },
         {
             "to": "bbb@example.org",
-            "booth": "0xEA674fdDe714fd979de3EdF0F56AA9716B898ec8",
-            "boothSignature": "0x1cc4774547777cd864764ddf7d2c9965aac31865f4490938a50e6868f84f21ab",
             "festivalSlug": "a-festival",
             "festivalAnswerIds": [0, 1],
             "festivalQuestionId": 1,
             "nonce": 1
         }
     ]
+  },
+  "vote": {
+    "kind": "vote",
+    "data":
+        {
+            "email": "aaa@example.org",
+            "festivalSlug": "a-festival"
+        }
   }
 }

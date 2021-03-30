@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 
 import createSupertest from './helpers/supertest';
 import tasksData from './data/tasks';
+import invitationsData from './data/invitations';
 import { initializeDatabase } from './helpers/database';
 import queue from '../src/server/tasks/sendmail';
 import { delay } from './helpers/utils';
@@ -9,6 +10,7 @@ import { expectNoTasks, expectCompletedTasks } from './helpers/tasks';
 import web3 from '~/common/services/web3';
 import { packBooth } from '~/common/services/encoding';
 import { closeRedis } from '~/server/services/redis';
+import Invitation from '~/server/models/invitation';
 import request from 'supertest';
 import app from '~/server';
 
@@ -113,6 +115,39 @@ describe('Tasks', () => {
             .send({ kind, data: [{ xxx: 'missing to field' }] })
             .expect(httpStatus.BAD_REQUEST),
         ]);
+
+        await expectNoTasks(queue);
+      });
+    });
+
+    describe('scheduling vote tasks', () => {
+      beforeAll(async () => {
+        await Invitation.create(invitationsData.invitation);
+      });
+
+      it('unauthenticated user should succeed creating new email tasks', async () => {
+        await expectNoTasks(queue);
+
+        await request(app)
+          .put('/api/tasks')
+          .send(tasksData.vote)
+          .expect(httpStatus.CREATED);
+
+        await delay(1 * 1000, Promise.resolve());
+        expectCompletedTasks(queue, 1);
+      });
+
+      it('cannot create vote email task when there is no invitation', async () => {
+        await expectNoTasks(queue);
+
+        await Invitation.destroy({
+          where: { email: invitationsData.invitation.email },
+        });
+
+        await request(app)
+          .put('/api/tasks')
+          .send(tasksData.vote)
+          .expect(httpStatus.NOT_FOUND);
 
         await expectNoTasks(queue);
       });
