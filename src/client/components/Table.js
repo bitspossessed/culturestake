@@ -33,18 +33,6 @@ const DEFAULT_HEADERS = [
     key: 'id',
     label: 'ID',
   },
-  {
-    isOrderKey: true,
-    isDate: true,
-    key: 'createdAt',
-    label: translate('Table.columnCreatedAt'),
-  },
-  {
-    isOrderKey: true,
-    isDate: true,
-    key: 'updatedAt',
-    label: translate('Table.columnUpdatedAt'),
-  },
 ];
 
 const Table = ({
@@ -317,7 +305,7 @@ export const TableBody = ({
         };
 
         return (
-          <tr key={`tr-${item.id}`} onClick={onSelectItem}>
+          <tr align="center" key={`tr-${item.id}`} onClick={onSelectItem}>
             <td>{index + offset + 1}</td>
             <TableBodyItems columns={columns} values={item} />
             <td>

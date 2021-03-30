@@ -74,6 +74,14 @@ const components = {
     buttonEnable: 'Enable Ethereum wallet',
     title: 'Smart Contracts Snuggle Panel (SCSP)',
   },
+  ExportVotesContainer: {
+    title: 'Export Votes',
+    buttonDownload: 'Download votes as a CSV',
+    csvEmpty: 'No votes available to export.',
+  },
+  FormAnswers: {
+    notificationPropertySuccess: 'Created property {title}',
+  },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
@@ -329,6 +337,7 @@ const views = {
   },
   AdminQuestions: {
     buttonNewQuestion: 'Create new question',
+    fieldFestival: 'Festival',
     fieldTitle: 'Title',
     title: 'Questions',
   },

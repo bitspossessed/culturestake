@@ -22,6 +22,11 @@ const createValidation = {
 };
 
 export default {
+  getVotes: {
+    [Segments.PARAMS]: {
+      ...idValidation,
+    },
+  },
   create: {
     [Segments.BODY]: {
       ...createValidation,

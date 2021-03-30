@@ -41,6 +41,7 @@ export const festivalFields = [
   'subtitle',
   'title',
   'url',
+  'online',
 ];
 export const imageFileFields = [
   ...baseFileFields,

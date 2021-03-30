@@ -9,6 +9,7 @@ import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
 import VoteweightsContainer from '~/client/components/VoteweightsContainer';
+import ExportVotesContainer from '~/client/components/ExportVotesContainer';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import notify, {
@@ -89,6 +90,13 @@ const AdminFestivalsEditForm = () => {
 
           {!isResourceLoading && (
             <VoteweightsContainer festivalId={resource.id} />
+          )}
+
+          {!isResourceLoading && (
+            <ExportVotesContainer
+              name={slug}
+              path={['festivals', slug, 'votes']}
+            />
           )}
 
           <DangerZone>

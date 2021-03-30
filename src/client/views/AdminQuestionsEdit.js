@@ -7,6 +7,7 @@ import BoxRounded from '~/client/components/BoxRounded';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import ContractsQuestions from '~/client/components/ContractsQuestions';
+import ExportVotesContainer from '~/client/components/ExportVotesContainer';
 import DangerZone from '~/client/components/DangerZone';
 import FooterAdmin from '~/client/components/FooterAdmin';
 import FormQuestions from '~/client/components/FormQuestions';
@@ -91,6 +92,13 @@ const AdminQuestionsEdit = () => {
               {translate('AdminQuestionsEdit.buttonNewAnswer')}
             </ButtonIcon>
           </BoxRounded>
+
+          {!isResourceLoading && (
+            <ExportVotesContainer
+              name={resource.slug}
+              path={['questions', questionId, 'votes']}
+            />
+          )}
 
           <DangerZone>
             <ButtonDelete />

@@ -12,6 +12,7 @@ const InputFinderField = ({
   label,
   name,
   onChangeCallback = null,
+  onCreateCallback,
   placeholder,
   queryPath,
   searchParam,
@@ -53,6 +54,7 @@ const InputFinderField = ({
         selectParam={selectParam}
         value={value}
         onChange={onChange}
+        onCreate={onCreateCallback}
       />
     </InputFieldset>
   );
@@ -65,6 +67,7 @@ InputFinderField.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   onChangeCallback: PropTypes.func,
+  onCreateCallback: PropTypes.func,
   placeholder: PropTypes.string.isRequired,
   queryPath: PropTypes.arrayOf(PropTypes.string).isRequired,
   searchParam: PropTypes.string.isRequired,

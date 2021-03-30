@@ -2,7 +2,7 @@ import httpStatus from 'http-status';
 
 import { respondWithSuccess } from '~/server/helpers/respond';
 import { voteInvitationEmail } from '~/server/tasks/sendmail';
-import Invitation from '~/server/models/Invitation';
+import Invitation from '~/server/models/invitation';
 
 async function create(req, res) {
   const { kind, data } = req.body;
