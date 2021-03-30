@@ -28,7 +28,6 @@ const RemoteVote = () => {
     ['invitations', params.token],
     {
       onError: () => {
-        console.log('error') // eslint-disable-line
         setIsError(true);
         dispatch(
           notify({
