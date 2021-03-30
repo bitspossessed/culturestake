@@ -8,6 +8,9 @@ import { delay } from './helpers/utils';
 import { expectNoTasks, expectCompletedTasks } from './helpers/tasks';
 import web3 from '~/common/services/web3';
 import { packBooth } from '~/common/services/encoding';
+import { closeRedis } from '~/server/services/redis';
+import request from 'supertest';
+import app from '~/server';
 
 describe('Tasks', () => {
   let authRequest;
@@ -19,6 +22,7 @@ describe('Tasks', () => {
 
   afterAll(async () => {
     await queue.close();
+    await closeRedis();
   });
 
   beforeEach(async () => {
@@ -67,6 +71,31 @@ describe('Tasks', () => {
         // Give the task queue time to work through it's issues.
         await delay(1 * 1000, Promise.resolve());
         expectCompletedTasks(queue, 2);
+      });
+
+      it('should fail to send vote invitations when unauthorized', async () => {
+        await expectNoTasks(queue);
+
+        const booth = web3.eth.accounts.create();
+        const voteInvitationsData = tasksData.voteInvitation.data.map(
+          (invitation) => {
+            return {
+              ...invitation,
+              booth: booth.address,
+              boothSignature: web3.eth.accounts.sign(
+                packBooth([invitation.festivalAnswerIds], invitation.nonce),
+                booth.privateKey,
+              ).signature,
+            };
+          },
+        );
+
+        await request(app)
+          .put('/api/tasks')
+          .send({ ...tasksData.voteInvitation, data: voteInvitationsData })
+          .expect(httpStatus.UNAUTHORIZED);
+
+        await expectNoTasks(queue);
       });
 
       it('should fail with no recipients', async () => {

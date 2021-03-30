@@ -4,11 +4,14 @@ import {
   generateHashSecret,
   generateRandomString,
 } from '~/server/services/crypto';
+import { closeRedis } from '~/server/services/redis';
 
 afterAll(async () => {
   // Workaround to give web3 provider time for async imports (otherwise jest
   // will throw an error as all the tests here are sync):
   await new Promise((resolve) => setTimeout(resolve, 100));
+
+  await closeRedis();
 });
 
 describe('Crypto service', () => {

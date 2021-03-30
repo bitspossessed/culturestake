@@ -35,6 +35,17 @@ export function expireFromRedis(key) {
   });
 }
 
+export async function closeRedis() {
+  await new Promise((resolve) => {
+    client.quit(() => {
+      resolve();
+    });
+  });
+  // redis.quit() creates a thread to close the connection.
+  // We wait until all threads have been run once to ensure the connection closes.
+  await new Promise((resolve) => setImmediate(resolve));
+}
+
 export default client;
 
 export const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';

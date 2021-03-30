@@ -78,7 +78,7 @@ const RemoteVote = () => {
             <ContainerStyle>
               <ColorSection>
                 <HeadingPrimaryStyle>
-                  {translate('NotFound.title')}
+                  {translate('RemoteVote.notFoundTitle')}
                 </HeadingPrimaryStyle>
               </ColorSection>
             </ContainerStyle>

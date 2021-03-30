@@ -6,6 +6,7 @@ import createSupertest from './helpers/supertest';
 import festivals from './data/festivals';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
+import { closeRedis } from '~/server/services/redis';
 
 import app from '~/server';
 
@@ -20,6 +21,10 @@ describe('Voteweights', () => {
 
     // Create test data
     festivalData = await put('/api/festivals', festivals.barbeque);
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('PUT /api/voteweights', () => {

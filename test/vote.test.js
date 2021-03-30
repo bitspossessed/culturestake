@@ -29,6 +29,7 @@ import { isFestivalInitialized } from '~/common/services/contracts/festivals';
 import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
 import organisationsData from './data/organisations';
 import voteweightsData from './data/voteweights';
+import { closeRedis } from '~/server/services/redis';
 
 describe('Vote', () => {
   let authRequest;
@@ -58,6 +59,10 @@ describe('Vote', () => {
     // Add test data
     artworkData = await put('/api/artworks', artworksData.davinci);
     propertyData = await put('/api/properties', propertiesData.aProperty);
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('POST /api/votes', () => {

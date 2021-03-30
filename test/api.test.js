@@ -2,12 +2,17 @@ import httpStatus from 'http-status';
 import request from 'supertest';
 
 import { initializeDatabase } from './helpers/database';
+import { closeRedis } from '~/server/services/redis';
 
 import app from '~/server';
 
 describe('API', () => {
   beforeAll(async () => {
     await initializeDatabase();
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('GET /api', () => {

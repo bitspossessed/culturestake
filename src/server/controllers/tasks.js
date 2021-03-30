@@ -12,7 +12,7 @@ const tasksProtected = ['vote_invitations'];
 async function create(req, res) {
   const { kind, data } = req.body;
 
-  if (!req.locals.user && tasksProtected.includes(kind)) {
+  if ((!req.locals || !req.locals.user) && tasksProtected.includes(kind)) {
     return respondWithError(
       res,
       { message: 'Unauthorized' },

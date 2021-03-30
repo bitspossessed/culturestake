@@ -6,6 +6,7 @@ import artworksData from './data/artworks';
 import createSupertest from './helpers/supertest';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
+import { closeRedis } from '~/server/services/redis';
 
 import app from '~/server';
 
@@ -15,6 +16,10 @@ describe('Artists', () => {
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('PUT /api/artists', () => {
