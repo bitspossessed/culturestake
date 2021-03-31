@@ -138,7 +138,7 @@ const components = {
   FormOrganisations: {
     fieldDescription: 'Description:',
     fieldName: 'Name:',
-    fieldImages: 'Organisation image',
+    fieldImages: 'Organisation logo',
   },
   FormVoteweights: {
     fieldType: 'Type:',
