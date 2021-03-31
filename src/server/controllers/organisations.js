@@ -1,10 +1,22 @@
 import Organisation from '~/server/models/organisation';
 import baseController from '~/server/controllers';
-import { organisationFields } from '~/server/database/associations';
+import {
+  OrganisationHasManyImages,
+  organisationFields,
+  imageFileFields,
+} from '~/server/database/associations';
 
 const options = {
   model: Organisation,
-  fields: [...organisationFields],
+  fields: [...organisationFields, 'images'],
+  include: [OrganisationHasManyImages],
+  associations: [
+    {
+      association: OrganisationHasManyImages,
+      destroyCascade: true,
+      fields: [...imageFileFields],
+    },
+  ],
 };
 
 function create(req, res, next) {

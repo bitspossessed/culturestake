@@ -21,7 +21,7 @@ const AdminOrganisationsEdit = () => {
   const dispatch = useDispatch();
 
   const { ButtonDelete, Form } = useEditForm({
-    fields: ['name', 'description'],
+    fields: ['name', 'description', 'images'],
     resourcePath: ['organisations', slug],
     returnUrl,
     onNotFound: () => {

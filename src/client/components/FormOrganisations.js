@@ -3,12 +3,15 @@ import React, { Fragment } from 'react';
 
 import InputField from '~/client/components/InputField';
 import InputTextareaField from '~/client/components/InputTextareaField';
+import InputUploadField from '~/client/components/InputUploadField';
 import translate from '~/common/services/i18n';
+import { imagesValidation } from '~/common/helpers/validate';
 
 const FormOrganisations = () => {
   const schema = {
     description: Joi.string().max(2000).required(),
     name: Joi.string().max(128).required(),
+    images: imagesValidation.required().max(10),
   };
 
   return (
@@ -24,6 +27,14 @@ const FormOrganisations = () => {
         label={translate('FormOrganisations.fieldDescription')}
         name="description"
         validate={schema.description}
+      />
+
+      <InputUploadField
+        isImageUpload
+        isMultipleFilesAllowed
+        label={translate('FormOrganisations.fieldImages')}
+        name="images"
+        validate={schema.images}
       />
     </Fragment>
   );

@@ -18,7 +18,7 @@ const AdminOrganisationsNew = () => {
   const returnUrl = '/admin/organisations';
 
   const { Form } = useNewForm({
-    fields: ['name', 'description'],
+    fields: ['name', 'description', 'images'],
     resourcePath: ['organisations'],
     returnUrl,
     onSuccess: ({ name }) => {
