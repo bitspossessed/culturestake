@@ -16,7 +16,11 @@ const Image = (props) => {
 
   return (
     <ImageStyle onClick={onToggle}>
-      <ImageInnerStyle filter={filter} href={href} />
+      <ImageInnerStyle
+        filter={filter}
+        href={href}
+        preserveAspectRatio="xMidYMid slice"
+      />
     </ImageStyle>
   );
 };

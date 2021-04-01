@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
+import Loading from '~/client/components/Loading';
 import PaperStamp from '~/client/components/PaperStamp';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
@@ -17,43 +18,53 @@ import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 const Artworks = () => {
   const params = useParams();
 
-  const [artworks, loadMoreArtworks, hasMore] = usePaginatedResource([
-    'festivals',
-    params.festivalSlug,
-    'artworks',
-  ]);
+  const [
+    artworks,
+    loadMoreArtworks,
+    hasMore,
+    isPending,
+  ] = usePaginatedResource(['festivals', params.festivalSlug, 'artworks']);
 
   return (
     <View>
       <ColorSection>
-        <PaperContainerStyle>
-          {artworks.map((artwork) => {
-            return (
-              <ArtworksItem
-                festivalSlug={params.festivalSlug}
-                imageCredits={artwork.imageCredits}
-                images={artwork.images}
-                key={artwork.id}
-                slug={artwork.slug}
-                stickerCode={artwork.sticker}
-                subtitle={`${artwork.subtitle} / ${artwork.artist.name}`}
-                title={artwork.title}
-              />
-            );
-          })}
+        {isPending ? (
+          <Loading />
+        ) : (
+          <Fragment>
+            <PaperContainerStyle>
+              {artworks.map((artwork) => {
+                return (
+                  <ArtworksItem
+                    festivalSlug={params.festivalSlug}
+                    imageCredits={artwork.imageCredits}
+                    images={artwork.images}
+                    key={artwork.id}
+                    slug={artwork.slug}
+                    stickerCode={artwork.sticker}
+                    subtitle={`${artwork.subtitle} / ${artwork.artist.name}`}
+                    title={artwork.title}
+                  />
+                );
+              })}
 
-          <PaperStamp>
-            {hasMore && (
-              <ButtonIcon onClick={loadMoreArtworks}>
-                ${translate('default.buttonLoadMore')}
-              </ButtonIcon>
-            )}
+              <PaperStamp>
+                {hasMore && (
+                  <ButtonIcon onClick={loadMoreArtworks}>
+                    ${translate('default.buttonLoadMore')}
+                  </ButtonIcon>
+                )}
 
-            <ButtonIcon isIconFlipped to={`/festivals/${params.festivalSlug}`}>
-              {translate('Artworks.buttonBackToFestival')}
-            </ButtonIcon>
-          </PaperStamp>
-        </PaperContainerStyle>
+                <ButtonIcon
+                  isIconFlipped
+                  to={`/festivals/${params.festivalSlug}`}
+                >
+                  {translate('Artworks.buttonBackToFestival')}
+                </ButtonIcon>
+              </PaperStamp>
+            </PaperContainerStyle>
+          </Fragment>
+        )}
       </ColorSection>
     </View>
   );

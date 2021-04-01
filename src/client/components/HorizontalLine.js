@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import InlineSVG from '~/client/components/InlineSVG';
 import dotline from '~/client/assets/images/dotline.svg';
+import styles from '~/client/styles/variables';
 
 const HorizontalLine = () => {
   return (
@@ -15,6 +16,10 @@ const HorizontalLine = () => {
 };
 
 export const HorizontalLineStyle = styled.div`
+  @media ${styles.media.tablet} {
+    margin: 3rem auto;
+  }
+
   overflow: hidden;
 
   max-width: 66rem;

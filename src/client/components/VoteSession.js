@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
 import BoxFramed from '~/client/components/BoxFramed';
+import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
@@ -391,13 +392,15 @@ const VoteSession = ({
 
               <HorizontalLine />
 
-              <ButtonIcon to={`/festivals/${data.slug}`}>
-                {translate('VoteSession.buttonVoteResults')}
-              </ButtonIcon>
+              <ButtonGroup>
+                <ButtonIcon to={`/festivals/${data.slug}`}>
+                  {translate('VoteSession.buttonVoteResults')}
+                </ButtonIcon>
 
-              <ButtonIcon to="/">
-                {translate('VoteSession.buttonToHomepage')}
-              </ButtonIcon>
+                <ButtonIcon to="/">
+                  {translate('VoteSession.buttonToHomepage')}
+                </ButtonIcon>
+              </ButtonGroup>
             </PaperTicket>
           </PaperContainerStyle>
         </ColorSection>
@@ -482,16 +485,18 @@ const VoteSession = ({
 
                     <PaperTicket>
                       <SpacingGroupStyle>
-                        <ButtonIcon isIconFlipped onClick={onPreviousStep}>
-                          {translate('VoteSession.buttonPreviousStep')}
-                        </ButtonIcon>
+                        <ButtonGroup>
+                          <ButtonIcon isIconFlipped onClick={onPreviousStep}>
+                            {translate('VoteSession.buttonPreviousStep')}
+                          </ButtonIcon>
 
-                        <ButtonIcon
-                          disabled={!hasVotedOnArtworks}
-                          onClick={onVote}
-                        >
-                          {translate('VoteSession.buttonVote')}
-                        </ButtonIcon>
+                          <ButtonIcon
+                            disabled={!hasVotedOnArtworks}
+                            onClick={onVote}
+                          >
+                            {translate('VoteSession.buttonVote')}
+                          </ButtonIcon>
+                        </ButtonGroup>
                       </SpacingGroupStyle>
                     </PaperTicket>
                   </PaperContainerStyle>

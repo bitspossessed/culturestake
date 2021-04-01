@@ -4,6 +4,11 @@ import styled from 'styled-components';
 
 import InlineSVG from '~/client/components/InlineSVG';
 import corner from '~/client/assets/images/corner.svg';
+import styles from '~/client/styles/variables';
+import {
+  HeadingPrimaryStyle,
+  HeadingSecondaryStyle,
+} from '~/client/styles/typography';
 
 const BoxFramed = ({ children, ...props }) => {
   return (
@@ -32,7 +37,7 @@ const BoxFramedStyle = styled.div`
 
   display: flex;
 
-  height: 14rem;
+  min-height: 14rem;
 
   padding: 2rem;
 
@@ -40,6 +45,22 @@ const BoxFramedStyle = styled.div`
 
   align-items: center;
   justify-content: center;
+
+  ${/* sc-selector */ HeadingPrimaryStyle} {
+    @media ${styles.media.tablet} {
+      font-size: 4em;
+    }
+
+    margin: 0;
+  }
+
+  ${/* sc-selector */ HeadingSecondaryStyle} {
+    @media ${styles.media.tablet} {
+      font-size: 2em;
+    }
+
+    margin: 0;
+  }
 `;
 
 export const BoxFramedCornerStyle = styled.div`

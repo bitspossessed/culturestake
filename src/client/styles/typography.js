@@ -23,6 +23,10 @@ export default createGlobalStyle`
     padding: 0;
 
     + p {
+      @media ${styles.media.tablet} {
+        margin-top: 2rem;
+      }
+
       margin-top: 1.5rem;
     }
   }
@@ -43,7 +47,14 @@ export default createGlobalStyle`
   }
 `;
 
-export const ParagraphStyle = styled.p``;
+export const ParagraphStyle = styled.p`
+  @media ${styles.media.tablet} {
+    font-weight: ${styles.typography.weightMedium};
+    font-size: 1.2em;
+
+    line-height: 1.2;
+  }
+`;
 
 export const HeadingPrimaryStyle = styled.h1`
   margin-bottom: 1rem;
