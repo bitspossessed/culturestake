@@ -10,6 +10,7 @@ import FooterAdmin from '~/client/components/FooterAdmin';
 import FormFestivals from '~/client/components/FormFestivals';
 import VoteweightsContainer from '~/client/components/VoteweightsContainer';
 import ExportVotesContainer from '~/client/components/ExportVotesContainer';
+import FestivalQuestionsContainer from '~/client/components/FestivalQuestionsContainer';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
 import ViewAdmin from '~/client/components/ViewAdmin';
 import notify, {
@@ -87,6 +88,10 @@ const AdminFestivalsEditForm = () => {
       <ViewAdmin>
         <Form>
           <FormFestivals questionId={resource?.question?.id} />
+
+          {!isResourceLoading && (
+            <FestivalQuestionsContainer festivalId={resource.id} />
+          )}
 
           {!isResourceLoading && (
             <VoteweightsContainer festivalId={resource.id} />

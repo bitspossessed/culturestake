@@ -7,6 +7,7 @@ import authMiddleware, {
 import questionsController from '~/server/controllers/questions';
 import questionsValidation from '~/server/validations/questions';
 import resourcesMiddleware from '~/server/middlewares/resources';
+import isSearchableMiddleware from '~/server/middlewares/isSearchable';
 import validate from '~/server/services/validate';
 
 const router = express.Router();
@@ -28,6 +29,7 @@ router.get(
   '/',
   optionalAuthMiddleware,
   validate(questionsValidation.readAll),
+  isSearchableMiddleware,
   questionsController.readAll,
 );
 
