@@ -15,6 +15,7 @@ import {
   ArtworkBelongsToManyFestivals,
   ArtworkHasManyImages,
   FestivalBelongsToManyArtworks,
+  FestivalHasOneQuestion,
   FestivalHasManyDocuments,
   FestivalHasManyImages,
   FestivalHasManyQuestions,
@@ -36,12 +37,20 @@ import { respondWithSuccess } from '~/server/helpers/respond';
 
 const options = {
   model: Festival,
-  fields: [...festivalFields, 'images', 'artworks', 'voteweights'],
+  fields: [
+    ...festivalFields,
+    'images',
+    'artworks',
+    'online',
+    'voteweights',
+    'question',
+  ],
   fieldsProtected: ['documents', 'chainId'],
   include: [
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
     FestivalHasManyImages,
+    FestivalHasOneQuestion,
   ],
   associations: [
     {
@@ -59,6 +68,11 @@ const options = {
   ],
 };
 
+const optionsCreate = {
+  ...options,
+  include: [FestivalHasOneQuestion],
+};
+
 const optionsRead = {
   ...options,
   include: [
@@ -66,6 +80,7 @@ const optionsRead = {
     FestivalHasManyDocuments,
     FestivalHasManyImages,
     FestivalHasManyVoteweights,
+    FestivalHasOneQuestion,
   ],
   associations: [
     {
@@ -250,7 +265,7 @@ async function getQuestions(req, res, next) {
 }
 
 function create(req, res, next) {
-  baseController.create(options)(req, res, next);
+  baseController.create(optionsCreate, { include: true })(req, res, next);
 }
 
 function readAll(req, res, next) {

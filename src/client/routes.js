@@ -17,6 +17,10 @@ import AdminEmails from '~/client/views/AdminEmails';
 import AdminFestivals from '~/client/views/AdminFestivals';
 import AdminFestivalsEdit from '~/client/views/AdminFestivalsEdit';
 import AdminFestivalsNew from '~/client/views/AdminFestivalsNew';
+import AdminFestivalAnswersNew from '~/client/views/AdminFestivalAnswersNew';
+import AdminFestivalAnswersEdit from '~/client/views/AdminFestivalAnswersEdit';
+import AdminFestivalQuestionsNew from '~/client/views/AdminFestivalQuestionsNew';
+import AdminFestivalQuestionsEdit from '~/client/views/AdminFestivalQuestionsEdit';
 import AdminLogin from '~/client/views/AdminLogin';
 import AdminOrganisations from '~/client/views/AdminOrganisations';
 import AdminOrganisationsEdit from '~/client/views/AdminOrganisationsEdit';
@@ -180,6 +184,16 @@ const Routes = () => (
       path="/admin/festivals/:slug/voteweights/:voteweightId"
     />
     <AuthenticatedRoute
+      component={AdminFestivalQuestionsNew}
+      exact
+      path="/admin/festivals/:slug/questions/new"
+    />
+    <AuthenticatedRoute
+      component={AdminFestivalQuestionsEdit}
+      exact
+      path="/admin/festivals/:slug/questions/:questionId/edit"
+    />
+    <AuthenticatedRoute
       component={AdminQuestions}
       exact
       path="/admin/questions"
@@ -193,6 +207,16 @@ const Routes = () => (
       component={AdminQuestionsEdit}
       exact
       path="/admin/questions/:questionId/edit"
+    />
+    <AuthenticatedRoute
+      component={AdminFestivalAnswersNew}
+      exact
+      path="/admin/festivals/:slug/questions/:questionId/answers/new"
+    />
+    <AuthenticatedRoute
+      component={AdminFestivalAnswersEdit}
+      exact
+      path="/admin/festivals/:slug/questions/:questionId/answers/:answerId/edit"
     />
     <AuthenticatedRoute
       component={AdminAnswersNew}

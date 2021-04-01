@@ -48,7 +48,7 @@ export default {
       ...idValidation,
     },
     [Segments.BODY]: {
-      ...defaultValidation,
+      ...createValidation,
     },
   },
   destroy: {
