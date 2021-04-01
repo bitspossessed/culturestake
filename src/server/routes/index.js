@@ -8,6 +8,7 @@ import artworksRouter from '~/server/routes/artworks';
 import authMiddleware from '~/server/middlewares/passport';
 import authRouter from '~/server/routes/auth';
 import festivalsRouter from '~/server/routes/festivals';
+import hotspotRouter from '~/server/routes/hotspot';
 import organisationsRouter from '~/server/routes/organisations';
 import propertiesRouter from '~/server/routes/properties';
 import questionsRouter from '~/server/routes/questions';
@@ -52,6 +53,8 @@ router.use('/voteweights', voteweightsRouter);
 router.use('/tasks', tasksRouter);
 
 router.use('/invitations', invitationsRouter);
+
+router.use('/hotspot', hotspotRouter);
 
 router.use(() => {
   throw new APIError(httpStatus.NOT_FOUND);
