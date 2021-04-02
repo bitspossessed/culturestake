@@ -14,6 +14,7 @@ import PaperTicket from '~/client/components/PaperTicket';
 import Slider from '~/client/components/Slider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
+import UnderlineLink from '~/client/components/UnderlineLink';
 import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
 import {
@@ -112,9 +113,11 @@ const FestivalsProfile = () => {
                   <ParagraphStyle>{festival.description}</ParagraphStyle>
 
                   {festival.url && (
-                    <ButtonIcon href={festival.url}>
-                      {translate('FestivalsProfile.buttonGoToWebsite')}
-                    </ButtonIcon>
+                    <ParagraphStyle>
+                      <UnderlineLink href={festival.url}>
+                        {translate('FestivalsProfile.buttonGoToWebsite')}
+                      </UnderlineLink>
+                    </ParagraphStyle>
                   )}
                 </ContainerStyle>
 
@@ -130,7 +133,7 @@ const FestivalsProfile = () => {
                       </HeadingSecondaryStyle>
                     </BoxFramed>
 
-                    <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle isLarge />
 
                     {artworks.map((artwork) => {
                       return (

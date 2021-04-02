@@ -85,6 +85,10 @@ const components = {
   FormInvitations: {
     fieldEmail: 'Your Email-address:',
   },
+  FestivalQuestionsContainer: {
+    title: 'Questions',
+    buttonNew: 'Create question',
+  },
   FormLogin: {
     fieldEmail: 'Your Email-address:',
     fieldPassword: 'Your password:',
@@ -97,8 +101,10 @@ const components = {
     fieldSticker: 'Sticker',
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
+    fieldQuestion: 'Question:',
     fieldArtworks: 'Artworks:',
     fieldUrl: 'Website:',
+    buttonEditQuestion: 'Manage',
   },
   FormScheduleEmail: {
     fieldRecipients: 'Recipients:',
@@ -340,6 +346,19 @@ const views = {
   AdminFestivalsNew: {
     title: 'Create new festival',
     notificationSuccess: 'You created the festival {title}.',
+  },
+  AdminFestivalQuestionsNew: {
+    title: 'Create new question for {festival}',
+    notificationSuccess: 'You created the question {title} for {festival}.',
+  },
+  AdminFestivalQuestionsEdit: {
+    title: 'Edit question for {festival}',
+    notificationSuccess: 'You updated the question {title} for {festival}.',
+    bodyAnswers: 'Answers',
+    buttonNewAnswer: 'Add a new answer to this question',
+    errorNotFound: 'This question does not exist.',
+    notificationDestroySuccess:
+      'You deleted the question {title} for {festival}.',
   },
   AdminQuestions: {
     buttonNewQuestion: 'Create new question',

@@ -157,6 +157,11 @@ export const ArtistHasManyImages = Artist.hasMany(Image, {
 });
 
 // Festival
+export const FestivalHasOneQuestion = Festival.hasOne(Question, {
+  allowNull: false,
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
 
 export const FestivalHasManyImages = Festival.hasMany(Image, {
   ...attachableMixin,

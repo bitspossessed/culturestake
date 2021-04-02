@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
@@ -41,13 +42,15 @@ const Homepage = () => {
 
             <HomepageStatistics />
 
-            <ButtonIcon to="/festivals">
-              {translate('Homepage.buttonViewFestivals')}
-            </ButtonIcon>
+            <ButtonGroup>
+              <ButtonIcon to="/festivals">
+                {translate('Homepage.buttonViewFestivals')}
+              </ButtonIcon>
 
-            <ButtonIcon href={FURTHERFIELD_URL}>
-              {translate('Homepage.buttonFurtherfield')}
-            </ButtonIcon>
+              <ButtonIcon href={FURTHERFIELD_URL}>
+                {translate('Homepage.buttonFurtherfield')}
+              </ButtonIcon>
+            </ButtonGroup>
           </ContainerStyle>
         </ColorSection>
       </View>
@@ -138,7 +141,13 @@ const HomepageStatisticsItemNumberStyle = styled(ParagraphStyle)`
 `;
 
 const HomepageStatisticsItemLabelStyle = styled(ParagraphStyle)`
-  font-size: 3em !important;
+  @media ${styles.media.tablet} {
+    font-size: 5em !important;
+  }
+
+  margin: 0;
+
+  font-size: 2.5em !important;
   font-family: ${styles.typography.familyHeading}, sans-serif;
 `;
 

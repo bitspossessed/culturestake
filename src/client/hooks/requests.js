@@ -101,9 +101,12 @@ export const useResource = (path, { onError, onSuccess } = {}) => {
 export const usePaginatedResource = (path, body = { orderKey: 'title' }) => {
   const [resources, setResources] = useState([]);
   const [hasMore, setHasMore] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [offset, setOffset] = useState(0);
 
   const loadMoreResources = useCallback(async () => {
+    setIsPending(() => true);
+
     const { results, pagination } = await apiRequest({
       path,
       body: {
@@ -112,6 +115,7 @@ export const usePaginatedResource = (path, body = { orderKey: 'title' }) => {
       },
     });
 
+    setIsPending(() => false);
     setResources((resources) => resources.concat(results));
     setHasMore(pagination.offset + pagination.limit < pagination.total);
     setOffset((offset) => offset + pagination.limit);
@@ -121,5 +125,5 @@ export const usePaginatedResource = (path, body = { orderKey: 'title' }) => {
     loadMoreResources();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return [resources, loadMoreResources, hasMore];
+  return [resources, loadMoreResources, hasMore, isPending];
 };

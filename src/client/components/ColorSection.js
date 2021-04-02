@@ -38,6 +38,7 @@ import { InputFieldsetLabelStyle } from '~/client/components/InputFieldset';
 import { InputTextareaFieldStyle } from '~/client/components/InputTextareaField';
 import { PaperStyle } from '~/client/components/Paper';
 import { PillStyle } from '~/client/components/Pill';
+import { UnderlineLinkStyle } from '~/client/components/UnderlineLink';
 
 const ColorSection = ({ scheme = DEFAULT_SCHEME, ...props }) => {
   const { isAlternateColor, isAlternateFontFace, isLargerFont } = useSelector(
@@ -70,6 +71,7 @@ export const ColorSectionStyle = styled.div`
   ${/* sc-selector */ InputFieldStyle},
   ${/* sc-selector */ InputFieldsetLabelStyle},
   ${/* sc-selector */ InputTextareaFieldStyle},
+  ${/* sc-selector */ UnderlineLinkStyle},
   ${/* sc-selector */ ParagraphStyle} {
     color: ${(props) => {
       const { foreground, background } = styles.schemes[props.scheme];
@@ -88,6 +90,7 @@ export const ColorSectionStyle = styled.div`
   ${/* sc-selector */ InputFieldStyle},
   ${/* sc-selector */ InputFieldsetLabelStyle},
   ${/* sc-selector */ InputTextareaFieldStyle},
+  ${/* sc-selector */ UnderlineLinkStyle},
   ${/* sc-selector */ ParagraphStyle} {
     font-size: ${(props) => {
       return props.isLargerFont ? '1.5em' : null;

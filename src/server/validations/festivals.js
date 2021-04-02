@@ -21,6 +21,14 @@ const defaultValidation = {
   url: Joi.string().uri().allow(''),
 };
 
+const createValidation = {
+  ...defaultValidation,
+  question: {
+    title: Joi.string().max(128).required(),
+    type: Joi.valid('festival').required(),
+  },
+};
+
 export default {
   getArtworks: {
     [Segments.PARAMS]: {
@@ -43,7 +51,7 @@ export default {
   },
   create: {
     [Segments.BODY]: {
-      ...defaultValidation,
+      ...createValidation,
     },
   },
   readAll: {
