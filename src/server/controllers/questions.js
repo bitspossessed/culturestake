@@ -120,7 +120,10 @@ function readAll(req, res, next) {
     req.query.assoc = req.query.orderKey.split('.')[0];
     req.query.orderKey = req.query.orderKey.split('.')[1];
   }
-  baseController.readAll(optionsRead)(req, res, next);
+  baseController.readAll({
+    ...optionsRead,
+    where: req.locals && req.locals.query,
+  })(req, res, next);
 }
 
 function read(req, res, next) {

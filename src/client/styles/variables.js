@@ -1,7 +1,7 @@
 // Definitions
 
 const dimensions = {
-  width: '800px',
+  width: '640px',
   height: '720px',
 };
 
@@ -36,6 +36,7 @@ const typography = {
   lineHeight: 1.15,
   size: '1.4em',
   style: 'normal',
+  weightMedium: 300,
   weight: 400,
   weightBold: 900,
 };
@@ -62,7 +63,10 @@ const components = {};
 // Media-query
 
 const media = {
-  desktop: `(min-width: ${dimensions.width})`,
+  desktop: `(min-width: 1281px)`,
+  laptop: `(min-width: 1025px)`,
+  tablet: `(min-width: 641px)`,
+  mobile: `(min-width: 320px)`,
 };
 
 // Z-index

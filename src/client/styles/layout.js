@@ -28,6 +28,10 @@ export const BackgroundAreaStyle = styled.div`
 `;
 
 export const ContainerStyle = styled.div`
+  @media ${styles.media.tablet} {
+    padding: 3rem;
+  }
+
   max-width: ${styles.layout.maxWidth};
 
   margin: 0 auto;

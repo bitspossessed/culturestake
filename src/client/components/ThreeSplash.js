@@ -91,8 +91,16 @@ const ThreeSplashStyle = styled.div`
 `;
 
 const ThreeSplashTitleStyle = styled(HeadingPrimaryStyle)`
+  @media ${styles.media.tablet} {
+    font-size: 11em;
+  }
+
+  @media ${styles.media.laptop} {
+    font-size: 18em;
+  }
+
   @media ${styles.media.desktop} {
-    font-size: 12em;
+    font-size: 23em;
   }
 
   background-color: ${(props) => {
@@ -101,7 +109,9 @@ const ThreeSplashTitleStyle = styled(HeadingPrimaryStyle)`
       : 'transparent';
   }};
 
-  font-size: 4em;
+  font-size: 6em;
+
+  line-height: 1;
 `;
 
 const ThreeSplashTitleContainerStyle = styled.div`
@@ -111,8 +121,6 @@ const ThreeSplashTitleContainerStyle = styled.div`
   left: 50%;
 
   width: 100%;
-
-  line-height: 1;
 
   text-align: center;
   text-transform: uppercase;

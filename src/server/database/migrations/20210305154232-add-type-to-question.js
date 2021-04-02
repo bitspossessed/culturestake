@@ -26,7 +26,7 @@ module.exports = {
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async (queryInterface) => {
     await queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.removeIndex('questions', ['festivalId', 'type'], {
         transaction,

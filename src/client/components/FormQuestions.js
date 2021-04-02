@@ -3,25 +3,34 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import InputField from '~/client/components/InputField';
-import InputHiddenField from '~/client/components/InputHiddenField';
 import InputFinderField from '~/client/components/InputFinderField';
 import translate from '~/common/services/i18n';
 import { QUESTION_TYPES } from '~/common/helpers/validate';
 
-const FormQuestions = ({ isFinderDisabled, festivalId }) => {
-  const hasFestival = !!festivalId;
+const FormQuestions = ({
+  festivalId,
+  isFestivalDisabled = false,
+  isArtworkDisabled = false,
+  showFestivalFinder = true,
+  showArtworkFinder = true,
+}) => {
   const schema = {
     title: Joi.string().max(128).required(),
     festivalId: Joi.number()
       .integer()
       .required()
       .error(new Error(translate('validations.festivalRequired'))),
-    artworkId: Joi.number()
-      .integer()
-      .allow(null)
-      .error(new Error(translate('validations.artworkRequired'))),
+    artworkId: showArtworkFinder
+      ? Joi.number()
+          .integer()
+          .required()
+          .error(new Error(translate('validations.artworkRequired')))
+      : Joi.number().integer().allow(null),
+    // the question type is set by the caller of FormQuestions
     type: Joi.valid(...QUESTION_TYPES).required(),
   };
+
+  const hasFestival = !!festivalId;
 
   const filter = (item) => {
     const filtered = item.festivals.filter(
@@ -40,36 +49,41 @@ const FormQuestions = ({ isFinderDisabled, festivalId }) => {
         validate={schema.title}
       />
 
-      <InputFinderField
-        disabled={isFinderDisabled}
-        label={translate('FormQuestions.fieldFestival')}
-        name="festivalId"
-        placeholder={translate('FormQuestions.fieldFestivalPlaceholder')}
-        queryPath={['festivals']}
-        searchParam={'title'}
-        validate={schema.festivalId}
-      />
+      {showFestivalFinder && (
+        <InputFinderField
+          disabled={isFestivalDisabled}
+          label={translate('FormQuestions.fieldFestival')}
+          name="festivalId"
+          placeholder={translate('FormQuestions.fieldFestivalPlaceholder')}
+          queryPath={['festivals']}
+          searchParam={'title'}
+          validate={schema.festivalId}
+        />
+      )}
 
-      <InputFinderField
-        clientSideFilter={filter}
-        disabled={isFinderDisabled || !hasFestival}
-        label={translate('FormQuestions.fieldArtwork')}
-        name="artworkId"
-        placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}
-        queryPath={['artworks']}
-        searchParam={'title'}
-        selectParam={'id'}
-        validate={schema.artworkId}
-      />
-
-      <InputHiddenField name="type" value={{ value: 'festival' }} />
+      {showArtworkFinder && (
+        <InputFinderField
+          clientSideFilter={filter}
+          disabled={!hasFestival || isArtworkDisabled}
+          label={translate('FormQuestions.fieldArtwork')}
+          name="artworkId"
+          placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}
+          queryPath={['artworks']}
+          searchParam={'title'}
+          selectParam={'id'}
+          validate={schema.artworkId}
+        />
+      )}
     </Fragment>
   );
 };
 
 FormQuestions.propTypes = {
   festivalId: PropTypes.number,
-  isFinderDisabled: PropTypes.bool,
+  isArtworkDisabled: PropTypes.bool,
+  isFestivalDisabled: PropTypes.bool,
+  showArtworkFinder: PropTypes.bool,
+  showFestivalFinder: PropTypes.bool,
 };
 
 export default FormQuestions;

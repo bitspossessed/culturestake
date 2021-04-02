@@ -254,6 +254,14 @@ const NavigationMenuItemStyle = styled.li`
   text-align: center;
 
   a {
+    @media ${styles.media.tablet} {
+      font-size: 2em;
+    }
+
+    @media ${styles.media.desktop} {
+      font-size: 3em;
+    }
+
     font-size: 1.5em;
   }
 
