@@ -45,7 +45,6 @@ const RemoteVote = () => {
 
     try {
       dispatch(resetVote());
-      console.log('resetting vote') // eslint-disable-line
       dispatch(initializeVote(invitation));
     } catch (error) {
       dispatch(
