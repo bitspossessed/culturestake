@@ -8,13 +8,14 @@ import styles from '~/client/styles/variables';
 
 // eslint-disable-next-line react/display-name
 const InputField = React.forwardRef(
-  ({ name, validate, label, ...rest }, ref) => {
+  ({ name, validate, label, isDisabled, ...rest }, ref) => {
     const { meta, getInputProps } = useField(name, { validate });
 
     return (
       <InputFieldset label={label} meta={meta} name={name}>
         <InputFieldStyle
           {...getInputProps({ ref, id: name, ...rest })}
+          disabled={isDisabled}
           ref={ref}
         />
       </InputFieldset>
@@ -38,6 +39,7 @@ export const InputFieldStyle = styled.input`
 `;
 
 InputField.propTypes = {
+  isDisabled: PropTypes.bool,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   validate: PropTypes.object.isRequired,

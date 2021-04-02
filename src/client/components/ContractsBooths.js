@@ -83,7 +83,7 @@ const ContractsBoothsForm = () => {
         validate={festivalChainIdSchema}
       />
 
-      <ButtonSubmit disabled={meta.request.isPending}>
+      <ButtonSubmit isDisabled={meta.request.isPending}>
         {translate('ContractsBooths.buttonAddNewBooth')}
       </ButtonSubmit>
     </Form>

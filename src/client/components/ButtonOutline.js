@@ -40,8 +40,8 @@ export const ButtonOutlineStyle = styled(ButtonClearStyle)`
 ButtonOutline.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
-  disabled: PropTypes.bool,
   isDanger: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
 };

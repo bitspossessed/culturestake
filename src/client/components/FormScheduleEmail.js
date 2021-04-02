@@ -14,11 +14,11 @@ export const schema = {
     .required(),
 };
 
-const FormScheduleEmail = ({ disabled = false }) => {
+const FormScheduleEmail = ({ isDisabled = false }) => {
   return (
     <Fragment>
       <InputTextareaField
-        disabled={disabled}
+        isDisabled={isDisabled}
         label={translate('FormScheduleEmail.fieldRecipients')}
         name="recipients"
         rows={15}
@@ -29,7 +29,7 @@ const FormScheduleEmail = ({ disabled = false }) => {
 };
 
 FormScheduleEmail.propTypes = {
-  disabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 export default FormScheduleEmail;

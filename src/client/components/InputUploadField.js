@@ -202,7 +202,7 @@ const InputUploadField = ({
         onChange={onChangeFiles}
       />
 
-      <ButtonOutline disabled={isPending} onClick={onClickUpload}>
+      <ButtonOutline isDisabled={isPending} onClick={onClickUpload}>
         {translate('InputUploadField.buttonSelectFiles')}
       </ButtonOutline>
     </InputFieldsetRounded>
@@ -230,7 +230,7 @@ const InputUploadFieldItems = ({ files, onRemove }) => {
               [{fileType}]
             </InputUploadFieldItemTextStyle>
 
-            <ButtonOutline disabled={!id} onClick={onClickRemove}>
+            <ButtonOutline isDisabled={!id} onClick={onClickRemove}>
               {translate('InputUploadField.buttonRemoveFile')}
             </ButtonOutline>
           </InputUploadFieldItemStyle>

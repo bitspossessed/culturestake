@@ -47,7 +47,7 @@ export const ButtonIconStyle = styled(Button)`
   background-color: transparent;
 
   opacity: ${(props) => {
-    return props.disabled ? '0.3' : '1';
+    return props.isDisabled ? '0.3' : '1';
   }};
 
   cursor: pointer;
@@ -87,8 +87,8 @@ export const ButtonIconSVGStyle = styled.div`
 ButtonIcon.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
-  disabled: PropTypes.bool,
   href: PropTypes.string,
+  isDisabled: PropTypes.bool,
   isIconFlipped: PropTypes.bool,
   isIconLeft: PropTypes.bool,
   onClick: PropTypes.func,

@@ -13,7 +13,7 @@ const DEFAULT_UPLOAD_TEXT =
 const FileUpload = ({
   onUpload,
   onError,
-  disabled = false,
+  isDisabled = false,
   accept = [],
   uploadText = DEFAULT_UPLOAD_TEXT,
 }) => {
@@ -45,7 +45,7 @@ const FileUpload = ({
   return (
     <DropZone
       accept={accept}
-      disabled={disabled}
+      disabled={isDisabled}
       multiple={false}
       onDrop={onDrop}
     >
@@ -54,8 +54,8 @@ const FileUpload = ({
           <input {...getInputProps()} />
 
           <FileUploadStyle
-            disabled={disabled}
             isAlternateColor={isAlternateColor}
+            isDisabled={isDisabled}
           >
             {isDragActive ? <p>Drop your file here</p> : <p>{uploadText}</p>}
           </FileUploadStyle>
@@ -67,7 +67,7 @@ const FileUpload = ({
 
 FileUpload.propTypes = {
   accept: PropTypes.arrayOf(PropTypes.string),
-  disabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   onError: PropTypes.func.isRequired,
   onUpload: PropTypes.func.isRequired,
   uploadText: PropTypes.string,
@@ -94,7 +94,7 @@ export const FileUploadStyle = styled.div`
 
   text-overflow: ellipsis;
 
-  opacity: ${(props) => (props.disabled ? 0.2 : 1)};
+  opacity: ${(props) => (props.isDisabled ? 0.2 : 1)};
 
   text-align: center;
 `;

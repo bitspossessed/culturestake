@@ -6,12 +6,12 @@ import { useFormContext } from 'react-form';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import swirl from '~/client/assets/images/swirl.svg';
 
-const ButtonSubmit = ({ children, disabled, ...rest }) => {
+const ButtonSubmit = ({ children, isDisabled, ...rest }) => {
   const { meta } = useFormContext();
 
   return (
     <ButtonIcon
-      disabled={disabled || !meta.canSubmit}
+      isDisabled={isDisabled || !meta.canSubmit}
       type="submit"
       url={swirl}
       {...rest}
@@ -25,7 +25,7 @@ const ButtonSubmit = ({ children, disabled, ...rest }) => {
 
 ButtonSubmit.propTypes = {
   children: PropTypes.node,
-  disabled: PropTypes.bool,
+  isDisabled: PropTypes.bool,
 };
 
 export default ButtonSubmit;

@@ -78,11 +78,11 @@ export const VoteweightsContainerStyle = styled.section`
   padding: 1rem;
 
   border: 1.5px solid
-    ${(props) => (props.disabled ? styles.colors.gray : styles.colors.violet)};
+    ${(props) => (props.isDisabled ? styles.colors.gray : styles.colors.violet)};
   border-radius: 20px;
 
   color: ${(props) =>
-    props.disabled ? styles.colors.gray : styles.colors.violet};
+    props.isDisabled ? styles.colors.gray : styles.colors.violet};
 `;
 
 VoteweightsContainer.propTypes = {

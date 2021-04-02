@@ -403,13 +403,13 @@ export const TableFooter = ({
       <tr>
         <td colSpan={colSpan}>
           <ButtonOutline
-            disabled={isPreviousDisabled}
+            isDisabled={isPreviousDisabled}
             onClick={onClickPrevious}
           >
             &lt;
           </ButtonOutline>
 
-          <ButtonOutline disabled={isNextDisabled} onClick={onClickNext}>
+          <ButtonOutline isDisabled={isNextDisabled} onClick={onClickNext}>
             &gt;
           </ButtonOutline>
         </td>

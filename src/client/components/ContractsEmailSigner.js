@@ -113,7 +113,7 @@ const ContractsBoothsForm = ({ booth, setFestival }) => {
         onChangeCallback={setFestival}
       />
 
-      <ButtonSubmit disabled={meta.request.isPending}>
+      <ButtonSubmit isDisabled={meta.request.isPending}>
         {translate('ContractsEmailSigner.buttonAddNewBooth')}
       </ButtonSubmit>
     </Form>

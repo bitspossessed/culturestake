@@ -66,7 +66,7 @@ const InputArtworksFieldItems = ({ artworks, onRemove }) => {
               {artwork.title}
             </InputArtworksFieldItemTextStyle>
 
-            <ButtonOutline disabled={!artwork.id} onClick={onClickRemove}>
+            <ButtonOutline isDisabled={!artwork.id} onClick={onClickRemove}>
               {translate('InputUploadField.buttonRemoveFile')}
             </ButtonOutline>
           </InputArtworksFieldItemStyle>
