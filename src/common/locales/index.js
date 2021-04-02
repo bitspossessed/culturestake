@@ -144,6 +144,7 @@ const components = {
   FormOrganisations: {
     fieldDescription: 'Description:',
     fieldName: 'Name:',
+    fieldImages: 'Organisation logo',
   },
   FormVoteweights: {
     fieldType: 'Type:',
@@ -163,6 +164,7 @@ const components = {
   },
   InputUploadField: {
     buttonRemoveFile: 'Remove',
+    buttonSelectFile: 'Select file',
     buttonSelectFiles: 'Select files',
   },
   InputStickerField: {
