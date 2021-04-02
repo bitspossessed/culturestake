@@ -7,9 +7,11 @@ module.exports = {
       });
       await queryInterface.sequelize.query(
         `UPDATE invitations SET "festivalSlug" = 'festival-slug'`,
+        transaction,
       );
       await queryInterface.sequelize.query(
         `ALTER TABLE invitations ALTER COLUMN "festivalSlug" SET NOT NULL`,
+        transaction,
       );
     });
   },

@@ -44,6 +44,8 @@ const RemoteVote = () => {
     }
 
     try {
+      dispatch(resetVote());
+      console.log('resetting vote') // eslint-disable-line
       dispatch(initializeVote(invitation));
     } catch (error) {
       dispatch(
@@ -55,16 +57,10 @@ const RemoteVote = () => {
     }
   }, [dispatch, invitation, isInvitationLoading, isError]);
 
-  useEffect(() => {
-    return () => {
-      dispatch(resetVote());
-    };
-  }, [dispatch]);
-
   return (
     <Fragment>
       <View>
-        {isVoteReady && !isInvitationLoading & !isError ? (
+        {isVoteReady && !isInvitationLoading && !isError ? (
           <VoteSession
             boothSignature={vote.boothSignature}
             festivalAnswerIds={vote.festivalAnswerIds}
