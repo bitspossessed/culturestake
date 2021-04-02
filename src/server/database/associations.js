@@ -5,6 +5,7 @@ import Document from '~/server/models/document';
 import Festival from '~/server/models/festival';
 import FestivalArtwork from '~/server/models/festivalArtwork';
 import Image from '~/server/models/image';
+import Organisation from '~/server/models/organisation';
 import Property from '~/server/models/property';
 import Question from '~/server/models/question';
 import Vote from '~/server/models/vote';
@@ -49,7 +50,7 @@ export const imageFileFields = [
   'urlThresholdThumb',
   'urlThumb',
 ];
-export const organisationFields = ['description', 'name'];
+export const organisationFields = ['description', 'name', 'imageId'];
 export const propertyFields = ['title'];
 export const questionFields = [
   'title',
@@ -186,6 +187,17 @@ export const FestivalHasManyVoteweights = Festival.hasMany(Voteweight, {
   ...attachableMixin,
   foreignKey: 'festivalId',
   as: 'voteweights',
+});
+
+// Organisation
+
+export const OrganisationHasManyImages = Organisation.hasMany(Image, {
+  ...attachableMixin,
+  allowNull: true,
+  scope: {
+    attachableType: 'organisation',
+  },
+  as: 'images',
 });
 
 // Property
