@@ -11,7 +11,7 @@ const FormOrganisations = () => {
   const schema = {
     description: Joi.string().max(2000).required(),
     name: Joi.string().max(128).required(),
-    images: imagesValidation.required().max(10),
+    images: imagesValidation.required().max(1),
   };
 
   return (
@@ -31,7 +31,6 @@ const FormOrganisations = () => {
 
       <InputUploadField
         isImageUpload
-        isMultipleFilesAllowed
         label={translate('FormOrganisations.fieldImages')}
         name="images"
         validate={schema.images}

@@ -158,6 +158,7 @@ const components = {
   },
   InputUploadField: {
     buttonRemoveFile: 'Remove',
+    buttonSelectFile: 'Select file',
     buttonSelectFiles: 'Select files',
   },
   InputStickerField: {

@@ -201,10 +201,13 @@ const InputUploadField = ({
         type="file"
         onChange={onChangeFiles}
       />
-
-      <ButtonOutline disabled={isPending} onClick={onClickUpload}>
-        {translate('InputUploadField.buttonSelectFiles')}
-      </ButtonOutline>
+      {(isMultipleFilesAllowed || filesData.length === 0) && (
+        <ButtonOutline disabled={isPending} onClick={onClickUpload}>
+          {isMultipleFilesAllowed
+            ? translate('InputUploadField.buttonSelectFiles')
+            : translate('InputUploadField.buttonSelectFile')}
+        </ButtonOutline>
+      )}
     </InputFieldsetRounded>
   );
 };

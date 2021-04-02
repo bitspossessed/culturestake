@@ -9,7 +9,7 @@ import {
 
 const defaultValidation = {
   description: Joi.string().max(2000).required(),
-  images: imagesValidation.max(10),
+  images: imagesValidation.max(1),
   name: Joi.string().max(128).required(),
 };
 
