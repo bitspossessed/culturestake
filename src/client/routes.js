@@ -44,6 +44,7 @@ import FestivalsProfile from '~/client/views/FestivalsProfile';
 import Invitations from '~/client/views/Invitations';
 import RemoteVote from '~/client/views/RemoteVote';
 import Homepage from '~/client/views/Homepage';
+import HotspotVote from '~/client/views/HotspotVote';
 import NotFound from '~/client/views/NotFound';
 import Vote from '~/client/views/Vote';
 
@@ -134,6 +135,11 @@ const Routes = () => (
       component={Vote}
       exact
       path="/vote"
+    />
+    <PublicRoute
+      component={HotspotVote}
+      exact
+      path="/hotspot"
     />
     <PublicRoute
       component={Booth}

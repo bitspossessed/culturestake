@@ -8,7 +8,6 @@ import notify, {
 } from '~/client/store/notifications/actions';
 import translate from '~/common/services/i18n';
 import { initializeVote, resetVote } from '~/client/store/vote/actions';
-import { useParams } from 'react-router-dom';
 import { useResource } from '~/client/hooks/requests';
 import Spinner from '~/client/components/Spinner';
 import { HeadingPrimaryStyle } from '~/client/styles/typography';
@@ -16,7 +15,7 @@ import { ContainerStyle } from '~/client/styles/layout';
 import ColorSection from '~/client/components/ColorSection';
 import Header from '~/client/components/Header';
 
-const RemoteVote = () => {
+const HotspotVote = () => {
   const dispatch = useDispatch();
   const vote = useSelector((state) => state.vote);
   const [isError, setIsError] = useState(false);
@@ -28,34 +27,34 @@ const RemoteVote = () => {
       setIsError(true);
       dispatch(
         notify({
-          text: translate('RemoteVote.errorNotFound'),
+          text: translate('HotspotVote.errorNotEnabled'),
         }),
       );
     },
   });
 
   useEffect(() => {
-    if (isInvitationLoading || isError) {
+    if (isVoteDataLoading || isError) {
       return;
     }
 
     try {
       dispatch(resetVote());
-      dispatch(initializeVote(invitation));
+      dispatch(initializeVote(voteData));
     } catch (error) {
       dispatch(
         notify({
-          text: translate('RemoteVote.errorInvalidVoteData'),
+          text: translate('HotspotVote.errorInvalidVoteData'),
           type: NotificationsTypes.ERROR,
         }),
       );
     }
-  }, [dispatch, invitation, isInvitationLoading, isError]);
+  }, [dispatch, voteData, isVoteDataLoading, isError]);
 
   return (
     <Fragment>
       <View>
-        {isVoteReady && !isInvitationLoading && !isError ? (
+        {isVoteReady && !isVoteDataLoading && !isError ? (
           <VoteSession
             boothSignature={vote.boothSignature}
             festivalAnswerIds={vote.festivalAnswerIds}
@@ -68,7 +67,7 @@ const RemoteVote = () => {
             <ContainerStyle>
               <ColorSection>
                 <HeadingPrimaryStyle>
-                  {translate('RemoteVote.notFoundTitle')}
+                  {translate('HotspotVote.notEnabled')}
                 </HeadingPrimaryStyle>
               </ColorSection>
             </ContainerStyle>
@@ -81,4 +80,4 @@ const RemoteVote = () => {
   );
 };
 
-export default RemoteVote;
+export default HotspotVote;

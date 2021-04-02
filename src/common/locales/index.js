@@ -523,6 +523,11 @@ ccc@example.org`,
     errorScannerFailure: 'Something went wrong with your camera',
     errorInvalidVoteData: 'QR Code is invalid',
   },
+  HotspotVote: {
+    errorNotEnabled: 'This features is not enabled',
+    errorInvalidVoteData: 'Invalid vote data',
+    notEnabled: 'Unauthorized',
+  },
 };
 
 export default {
