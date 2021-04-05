@@ -25,6 +25,7 @@ import {
 import { timestamp } from './helpers/constants';
 import { isFestivalInitialized } from '~/common/services/contracts/festivals';
 import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
+import { closeRedis } from '~/server/services/redis';
 
 describe('Vote results', () => {
   let vote;
@@ -175,6 +176,10 @@ describe('Vote results', () => {
 
     // ... wait a little bit for changes to propagate
     await new Promise((resolve) => setTimeout(resolve, 1000));
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('GET /api/votes', () => {

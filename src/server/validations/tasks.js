@@ -1,7 +1,7 @@
 import { Joi, Segments } from 'celebrate';
 import { web3Validators } from '~/common/helpers/validate';
 
-const taskKind = Joi.string().valid('vote_invitations').required();
+const taskKind = Joi.string().valid('vote_invitations', 'vote').required();
 
 const defaultValidation = {
   kind: taskKind,
@@ -15,6 +15,7 @@ const defaultValidation = {
               to: Joi.string().email().required(),
               booth: web3Validators.web3().address().required(),
               boothSignature: Joi.string().required(),
+              festivalSlug: Joi.string().required(),
               festivalAnswerIds: Joi.array().required().items(Joi.number()),
               festivalQuestionId: Joi.number().required(),
               nonce: Joi.number().required(),
@@ -23,7 +24,13 @@ const defaultValidation = {
           )
           .min(1)
           .required(),
-        otherwise: Joi.object().allow(null).default(null),
+      },
+      {
+        is: 'vote',
+        then: Joi.object({
+          email: Joi.string().email().required(),
+          festivalSlug: Joi.string().required(),
+        }),
       },
     ],
   }),

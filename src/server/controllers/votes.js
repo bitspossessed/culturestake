@@ -23,6 +23,7 @@ import { getQuestion } from '~/common/services/contracts';
 import { respondWithSuccess } from '~/server/helpers/respond';
 import { quadratify } from '~/common/utils/math';
 import { locationFilter } from '~/server/helpers/filters';
+import Invitation from '~/server/models/invitation';
 
 const PUBLIC_TOP_ANSWERS = 3;
 
@@ -185,6 +186,8 @@ async function vote(req, res, next) {
       voteTokens: vote.artworkVoteTokens,
       votePowers: vote.artworkVoteTokens.map((tokens) => quadratify(tokens)),
     });
+
+    await Invitation.destroy({ where: { boothSignature: vote.boothSignature }})
 
     // ... and store it locally on database as well
     const stored = await Vote.create(vote);

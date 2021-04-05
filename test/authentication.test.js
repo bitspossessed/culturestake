@@ -4,6 +4,7 @@ import request from 'supertest';
 import createSupertest from './helpers/supertest';
 import users from './data/users';
 import { initializeDatabase } from './helpers/database';
+import { closeRedis } from '~/server/services/redis';
 
 import app from '~/server';
 
@@ -13,6 +14,10 @@ describe('Authentication', () => {
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('POST /api/auth', () => {

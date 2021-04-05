@@ -82,6 +82,9 @@ const components = {
   FormAnswers: {
     notificationPropertySuccess: 'Created property {title}',
   },
+  FormInvitations: {
+    fieldEmail: 'Your Email-address:',
+  },
   FestivalQuestionsContainer: {
     title: 'Questions',
     buttonNew: 'Create question',
@@ -204,6 +207,11 @@ const components = {
   PayerBalance: {
     bodyPayerAddress: 'Address:',
     title: 'Payer Balance',
+  },
+  RemoteVote: {
+    errorNotFound: 'Invalid or expired vote link',
+    errorInvalidVoteData: 'Invalid vote data',
+    notFoundTitle: 'Not Found',
   },
   Scanner: {
     bodyDescription: 'Use camera to scan code',
@@ -499,6 +507,14 @@ ccc@example.org`,
     bodyStatisticsFestivals: 'Festivals',
     buttonViewFestivals: 'View Festivals',
     buttonFurtherfield: 'Find out more about Furtherfield',
+  },
+  Invitations: {
+    buttonSubmit: 'Begin voting',
+    notificationSuccess:
+      'We just sent you an unique vote link, please check your email!',
+    title: 'Welcome to Culturestake!',
+    locationDescription:
+      'The vote page will request your location because votes are weighted by the localities they are placed from. You are free to deny location access, your vote will still be processed.',
   },
   NotFound: {
     title: 'Not Found',

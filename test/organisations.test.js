@@ -5,6 +5,7 @@ import organisationsData from './data/organisations';
 import createSupertest from './helpers/supertest';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
+import { closeRedis } from '~/server/services/redis';
 
 import app from '~/server';
 
@@ -14,6 +15,10 @@ describe('Organisations', () => {
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('PUT /api/organisations', () => {

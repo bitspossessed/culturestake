@@ -36,4 +36,12 @@ export const voteInvitationEmail = (to = 'me@example.org', data = {}) =>
     data,
   });
 
+export const voteEmail = (to = 'me@example.org', data = {}) =>
+  submitJob(mailing, `${to}#vote`, {
+    subject: 'Your vote link',
+    template: 'vote',
+    to,
+    data,
+  });
+
 export default mailing;

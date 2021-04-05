@@ -44,6 +44,16 @@ export const festivalFields = [
   'url',
   'online',
 ];
+export const invitationFields = [
+  'boothSignature',
+  'booth',
+  'nonce',
+  'email',
+  'festivalSlug',
+  'festivalQuestionId',
+  'festivalAnswerIds',
+  'organisationId',
+];
 export const imageFileFields = [
   ...baseFileFields,
   'urlThreshold',

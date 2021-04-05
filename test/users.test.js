@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import createSupertest from './helpers/supertest';
 import users from './data/users';
 import { initializeDatabase } from './helpers/database';
+import { closeRedis } from '~/server/services/redis';
 
 describe('Users', () => {
   let authRequest;
@@ -10,6 +11,10 @@ describe('Users', () => {
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('PUT /api/users', () => {

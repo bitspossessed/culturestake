@@ -3,6 +3,7 @@ import httpStatus from 'http-status';
 import createSupertest from './helpers/supertest';
 import users from './data/users';
 import { initializeDatabase } from './helpers/database';
+import { closeRedis } from '~/server/services/redis';
 
 describe('GET /<resource> readAll with pagination', () => {
   let authRequest;
@@ -11,6 +12,10 @@ describe('GET /<resource> readAll with pagination', () => {
   beforeAll(async () => {
     await initializeDatabase();
     authRequest = await createSupertest();
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   beforeEach(async () => {

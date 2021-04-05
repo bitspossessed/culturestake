@@ -4,6 +4,7 @@
     "data": [
         {
             "to": "aaa@example.org",
+            "festivalSlug": "a-festival",
             "festivalAnswerIds": [0, 1],
             "festivalQuestionId": 1,
             "nonce": 0,
@@ -11,10 +12,19 @@
         },
         {
             "to": "bbb@example.org",
+            "festivalSlug": "a-festival",
             "festivalAnswerIds": [0, 1],
             "festivalQuestionId": 1,
             "nonce": 1
         }
     ]
+  },
+  "vote": {
+    "kind": "vote",
+    "data":
+        {
+            "email": "aaa@example.org",
+            "festivalSlug": "a-festival"
+        }
   }
 }

@@ -6,6 +6,7 @@ import propertyData from './data/properties';
 import createSupertest from './helpers/supertest';
 import { initializeDatabase } from './helpers/database';
 import { put } from './helpers/requests';
+import { closeRedis } from '~/server/services/redis';
 
 describe('Voting booth', () => {
   let artistData;
@@ -88,6 +89,10 @@ describe('Voting booth', () => {
       // Store answer id
       artworkAnswerIds.push(answerData.id);
     }
+  });
+
+  afterAll(async () => {
+    await closeRedis();
   });
 
   describe('GET /api/festivals/:id/questions', () => {
