@@ -249,16 +249,16 @@ const AdminEmails = () => {
             selectParam={'id'}
             validate={organisationSchema}
           />
-          <FormScheduleEmail disabled={!isReadyToSign} />
+          <FormScheduleEmail isDisabled={!isReadyToSign} />
 
           <FileUpload
             accept={['text/plain', 'text/csv', 'text/x-csv']}
-            disabled={!isReadyToSign}
+            isDisabled={!isReadyToSign}
             uploadText={translate('AdminEmails.fileUpload')}
             onError={handleFileUploadError}
             onUpload={handleFileUpload}
           />
-          <ButtonSubmit disabled={!isValid && !isLoading} />
+          <ButtonSubmit isDisabled={!isValid && !isLoading} />
         </Form>
       </ViewAdmin>
 

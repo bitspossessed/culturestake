@@ -127,7 +127,7 @@ const ContractsOwnersForm = () => {
         validate={ownerAddressSchema}
       />
 
-      <ButtonSubmit disabled={meta.request.isPending}>
+      <ButtonSubmit isDisabled={meta.request.isPending}>
         {translate('ContractsOwners.buttonAddNewOwner')}
       </ButtonSubmit>
     </Form>
@@ -160,7 +160,7 @@ const ContractsOwnersListItem = ({ isDisabled, ownerAddress, onRemove }) => {
     <ContractsOwnersItemStyle>
       <ContractsOwnersAddressStyle>{ownerAddress}</ContractsOwnersAddressStyle>
 
-      <ButtonOutline disabled={isDisabled} onClick={onClickRemove}>
+      <ButtonOutline isDisabled={isDisabled} onClick={onClickRemove}>
         {translate('ContractsOwners.buttonRemoveOwner')}
       </ButtonOutline>
     </ContractsOwnersItemStyle>

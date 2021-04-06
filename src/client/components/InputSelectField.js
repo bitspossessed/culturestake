@@ -8,13 +8,14 @@ import styles from '~/client/styles/variables';
 
 // eslint-disable-next-line react/display-name
 const InputSelectField = React.forwardRef(
-  ({ name, validate, label, children, ...rest }, ref) => {
+  ({ name, validate, isDisabled, label, children, ...rest }, ref) => {
     const { meta, getInputProps } = useField(name, { validate });
     return (
       <InputFieldset label={label} meta={meta} name={name}>
         <InputSelectFieldStyle>
           <InputSelectFieldInnerStyle
             {...getInputProps({ ref, id: name, ...rest })}
+            disabled={isDisabled}
             ref={ref}
           >
             {children}
@@ -65,6 +66,7 @@ export const InputSelectFieldInnerStyle = styled.select`
 
 InputSelectField.propTypes = {
   children: PropTypes.node.isRequired,
+  isDisabled: PropTypes.bool,
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   validate: PropTypes.object.isRequired,

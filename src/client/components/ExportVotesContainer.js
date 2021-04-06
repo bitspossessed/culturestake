@@ -57,7 +57,7 @@ const ExportVotesContainer = ({ name, path }) => {
         {translate('ExportVotesContainer.title')}
       </HeadingSecondaryStyle>
 
-      <ButtonIcon disabled={isLoading} url={swirl} onClick={getVotesCsv}>
+      <ButtonIcon isDisabled={isLoading} url={swirl} onClick={getVotesCsv}>
         {translate('ExportVotesContainer.buttonDownload')}
       </ButtonIcon>
     </VoteweightsContainerStyle>
@@ -72,11 +72,11 @@ export const VoteweightsContainerStyle = styled.section`
   padding: 1rem;
 
   border: 1.5px solid
-    ${(props) => (props.disabled ? styles.colors.gray : styles.colors.violet)};
+    ${(props) => (props.isDisabled ? styles.colors.gray : styles.colors.violet)};
   border-radius: 20px;
 
   color: ${(props) =>
-    props.disabled ? styles.colors.gray : styles.colors.violet};
+    props.isDisabled ? styles.colors.gray : styles.colors.violet};
 `;
 
 ExportVotesContainer.propTypes = {

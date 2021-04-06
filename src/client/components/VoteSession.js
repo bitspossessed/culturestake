@@ -446,7 +446,7 @@ const VoteSession = ({
 
                     <PaperTicket>
                       <ButtonIcon
-                        disabled={!winnerArtworkId}
+                        isDisabled={!winnerArtworkId}
                         onClick={onNextStep}
                       >
                         {translate('VoteSession.buttonNextStep')}
@@ -491,7 +491,7 @@ const VoteSession = ({
                           </ButtonIcon>
 
                           <ButtonIcon
-                            disabled={!hasVotedOnArtworks}
+                            isDisabled={!hasVotedOnArtworks}
                             onClick={onVote}
                           >
                             {translate('VoteSession.buttonVote')}

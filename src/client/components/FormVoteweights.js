@@ -90,7 +90,7 @@ const FormVoteweights = ({
       />
 
       <InputSelectField
-        disabled={isDisabled}
+        isDisabled={isDisabled}
         label={translate('FormVoteweights.fieldType')}
         name="type"
         validate={schema.type}

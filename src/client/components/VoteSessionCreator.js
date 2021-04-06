@@ -277,7 +277,7 @@ const VoteSessionCreator = () => {
 
             <SpacingGroupStyle>
               <ButtonIcon
-                disabled={isManual}
+                isDisabled={isManual}
                 url={rectangle}
                 onClick={onManualOverride}
               >
@@ -285,7 +285,7 @@ const VoteSessionCreator = () => {
               </ButtonIcon>
 
               <ButtonIcon
-                disabled={
+                isDisabled={
                   isVotePending ||
                   festivalAnswerIds.length === 0 ||
                   isVoteCreated
@@ -296,7 +296,7 @@ const VoteSessionCreator = () => {
               </ButtonIcon>
 
               <ButtonIcon
-                disabled={festivalAnswerIds.length === 0}
+                isDisabled={festivalAnswerIds.length === 0}
                 url={swirl}
                 onClick={onReset}
               >

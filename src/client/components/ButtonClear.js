@@ -27,7 +27,7 @@ export const ButtonClearStyle = styled(Button)`
   background-color: transparent;
 
   opacity: ${(props) => {
-    return props.disabled ? '0.3' : '1';
+    return props.isDisabled ? '0.3' : '1';
   }};
 
   cursor: pointer;
@@ -38,8 +38,8 @@ export const ButtonClearStyle = styled(Button)`
 ButtonClear.propTypes = {
   children: PropTypes.any.isRequired,
   className: PropTypes.string,
-  disabled: PropTypes.bool,
   isDanger: PropTypes.bool,
+  isDisabled: PropTypes.bool,
   onClick: PropTypes.func,
   to: PropTypes.string,
 };

@@ -51,7 +51,7 @@ const FormQuestions = ({
 
       {showFestivalFinder && (
         <InputFinderField
-          disabled={isFestivalDisabled}
+          isDisabled={isFestivalDisabled}
           label={translate('FormQuestions.fieldFestival')}
           name="festivalId"
           placeholder={translate('FormQuestions.fieldFestivalPlaceholder')}
@@ -64,7 +64,7 @@ const FormQuestions = ({
       {showArtworkFinder && (
         <InputFinderField
           clientSideFilter={filter}
-          disabled={!hasFestival || isArtworkDisabled}
+          isDisabled={!hasFestival || isArtworkDisabled}
           label={translate('FormQuestions.fieldArtwork')}
           name="artworkId"
           placeholder={translate('FormQuestions.fieldArtworkPlaceholder')}

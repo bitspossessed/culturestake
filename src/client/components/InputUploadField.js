@@ -202,7 +202,7 @@ const InputUploadField = ({
         onChange={onChangeFiles}
       />
       {(isMultipleFilesAllowed || filesData.length === 0) && (
-        <ButtonOutline disabled={isPending} onClick={onClickUpload}>
+        <ButtonOutline isDisabled={isPending} onClick={onClickUpload}>
           {isMultipleFilesAllowed
             ? translate('InputUploadField.buttonSelectFiles')
             : translate('InputUploadField.buttonSelectFile')}
@@ -233,7 +233,7 @@ const InputUploadFieldItems = ({ files, onRemove }) => {
               [{fileType}]
             </InputUploadFieldItemTextStyle>
 
-            <ButtonOutline disabled={!id} onClick={onClickRemove}>
+            <ButtonOutline isDisabled={!id} onClick={onClickRemove}>
               {translate('InputUploadField.buttonRemoveFile')}
             </ButtonOutline>
           </InputUploadFieldItemStyle>
