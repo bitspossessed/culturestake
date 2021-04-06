@@ -4,15 +4,24 @@ import { respondWithError, respondWithSuccess } from '~/server/helpers/respond';
 import { signBooth } from '~/common/services/vote';
 import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
 import Answers from '~/server/models/answer';
+import { getFromRedis, setInRedis } from '~/server/services/redis';
 
 async function read(req, res) {
-  const hotspotAddress = null; //process.env.HOTSPOT_ADDRESS;
+  const hotspotAddress = process.env.HOTSPOT_ADDRESS;
   const hotspotPrivKey = process.env.HOTSPOT_PRIV_KEY;
   const hotspotFestivalQuestion = parseInt(
     process.env.HOTSPOT_FESTIVAL_QUESTION,
   );
   const hotspotMaxVotes = process.env.HOTSPOT_MAX_VOTES;
-  const nonce = 0;
+
+  let nonce = await getFromRedis(`nonce:${hotspotAddress}`);
+  if (!nonce) {
+    nonce = 0;
+  } else {
+    nonce = parseInt(nonce);
+  }
+  // increment the nonce immediately to prevent nonce-collision
+  await setInRedis(`nonce:${hotspotAddress}`, nonce + 1);
 
   // cannot vote if the basic variables are not set
   if (
@@ -21,19 +30,27 @@ async function read(req, res) {
     !hotspotFestivalQuestion ||
     !hotspotMaxVotes
   ) {
-    respondWithError(res, { message: 'Unauthorized' }, httpStatus.UNAUTHORIZED);
+    return respondWithError(
+      res,
+      { message: 'Unauthorized' },
+      httpStatus.UNAUTHORIZED,
+    );
   }
 
   const isInitialized = await isVotingBoothInitialized(hotspotAddress);
 
   // the signature supplied by this endpoint will not be valid if the booth isn't initalized
   if (!isInitialized) {
-    respondWithError(res, { message: 'Unauthorized' }, httpStatus.UNAUTHORIZED);
+    return respondWithError(
+      res,
+      { message: 'Unauthorized' },
+      httpStatus.UNAUTHORIZED,
+    );
   }
 
   // this is a basic safety check, to limit the damage if this endpoint were being abused
   if (nonce > hotspotMaxVotes) {
-    respondWithError(
+    return respondWithError(
       res,
       { message: 'Unprocessable' },
       httpStatus.UNPROCESSABLE_ENTITY,
@@ -58,6 +75,7 @@ async function read(req, res) {
     festivalAnswerIds,
     festivalQuestionId: hotspotFestivalQuestion,
   };
+
   return respondWithSuccess(res, voteData);
 }
 

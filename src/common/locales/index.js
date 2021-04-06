@@ -526,6 +526,7 @@ ccc@example.org`,
   HotspotVote: {
     errorNotEnabled: 'This features is not enabled',
     errorInvalidVoteData: 'Invalid vote data',
+    errorAlreadyVoted: 'You already voted!',
     notEnabled: 'Unauthorized',
   },
 };

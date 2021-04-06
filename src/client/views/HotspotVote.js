@@ -14,6 +14,7 @@ import { HeadingPrimaryStyle } from '~/client/styles/typography';
 import { ContainerStyle } from '~/client/styles/layout';
 import ColorSection from '~/client/components/ColorSection';
 import Header from '~/client/components/Header';
+import { isAvailable, hasItem, setItem } from '~/client/utils/storage';
 
 const HotspotVote = () => {
   const dispatch = useDispatch();
@@ -38,9 +39,20 @@ const HotspotVote = () => {
       return;
     }
 
+    if (isAvailable && hasItem(`hasVoted-${voteData.festivalQuestionId}`)) {
+      setIsError(true);
+      dispatch(
+        notify({
+          text: translate('HotspotVote.errorAlreadyVoted'),
+          type: NotificationsTypes.ERROR,
+        }),
+      );
+    }
+
     try {
       dispatch(resetVote());
       dispatch(initializeVote(voteData));
+      setItem(`hasVoted-${voteData.festivalQuestionId}`, true);
     } catch (error) {
       dispatch(
         notify({
@@ -49,7 +61,7 @@ const HotspotVote = () => {
         }),
       );
     }
-  }, [dispatch, voteData, isVoteDataLoading, isError]);
+  }, [dispatch, voteData, isVoteDataLoading, isError, setIsError]);
 
   return (
     <Fragment>
