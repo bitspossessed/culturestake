@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment } from 'react';
 
 import InputField from '~/client/components/InputField';
+import InputHiddenField from '~/client/components/InputHiddenField';
 import InputFinderField from '~/client/components/InputFinderField';
 import translate from '~/common/services/i18n';
 import { QUESTION_TYPES } from '~/common/helpers/validate';
@@ -49,7 +50,7 @@ const FormQuestions = ({
         validate={schema.title}
       />
 
-      {showFestivalFinder && (
+      {showFestivalFinder ? (
         <InputFinderField
           isDisabled={isFestivalDisabled}
           label={translate('FormQuestions.fieldFestival')}
@@ -59,6 +60,8 @@ const FormQuestions = ({
           searchParam={'title'}
           validate={schema.festivalId}
         />
+      ) : (
+        <InputHiddenField name="festivalId" value={{ value: festivalId }} />
       )}
 
       {showArtworkFinder && (
