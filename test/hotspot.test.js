@@ -111,8 +111,6 @@ describe('Hotspot', () => {
     });
 
     describe('after booth is initialized', () => {
-      let env = process.env;
-
       beforeAll(async () => {
         process.env.HOTSPOT_ADDRESS = env.HOTSPOT_ADDRESS;
         process.env.HOTSPOT_PRIV_KEY = env.HOTSPOT_PRIV_KEY;
@@ -148,50 +146,5 @@ describe('Hotspot', () => {
           .expect(httpStatus.UNPROCESSABLE_ENTITY);
       });
     });
-
-    //   it('should fail to send vote invitations when unauthorized', async () => {
-    //     await expectNoTasks(queue);
-
-    //     const booth = web3.eth.accounts.create();
-    //     const voteInvitationsData = tasksData.voteInvitation.data.map(
-    //       (invitation) => {
-    //         return {
-    //           ...invitation,
-    //           booth: booth.address,
-    //           boothSignature: web3.eth.accounts.sign(
-    //             packBooth([invitation.festivalAnswerIds], invitation.nonce),
-    //             booth.privateKey,
-    //           ).signature,
-    //         };
-    //       },
-    //     );
-
-    //     await request(app)
-    //       .put('/api/tasks')
-    //       .send({ ...tasksData.voteInvitation, data: voteInvitationsData })
-    //       .expect(httpStatus.UNAUTHORIZED);
-
-    //     await expectNoTasks(queue);
-    //   });
-
-    //   it('should fail with no recipients', async () => {
-    //     const { kind } = tasksData.voteInvitation;
-
-    //     await Promise.all([
-    //       // No recipients.
-    //       authRequest
-    //         .put('/api/tasks')
-    //         .send({ kind, data: [] })
-    //         .expect(httpStatus.BAD_REQUEST),
-    //       // Missing recipients.
-    //       authRequest
-    //         .put('/api/tasks')
-    //         .send({ kind, data: [{ xxx: 'missing to field' }] })
-    //         .expect(httpStatus.BAD_REQUEST),
-    //     ]);
-
-    //     await expectNoTasks(queue);
-    //   });
-    // });
   });
 });

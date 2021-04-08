@@ -1,11 +1,13 @@
 {
     "collectivise": {
       "name": "orbits",
-      "description": "a collective"
+      "description": "a collective",
+      "images": []
     },
     "cooperate": {
       "name": "larva",
-      "description": "a cooperative"
+      "description": "a cooperative",
+      "images": []
     }
   }
   
