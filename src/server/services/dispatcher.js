@@ -27,8 +27,8 @@ export default async function dispatchVote({
 
   const from = payer.address;
   const to = questionAddress;
-  const txNonce = await web3.eth.getTransactionCount(payer.address);
   const gas = await web3.eth.estimateGas({ to, data, from: payer.address });
+  const txNonce = await web3.eth.getTransactionCount(payer.address);
 
   const signed = await web3.eth.accounts.signTransaction(
     {
