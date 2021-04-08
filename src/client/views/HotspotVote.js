@@ -34,6 +34,10 @@ const HotspotVote = () => {
     },
   });
 
+  const voteCallback = () => {
+    setItem(`hasVoted-${voteData.festivalQuestionId}`, true);
+  };
+
   useEffect(() => {
     if (isVoteDataLoading || isError) {
       return;
@@ -47,12 +51,13 @@ const HotspotVote = () => {
           type: NotificationsTypes.ERROR,
         }),
       );
+      return;
     }
 
     try {
       dispatch(resetVote());
       dispatch(initializeVote(voteData));
-      setItem(`hasVoted-${voteData.festivalQuestionId}`, true);
+      //setItem(`hasVoted-${voteData.festivalQuestionId}`, true);
     } catch (error) {
       dispatch(
         notify({
@@ -73,6 +78,7 @@ const HotspotVote = () => {
             festivalQuestionId={vote.festivalQuestionId}
             nonce={vote.nonce}
             senderAddress={vote.address}
+            voteCallback={voteCallback}
           />
         ) : isError ? (
           <Header>

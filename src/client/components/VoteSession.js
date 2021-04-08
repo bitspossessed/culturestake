@@ -54,6 +54,7 @@ const VoteSession = ({
   nonce,
   senderAddress,
   organisationId = null,
+  voteCallback,
 }) => {
   const dispatch = useDispatch();
   const { isAlternateColor } = useSelector((state) => state.app);
@@ -352,6 +353,10 @@ const VoteSession = ({
 
     setIsVoting(true);
 
+    if (voteCallback) {
+      voteCallback();
+    }
+
     // Go vote!
     await dispatch(vote(voteData, requestId));
   };
@@ -584,6 +589,7 @@ VoteSession.propTypes = {
   nonce: PropTypes.number.isRequired,
   organisationId: PropTypes.number,
   senderAddress: PropTypes.string.isRequired,
+  voteCallback: PropTypes.function,
 };
 
 VoteSessionArtwork.propTypes = {
