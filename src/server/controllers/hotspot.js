@@ -4,7 +4,7 @@ import { respondWithError, respondWithSuccess } from '~/server/helpers/respond';
 import { signBooth } from '~/common/services/vote';
 import { isVotingBoothInitialized } from '~/common/services/contracts/booths';
 import Answers from '~/server/models/answer';
-import { getFromRedis, setInRedis } from '~/server/services/redis';
+import { incrementInRedis, setInRedis } from '~/server/services/redis';
 
 async function read(req, res) {
   const hotspotAddress = process.env.HOTSPOT_ADDRESS;
@@ -14,14 +14,13 @@ async function read(req, res) {
   );
   const hotspotMaxVotes = process.env.HOTSPOT_MAX_VOTES;
 
-  let nonce = await getFromRedis(`nonce:${hotspotAddress}`);
+  let nonce = await incrementInRedis(`nonce:${hotspotAddress}`);
   if (!nonce) {
     nonce = 0;
+    await setInRedis(`nonce:${hotspotAddress}`, nonce);
   } else {
     nonce = parseInt(nonce);
   }
-  // increment the nonce immediately to prevent nonce-collision
-  await setInRedis(`nonce:${hotspotAddress}`, nonce + 1);
 
   // cannot vote if the basic variables are not set
   if (

@@ -17,6 +17,15 @@ export function getFromRedis(key) {
   });
 }
 
+export function incrementInRedis(key) {
+  return new Promise((res, rej) => {
+    client.incr(key, (err, result) => {
+      if (err) rej(err);
+      res(result);
+    });
+  });
+}
+
 export function setInRedis(key, value, ...opts) {
   return new Promise((res, rej) => {
     client.set(key, value, ...opts, (err, result) => {
