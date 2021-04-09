@@ -3,7 +3,8 @@ import httpStatus from 'http-status';
 import Question from '~/server/models/question';
 import Vote from '~/server/models/vote';
 import baseController, { handleAssociations } from '~/server/controllers';
-import dispatchVote from '~/server/services/dispatcher';
+// import dispatchVote from '~/server/services/dispatcher';
+import { sendVoteTransaction } from '~/server/tasks/sendTransaction';
 import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
@@ -171,7 +172,7 @@ async function vote(req, res, next) {
 
   try {
     // Vote on the blockchain
-    await dispatchVote({
+    await sendVoteTransaction({
       ...vote,
       answerChainIds: vote.festivalAnswerChainIds,
       questionAddress: festivalQuestionAddress,
@@ -179,7 +180,7 @@ async function vote(req, res, next) {
       votePowers: vote.festivalVoteTokens.map((tokens) => quadratify(tokens)),
     });
 
-    await dispatchVote({
+    await sendVoteTransaction({
       ...vote,
       answerChainIds: vote.artworkAnswerChainIds,
       questionAddress: artworkQuestionAddress,
@@ -187,7 +188,9 @@ async function vote(req, res, next) {
       votePowers: vote.artworkVoteTokens.map((tokens) => quadratify(tokens)),
     });
 
-    await Invitation.destroy({ where: { boothSignature: vote.boothSignature }})
+    await Invitation.destroy({
+      where: { boothSignature: vote.boothSignature },
+    });
 
     // ... and store it locally on database as well
     const stored = await Vote.create(vote);
