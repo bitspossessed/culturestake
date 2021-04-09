@@ -2,7 +2,9 @@ import redis from 'redis';
 
 import logger from '~/server/helpers/logger';
 
-const client = redis.createClient();
+export const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
+
+const client = redis.createClient({ url: redisUrl });
 
 client.on('error', function (error) {
   logger.error(error);
@@ -56,8 +58,6 @@ export async function closeRedis() {
 }
 
 export default client;
-
-export const redisUrl = process.env.REDIS_URL || 'redis://127.0.0.1:6379';
 
 export const redisOptions = {
   settings: {
