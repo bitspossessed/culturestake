@@ -16,7 +16,7 @@ import {
   stickerValidation,
 } from '~/common/helpers/validate';
 
-const FormFestivals = ({ hasQuestion, editing }) => {
+const FormFestivals = ({ editing }) => {
   const schema = {
     artworks: Joi.array().required().max(30),
     description: Joi.string().max(2000).required(),
@@ -68,7 +68,7 @@ const FormFestivals = ({ hasQuestion, editing }) => {
         validate={schema.online}
       />
 
-      {!hasQuestion && editing ? null : (
+      {editing ? null : (
         <>
           <InputField
             label={translate('FormFestivals.fieldQuestion')}

@@ -87,10 +87,7 @@ const AdminFestivalsEditForm = () => {
     <Fragment>
       <ViewAdmin>
         <Form>
-          <FormFestivals
-            editing={true}
-            hasQuestion={resource.question ? true : false}
-          />
+          <FormFestivals editing={true} />
 
           {!isResourceLoading && (
             <FestivalQuestionsContainer festivalId={resource.id} />

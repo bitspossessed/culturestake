@@ -267,7 +267,7 @@ function readAll(options) {
 function read(options) {
   return async (req, res, next) => {
     try {
-      const instance = await options.model.findOne({
+      let instance = await options.model.findOne({
         rejectOnEmpty: true,
         where: {
           id: req.locals.resource.id,
@@ -280,6 +280,16 @@ function read(options) {
         : filterResponseFields;
 
       const filteredResults = filter(req, instance, options);
+
+      if (options.manuallyAppend) {
+        Object.keys(options.manuallyAppend).map((key) => {
+          filteredResults[key] = filterResponseFields(
+            req,
+            options.manuallyAppend[key].data,
+            { fields: options.manuallyAppend[key].fields },
+          );
+        });
+      }
 
       respondWithSuccess(res, filteredResults);
     } catch (error) {

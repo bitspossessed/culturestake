@@ -52,7 +52,7 @@ const AdminQuestionsNew = () => {
   useEffect(() => {
     if (festivalId != festivalIdCache) {
       setFestivalIdCache(festivalId);
-      setValues({ title, festivalId, type: 'festival', artworkId: null });
+      setValues({ title, festivalId, type: 'festival', artworkId: undefined });
     }
   }, [setValues, title, festivalId, type, festivalIdCache]);
 
@@ -64,8 +64,6 @@ const AdminQuestionsNew = () => {
       artworkId,
       type: artworkId == null ? 'festival' : 'artwork',
     });
-    console.log(artworkId) // eslint-disable-line
-    console.log(type) // eslint-disable-line
   }, [setValues, title, festivalId, artworkId]);
 
   return (
