@@ -104,6 +104,7 @@ const components = {
     fieldQuestion: 'Question:',
     fieldArtworks: 'Artworks:',
     fieldUrl: 'Website:',
+    fieldThankyouUrl: 'Custom thank you link:',
     buttonEditQuestion: 'Manage',
   },
   FormScheduleEmail: {
@@ -239,6 +240,7 @@ const components = {
     buttonNextStep: 'Next',
     buttonPreviousStep: 'Return',
     buttonVoteResults: 'View the vote results so far',
+    buttonThankyou: 'Click here to try on our thank you instagram filter!',
     buttonToHomepage: 'Back to Homepage',
     buttonVote: 'Vote',
     errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
