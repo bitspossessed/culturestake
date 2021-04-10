@@ -267,7 +267,7 @@ function readAll(options) {
 function read(options) {
   return async (req, res, next) => {
     try {
-      let instance = await options.model.findOne({
+      const instance = await options.model.findOne({
         rejectOnEmpty: true,
         where: {
           id: req.locals.resource.id,
