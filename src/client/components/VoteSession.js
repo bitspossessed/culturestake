@@ -167,7 +167,7 @@ const VoteSession = ({
 
   // Get max vote tokens
   // If we ever open up customization of the vote tokens quantity, this will need to be fetched
-  // from the chain, but for now, it is a constant
+  // from the chain or the graph, but for now, it is a constant
   useEffect(() => {
     const getMaxVoteTokens = async (stepName) => {
       const maxVoteTokens = MAX_VOTE_TOKENS;
