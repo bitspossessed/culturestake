@@ -46,13 +46,13 @@ const AdminQuestionsNew = () => {
   });
 
   // Artworks are chosen based on the festival. When selecting a new festival we
-  // want to invalidate the select artwork since a different festival has
+  // want to invalidate the selected artwork since a different festival has
   // different artworks to choose from. To achieve this I cache the selected
   // festivalId and forcefully invalidate the artworkId if it changes.
   useEffect(() => {
     if (festivalId != festivalIdCache) {
       setFestivalIdCache(festivalId);
-      setValues({ title, festivalId, type: 'festival', artworkId: undefined });
+      setValues({ title, festivalId, type: 'festival', artworkId: null });
     }
   }, [setValues, title, festivalId, type, festivalIdCache]);
 
@@ -64,6 +64,8 @@ const AdminQuestionsNew = () => {
       artworkId,
       type: artworkId == null ? 'festival' : 'artwork',
     });
+    console.log(artworkId) // eslint-disable-line
+    console.log(type) // eslint-disable-line
   }, [setValues, title, festivalId, artworkId]);
 
   return (
