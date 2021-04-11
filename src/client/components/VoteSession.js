@@ -19,6 +19,7 @@ import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeRotator from '~/client/components/ThreeRotator';
 import ThreeThankYou from '~/client/components/ThreeThankYou';
 import VoteCreditsBar from '~/client/components/VoteCreditsBar';
+import { MAX_VOTE_TOKENS } from '~/common/utils/constants';
 import notify, {
   NotificationsTypes,
 } from '~/client/store/notifications/actions';
@@ -36,7 +37,6 @@ import {
 } from '~/client/styles/layout';
 import { VOTE_ACCOUNT_NAME } from '~/client/store/vote/actions';
 import { getPrivateKey } from '~/client/services/wallet';
-import { getQuestion } from '~/common/services/contracts';
 import { packBooth } from '~/common/services/encoding';
 import { signAudienceVote } from '~/common/services/vote';
 import { useResource, useRequest, useRequestId } from '~/client/hooks/requests';
@@ -165,10 +165,12 @@ const VoteSession = ({
   // Is something loading here?
   const isLoading = isDataLoading || isFestivalQuestionDataLoading || isVoting;
 
-  // Get max vote tokens from chain
+  // Get max vote tokens
+  // If we ever open up customization of the vote tokens quantity, this will need to be fetched
+  // from the chain or the graph, but for now, it is a constant
   useEffect(() => {
-    const getMaxVoteTokens = async (stepName, chainId) => {
-      const { maxVoteTokens } = await getQuestion(chainId);
+    const getMaxVoteTokens = async (stepName) => {
+      const maxVoteTokens = MAX_VOTE_TOKENS;
       setCreditTotal((value) => ({
         ...value,
         [stepName]: maxVoteTokens,
@@ -589,7 +591,7 @@ VoteSession.propTypes = {
   nonce: PropTypes.number.isRequired,
   organisationId: PropTypes.number,
   senderAddress: PropTypes.string.isRequired,
-  voteCallback: PropTypes.function,
+  voteCallback: PropTypes.func,
 };
 
 VoteSessionArtwork.propTypes = {
