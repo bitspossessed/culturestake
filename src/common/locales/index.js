@@ -240,8 +240,10 @@ const components = {
     buttonPreviousStep: 'Return',
     buttonVoteResults: 'View the vote results so far',
     buttonToHomepage: 'Back to Homepage',
+    buttonFestivalLink: 'Go to the festival site',
     buttonVote: 'Vote',
     errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
+    festivalLinkPrompt: "Haven't finished checking out the artworks yet?",
   },
   VoteSessionCreator: {
     bodyBoothAddress: 'Booth address:',
