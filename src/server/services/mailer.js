@@ -13,17 +13,17 @@ export const devTransporter = {
 };
 
 export const prodTransporter = {
-  port: process.env.STACK_MAIL_PORT || 25,
-  host: process.env.STACK_MAIL_HOST || 'localhost',
-  ...(process.env.STACK_MAIL_USER && process.env.STACK_MAIL_PASSWORD
+  port: process.env.STAKE_MAIL_PORT || 25,
+  host: process.env.STAKE_MAIL_HOST || 'localhost',
+  ...(process.env.STAKE_MAIL_USER && process.env.STAKE_MAIL_PASSWORD
     ? {
         auth: {
-          user: process.env.STACK_MAIL_USER,
-          pass: process.env.STACK_MAIL_PASSWORD,
+          user: process.env.STAKE_MAIL_USER,
+          pass: process.env.STAKE_MAIL_PASSWORD,
         },
       }
     : undefined),
-  ...(process.env.STACK_MAIL_SECURITY === 'tls'
+  ...(process.env.STAKE_MAIL_SECURITY === 'tls'
     ? {
         secure: true,
         tls: {
@@ -31,7 +31,7 @@ export const prodTransporter = {
         },
       }
     : undefined),
-  ...(process.env.STACK_MAIL_SECURITY === 'starttls'
+  ...(process.env.STAKE_MAIL_SECURITY === 'starttls'
     ? {
         secure: false,
         requireTLS: true,
@@ -42,7 +42,7 @@ export const prodTransporter = {
     : undefined),
 };
 
-export const sender = process.env.STACK_MAIL_SENDER || 'meesix@example.org';
+export const sender = process.env.STAKE_MAIL_SENDER || 'meesix@example.org';
 
 export default (transport, from = sender) => {
   const transporter = nodemailer.createTransport(transport);
@@ -58,18 +58,15 @@ export default (transport, from = sender) => {
       throw new Error('Recipient or subject not set.');
     }
 
-    const text = views[template](data);
+    const html = views[template](data);
     const msg = await transporter.sendMail({
-      text,
+      html,
       to,
       subject,
       from,
     });
 
-    if (isDev) {
-      logger.info(msg.envelope);
-      logger.info(msg.message.toString());
-    }
+    if (isDev) logger.info(msg.message.toString());
   };
 
   return send;
