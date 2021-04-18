@@ -7,6 +7,7 @@ import Artwork from '~/server/models/artwork';
 import Festival from '~/server/models/festival';
 import Vote from '~/server/models/vote';
 import Question from '~/server/models/question';
+import logger from '~/server/helpers/logger';
 import baseController from '~/server/controllers';
 import {
   AnswerBelongsToArtwork,
@@ -50,7 +51,6 @@ const options = {
     FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
     FestivalHasManyImages,
-    FestivalHasOneQuestion,
   ],
   associations: [
     {
@@ -80,7 +80,6 @@ const optionsRead = {
     FestivalHasManyDocuments,
     FestivalHasManyImages,
     FestivalHasManyVoteweights,
-    FestivalHasOneQuestion,
   ],
   associations: [
     {
@@ -264,6 +263,34 @@ async function getQuestions(req, res, next) {
   }
 }
 
+async function getFestivalQuestion(req) {
+  const where = {};
+
+  try {
+    if (!req.locals || !req.locals.resource) {
+      return {};
+    }
+    where.festivalId = req.locals.resource.id;
+    where.type = 'festival';
+
+    const data = await Question.findAll({
+      rejectOnEmpty: true,
+      where,
+    });
+
+    if (data.length > 1) {
+      throw new Error();
+    }
+
+    return data[0];
+  } catch (error) {
+    logger.error(
+      `Found abnormal question data for festival ${req.locals.resource.id}`,
+    );
+    return {};
+  }
+}
+
 function create(req, res, next) {
   baseController.create(optionsCreate, { include: true })(req, res, next);
 }
@@ -275,8 +302,14 @@ function readAll(req, res, next) {
   })(req, res, next);
 }
 
-function read(req, res, next) {
-  baseController.read(optionsRead)(req, res, next);
+async function read(req, res, next) {
+  const festivalQuestion = await getFestivalQuestion(req);
+  baseController.read({
+    ...optionsRead,
+    manuallyAppend: {
+      question: { data: festivalQuestion, fields: [...questionFields] },
+    },
+  })(req, res, next);
 }
 
 function update(req, res, next) {

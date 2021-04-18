@@ -21,12 +21,11 @@ const FormQuestions = ({
       .integer()
       .required()
       .error(new Error(translate('validations.festivalRequired'))),
-    artworkId: showArtworkFinder
-      ? Joi.number()
-          .integer()
-          .required()
-          .error(new Error(translate('validations.artworkRequired')))
-      : Joi.number().integer().allow(null),
+    artworkId: Joi.alternatives().conditional('type', {
+      is: 'festival',
+      then: Joi.number().allow(null),
+      otherwise: Joi.number().integer().required(),
+    }),
     // the question type is set by the caller of FormQuestions
     type: Joi.valid(...QUESTION_TYPES).required(),
   };

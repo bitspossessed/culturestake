@@ -281,6 +281,16 @@ function read(options) {
 
       const filteredResults = filter(req, instance, options);
 
+      if (options.manuallyAppend) {
+        Object.keys(options.manuallyAppend).map((key) => {
+          filteredResults[key] = filterResponseFields(
+            req,
+            options.manuallyAppend[key].data,
+            { fields: options.manuallyAppend[key].fields },
+          );
+        });
+      }
+
       respondWithSuccess(res, filteredResults);
     } catch (error) {
       next(error);

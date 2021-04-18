@@ -46,7 +46,7 @@ const AdminQuestionsNew = () => {
   });
 
   // Artworks are chosen based on the festival. When selecting a new festival we
-  // want to invalidate the select artwork since a different festival has
+  // want to invalidate the selected artwork since a different festival has
   // different artworks to choose from. To achieve this I cache the selected
   // festivalId and forcefully invalidate the artworkId if it changes.
   useEffect(() => {
