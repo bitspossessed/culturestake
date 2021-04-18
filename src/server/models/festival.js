@@ -50,6 +50,9 @@ const Festival = db.define('festival', {
   url: {
     type: DataTypes.STRING,
   },
+  thankyouUrl: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Festival, {

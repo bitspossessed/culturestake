@@ -27,6 +27,7 @@ const FormFestivals = ({ hasQuestion, editing }) => {
     subtitle: Joi.string().max(255).required(),
     title: Joi.string().max(128).required(),
     url: Joi.string().uri().allow(''),
+    thankyouUrl: Joi.string().uri().allow(''),
     question: {
       title: Joi.string().max(128).required(),
       type: Joi.valid('festival').required(),
@@ -54,6 +55,13 @@ const FormFestivals = ({ hasQuestion, editing }) => {
         name="url"
         type="text"
         validate={schema.url}
+      />
+
+      <InputField
+        label={translate('FormFestivals.fieldThankyouUrl')}
+        name="thankyouUrl"
+        type="text"
+        validate={schema.thankyouUrl}
       />
 
       <InputTextareaField

@@ -400,6 +400,12 @@ const VoteSession = ({
               <HorizontalLine />
 
               <ButtonGroup>
+                {data.thankyouUrl ? (
+                  <ButtonIcon href={data.thankyouUrl}>
+                    {translate('VoteSession.buttonThankyou')}
+                  </ButtonIcon>
+                ) : null}
+
                 <ButtonIcon to={`/festivals/${data.slug}`}>
                   {translate('VoteSession.buttonVoteResults')}
                 </ButtonIcon>

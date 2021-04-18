@@ -45,6 +45,7 @@ const AdminFestivalsEditForm = () => {
       'subtitle',
       'title',
       'url',
+      'thankyouUrl',
     ],
     resourcePath: ['festivals', slug],
     returnUrl,
