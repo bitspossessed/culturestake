@@ -11,7 +11,7 @@ import View from '~/client/components/View';
 import apiRequest from '~/client/services/api';
 import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
-import { ContainerStyle } from '~/client/styles/layout';
+import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 
 const FURTHERFIELD_URL = 'https://www.furtherfield.org';
@@ -39,6 +39,17 @@ const Homepage = () => {
             <ParagraphStyle>
               {translate('Homepage.bodyIntroductionFourth')}
             </ParagraphStyle>
+
+            <HorizontalSpacingStyle />
+
+            <iframe
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              frameBorder="0"
+              height="360"
+              src="https://player.vimeo.com/video/523730680?title=0&byline=0"
+              width="640"
+            ></iframe>
 
             <HomepageStatistics />
 
