@@ -105,6 +105,7 @@ app.use(
         styleSrc: ["'self'", "'unsafe-inline'"],
         objectSrc: ["'self'"],
         imgSrc: ["'self'", 'data:', hostnameBarcode],
+        frameSrc: ["'self'", 'https://player.vimeo.com'],
         fontSrc: ["'self'"],
         formAction: ["'self'"],
         connectSrc: [
