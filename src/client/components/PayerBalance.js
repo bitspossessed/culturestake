@@ -34,7 +34,7 @@ const PayerBalance = () => {
       </ParagraphStyle>
 
       <ParagraphStyle>
-        {web3.utils.fromWei(balance.toString(), 'ether')} ETH
+        {web3.utils.fromWei(balance.toString(), 'ether')} xDAI
       </ParagraphStyle>
     </BoxRounded>
   );

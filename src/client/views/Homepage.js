@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 
 import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
@@ -59,6 +60,7 @@ const Homepage = () => {
 };
 
 const HomepageStatistics = () => {
+  const history = useHistory();
   const [statistics, setStatistics] = useState({
     festivals: null,
     artworks: null,
@@ -100,6 +102,10 @@ const HomepageStatistics = () => {
       <HomepageStatisticsItem
         label={translate('Homepage.bodyStatisticsFestivals')}
         number={statistics.festivals}
+        onClick={() => {
+          console.log("click") // eslint-disable-line
+          history.push(`/festivals`);
+        }}
       />
 
       <HorizontalLine />
@@ -123,7 +129,7 @@ const HomepageStatistics = () => {
 
 const HomepageStatisticsItem = (props) => {
   return (
-    <HomepageStatisticsItemStyle>
+    <HomepageStatisticsItemStyle onClick={props.onClick}>
       <HomepageStatisticsItemNumberStyle>
         {props.number !== null ? props.number : '...'}
       </HomepageStatisticsItemNumberStyle>
@@ -165,6 +171,7 @@ const HomepageStatisticsItemStyle = styled.div`
 HomepageStatisticsItem.propTypes = {
   label: PropTypes.string.isRequired,
   number: PropTypes.number,
+  onClick: PropTypes.func,
 };
 
 export default Homepage;
