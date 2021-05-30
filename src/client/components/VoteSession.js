@@ -13,7 +13,6 @@ import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import SnuggleRain from '~/client/components/SnuggleRain';
 import SnuggleSlider from '~/client/components/SnuggleSlider';
-import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeRotator from '~/client/components/ThreeRotator';
@@ -40,7 +39,7 @@ import { getPrivateKey } from '~/client/services/wallet';
 import { packBooth } from '~/common/services/encoding';
 import { signAudienceVote } from '~/common/services/vote';
 import { useResource, useRequest, useRequestId } from '~/client/hooks/requests';
-import { useSticker, useStickerImage } from '~/client/hooks/sticker';
+import { useSticker } from '~/client/hooks/sticker';
 import { vote } from '~/client/store/vote/actions';
 
 const MAX_TOP_ARTWORKS = 3;
@@ -535,7 +534,6 @@ const VoteSession = ({
 };
 
 const VoteSessionArtwork = (props) => {
-  const stickerImagePath = useStickerImage(props.images);
   const { scheme } = useSticker(props.stickerCode);
 
   const onCreditChange = ({ id, credit }) => {
@@ -549,8 +547,6 @@ const VoteSessionArtwork = (props) => {
   return (
     <Suspense fallback={null}>
       <PaperTicket scheme={scheme}>
-        <Sticker code={props.stickerCode} imagePath={stickerImagePath} />
-
         <StickerHeading
           scheme={scheme}
           subtitle={props.subtitle}
