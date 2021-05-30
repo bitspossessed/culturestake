@@ -11,14 +11,14 @@ node_js:
   - '11'
 
 env:
-  - CIRCLES_DOCKER=$HOME/lazaruslabs/culturestake-provisioning
+  - CIRCLES_DOCKER=$HOME/bitspossessed/culturestake-provisioning
 
 before_install:
   # disable travis postgres
   - sudo /etc/init.d/postgresql stop
 
   # get docker repository and copy configs
-  - git clone https://github.com/lazaruslabs/culturestake-provisioning.git $CIRCLES_DOCKER
+  - git clone https://github.com/bitspossessed/culturestake-provisioning.git $CIRCLES_DOCKER
   - cd $CIRCLES_DOCKER
   - cp .env.example .env
 
