@@ -12,10 +12,12 @@ const Slider = React.forwardRef(
   ({ children, credit, total, ...props }, ref) => {
     const { scheme } = useScheme(props.scheme);
     const refBar = useRef();
+    const refQuadBar = useRef();
     const refContainer = useRef();
 
     // Calculate slider position
     const percentage = (credit / total) * 100;
+    console.log(Math.floor(Math.sqrt(percentage))) // eslint-disable-line
 
     useEffect(() => {
       // Update styles outside of React to improve performance
@@ -24,10 +26,16 @@ const Slider = React.forwardRef(
       const { foreground } = styles.schemes[scheme];
       const gradient = `${foreground} 0%, ${foreground} ${percentage}%, transparent ${percentage}%`;
       refBar.current.style.background = `linear-gradient(to right, ${gradient})`;
-    }, [refBar, refContainer, percentage, scheme]);
+      refQuadBar.current.style.background = `linear-gradient(to right, ${gradient})`;
+    }, [refBar, refQuadBar, refContainer, percentage, scheme]);
 
     return (
       <SliderStyle {...props} ref={ref}>
+        <SliderBarQuadtraticStyle
+          percentage={Math.floor(Math.sqrt(percentage))}
+          ref={refQuadBar}
+          scheme={scheme}
+        />
         <SliderBarStyle percentage={percentage} ref={refBar} scheme={scheme} />
 
         <SnuggleSliderHandleContainerStyle
@@ -49,6 +57,20 @@ export const SliderStyle = styled.div`
   width: 100%;
 
   align-items: center;
+  flex-direction: column;
+`;
+
+export const SliderBarQuadtraticStyle = styled.div`
+  width: 100%;
+  height: 1.5rem;
+
+  margin-top: 2.5rem;
+
+  border: 1.5px solid;
+  border-color: ${(props) => {
+    return styles.schemes[props.scheme].foreground;
+  }};
+  border-radius: 10px;
 `;
 
 export const SliderBarStyle = styled.div`
