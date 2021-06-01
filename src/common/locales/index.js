@@ -548,6 +548,7 @@ export default {
     buttonSubmitNew: 'Create',
     errorMessage: 'Something went wrong ...',
     legendVote: 'Vote',
+    legendVoteEfficacy: 'Vote Efficacy',
     legendVotes: 'Votes',
     tableActionDestroy: 'Delete',
     tableActionEdit: 'Edit',

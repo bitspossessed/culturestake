@@ -39,13 +39,12 @@ const VoteCreditsBar = ({ total, left }) => {
 const VoteCreditsBarStyle = styled.div`
   position: fixed;
 
-  right: ${styles.layout.spacing};
   bottom: 2.75rem;
   left: ${styles.layout.spacing};
 
   z-index: ${styles.layers.VoteCreditsBar};
 
-  max-width: ${styles.layout.maxWidth};
+  max-width: 3rem;
 
   margin: 0 auto;
 
@@ -62,9 +61,7 @@ const VoteCreditsBarRangeStyle = styled.div`
 
   display: flex;
 
-  height: 3rem;
-
-  margin-left: 7rem;
+  height: 80vh;
 
   border: 1.5px solid;
   border-color: ${(props) =>

@@ -17,17 +17,26 @@ const Slider = React.forwardRef(
 
     // Calculate slider position
     const percentage = (credit / total) * 100;
-    console.log(Math.floor(Math.sqrt(percentage))) // eslint-disable-line
+    const quadraticPercentage = (Math.sqrt(credit) / Math.sqrt(total)) * 100;
 
     useEffect(() => {
       // Update styles outside of React to improve performance
       refContainer.current.style.transform = `translate3d(${percentage}%, 0, 0)`;
 
       const { foreground } = styles.schemes[scheme];
+      const { cyanLight } = styles.monochromes;
       const gradient = `${foreground} 0%, ${foreground} ${percentage}%, transparent ${percentage}%`;
       refBar.current.style.background = `linear-gradient(to right, ${gradient})`;
-      refQuadBar.current.style.background = `linear-gradient(to right, ${gradient})`;
-    }, [refBar, refQuadBar, refContainer, percentage, scheme]);
+      const quadraticGradient = `${cyanLight} 0%, ${cyanLight} ${quadraticPercentage}%, transparent ${quadraticPercentage}%`;
+      refQuadBar.current.style.background = `linear-gradient(to right, ${quadraticGradient})`;
+    }, [
+      refBar,
+      refQuadBar,
+      refContainer,
+      percentage,
+      scheme,
+      quadraticPercentage,
+    ]);
 
     return (
       <SliderStyle {...props} ref={ref}>

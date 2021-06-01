@@ -129,6 +129,7 @@ const schemes = {
 export default {
   colors,
   components,
+  monochromes,
   layers,
   layout,
   links,

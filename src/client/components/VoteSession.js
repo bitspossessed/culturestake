@@ -564,7 +564,11 @@ const VoteSessionArtwork = (props) => {
         />
 
         <VoteSessionArtworkLegendStyle>
-          <Legend scheme={scheme} title={translate('default.legendVote')} />
+          <Legend
+            firstTitle={translate('default.legendVote')}
+            scheme={scheme}
+            secondTitle={translate('default.legendVoteEfficacy')}
+          />
         </VoteSessionArtworkLegendStyle>
       </PaperTicket>
     </Suspense>

@@ -13,7 +13,12 @@ const Legend = (props) => {
       <LegendBoxStyle scheme={scheme} />
 
       <LegendLabelStyle isLargerFont={isLargerFont} scheme={scheme}>
-        {props.title}
+        {props.firstTitle}
+      </LegendLabelStyle>
+      <LegendBoxStyle color={styles.monochromes.cyanLight} />
+
+      <LegendLabelStyle isLargerFont={isLargerFont} scheme={scheme}>
+        {props.secondTitle}
       </LegendLabelStyle>
     </LegendStyle>
   );
@@ -30,8 +35,10 @@ export const LegendBoxStyle = styled.div`
   height: 1rem;
 
   margin-right: 0.5rem;
+  margin-left: 0.5rem;
 
-  background-color: ${(props) => styles.schemes[props.scheme].foreground};
+  background-color: ${(props) =>
+    props.scheme ? styles.schemes[props.scheme].foreground : props.color};
 `;
 
 export const LegendLabelStyle = styled.p`
@@ -41,8 +48,10 @@ export const LegendLabelStyle = styled.p`
 `;
 
 Legend.propTypes = {
+  color: PropTypes.string,
+  firstTitle: PropTypes.string.isRequired,
   scheme: PropTypes.string,
-  title: PropTypes.string.isRequired,
+  secondTitle: PropTypes.string.isRequired,
 };
 
 export default Legend;
