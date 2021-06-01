@@ -48,7 +48,7 @@ const layout = {
   spacing: '2rem',
   width: dimensions.width,
   height: dimensions.height,
-  maxWidth: '70rem',
+  maxWidth: '100rem',
 };
 
 const links = {

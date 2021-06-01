@@ -19,7 +19,7 @@ const VoteCreditsBar = ({ total, left }) => {
       : `${cyanLight} 0%, ${blueLight} ${percentage}%, transparent ${percentage}%`;
 
     // Update styles outside of React to improve performance
-    refBarRange.current.style.background = `linear-gradient(to right, ${gradient})`;
+    refBarRange.current.style.background = `linear-gradient(to top, ${gradient})`;
   }, [left, total, refBarRange, isAlternateColor]);
 
   return (
@@ -44,8 +44,6 @@ const VoteCreditsBarStyle = styled.div`
 
   z-index: ${styles.layers.VoteCreditsBar};
 
-  max-width: 3rem;
-
   margin: 0 auto;
 
   user-select: none;
@@ -56,7 +54,6 @@ const VoteCreditsBarStyle = styled.div`
 const VoteCreditsBarRangeStyle = styled.div`
   @media ${styles.media.desktop} {
     margin-right: ${styles.layout.spacing};
-    margin-left: ${styles.layout.spacing};
   }
 
   display: flex;
@@ -74,13 +71,17 @@ const VoteCreditsBarRangeStyle = styled.div`
 const VoteCreditsBarTextStyle = styled.span`
   mix-blend-mode: ${(props) => (props.isAlternateColor ? 'exclusion' : null)};
 
-  margin-left: 1rem;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  writing-mode: vertical-rl;
 
   color: ${(props) =>
     props.isAlternateColor ? styles.colors.yellow : styles.colors.violet};
 
   font-weight: ${styles.typography.weightBold};
   font-size: 1.1em;
+
+  transform: rotate(180deg);
 `;
 
 VoteCreditsBar.propTypes = {

@@ -32,6 +32,7 @@ import {
 import {
   HorizontalSpacingStyle,
   PaperContainerStyle,
+  PaperContainerVoteStyle,
   SpacingGroupStyle,
 } from '~/client/styles/layout';
 import { VOTE_ACCOUNT_NAME } from '~/client/store/vote/actions';
@@ -433,7 +434,7 @@ const VoteSession = ({
                     total={creditTotal[STEP_FESTIVAL]}
                   />
 
-                  <PaperContainerStyle>
+                  <PaperContainerVoteStyle>
                     <PaperTicket>
                       <BoxFramed>
                         <HeadingPrimaryStyle>
@@ -477,7 +478,7 @@ const VoteSession = ({
                         {translate('VoteSession.buttonNextStep')}
                       </ButtonIcon>
                     </PaperTicket>
-                  </PaperContainerStyle>
+                  </PaperContainerVoteStyle>
                 </Fragment>
               ) : (
                 <Fragment>
@@ -486,7 +487,7 @@ const VoteSession = ({
                     total={creditTotal[STEP_ARTWORK]}
                   />
 
-                  <PaperContainerStyle>
+                  <PaperContainerVoteStyle>
                     <PaperTicket>
                       <BoxFramed>
                         <HeadingPrimaryStyle>
@@ -524,7 +525,7 @@ const VoteSession = ({
                         </ButtonGroup>
                       </SpacingGroupStyle>
                     </PaperTicket>
-                  </PaperContainerStyle>
+                  </PaperContainerVoteStyle>
                 </Fragment>
               )}
             </ColorSection>

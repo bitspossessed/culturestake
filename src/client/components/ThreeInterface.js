@@ -76,7 +76,7 @@ const ThreeInterface = (props) => {
       <ThreeInterfaceElement
         bottom
         isVisible={props.isShowingInfo || (isShowingVote && !isExpanded)}
-        left
+        right
         onClick={onClickInfo}
       >
         <ThreeButtonInfo

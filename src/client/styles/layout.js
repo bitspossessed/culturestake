@@ -46,6 +46,18 @@ export const PaperContainerStyle = styled.div`
   margin: 0 auto;
 `;
 
+export const PaperContainerVoteStyle = styled.div`
+  @media screen and (max-width: 1125px) {
+    margin-left: 7rem;
+  }
+
+  overflow: hidden;
+
+  max-width: ${styles.layout.maxWidth};
+
+  margin: 0 auto;
+`;
+
 export const HorizontalSpacingStyle = styled.div`
   height: ${(props) => (props.isLarge ? '4rem' : '2rem')};
 `;
