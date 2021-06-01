@@ -29,7 +29,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lazaruslabs/culturestake.git"
+    "url": "git+https://github.com/bitspossessed/culturestake.git"
   },
   "private": true,
   "contributors": [
@@ -38,9 +38,9 @@
   ],
   "license": "AGPL-3.0",
   "bugs": {
-    "url": "https://github.com/lazaruslabs/culturestake/issues"
+    "url": "https://github.com/bitspossessed/culturestake/issues"
   },
-  "homepage": "https://github.com/lazaruslabs/culturestake#readme",
+  "homepage": "https://github.com/bitspossessed/culturestake#readme",
   "devDependencies": {
     "@babel/cli": "^7.11.5",
     "@babel/core": "^7.11.5",

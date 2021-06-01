@@ -6,7 +6,7 @@ import styles from '~/client/styles/variables';
 import snugglepunks from '~/client/assets/images/snugglepunks.svg';
 
 export const CLIP_PATH_DIMENSION = 300;
-export const SNUGGLEPUNKS_COUNT = 12;
+export const SNUGGLEPUNKS_COUNT = 8;
 
 export const ClipPathEllipsis = () => {
   return (
