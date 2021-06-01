@@ -169,31 +169,31 @@ const VoteSession = ({
   // If we ever open up customization of the vote tokens quantity, this will need to be fetched
   // from the chain or the graph, but for now, it is a constant
   useEffect(() => {
-    const getMaxVoteTokens = async (stepName) => {
+    const getMaxVoteTokens = async (stepName, questionData) => {
       const maxVoteTokens = MAX_VOTE_TOKENS;
       setCreditTotal((value) => ({
         ...value,
-        [stepName]: maxVoteTokens,
+        [stepName]: maxVoteTokens * questionData.answers.length,
       }));
       setCreditLeft((value) =>
         value[stepName] !== -1
           ? value
           : {
               ...value,
-              [stepName]: maxVoteTokens,
+              [stepName]: maxVoteTokens * questionData.answers.length,
             },
       );
     };
 
     if (festivalQuestionData.chainId) {
-      getMaxVoteTokens(STEP_FESTIVAL, festivalQuestionData.chainId);
+      getMaxVoteTokens(STEP_FESTIVAL, festivalQuestionData);
     }
 
     // Get data from artwork question (when festival question winner is set)
     if (artworkQuestionData.chainId && currentStep === STEP_ARTWORK) {
-      getMaxVoteTokens(STEP_ARTWORK, artworkQuestionData.chainId);
+      getMaxVoteTokens(STEP_ARTWORK, artworkQuestionData);
     }
-  }, [festivalQuestionData.chainId, artworkQuestionData.chainId, currentStep]);
+  }, [festivalQuestionData, artworkQuestionData, currentStep]);
 
   // Filter artwork for first question
   const artworks = useMemo(() => {
