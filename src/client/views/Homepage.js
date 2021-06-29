@@ -43,14 +43,7 @@ const Homepage = () => {
 
             <HorizontalSpacingStyle />
 
-            <iframe
-              allow="autoplay; fullscreen; picture-in-picture"
-              allowFullScreen
-              frameBorder="0"
-              height="360"
-              src="https://player.vimeo.com/video/523730680?title=0&byline=0"
-              width="640"
-            ></iframe>
+            <VideoItem />
 
             <HomepageStatistics />
 
@@ -152,6 +145,17 @@ const HomepageStatisticsItem = (props) => {
   );
 };
 
+const VideoItem = () => {
+  return (
+    <VideoItemStyle
+      allow="autoplay; fullscreen; picture-in-picture"
+      allowFullScreen
+      frameBorder="0"
+      src="https://player.vimeo.com/video/523730680?title=0&byline=0"
+    ></VideoItemStyle>
+  );
+};
+
 const HomepageStatisticsItemNumberStyle = styled(ParagraphStyle)`
   font-size: 6em !important;
   font-family: ${styles.typography.familyHeading}, sans-serif;
@@ -166,6 +170,15 @@ const HomepageStatisticsItemLabelStyle = styled(ParagraphStyle)`
 
   font-size: 2.5em !important;
   font-family: ${styles.typography.familyHeading}, sans-serif;
+`;
+
+const VideoItemStyle = styled.iframe`
+  @media max-width 500px {
+    height: 20rem;
+  }
+
+  width: 100%;
+  height: 50rem;
 `;
 
 const HomepageStatisticsItemStyle = styled.div`
