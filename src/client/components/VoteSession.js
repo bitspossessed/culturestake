@@ -13,7 +13,6 @@ import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import SnuggleRain from '~/client/components/SnuggleRain';
 import SnuggleSlider from '~/client/components/SnuggleSlider';
-import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeRotator from '~/client/components/ThreeRotator';
@@ -33,6 +32,7 @@ import {
 import {
   HorizontalSpacingStyle,
   PaperContainerStyle,
+  PaperContainerVoteStyle,
   SpacingGroupStyle,
 } from '~/client/styles/layout';
 import { VOTE_ACCOUNT_NAME } from '~/client/store/vote/actions';
@@ -40,7 +40,7 @@ import { getPrivateKey } from '~/client/services/wallet';
 import { packBooth } from '~/common/services/encoding';
 import { signAudienceVote } from '~/common/services/vote';
 import { useResource, useRequest, useRequestId } from '~/client/hooks/requests';
-import { useSticker, useStickerImage } from '~/client/hooks/sticker';
+import { useSticker } from '~/client/hooks/sticker';
 import { vote } from '~/client/store/vote/actions';
 
 const MAX_TOP_ARTWORKS = 3;
@@ -84,6 +84,8 @@ const VoteSession = ({
     }, {}),
     [STEP_ARTWORK]: {},
   });
+
+  console.log(creditLeft) // eslint-disable-line
 
   // Which answer of the first question had the most vote tokens?
   const [winnerArtworkId, setWinnerArtworkId] = useState(null);
@@ -432,7 +434,7 @@ const VoteSession = ({
                     total={creditTotal[STEP_FESTIVAL]}
                   />
 
-                  <PaperContainerStyle>
+                  <PaperContainerVoteStyle>
                     <PaperTicket>
                       <BoxFramed>
                         <HeadingPrimaryStyle>
@@ -476,7 +478,7 @@ const VoteSession = ({
                         {translate('VoteSession.buttonNextStep')}
                       </ButtonIcon>
                     </PaperTicket>
-                  </PaperContainerStyle>
+                  </PaperContainerVoteStyle>
                 </Fragment>
               ) : (
                 <Fragment>
@@ -485,7 +487,7 @@ const VoteSession = ({
                     total={creditTotal[STEP_ARTWORK]}
                   />
 
-                  <PaperContainerStyle>
+                  <PaperContainerVoteStyle>
                     <PaperTicket>
                       <BoxFramed>
                         <HeadingPrimaryStyle>
@@ -523,7 +525,7 @@ const VoteSession = ({
                         </ButtonGroup>
                       </SpacingGroupStyle>
                     </PaperTicket>
-                  </PaperContainerStyle>
+                  </PaperContainerVoteStyle>
                 </Fragment>
               )}
             </ColorSection>
@@ -535,7 +537,6 @@ const VoteSession = ({
 };
 
 const VoteSessionArtwork = (props) => {
-  const stickerImagePath = useStickerImage(props.images);
   const { scheme } = useSticker(props.stickerCode);
 
   const onCreditChange = ({ id, credit }) => {
@@ -549,8 +550,6 @@ const VoteSessionArtwork = (props) => {
   return (
     <Suspense fallback={null}>
       <PaperTicket scheme={scheme}>
-        <Sticker code={props.stickerCode} imagePath={stickerImagePath} />
-
         <StickerHeading
           scheme={scheme}
           subtitle={props.subtitle}
@@ -566,7 +565,11 @@ const VoteSessionArtwork = (props) => {
         />
 
         <VoteSessionArtworkLegendStyle>
-          <Legend scheme={scheme} title={translate('default.legendVote')} />
+          <Legend
+            firstTitle={translate('default.legendVote')}
+            scheme={scheme}
+            secondTitle={translate('default.legendVoteEfficacy')}
+          />
         </VoteSessionArtworkLegendStyle>
       </PaperTicket>
     </Suspense>
