@@ -28,6 +28,9 @@ const VoteCreditsBar = ({ total, left }) => {
         isAlternateColor={isAlternateColor}
         ref={refBarRange}
       >
+        <VoteCreditsBarNumberStyle isAlternateColor={isAlternateColor}>
+          {left}
+        </VoteCreditsBarNumberStyle>
         <VoteCreditsBarTextStyle isAlternateColor={isAlternateColor}>
           {translate('VoteCreditsBar.voteCredits')}
         </VoteCreditsBarTextStyle>
@@ -65,11 +68,31 @@ const VoteCreditsBarRangeStyle = styled.div`
     props.isAlternateColor ? styles.colors.yellow : styles.colors.violet};
   border-radius: 20px;
 
-  align-items: center;
+  flex-direction: column;
 `;
 
 const VoteCreditsBarTextStyle = styled.span`
   mix-blend-mode: ${(props) => (props.isAlternateColor ? 'exclusion' : null)};
+
+  height: 50%;
+
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  writing-mode: vertical-rl;
+
+  color: ${(props) =>
+    props.isAlternateColor ? styles.colors.yellow : styles.colors.violet};
+
+  font-weight: ${styles.typography.weightBold};
+  font-size: 1.1em;
+
+  transform: rotate(180deg);
+`;
+
+const VoteCreditsBarNumberStyle = styled.span`
+  mix-blend-mode: ${(props) => (props.isAlternateColor ? 'exclusion' : null)};
+
+  height: 10%;
 
   margin-right: 0.5rem;
   margin-left: 0.5rem;

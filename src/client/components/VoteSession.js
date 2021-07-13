@@ -85,8 +85,6 @@ const VoteSession = ({
     [STEP_ARTWORK]: {},
   });
 
-  console.log(creditLeft) // eslint-disable-line
-
   // Which answer of the first question had the most vote tokens?
   const [winnerArtworkId, setWinnerArtworkId] = useState(null);
 
