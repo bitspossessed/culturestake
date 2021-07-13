@@ -19,7 +19,7 @@
     "server:start": "cross-env NODE_ENV=production node ./build/server/index.js",
     "server:watch": "nodemon --watch ./src/server --exec cross-env NODE_ENV=development babel-node ./src/server/index.js --source-maps inline",
     "start": "npm run server:start",
-    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
+    "test": "cross-env NODE_ENV=test WORKER=true jest --runInBand --detectOpenHandles",
     "test:watch": "npm run test -- --watch",
     "backend:start": "concurrently --prefix '{pid}-{name}' --names 'API,WORKERS' --kill-others 'npm run server:start' 'npm run worker:start'",
     "backend:watch": "concurrently --prefix '{pid}-{name}' --names 'API,WORKERS' --kill-others 'npm run server:watch' 'npm run worker:watch'",
