@@ -101,6 +101,7 @@ const components = {
     fieldSticker: 'Sticker',
     fieldSubtitle: 'Subtitle',
     fieldTitle: 'Title:',
+    fieldLocationName: 'Location Name:',
     fieldQuestion: 'Question:',
     fieldArtworks: 'Artworks:',
     fieldUrl: 'Website:',
