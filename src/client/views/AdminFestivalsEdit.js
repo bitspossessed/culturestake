@@ -39,6 +39,7 @@ const AdminFestivalsEditForm = () => {
       'artworks',
       'description',
       'documents',
+      'locationName',
       'images',
       'online',
       'sticker',

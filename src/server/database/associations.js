@@ -44,6 +44,7 @@ export const festivalFields = [
   'url',
   'online',
   'thankyouUrl',
+  'locationName',
 ];
 export const invitationFields = [
   'boothSignature',

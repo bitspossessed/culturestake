@@ -22,6 +22,7 @@ const AdminFestivalsNew = () => {
     fields: [
       'artworks',
       'description',
+      'locationName',
       'documents',
       'images',
       'online',
