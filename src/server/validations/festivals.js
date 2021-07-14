@@ -20,6 +20,7 @@ const defaultValidation = {
   title: Joi.string().max(128).required(),
   url: Joi.string().uri().allow(''),
   thankyouUrl: Joi.string().uri().allow(''),
+  locationName: Joi.string().allow(''),
 };
 
 const createValidation = {

@@ -53,6 +53,9 @@ const Festival = db.define('festival', {
   thankyouUrl: {
     type: DataTypes.STRING,
   },
+  locationName: {
+    type: DataTypes.STRING,
+  },
 });
 
 SequelizeSlugify.slugifyModel(Festival, {
