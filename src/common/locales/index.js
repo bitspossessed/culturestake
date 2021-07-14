@@ -229,7 +229,7 @@ const components = {
     buttonInitializeAnswer: 'Initialize',
   },
   VoteCreditsBar: {
-    voteCredits: 'Vote Credits',
+    voteCredits: 'Voice Credits',
   },
   VoteSession: {
     bodyYourVotesRecorded: {
