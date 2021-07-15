@@ -30,6 +30,7 @@ const AdminFestivalsNew = () => {
       'subtitle',
       'title',
       'url',
+      'thankyouUrl',
       'question',
     ],
     resourcePath: ['festivals'],
