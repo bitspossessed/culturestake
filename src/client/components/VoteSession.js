@@ -8,7 +8,6 @@ import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import HorizontalLine from '~/client/components/HorizontalLine';
-import Legend from '~/client/components/Legend';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import SnuggleRain from '~/client/components/SnuggleRain';
@@ -561,14 +560,6 @@ const VoteSessionArtwork = (props) => {
           total={props.creditTotal}
           onChange={onCreditChange}
         />
-
-        <VoteSessionArtworkLegendStyle>
-          <Legend
-            firstTitle={translate('default.legendVote')}
-            scheme={scheme}
-            secondTitle={translate('default.legendVoteEfficacy')}
-          />
-        </VoteSessionArtworkLegendStyle>
       </PaperTicket>
     </Suspense>
   );
