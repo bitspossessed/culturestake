@@ -1,16 +1,11 @@
-import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { useHistory } from 'react-router-dom';
 
 import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
-import HorizontalLine from '~/client/components/HorizontalLine';
 import ThreeSplash from '~/client/components/ThreeSplash';
 import View from '~/client/components/View';
-import apiRequest from '~/client/services/api';
-import styles from '~/client/styles/variables';
 import translate from '~/common/services/i18n';
 import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
@@ -41,11 +36,32 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroductionFourth')}
             </ParagraphStyle>
 
+            <ParagraphStyle>
+              {translate('Homepage.bodyIntroductionFifth')}
+            </ParagraphStyle>
+
             <HorizontalSpacingStyle />
 
             <VideoItem />
 
-            <HomepageStatistics />
+            <HorizontalSpacingStyle />
+
+            <ParagraphStyle>
+              <strong>{translate('Homepage.bodyQuestion')}</strong>
+              {translate('Homepage.bodyAnswer')}
+            </ParagraphStyle>
+
+            <ParagraphStyle>
+              <strong>{translate('Homepage.bodyQuestionSecond')}</strong>
+              {translate('Homepage.bodyAnswerSecond')}
+            </ParagraphStyle>
+
+            <ParagraphStyle>
+              <strong>{translate('Homepage.bodyQuestionThird')}</strong>
+              {translate('Homepage.bodyAnswerThird')}
+            </ParagraphStyle>
+
+            <HorizontalSpacingStyle />
 
             <ButtonGroup>
               <ButtonIcon to="/festivals">
@@ -55,93 +71,15 @@ const Homepage = () => {
               <ButtonIcon href={FURTHERFIELD_URL}>
                 {translate('Homepage.buttonFurtherfield')}
               </ButtonIcon>
+
+              <ButtonIcon href={FURTHERFIELD_URL}>
+                {translate('Homepage.bodyLink')}
+              </ButtonIcon>
             </ButtonGroup>
           </ContainerStyle>
         </ColorSection>
       </View>
     </Fragment>
-  );
-};
-
-const HomepageStatistics = () => {
-  const history = useHistory();
-  const [statistics, setStatistics] = useState({
-    festivals: null,
-    artworks: null,
-    artists: null,
-  });
-
-  const countResources = async (resourceName) => {
-    const {
-      pagination: { total },
-    } = await apiRequest({
-      path: [resourceName],
-    });
-
-    return total;
-  };
-
-  useEffect(() => {
-    const updateStatistics = async () => {
-      const [festivals, artworks, artists] = await Promise.all([
-        countResources('festivals'),
-        countResources('artworks'),
-        countResources('artists'),
-      ]);
-
-      setStatistics({
-        festivals,
-        artworks,
-        artists,
-      });
-    };
-
-    updateStatistics();
-  }, []);
-
-  return (
-    <Fragment>
-      <HorizontalLine />
-
-      <HomepageStatisticsItem
-        label={translate('Homepage.bodyStatisticsFestivals')}
-        number={statistics.festivals}
-        onClick={() => {
-          console.log("click") // eslint-disable-line
-          history.push(`/festivals`);
-        }}
-      />
-
-      <HorizontalLine />
-
-      <HomepageStatisticsItem
-        label={translate('Homepage.bodyStatisticsArtists')}
-        number={statistics.artists}
-      />
-
-      <HorizontalLine />
-
-      <HomepageStatisticsItem
-        label={translate('Homepage.bodyStatisticsArtworks')}
-        number={statistics.artworks}
-      />
-
-      <HorizontalLine />
-    </Fragment>
-  );
-};
-
-const HomepageStatisticsItem = (props) => {
-  return (
-    <HomepageStatisticsItemStyle onClick={props.onClick}>
-      <HomepageStatisticsItemNumberStyle>
-        {props.number !== null ? props.number : '...'}
-      </HomepageStatisticsItemNumberStyle>
-
-      <HomepageStatisticsItemLabelStyle>
-        {props.label}
-      </HomepageStatisticsItemLabelStyle>
-    </HomepageStatisticsItemStyle>
   );
 };
 
@@ -156,22 +94,6 @@ const VideoItem = () => {
   );
 };
 
-const HomepageStatisticsItemNumberStyle = styled(ParagraphStyle)`
-  font-size: 6em !important;
-  font-family: ${styles.typography.familyHeading}, sans-serif;
-`;
-
-const HomepageStatisticsItemLabelStyle = styled(ParagraphStyle)`
-  @media ${styles.media.tablet} {
-    font-size: 5em !important;
-  }
-
-  margin: 0;
-
-  font-size: 2.5em !important;
-  font-family: ${styles.typography.familyHeading}, sans-serif;
-`;
-
 const VideoItemStyle = styled.iframe`
   @media max-width 500px {
     height: 20rem;
@@ -180,22 +102,5 @@ const VideoItemStyle = styled.iframe`
   width: 100%;
   height: 50rem;
 `;
-
-const HomepageStatisticsItemStyle = styled.div`
-  display: flex;
-
-  align-items: center;
-
-  ${/* sc-selector */ HomepageStatisticsItemNumberStyle},
-  ${/* sc-selector */ HomepageStatisticsItemLabelStyle} {
-    width: 50%;
-  }
-`;
-
-HomepageStatisticsItem.propTypes = {
-  label: PropTypes.string.isRequired,
-  number: PropTypes.number,
-  onClick: PropTypes.func,
-};
 
 export default Homepage;

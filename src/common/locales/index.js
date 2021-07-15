@@ -504,13 +504,25 @@ ccc@example.org`,
     bodyIntroductionSecondary:
       'Any cultural entity can set up a vote using the app and consult closely with the communities most impacted by their work. For example a city council might need to find out which new artwork should occupy a recently vacated public plinth. Or an arts organisation might need to know which artist on their shortlist should be next summer’s blockbuster.',
     bodyIntroductionThird:
-      'The app can be used for in-person or online voting events that provide tasters for larger projects. People vote on the ones most meaningful to them and where they live, while arts organisations go on to commission them at scale - with support from CultureStake producers Furtherfield.',
+      'The app can be used for in-person or online voting events that provide tasters for larger projects. Votes are weighted by the localities they are placed from, the closer you are to the artwork the more weight your vote will have on the collective decision.',
     bodyIntroductionFourth:
+      'People vote on the artworks most meaningful to them and where they live, while arts organisations go on to commission them at scale - with support from CultureStake producers Furtherfield. CultureStake puts people and places at the centre of cultural programming.',
+    bodyIntroductionFifth:
       'CultureStake puts people and places at the centre of cultural programming.',
+    bodyLink: 'Find out more about Quadratic Voting',
+    bodyQuestion: 'Why are we using Quadratic Voting (QV)? ',
+    bodyQuestionSecond: 'Why the Blockchain? ',
+    bodyQuestionThird: 'How does QV work? ',
+    bodyAnswer:
+      'Quadratic voting enhances collective decision-making in a democratic community by allocating votes that express not just what you care about but how much you care. The use of QV results in more nuanced decision-making, allowing people to convey the intensity of their convictions, which in turn fosters a stronger sense of agency among participants. This process puts more nuanced data into the voting system to enable communities to better understand what they care about most.',
+    bodyAnswerSecond:
+      'Because records are put on the blockchain it means it can be public audited and it creates a data commons for cultural communities widening the conversation about how art is valued by different communities. (note: we will be working on meaningful and valuable data visualisation for PPP in the next iteration)',
+    bodyAnswerThird:
+      'Voters receive budgets of “voice credits,” which they allocate to different proposals to signal the intensity of their support. Their voice credits convert to votes according to their square root.',
     bodyStatisticsArtists: 'Artists',
     bodyStatisticsArtworks: 'Artworks',
     bodyStatisticsFestivals: 'Festivals',
-    buttonViewFestivals: 'View Festivals',
+    buttonViewFestivals: 'View Events',
     buttonFurtherfield: 'Find out more about Furtherfield',
   },
   Invitations: {
