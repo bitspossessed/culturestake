@@ -79,6 +79,23 @@ const Invitations = () => {
           <HorizontalSpacingStyle />
           <ButtonSubmit>{translate('Invitations.buttonSubmit')}</ButtonSubmit>
         </Form>
+
+        <HeaderAdmin>{translate('Instructions.title')}</HeaderAdmin>
+
+        <ParagraphStyle>
+          <strong>{translate('Instructions.titleStepOne')}</strong>
+        </ParagraphStyle>
+        <ParagraphStyle>{translate('Instructions.bodyStepOne')}</ParagraphStyle>
+        <ParagraphStyle>
+          <strong>{translate('Instructions.titleStepTwo')}</strong>
+        </ParagraphStyle>
+        <ParagraphStyle>{translate('Instructions.bodyStepTwo')}</ParagraphStyle>
+        <ParagraphStyle>
+          <strong>{translate('Instructions.titleStepThree')}</strong>
+        </ParagraphStyle>
+        <ParagraphStyle>
+          {translate('Instructions.bodyStepThree')}
+        </ParagraphStyle>
       </ViewAdmin>
     </Fragment>
   );
