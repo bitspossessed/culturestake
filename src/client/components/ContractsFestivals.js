@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-// import { formatDistanceToNow, formatDistance, formatRelative } from 'date-fns';
 
 import ButtonOutline from '~/client/components/ButtonOutline';
 import ContractsFestivalVotingPeriod from '~/client/components/ContractsFestivalVotingPeriod';
@@ -140,41 +139,6 @@ const ContractsFestivalsInitialize = ({ chainId }) => {
   );
 };
 
-// export const ContractsFestivalVotingPeriod = ({ end, start }) => {
-//   const now = new Date();
-
-//   // Voting is open.
-//   if (now >= start && now <= end)
-//     return (
-//       <div>
-//         Voting closes {formatDistance(end, start, { addSuffix: true })} (
-//         {formatRelative(end, now)}).
-//       </div>
-//     );
-
-//   // voting expired.
-//   if (now > end)
-//     return (
-//       <div>
-//         Voting was closed {formatDistanceToNow(end, { addSuffix: true })} (
-//         {formatRelative(end, now)}
-//         ).
-//       </div>
-//     );
-
-//   // Voting starts in the future.
-//   if (now < start)
-//     return (
-//       <div>
-//         Voting will open {formatDistanceToNow(start, { addSuffix: true })} (
-//         {formatRelative(start, now)}).
-//       </div>
-//     );
-
-//   // Unreachable.
-//   return <div />;
-// };
-
 const ContractsFestivalsDeactivate = ({ chainId }) => {
   const dispatch = useDispatch();
   const owner = useOwnerAddress();
@@ -199,11 +163,6 @@ const ContractsFestivalsDeactivate = ({ chainId }) => {
     </ButtonOutline>
   );
 };
-
-// ContractsFestivalVotingPeriod.propTypes = {
-//   end: PropTypes.instanceOf(Date).isRequired,
-//   start: PropTypes.instanceOf(Date).isRequired,
-// };
 
 ContractsFestivalsDeactivate.propTypes = {
   chainId: PropTypes.string.isRequired,

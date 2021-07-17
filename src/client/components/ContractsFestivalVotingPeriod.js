@@ -19,20 +19,20 @@ export const ContractsFestivalVotingPeriod = ({ end, start }) => {
   // voting expired.
   if (now > end)
     return (
-      <div>
+      <ParagraphStyle>
         Voting was closed {formatDistanceToNow(end, { addSuffix: true })} (
         {formatRelative(end, now)}
         ).
-      </div>
+      </ParagraphStyle>
     );
 
   // Voting starts in the future.
   if (now < start)
     return (
-      <div>
+      <ParagraphStyle>
         Voting will open {formatDistanceToNow(start, { addSuffix: true })} (
         {formatRelative(start, now)}).
-      </div>
+      </ParagraphStyle>
     );
 
   // Unreachable.
