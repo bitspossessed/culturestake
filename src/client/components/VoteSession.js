@@ -3,6 +3,7 @@ import React, { Fragment, Suspense, useEffect, useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Box from '~/client/components/Box';
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
@@ -12,6 +13,7 @@ import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import SnuggleRain from '~/client/components/SnuggleRain';
 import SnuggleSlider from '~/client/components/SnuggleSlider';
+import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import ThreeCanvas from '~/client/components/ThreeCanvas';
 import ThreeRotator from '~/client/components/ThreeRotator';
@@ -39,7 +41,7 @@ import { getPrivateKey } from '~/client/services/wallet';
 import { packBooth } from '~/common/services/encoding';
 import { signAudienceVote } from '~/common/services/vote';
 import { useResource, useRequest, useRequestId } from '~/client/hooks/requests';
-import { useSticker } from '~/client/hooks/sticker';
+import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 import { vote } from '~/client/store/vote/actions';
 
 const MAX_TOP_ARTWORKS = 3;
@@ -433,10 +435,15 @@ const VoteSession = ({
 
                   <PaperContainerVoteStyle>
                     <PaperTicket>
+                      <Box>
+                        <HeadingPrimaryStyle>{data.title}</HeadingPrimaryStyle>
+                      </Box>
+                    </PaperTicket>
+                    <PaperTicket>
                       <BoxFramed>
-                        <HeadingPrimaryStyle>
+                        <HeadingSecondaryStyle>
                           {festivalQuestionData.title}
-                        </HeadingPrimaryStyle>
+                        </HeadingSecondaryStyle>
                       </BoxFramed>
                       {data.online ? (
                         <Fragment>
@@ -453,6 +460,26 @@ const VoteSession = ({
 
                     {artworks.map((artwork) => {
                       return (
+                        <VoteSessionArtworkSticker
+                          artistName={artwork.artist.name}
+                          images={artwork.images}
+                          key={artwork.id}
+                          stickerCode={artwork.sticker}
+                          title={artwork.title}
+                        />
+                      );
+                    })}
+
+                    <PaperTicket>
+                      <BoxFramed>
+                        <HeadingSecondaryStyle>
+                          {translate('VoteSession.vote')}
+                        </HeadingSecondaryStyle>
+                      </BoxFramed>
+                    </PaperTicket>
+
+                    {artworks.map((artwork) => {
+                      return (
                         <VoteSessionArtwork
                           answerId={artwork.answerId}
                           credit={credits[STEP_FESTIVAL][artwork.answerId]}
@@ -460,7 +487,6 @@ const VoteSession = ({
                           images={artwork.images}
                           key={artwork.id}
                           stickerCode={artwork.sticker}
-                          subtitle={artwork.subtitle}
                           title={artwork.title}
                           onCreditChange={onCreditChange}
                         />
@@ -530,6 +556,22 @@ const VoteSession = ({
         </Fragment>
       )}
     </Fragment>
+  );
+};
+
+const VoteSessionArtworkSticker = (props) => {
+  const stickerImagePath = useStickerImage(props.images);
+  const { scheme } = useSticker(props.stickerCode);
+
+  return (
+    <PaperTicket scheme={scheme}>
+      <Sticker code={props.stickerCode} imagePath={stickerImagePath} />
+      <StickerHeading
+        scheme={scheme}
+        subtitle={props.artistName}
+        title={props.title}
+      />
+    </PaperTicket>
   );
 };
 
@@ -611,6 +653,13 @@ VoteSessionArtwork.propTypes = {
   onCreditChange: PropTypes.func.isRequired,
   stickerCode: PropTypes.string,
   subtitle: PropTypes.string,
+  title: PropTypes.string.isRequired,
+};
+
+VoteSessionArtworkSticker.propTypes = {
+  artistName: PropTypes.string,
+  images: PropTypes.array,
+  stickerCode: PropTypes.string,
   title: PropTypes.string.isRequired,
 };
 

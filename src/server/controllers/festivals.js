@@ -48,9 +48,12 @@ const options = {
   ],
   fieldsProtected: ['documents', 'chainId'],
   include: [
-    FestivalBelongsToManyArtworks,
     FestivalHasManyDocuments,
     FestivalHasManyImages,
+    {
+      association: FestivalBelongsToManyArtworks,
+      include: [ArtworkBelongsToArtist],
+    },
   ],
   associations: [
     {
@@ -63,7 +66,13 @@ const options = {
     },
     {
       association: FestivalBelongsToManyArtworks,
-      fields: [...artworkFields],
+      fields: [...artworkFields, 'artist'],
+      associations: [
+        {
+          association: ArtworkBelongsToArtist,
+          fields: [...artistFields],
+        },
+      ],
     },
   ],
 };
@@ -129,11 +138,15 @@ const optionsWithQuestions = {
           associations: [
             {
               association: AnswerBelongsToArtwork,
-              fields: [...artworkFields, 'images'],
+              fields: [...artworkFields, 'images', 'artist'],
               associations: [
                 {
                   association: ArtworkHasManyImages,
                   fields: [...imageFileFields],
+                },
+                {
+                  association: ArtworkBelongsToArtist,
+                  fields: [...artistFields],
                 },
               ],
             },
@@ -160,7 +173,7 @@ const optionsWithQuestions = {
           include: [
             {
               association: AnswerBelongsToArtwork,
-              include: [ArtworkHasManyImages],
+              include: [ArtworkHasManyImages, ArtworkBelongsToArtist],
             },
             AnswerBelongsToProperty,
           ],
