@@ -23,8 +23,8 @@
     "test:watch": "npm run test -- --watch",
     "backend:start": "concurrently --prefix '{pid}-{name}' --names 'API,WORKERS' --kill-others 'npm run server:start' 'npm run worker:start'",
     "backend:watch": "concurrently --prefix '{pid}-{name}' --names 'API,WORKERS' --kill-others 'npm run server:watch' 'npm run worker:watch'",
-    "worker:serve": "NODE_ENV=development babel-node -r dotenv/config ./src/server/worker.js --source-maps inline",
-    "worker:start": "cross-env NODE_ENV=production WORKER=true node ./build/server/worker.js",
+    "worker:serve": "NODE_ENV=production babel-node -r dotenv/config ./src/server/worker.js --source-maps inline",
+    "worker:start": "cross-env NODE_ENV=development WORKER=true node ./build/server/worker.js",
     "worker:watch": "WORKER=true nodemon --watch ./src --exec npm run worker:serve"
   },
   "repository": {
