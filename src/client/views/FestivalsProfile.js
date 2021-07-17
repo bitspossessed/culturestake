@@ -7,6 +7,7 @@ import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonMore from '~/client/components/ButtonMore';
 import ColorSection from '~/client/components/ColorSection';
+import ContractsFestivalVotingPeriod from '~/client/components/ContractsFestivalVotingPeriod';
 import Legend from '~/client/components/Legend';
 import Loading from '~/client/components/Loading';
 import Paper from '~/client/components/Paper';
@@ -17,6 +18,7 @@ import StickerHeading from '~/client/components/StickerHeading';
 import UnderlineLink from '~/client/components/UnderlineLink';
 import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
+import { epochToDate } from '~/common/utils/time';
 import {
   ContainerStyle,
   HorizontalSpacingStyle,
@@ -123,6 +125,15 @@ const FestivalsProfile = () => {
 
                 <HorizontalSpacingStyle isLarge />
               </Paper>
+
+              <PaperTicket>
+                <BoxFramed>
+                  <ContractsFestivalVotingPeriod
+                    end={epochToDate(festival.endTime)}
+                    start={epochToDate(festival.startTime)}
+                  />
+                </BoxFramed>
+              </PaperTicket>
 
               <PaperTicket>
                 {questionTitle && artworks && artworks.length > 0 && (

@@ -2,6 +2,7 @@ import httpStatus from 'http-status';
 import { EmptyResultError } from 'sequelize';
 import stringify from 'csv-stringify';
 
+import { getFestival } from '~/common/services/contracts/festivals';
 import APIError from '~/server/helpers/errors';
 import Artwork from '~/server/models/artwork';
 import Festival from '~/server/models/festival';
@@ -112,7 +113,7 @@ const optionsRead = {
 
 const optionsWithQuestions = {
   model: Festival,
-  fields: [...festivalFields, 'images', 'questions'],
+  fields: [...festivalFields, 'images', 'questions', 'startTime', 'endTime'],
   associations: [
     {
       association: FestivalHasManyImages,
@@ -263,10 +264,11 @@ async function getQuestions(req, res, next) {
       where,
     });
 
-    respondWithSuccess(
-      res,
-      filterResponseFields(req, data, optionsWithQuestions),
-    );
+    const { startTime, endTime } = await getFestival(data.chainId);
+
+    const filtered = filterResponseFields(req, data, optionsWithQuestions);
+
+    respondWithSuccess(res, { ...filtered, startTime, endTime });
   } catch (error) {
     if (error instanceof EmptyResultError) {
       next(new APIError(httpStatus.NOT_FOUND));
