@@ -176,16 +176,16 @@ const components = {
     buttonGenerateParticles: 'Generate particles',
   },
   Instructions: {
-    title: 'Instructions',
-    titleStepOne: '1. Step',
+    title: 'How to Vote',
+    titleStepOne: 'Step 1',
     bodyStepOne:
-      'CultureStake connects communities, artists and cultural organisations through playful collective decision-making.',
-    titleStepTwo: '2. Step',
+      'Tell us how you feel about each of the artworks by sliding the sliders. You’ll notice that your voice credits get low as you vote. If you want more voice credits, you’ll need to take a few votes off an existing selection.',
+    titleStepTwo: 'Step 2',
     bodyStepTwo:
-      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
-    titleStepThree: '3. Step',
+      'Submit your choices and follow the same steps to tell us a bit more about how you felt about the experience you liked the most.',
+    titleStepThree: 'Step 3',
     bodyStepThree:
-      'Quibusdam ad vel itaque. Qui nobis enim ullam. Quis asperiores similique aliquid laborum nobis maxime officiis. Quod delectus amet ut. Itaque similique qui excepturi sint eaque porro corrupti.  Adipisci illum ea sint eaque.',
+      'Watch this space. When all the votes are in at the end of August, we will share what was important to all of you in making your selections. Then we’ll work with the artist(s) to make the work you all chose. And we’ll contact you when it’s nearly ready, so we can all make plans to enjoy it together in October 2021.',
   },
   Loading: {
     bodyLoading: 'Loading ...',
@@ -243,10 +243,11 @@ const components = {
     buttonVoteResults: 'View the vote results so far',
     buttonThankyou: 'Click here to try on our thank you instagram filter!',
     buttonToHomepage: 'Back to Homepage',
-    buttonFestivalLink: 'Go to the festival site',
+    buttonFestivalLink: 'Go to the project website',
     buttonVote: 'Vote',
     errorVoteFailure: 'Your vote was not accepted .. did you already vote?',
     festivalLinkPrompt: "Haven't finished checking out the artworks yet?",
+    vote: 'VOTE!',
   },
   VoteSessionCreator: {
     bodyBoothAddress: 'Booth address:',
