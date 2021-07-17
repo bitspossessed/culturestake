@@ -14,6 +14,7 @@ import {
   QuestionBelongsToArtwork,
   ArtworkBelongsToArtist,
   answerFields,
+  artistFields,
   artworkFields,
   festivalFields,
   propertyFields,
@@ -54,15 +55,15 @@ const optionsRead = {
     },
     {
       association: QuestionHasManyAnswers,
-      fields: [...answerFields],
+      fields: [...answerFields, 'artwork'],
       associations: [
         {
           association: AnswerBelongsToArtwork,
-          fields: [...artworkFields],
+          fields: [...artworkFields, 'artist'],
           associations: [
             {
               association: ArtworkBelongsToArtist,
-              fields: [...artworkFields],
+              fields: [...artistFields],
             },
           ],
         },
