@@ -13,6 +13,13 @@ const mailing = new Queue('Send mails', redisUrl, {
   settings: redisLongRunningOptions,
 });
 
+const customTemplates = {
+  'peoples-park-plinth': {
+    subject:
+      'Your Vote for the People’s Park Plinth @Furtherfield Gallery [Finsbury Park]',
+  },
+};
+
 processor(mailing).process(
   async ({ data: { to, subject, template, data = {} } }) => {
     const send = mailer(isDev || isTest ? devTransporter : prodTransporter);
@@ -28,20 +35,34 @@ export const testEmail = (to = 'me@example.org', data = { name: 'Meesix' }) =>
     data,
   });
 
-export const voteInvitationEmail = (to = 'me@example.org', data = {}) =>
-  submitJob(mailing, `${to}#voteInvitation`, {
-    subject: 'You are invited to vote',
-    template: 'vote-invitation',
+export const voteInvitationEmail = (to = 'me@example.org', data = {}) => {
+  const templateName = Object.keys(customTemplates).includes(data.festivalSlug)
+    ? data.festivalSlug
+    : 'vote';
+  return submitJob(mailing, `${to}#voteInvitation`, {
+    subject:
+      templateName === 'vote'
+        ? 'You are invited to vote'
+        : customTemplates[templateName].subject,
+    template: `${templateName}-invitation`,
     to,
     data,
   });
+};
 
-export const voteEmail = (to = 'me@example.org', data = {}) =>
+export const voteEmail = (to = 'me@example.org', data = {}) => {
+  const templateName = Object.keys(customTemplates).includes(data.festivalSlug)
+    ? data.festivalSlug
+    : 'vote';
   submitJob(mailing, `${to}#vote`, {
-    subject: 'Your vote link',
-    template: 'vote',
+    subject:
+      templateName === 'vote'
+        ? 'Your Vote Link'
+        : customTemplates[templateName].subject,
+    template: `${templateName}`,
     to,
     data,
-  });
+  })
+};
 
 export default mailing;
