@@ -6,7 +6,7 @@ import Slider, { SliderStyle } from '~/client/components/Slider';
 import { SNUGGLEPUNKS_COUNT } from '~/client/components/SVGDefinitions';
 import { useScheme } from '~/client/hooks/scheme';
 
-const SNUGGLEPUNK_SIZE = 8;
+const SNUGGLEPUNK_SIZE = 6;
 
 function isNotTouchEvent(event) {
   return (
@@ -171,10 +171,10 @@ const SnuggleSliderStyle = styled.div`
   cursor: pointer;
 
   ${SliderStyle} {
-    height: ${SNUGGLEPUNK_SIZE}rem;
+    height: ${SNUGGLEPUNK_SIZE * 2}rem;
 
-    padding-right: ${SNUGGLEPUNK_SIZE / 3}rem;
-    padding-left: ${SNUGGLEPUNK_SIZE / 3}rem;
+    padding-right: ${SNUGGLEPUNK_SIZE / 4}rem;
+    padding-left: ${SNUGGLEPUNK_SIZE / 4}rem;
   }
 
   &:hover {

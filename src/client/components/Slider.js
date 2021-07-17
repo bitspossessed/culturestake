@@ -4,8 +4,9 @@ import styled from 'styled-components';
 
 import styles from '~/client/styles/variables';
 import { useScheme } from '~/client/hooks/scheme';
+import { HorizontalSpacingStyle } from '~/client/styles/layout';
 
-const SNUGGLEPUNK_SIZE = 8;
+const SNUGGLEPUNK_SIZE = 6;
 
 // eslint-disable-next-line react/display-name
 const Slider = React.forwardRef(
@@ -17,6 +18,7 @@ const Slider = React.forwardRef(
 
     // Calculate slider position
     const percentage = (credit / total) * 100;
+    const votes = Math.floor(Math.sqrt(credit));
     const quadraticPercentage = (Math.sqrt(credit) / Math.sqrt(total)) * 100;
 
     useEffect(() => {
@@ -40,12 +42,31 @@ const Slider = React.forwardRef(
 
     return (
       <SliderStyle {...props} ref={ref}>
-        <SliderBarQuadtraticStyle
-          percentage={Math.floor(Math.sqrt(percentage))}
-          ref={refQuadBar}
-          scheme={scheme}
-        />
-        <SliderBarStyle percentage={percentage} ref={refBar} scheme={scheme} />
+        <SliderBarContainerStyle>
+          <SliderBarQuadtraticStyle
+            percentage={Math.floor(Math.sqrt(percentage))}
+            ref={refQuadBar}
+            scheme={scheme}
+          />
+          <SliderNumberStyle>{votes}</SliderNumberStyle>
+        </SliderBarContainerStyle>
+
+        <LegendLabelStyle scheme={scheme}>Votes</LegendLabelStyle>
+
+        <HorizontalSpacingStyle />
+
+        <SliderBarContainerStyle>
+          <SliderBarStyle
+            percentage={percentage}
+            ref={refBar}
+            scheme={scheme}
+          />
+          <SliderNumberStyle>{credit}</SliderNumberStyle>
+        </SliderBarContainerStyle>
+
+        <LegendLabelStyle scheme={scheme}>Voice Credits</LegendLabelStyle>
+
+        <HorizontalSpacingStyle />
 
         <SnuggleSliderHandleContainerStyle
           percentage={percentage}
@@ -58,6 +79,29 @@ const Slider = React.forwardRef(
   },
 );
 
+export const LegendLabelStyle = styled.p`
+  padding-top: 0.5rem;
+
+  color: ${(props) => styles.schemes[props.scheme].foreground};
+`;
+
+export const SliderNumberStyle = styled.span`
+  padding-left: 2rem;
+
+  font-size: 2rem;
+  font-family: ${styles.typography.familyHeading}, sans-serif;
+`;
+
+export const SliderBarContainerStyle = styled.div`
+  display: flex;
+
+  width: 100%;
+
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
 export const SliderStyle = styled.div`
   position: relative;
 
@@ -65,15 +109,13 @@ export const SliderStyle = styled.div`
 
   width: 100%;
 
-  align-items: center;
+  align-items: baseline;
   flex-direction: column;
 `;
 
 export const SliderBarQuadtraticStyle = styled.div`
-  width: 100%;
+  width: calc(100% - 5rem);
   height: 1.5rem;
-
-  margin-top: 2.5rem;
 
   border: 1.5px solid;
   border-color: ${(props) => {
@@ -83,7 +125,7 @@ export const SliderBarQuadtraticStyle = styled.div`
 `;
 
 export const SliderBarStyle = styled.div`
-  width: 100%;
+  width: calc(100% - 5rem);
   height: 1.5rem;
 
   border: 1.5px solid;
@@ -96,9 +138,9 @@ export const SliderBarStyle = styled.div`
 export const SnuggleSliderHandleContainerStyle = styled.div`
   position: absolute;
 
-  top: 0;
-  right: ${SNUGGLEPUNK_SIZE / 3}rem;
-  left: ${SNUGGLEPUNK_SIZE / 3}rem;
+  top: 5rem;
+  right: 5rem;
+  left: ${SNUGGLEPUNK_SIZE / 4}rem;
 
   pointer-events: none;
 
