@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { formatDistanceToNow, formatDistance, formatRelative } from 'date-fns';
+// import { formatDistanceToNow, formatDistance, formatRelative } from 'date-fns';
 
 import ButtonOutline from '~/client/components/ButtonOutline';
+import ContractsFestivalVotingPeriod from '~/client/components/ContractsFestivalVotingPeriod';
 import DateTimePicker from '~/client/components/DateTimePicker';
 import EthereumContainer from '~/client/components/EthereumContainer';
 import translate from '~/common/services/i18n';
@@ -139,40 +140,40 @@ const ContractsFestivalsInitialize = ({ chainId }) => {
   );
 };
 
-const ContractsFestivalVotingPeriod = ({ end, start }) => {
-  const now = new Date();
+// export const ContractsFestivalVotingPeriod = ({ end, start }) => {
+//   const now = new Date();
 
-  // Voting is open.
-  if (now >= start && now <= end)
-    return (
-      <div>
-        Voting closes {formatDistance(end, start, { addSuffix: true })} (
-        {formatRelative(end, now)}).
-      </div>
-    );
+//   // Voting is open.
+//   if (now >= start && now <= end)
+//     return (
+//       <div>
+//         Voting closes {formatDistance(end, start, { addSuffix: true })} (
+//         {formatRelative(end, now)}).
+//       </div>
+//     );
 
-  // voting expired.
-  if (now > end)
-    return (
-      <div>
-        Voting was closed {formatDistanceToNow(end, { addSuffix: true })} (
-        {formatRelative(end, now)}
-        ).
-      </div>
-    );
+//   // voting expired.
+//   if (now > end)
+//     return (
+//       <div>
+//         Voting was closed {formatDistanceToNow(end, { addSuffix: true })} (
+//         {formatRelative(end, now)}
+//         ).
+//       </div>
+//     );
 
-  // Voting starts in the future.
-  if (now < start)
-    return (
-      <div>
-        Voting will open {formatDistanceToNow(start, { addSuffix: true })} (
-        {formatRelative(start, now)}).
-      </div>
-    );
+//   // Voting starts in the future.
+//   if (now < start)
+//     return (
+//       <div>
+//         Voting will open {formatDistanceToNow(start, { addSuffix: true })} (
+//         {formatRelative(start, now)}).
+//       </div>
+//     );
 
-  // Unreachable.
-  return <div />;
-};
+//   // Unreachable.
+//   return <div />;
+// };
 
 const ContractsFestivalsDeactivate = ({ chainId }) => {
   const dispatch = useDispatch();
@@ -199,10 +200,10 @@ const ContractsFestivalsDeactivate = ({ chainId }) => {
   );
 };
 
-ContractsFestivalVotingPeriod.propTypes = {
-  end: PropTypes.instanceOf(Date).isRequired,
-  start: PropTypes.instanceOf(Date).isRequired,
-};
+// ContractsFestivalVotingPeriod.propTypes = {
+//   end: PropTypes.instanceOf(Date).isRequired,
+//   start: PropTypes.instanceOf(Date).isRequired,
+// };
 
 ContractsFestivalsDeactivate.propTypes = {
   chainId: PropTypes.string.isRequired,
