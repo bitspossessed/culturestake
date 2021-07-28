@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense } from 'react';
 import styled from 'styled-components';
 
 import ButtonGroup from '~/client/components/ButtonGroup';
@@ -9,6 +9,8 @@ import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
 import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
+import diagram from '~/client/assets/images/CultureStake-Diagram.svg';
+import InlineSVG from '~/client/components/InlineSVG';
 
 const FURTHERFIELD_URL = 'https://www.furtherfield.org';
 
@@ -63,6 +65,10 @@ const Homepage = () => {
 
             <HorizontalSpacingStyle />
 
+            <Suspense fallback={null}>
+              <Diagram />
+            </Suspense>
+
             <ButtonGroup>
               <ButtonIcon to="/festivals">
                 {translate('Homepage.buttonViewFestivals')}
@@ -81,6 +87,10 @@ const Homepage = () => {
       </View>
     </Fragment>
   );
+};
+
+const Diagram = () => {
+  return <InlineSVG url={diagram} />;
 };
 
 const VideoItem = () => {
