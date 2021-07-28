@@ -8,7 +8,7 @@ import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonMore from '~/client/components/ButtonMore';
 import ColorSection from '~/client/components/ColorSection';
 import ContractsFestivalVotingPeriod from '~/client/components/ContractsFestivalVotingPeriod';
-import Legend from '~/client/components/Legend';
+import FestivalVoteResult from '~/client/components/FestivalVoteResult';
 import Loading from '~/client/components/Loading';
 import Paper from '~/client/components/Paper';
 import PaperTicket from '~/client/components/PaperTicket';
@@ -146,29 +146,31 @@ const FestivalsProfile = () => {
 
                     <HorizontalSpacingStyle isLarge />
 
-                    {artworks.map((artwork) => {
+                    {artworks.map((artwork, idx) => {
                       return (
-                        <FestivalProfileArtwork
-                          artistName={artwork.artist.name}
-                          artworkSlug={artwork.slug}
-                          credit={artwork.voteTokens}
-                          festivalSlug={festival.slug}
-                          key={artwork.id}
-                          scheme={scheme}
-                          title={artwork.title}
-                          total={maxVotePower}
-                        />
+                        <PaperTicket key={artwork.id}>
+                          <FestivalVoteResult
+                            artistName={artwork.artist.name}
+                            artworkDesc={artwork.description}
+                            artworkSlug={artwork.slug}
+                            artworkTitle={artwork.title}
+                            credit={artwork.voteTokens}
+                            festivalSlug={festival.slug}
+                            images={artwork.images}
+                            rank={idx + 1}
+                            sticker={artwork.sticker}
+                            total={maxVotePower}
+                            votePower={maxVotePower}
+                          />
+                        </PaperTicket>
                       );
                     })}
 
-                    <Legend
-                      scheme={scheme}
-                      title={translate('default.legendVotes')}
-                    />
-
-                    <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle isLarge />
                   </Fragment>
                 )}
+
+                <HorizontalSpacingStyle />
 
                 <ButtonIcon to={`/festivals/${festival.slug}/artworks`}>
                   {translate('FestivalsProfile.buttonShowAllArtworks')}
