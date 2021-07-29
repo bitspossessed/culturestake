@@ -46,7 +46,7 @@ export const ClipPathSnake = () => {
   return (
     <path
       d="M1 1L200 1L200 159C132 124 93 111 85 120C72 133 129 184 117 197C109 206 70 193 1 159L1 1Z"
-      transform="translate(50, 50)"
+      transform="translate(150, 150)"
     />
   );
 };

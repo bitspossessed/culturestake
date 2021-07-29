@@ -59,7 +59,7 @@ const VoteCreditsBarRangeStyle = styled.div`
     margin-right: ${styles.layout.spacing};
   }
 
-  display: flex;
+  display: flex !important;
 
   height: 80vh;
 
@@ -68,7 +68,7 @@ const VoteCreditsBarRangeStyle = styled.div`
     props.isAlternateColor ? styles.colors.yellow : styles.colors.violet};
   border-radius: 20px;
 
-  flex-direction: column;
+  flex-direction: column !important;
 `;
 
 const VoteCreditsBarTextStyle = styled.span`
