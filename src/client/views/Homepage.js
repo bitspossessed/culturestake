@@ -89,6 +89,8 @@ const Homepage = () => {
               {translate('Homepage.bodyThirdBulletThreeFollowup')}
             </ParagraphStyle>
 
+            <HorizontalSpacingStyle />
+
             <VideoItem />
 
             <HorizontalSpacingStyle />
