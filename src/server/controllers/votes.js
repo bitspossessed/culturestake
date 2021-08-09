@@ -9,10 +9,12 @@ import {
   AnswerBelongsToArtwork,
   AnswerBelongsToProperty,
   ArtworkBelongsToArtist,
+  ArtworkHasManyImages,
   QuestionHasManyAnswers,
   VoteBelongsToManyVoteweights,
   artistFields,
   artworkFields,
+  imageFileFields,
   propertyFields,
   questionFields,
   voteFields,
@@ -35,11 +37,16 @@ const answerAssociation = {
   associations: [
     {
       association: AnswerBelongsToArtwork,
-      fields: [...artworkFields, 'artist'],
+      fields: [...artworkFields, 'artist', 'images'],
       associations: [
         {
           association: ArtworkBelongsToArtist,
           fields: [...artistFields],
+        },
+        {
+          association: ArtworkHasManyImages,
+          destroyCascade: false,
+          fields: [...imageFileFields],
         },
       ],
     },
@@ -77,7 +84,7 @@ const optionsResults = {
       include: [
         {
           association: AnswerBelongsToArtwork,
-          include: ArtworkBelongsToArtist,
+          include: [ArtworkBelongsToArtist, ArtworkHasManyImages],
         },
         AnswerBelongsToProperty,
       ],

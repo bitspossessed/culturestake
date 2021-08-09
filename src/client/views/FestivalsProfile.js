@@ -1,18 +1,14 @@
-import PropTypes from 'prop-types';
 import React, { Fragment, useMemo } from 'react';
-import styled from 'styled-components';
 import { useParams, useHistory } from 'react-router-dom';
 
 import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
-import ButtonMore from '~/client/components/ButtonMore';
 import ColorSection from '~/client/components/ColorSection';
 import ContractsFestivalVotingPeriod from '~/client/components/ContractsFestivalVotingPeriod';
-import Legend from '~/client/components/Legend';
+import VoteResult from '~/client/components/VoteResult';
 import Loading from '~/client/components/Loading';
 import Paper from '~/client/components/Paper';
 import PaperTicket from '~/client/components/PaperTicket';
-import Slider from '~/client/components/Slider';
 import Sticker from '~/client/components/Sticker';
 import StickerHeading from '~/client/components/StickerHeading';
 import UnderlineLink from '~/client/components/UnderlineLink';
@@ -146,29 +142,28 @@ const FestivalsProfile = () => {
 
                     <HorizontalSpacingStyle isLarge />
 
-                    {artworks.map((artwork) => {
+                    {artworks.map((artwork, idx) => {
                       return (
-                        <FestivalProfileArtwork
-                          artistName={artwork.artist.name}
-                          artworkSlug={artwork.slug}
-                          credit={artwork.voteTokens}
-                          festivalSlug={festival.slug}
-                          key={artwork.id}
-                          scheme={scheme}
-                          title={artwork.title}
-                          total={maxVotePower}
-                        />
+                        <PaperTicket key={artwork.id}>
+                          <VoteResult
+                            credit={artwork.voteTokens}
+                            images={artwork.images}
+                            rank={idx + 1}
+                            sticker={artwork.sticker}
+                            subtitle={artwork.artist.name}
+                            title={artwork.title}
+                            total={maxVotePower}
+                            type="artwork"
+                          />
+                        </PaperTicket>
                       );
                     })}
 
-                    <Legend
-                      scheme={scheme}
-                      title={translate('default.legendVotes')}
-                    />
-
-                    <HorizontalSpacingStyle />
+                    <HorizontalSpacingStyle isLarge />
                   </Fragment>
                 )}
+
+                <HorizontalSpacingStyle />
 
                 <ButtonIcon to={`/festivals/${festival.slug}/artworks`}>
                   {translate('FestivalsProfile.buttonShowAllArtworks')}
@@ -180,46 +175,6 @@ const FestivalsProfile = () => {
       </ColorSection>
     </View>
   );
-};
-
-const FestivalProfileArtwork = (props) => {
-  return (
-    <FestivalProfileArtworkStyle>
-      <FestivalProfileArtworkButtonStyle>
-        <ButtonMore
-          to={`/festivals/${props.festivalSlug}/artworks/${props.artworkSlug}`}
-        />
-      </FestivalProfileArtworkButtonStyle>
-
-      <HeadingSecondaryStyle>{props.title}</HeadingSecondaryStyle>
-      <HeadingSecondaryStyle>{props.artistName}</HeadingSecondaryStyle>
-
-      <Slider credit={props.credit} scheme={props.scheme} total={props.total} />
-
-      <HorizontalSpacingStyle />
-    </FestivalProfileArtworkStyle>
-  );
-};
-
-export const FestivalProfileArtworkStyle = styled.div`
-  position: relative;
-`;
-
-export const FestivalProfileArtworkButtonStyle = styled.div`
-  position: absolute;
-
-  top: 0;
-  right: 0;
-`;
-
-FestivalProfileArtwork.propTypes = {
-  artistName: PropTypes.string.isRequired,
-  artworkSlug: PropTypes.string.isRequired,
-  credit: PropTypes.number.isRequired,
-  festivalSlug: PropTypes.string.isRequired,
-  scheme: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  total: PropTypes.number.isRequired,
 };
 
 export default FestivalsProfile;
