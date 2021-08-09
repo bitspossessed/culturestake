@@ -238,6 +238,9 @@ const components = {
       one: 'Your votes have been recorded. Your top artwork is:',
       other: 'Your votes have been recorded. Your top {count} artworks are:',
     },
+    artworkSubheader:
+      'You have decided this is the experience you would like to see produced at larger scale in {location}.',
+    artworkSubheaderTwo: 'Let us know why it is your favourite one.',
     buttonNextStep: 'Next',
     buttonPreviousStep: 'Return',
     buttonVoteResults: 'View the vote results so far',
@@ -501,25 +504,55 @@ ccc@example.org`,
   },
   Homepage: {
     bodyIntroduction:
-      'CultureStake connects communities, artists and cultural organisations through playful collective decision-making.',
-    bodyIntroductionSecondary:
-      'Any cultural entity can set up a vote using the app and consult closely with the communities most impacted by their work. For example a city council might need to find out which new artwork should occupy a recently vacated public plinth. Or an arts organisation might need to know which artist on their shortlist should be next summer’s blockbuster.',
+      'CultureStake connects communities, artists and organisations through collective cultural decision-making utilising Quadratic Voting.',
+    bodyIntroductionSecondary: 'At Culturestake we want to:',
+    bodySecondBulletOne:
+      'End elitism around the arts - by opening cultural decision making to a wider groups and providing more agency to communities.',
+    bodySecondBulletTwo:
+      'Enable people to have a stake in what cultural activities get produced in their locality',
+    bodySecondBulletThree:
+      'Explore together as communities what cultural experiences we want to have in the places that matter to us.',
+
     bodyIntroductionThird:
-      'The app can be used for in-person or online voting events that provide tasters for larger projects. Votes are weighted by the localities they are placed from, the closer you are to the artwork the more weight your vote will have on the collective decision.',
+      'CultureStake is a web app for community decision making around culture:',
+    bodyThirdBulletOne: 'For Communities:',
+    bodyThirdBulletOneFollowup:
+      'We create an appetite for culture by encouraging communities to explore and learn together what we want to experience in our localities. For example how might a theatre audience cast a play differently or a park community curate a public art exhibition?',
+    bodyThirdBulletTwo: 'For Cultural Organisations:',
+    bodyThirdBulletTwoFollowup:
+      'We facilitate a deeper and richer, more open consultation with the communities cultural organisations work for. For example, a city council might need to find out which new artwork should occupy a recently vacated public plinth. Or an arts organisation might need to know which artist on their shortlist should be next summer’s blockbuster.',
+    bodyThirdBulletThree: 'For All:',
+    bodyThirdBulletThreeFollowup:
+      'We create data commons that widens the conversation about how art is valued by different communities around the world.',
+    headingOne:
+      'From numbers to nuanced feelings or why we used Quadratic Voting',
     bodyIntroductionFourth:
-      'People vote on the artworks most meaningful to them and where they live, while arts organisations go on to commission them at scale - with support from CultureStake producers Furtherfield. CultureStake puts people and places at the centre of cultural programming.',
+      'In Quadratic Voting (QV) voters receive a number of “voice credits” which they can allocate to different proposals to express their support. The quadratic function means that showing a strong preference comes at a cost. Or rather:',
+    bodyFourthBulletOne: 'The first vote costs 1 voice credit',
+    bodyFourthBulletTwo: 'The second vote costs 4 voice credits',
+    bodyFourthBulletThree: 'The third votes costs 9 voice credits etc',
     bodyIntroductionFifth:
-      'CultureStake puts people and places at the centre of cultural programming.',
-    bodyLink: 'Find out more about Quadratic Voting',
-    bodyQuestion: 'Why are we using Quadratic Voting (QV)? ',
-    bodyQuestionSecond: 'Why the Blockchain? ',
-    bodyQuestionThird: 'How does QV work? ',
+      'What that means is, unlike a one person one vote system, QV voting is based on an economy of emotions where our votes express not just what we care about but how much we care!',
+    bodySixth:
+      "This matters because one person one vote systems usually don’t present the reason why someone voted the way they did. Politics have taught us not to trust the way votes are interpreted. Voters' intentions are often misrepresented and communities are polarised about the limited information. QV allows us to express the intensity of our convictions, giving us a stronger sense of agency, and providing everyone with more information on why we vote the way we do.",
+    headingTwo:
+      'From ballots to the Blockchain or why we’re using the Blockchain',
+    bodySeventh:
+      'We run all CultureStake votes on the blockchain because the blockchain is like a big indelible ledger. Once marked it cannot be erased. Not only that, but the marking of the ledger itself is protected. This means that a vote cannot be rigged and it is stored super safely.',
+    bodyEighth:
+      'This matters because by using the blockchain we can promise all voters they can trust our system and over time we can build a better picture about what matters to communities locally and around the world.',
+    bodyNinth:
+      'There is controversy over blockchain technologies and their environmental impact. We use only low impact ‘proof of stake’ blockchains. This means transactions use for example a similar amount of energy as posting on social media or streaming a song.',
+    headingThree: 'More Features:',
+    bodyQuestion: 'Cultural Portfolio - ',
+    bodyQuestionSecond: 'Vote Weighting - ',
+    bodyQuestionThird: 'Furtherfield Support - ',
     bodyAnswer:
-      'Quadratic voting enhances collective decision-making in a democratic community by allocating votes that express not just what you care about but how much you care. The use of QV results in more nuanced decision-making, allowing people to convey the intensity of their convictions, which in turn fosters a stronger sense of agency among participants. This process puts more nuanced data into the voting system to enable communities to better understand what they care about most.',
+      'over time we aim to add thousands of cultural experiences to the CultureStake portfolio in league with other cultural communities. Cultural organisations can add to this with new artist commissions or pick from the portfolio. This will allow artists and arts organisations to explore and test new ideas in new contexts and enable projects to be easily be picked up in different locations with different communities.',
     bodyAnswerSecond:
-      'Because records are put on the blockchain it means it can be public audited and it creates a data commons for cultural communities widening the conversation about how art is valued by different communities. (note: we will be working on meaningful and valuable data visualisation for PPP in the next iteration)',
+      'any voting event can apply vote weighting in a number of different scenarios. This means for example, that those closest to the issues can have their vote weighted to mean more overall. For instance local votes might be given more weight in an international selection process for a new public artwork.',
     bodyAnswerThird:
-      'Voters receive budgets of “voice credits,” which they allocate to different proposals to signal the intensity of their support. Their voice credits convert to votes according to their square root.',
+      'as an organisation with over 25 years of experience in creating digital and physical cultural experiences with communities, our expertise comes as part of the package. When an arts organisation signs up to use CultureStake, we will work with them and their community to ensure everyone has the best experience. If you are interested in CultureStake please contact ',
     bodyStatisticsArtists: 'Artists',
     bodyStatisticsArtworks: 'Artworks',
     bodyStatisticsFestivals: 'Festivals',

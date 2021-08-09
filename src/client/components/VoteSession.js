@@ -519,6 +519,19 @@ const VoteSession = ({
                       </BoxFramed>
                     </PaperTicket>
 
+                    {data.locationName && (
+                      <PaperTicket>
+                        <ParagraphStyle>
+                          {translate('VoteSession.artworkSubheader', {
+                            location: data.locationName,
+                          })}
+                        </ParagraphStyle>
+                        <ParagraphStyle>
+                          {translate('VoteSession.artworkSubheaderTwo')}
+                        </ParagraphStyle>
+                      </PaperTicket>
+                    )}
+
                     {properties.map((property) => {
                       return (
                         <VoteSessionProperty

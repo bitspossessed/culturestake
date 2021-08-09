@@ -11,6 +11,7 @@ import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 import diagram from '~/client/assets/images/CultureStake-Diagram.svg';
 import InlineSVG from '~/client/components/InlineSVG';
+import { HeadingPrimaryStyle } from '~/client/styles/typography';
 
 const FURTHERFIELD_URL = 'https://www.furtherfield.org';
 
@@ -30,23 +31,123 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroductionSecondary')}
             </ParagraphStyle>
 
+            <ul>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodySecondBulletOne')}
+                </ParagraphStyle>
+              </li>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodySecondBulletTwo')}
+                </ParagraphStyle>
+              </li>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodySecondBulletThree')}
+                </ParagraphStyle>
+              </li>
+            </ul>
+
             <ParagraphStyle>
               {translate('Homepage.bodyIntroductionThird')}
             </ParagraphStyle>
+
+            <ul>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodyThirdBulletOne')}
+                </ParagraphStyle>
+              </li>
+            </ul>
+
+            <ParagraphStyle>
+              {translate('Homepage.bodyThirdBulletOneFollowup')}
+            </ParagraphStyle>
+
+            <ul>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodyThirdBulletTwo')}
+                </ParagraphStyle>
+              </li>
+            </ul>
+
+            <ParagraphStyle>
+              {translate('Homepage.bodyThirdBulletTwoFollowup')}
+            </ParagraphStyle>
+
+            <ul>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodyThirdBulletThree')}
+                </ParagraphStyle>
+              </li>
+            </ul>
+
+            <ParagraphStyle>
+              {translate('Homepage.bodyThirdBulletThreeFollowup')}
+            </ParagraphStyle>
+
+            <VideoItem />
+
+            <HorizontalSpacingStyle />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.headingOne')}
+            </HeadingPrimaryStyle>
+
+            <HorizontalSpacingStyle />
 
             <ParagraphStyle>
               {translate('Homepage.bodyIntroductionFourth')}
             </ParagraphStyle>
 
+            <ul>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodyFourthBulletOne')}
+                </ParagraphStyle>
+              </li>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodyFourthBulletTwo')}
+                </ParagraphStyle>
+              </li>
+              <li>
+                <ParagraphStyle>
+                  {translate('Homepage.bodyFourthBulletThree')}
+                </ParagraphStyle>
+              </li>
+            </ul>
+
             <ParagraphStyle>
               {translate('Homepage.bodyIntroductionFifth')}
             </ParagraphStyle>
 
-            <HorizontalSpacingStyle />
-
-            <VideoItem />
+            <ParagraphStyle>{translate('Homepage.bodySixth')}</ParagraphStyle>
 
             <HorizontalSpacingStyle />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.headingTwo')}
+            </HeadingPrimaryStyle>
+
+            <HorizontalSpacingStyle />
+
+            <ParagraphStyle>{translate('Homepage.bodySeventh')}</ParagraphStyle>
+
+            <ParagraphStyle>{translate('Homepage.bodyEighth')}</ParagraphStyle>
+
+            <ParagraphStyle>{translate('Homepage.bodyNinth')}</ParagraphStyle>
+
+            <HorizontalSpacingStyle />
+
+            <HorizontalSpacingStyle />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.headingThree')}
+            </HeadingPrimaryStyle>
 
             <ParagraphStyle>
               <strong>{translate('Homepage.bodyQuestion')}</strong>
@@ -61,6 +162,12 @@ const Homepage = () => {
             <ParagraphStyle>
               <strong>{translate('Homepage.bodyQuestionThird')}</strong>
               {translate('Homepage.bodyAnswerThird')}
+              <a
+                href="mailto:charlotte.frost@furtherfield.org"
+                style={{ color: '#ba00ff' }}
+              >
+                Charlotte Frost
+              </a>
             </ParagraphStyle>
 
             <HorizontalSpacingStyle />
