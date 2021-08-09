@@ -77,14 +77,6 @@ const Homepage = () => {
               <ButtonIcon href={FURTHERFIELD_URL}>
                 {translate('Homepage.buttonFurtherfield')}
               </ButtonIcon>
-
-              <ButtonIcon
-                href={
-                  'https://www.radicalxchange.org/concepts/quadratic-voting/'
-                }
-              >
-                {translate('Homepage.bodyLink')}
-              </ButtonIcon>
             </ButtonGroup>
           </ContainerStyle>
         </ColorSection>
