@@ -49,7 +49,7 @@ async function create(req, res) {
         random,
         `${data.email}:${data.festivalSlug}`,
         'EX',
-        60 * 15, // expiring in 15 minutes
+        60 * 30, // expiring in 30 minutes
       );
       voteEmail(data.email, { ...data, random });
       break;

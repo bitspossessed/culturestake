@@ -17,6 +17,8 @@ const customTemplates = {
   'peoples-park-plinth': {
     subject:
       'Your Vote for the People’s Park Plinth @Furtherfield Gallery [Finsbury Park]',
+    subjectInvitation:
+      'Get your Magical Voting Token for the People’s Park Plinth @Furtherfield Gallery [Finsbury Park]',
   },
 };
 
@@ -58,7 +60,7 @@ export const voteEmail = (to = 'me@example.org', data = {}) => {
     subject:
       templateName === 'vote'
         ? 'Your Vote Link'
-        : customTemplates[templateName].subject,
+        : customTemplates[templateName].subjectInvitation,
     template: `${templateName}`,
     to,
     data,
