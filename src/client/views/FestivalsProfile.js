@@ -5,7 +5,7 @@ import BoxFramed from '~/client/components/BoxFramed';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
 import ContractsFestivalVotingPeriod from '~/client/components/ContractsFestivalVotingPeriod';
-import FestivalVoteResult from '~/client/components/FestivalVoteResult';
+import VoteResult from '~/client/components/VoteResult';
 import Loading from '~/client/components/Loading';
 import Paper from '~/client/components/Paper';
 import PaperTicket from '~/client/components/PaperTicket';
@@ -145,18 +145,15 @@ const FestivalsProfile = () => {
                     {artworks.map((artwork, idx) => {
                       return (
                         <PaperTicket key={artwork.id}>
-                          <FestivalVoteResult
-                            artistName={artwork.artist.name}
-                            artworkDesc={artwork.description}
-                            artworkSlug={artwork.slug}
-                            artworkTitle={artwork.title}
+                          <VoteResult
                             credit={artwork.voteTokens}
-                            festivalSlug={festival.slug}
                             images={artwork.images}
                             rank={idx + 1}
                             sticker={artwork.sticker}
+                            subtitle={artwork.artist.name}
+                            title={artwork.title}
                             total={maxVotePower}
-                            votePower={maxVotePower}
+                            type="artwork"
                           />
                         </PaperTicket>
                       );

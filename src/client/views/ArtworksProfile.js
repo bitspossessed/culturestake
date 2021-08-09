@@ -6,8 +6,8 @@ import BoxFramed from '~/client/components/BoxFramed';
 import ButtonGroup from '~/client/components/ButtonGroup';
 import ButtonIcon from '~/client/components/ButtonIcon';
 import ColorSection from '~/client/components/ColorSection';
+import VoteResult from '~/client/components/VoteResult';
 import Image from '~/client/components/Image';
-import Legend from '~/client/components/Legend';
 import Loading from '~/client/components/Loading';
 import PaperTicket from '~/client/components/PaperTicket';
 import Slider from '~/client/components/Slider';
@@ -196,26 +196,29 @@ const ArtworksProfile = () => {
 
                     <HorizontalSpacingStyle isLarge />
 
-                    {properties.map((property) => {
+                    {properties.map((property, idx) => {
+                      console.log(property) // eslint-disable-line
                       return (
-                        <ArtworksProfileProperty
-                          credit={property.voteTokens}
-                          key={property.id}
-                          scheme={scheme}
-                          title={property.title}
-                          total={maxVotePower}
-                        />
+                        <PaperTicket key={property.id}>
+                          <VoteResult
+                            credit={property.voteTokens}
+                            images={artwork.images}
+                            rank={idx + 1}
+                            sticker={artwork.sticker}
+                            subtitle={property.title}
+                            title={property.title}
+                            total={maxVotePower}
+                            type="property"
+                          />
+                        </PaperTicket>
                       );
                     })}
-
-                    <Legend
-                      scheme={scheme}
-                      title={translate('default.legendVotes')}
-                    />
 
                     <HorizontalSpacingStyle />
                   </Fragment>
                 )}
+
+                <HorizontalSpacingStyle isLarge />
 
                 <ButtonGroup>
                   <ButtonIcon

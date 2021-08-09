@@ -9,22 +9,21 @@ import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 
 const SNUGGLEPUNK_SIZE = 10;
 
-const FestivalVoteResult = ({
+const VoteResult = ({
   rank,
   total,
-  festivalSlug,
-  artistName,
-  artworkTitle,
-  artworkDesc,
-  artworkSlug,
+  subtitle,
+  title,
   images,
   sticker,
-  votePower,
+  type,
+  credit,
 }) => {
   // Calculate SnugglePunk Happyness Factor === snuggleness!
-  const currentVotePower = Math.sqrt(total);
-  const snuggleness =
-    Math.round((currentVotePower / votePower) * (SNUGGLEPUNKS_COUNT - 1)) + 1;
+  const currentVotePower = Math.sqrt(credit);
+  const snuggleness = credit
+    ? Math.round((currentVotePower / total) * (SNUGGLEPUNKS_COUNT - 1))
+    : 1;
 
   // Get the sticker and color scheme
   const stickerImagePath = useStickerImage(images);
@@ -40,27 +39,25 @@ const FestivalVoteResult = ({
         </SnuggleStyle>
 
         <FestivalVoteResultVotesLayout>
-          <FestivalVoteResultVotesStyle>{total}</FestivalVoteResultVotesStyle>
+          <FestivalVoteResultVotesStyle>{credit}</FestivalVoteResultVotesStyle>
           Votes
         </FestivalVoteResultVotesLayout>
       </FestivalVoteResultHeaderStyle>
 
-      {stickerImagePath && (
+      {stickerImagePath && type === 'artwork' ? (
         <Sticker code={sticker} imagePath={stickerImagePath} />
-      )}
+      ) : null}
 
       <FestivalVoteResultFooterStyle>
-        <FestivalVoteResultButtonStyle
-          href={`/festivals/${festivalSlug}/artworks/${artworkSlug}`}
-        >
-          <FestivalVoteResultHeadingStyle scheme={scheme}>
-            {artworkTitle}
-          </FestivalVoteResultHeadingStyle>
-        </FestivalVoteResultButtonStyle>
+        <FestivalVoteResultHeadingStyle scheme={scheme}>
+          {title}
+        </FestivalVoteResultHeadingStyle>
 
-        <FestivalVoteResultSubHeadingStyle scheme={scheme}>
-          {artistName} x {artworkDesc}
-        </FestivalVoteResultSubHeadingStyle>
+        {type === 'artwork' && (
+          <FestivalVoteResultSubHeadingStyle scheme={scheme}>
+            {subtitle}
+          </FestivalVoteResultSubHeadingStyle>
+        )}
       </FestivalVoteResultFooterStyle>
     </FestivalVoteResultStyle>
   );
@@ -86,9 +83,9 @@ const FestivalVoteResultFooterStyle = styled.div`
   justify-content: center;
 `;
 
-const FestivalVoteResultButtonStyle = styled.a`
-  font-family: ${styles.typography.familyHeading}, sans-serif;
-`;
+// const FestivalVoteResultButtonStyle = styled.a`
+//   font-family: ${styles.typography.familyHeading}, sans-serif;
+// `;
 
 const FestivalVoteResultVotesLayout = styled.div`
   display: flex;
@@ -154,18 +151,15 @@ const SnuggleStyle = styled.svg`
   transition: filter ease-in 0.2s;
 `;
 
-FestivalVoteResult.propTypes = {
-  artistName: PropTypes.string.isRequired,
-  artworkDesc: PropTypes.string.isRequired,
-  artworkSlug: PropTypes.string.isRequired,
-  artworkTitle: PropTypes.string.isRequired,
+VoteResult.propTypes = {
   credit: PropTypes.number.isRequired,
-  festivalSlug: PropTypes.string.isRequired,
   images: PropTypes.array,
   rank: PropTypes.number.isRequired,
   sticker: PropTypes.string.isRequired,
+  subtitle: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   total: PropTypes.number.isRequired,
-  votePower: PropTypes.number.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
-export default FestivalVoteResult;
+export default VoteResult;
