@@ -11,6 +11,7 @@ import {
   getQuestionContract,
   getVotingBooth,
 } from '~/common/services/contracts';
+import { isActiveFestival } from '~/common/services/contracts/festivals';
 import { isSignatureValid } from '~/server/services/crypto';
 import { packVote, packBooth } from '~/common/services/encoding';
 
@@ -159,6 +160,16 @@ async function checkNonce({ vote }) {
   }
 }
 
+async function checkFestival({ festivalQuestionContractData }) {
+  const isActive = await isActiveFestival(
+    festivalQuestionContractData.festivalChainId,
+  );
+
+  if (!isActive) {
+    throw Error('Inactive Festival');
+  }
+}
+
 async function checkSignatures({ vote }) {
   if (
     !isSignatureValid(
@@ -282,7 +293,7 @@ export default async function validateVoteMiddleware(req, res, next) {
     for (const validationMethod of [
       checkSignatures,
       checkBooth,
-      checkBooth,
+      checkFestival,
       checkNonce,
       checkHasVoted,
       checkLocalHasVoted,
