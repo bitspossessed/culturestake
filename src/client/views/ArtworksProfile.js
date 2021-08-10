@@ -111,7 +111,7 @@ const ArtworksProfile = () => {
 
                 <StickerHeading
                   scheme={scheme}
-                  subtitle={`${artwork.subtitle} / ${artwork.artist.name} / ${festival.title}`}
+                  subtitle={`${artwork.artist.name} / ${festival.title}`}
                   title={artwork.title}
                 />
               </PaperTicket>
@@ -201,7 +201,7 @@ const ArtworksProfile = () => {
                       return (
                         <PaperTicket key={property.id}>
                           <VoteResult
-                            credit={property.voteTokens}
+                            credit={property.votePower}
                             images={artwork.images}
                             rank={idx + 1}
                             sticker={artwork.sticker}

@@ -146,7 +146,7 @@ const FestivalsProfile = () => {
                       return (
                         <PaperTicket key={artwork.id}>
                           <VoteResult
-                            credit={artwork.voteTokens}
+                            credit={artwork.votePower}
                             images={artwork.images}
                             rank={idx + 1}
                             sticker={artwork.sticker}

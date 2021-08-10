@@ -42,7 +42,7 @@ const Artworks = () => {
                     key={artwork.id}
                     slug={artwork.slug}
                     stickerCode={artwork.sticker}
-                    subtitle={`${artwork.subtitle} / ${artwork.artist.name}`}
+                    subtitle={`${artwork.artist.name}`}
                     title={artwork.title}
                   />
                 );

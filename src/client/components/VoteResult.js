@@ -20,9 +20,10 @@ const VoteResult = ({
   credit,
 }) => {
   // Calculate SnugglePunk Happyness Factor === snuggleness!
-  const currentVotePower = Math.sqrt(credit);
+
+  //const currentVotePower = credit;
   const snuggleness = credit
-    ? Math.round((currentVotePower / total) * (SNUGGLEPUNKS_COUNT - 1))
+    ? Math.floor(((SNUGGLEPUNKS_COUNT - 1) / (total - 1)) * credit)
     : 1;
 
   // Get the sticker and color scheme
