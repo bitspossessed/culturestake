@@ -61,6 +61,7 @@ const VoteCreditsBarRangeStyle = styled.div`
 
   display: flex !important;
 
+  width: 30px;
   height: 80vh;
 
   border: 1.5px solid;

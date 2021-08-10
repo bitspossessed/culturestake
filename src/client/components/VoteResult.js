@@ -21,10 +21,12 @@ const VoteResult = ({
 }) => {
   // Calculate SnugglePunk Happyness Factor === snuggleness!
 
-  //const currentVotePower = credit;
-  const snuggleness = credit
+  let snuggleness = credit
     ? Math.floor(((SNUGGLEPUNKS_COUNT - 1) / (total - 1)) * credit)
     : 1;
+
+  // no going over SNUGGLEPUNKS_COUNT - should fix this eventually
+  snuggleness = snuggleness >= 8 ? 8 : snuggleness;
 
   // Get the sticker and color scheme
   const stickerImagePath = useStickerImage(images);
