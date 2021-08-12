@@ -16,9 +16,9 @@ const mailing = new Queue('Send mails', redisUrl, {
 const customTemplates = {
   'peoples-park-plinth': {
     subject:
-      'Your Vote for the People’s Park Plinth @Furtherfield Gallery [Finsbury Park]',
+      'It’s Time to Vote for the People’s Park Plinth at Furtherfield Gallery',
     subjectInvitation:
-      'Get your Magical Voting Token for the People’s Park Plinth @Furtherfield Gallery [Finsbury Park]',
+      'Activate Your Magical Voting Token for the People’s Park Plinth at Furtherfield Gallery',
   },
 };
 

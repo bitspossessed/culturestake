@@ -120,7 +120,10 @@ const VoteSession = ({
       setLongitude(position.coords.longitude);
     }
     function getLocation() {
+      console.log(navigator.geolocation) // eslint-disable-line
+      console.log(data) // eslint-disable-line
       if (navigator.geolocation && data && data.online) {
+        console.log('have all') // eslint-disable-line
         navigator.geolocation.getCurrentPosition(showPosition);
       }
     }
@@ -383,9 +386,7 @@ const VoteSession = ({
 
             <PaperTicket>
               <ParagraphStyle>
-                {translate('VoteSession.bodyYourVotesRecorded', {
-                  count: Math.min(MAX_TOP_ARTWORKS, festivalAnswerIds.length),
-                })}
+                {translate('VoteSession.bodyYourVotesRecorded')}
               </ParagraphStyle>
 
               <HorizontalSpacingStyle />
@@ -457,18 +458,6 @@ const VoteSession = ({
                         </Fragment>
                       ) : null}
                     </PaperTicket>
-
-                    {artworks.map((artwork) => {
-                      return (
-                        <VoteSessionArtworkSticker
-                          artistName={artwork.artist.name}
-                          images={artwork.images}
-                          key={artwork.id}
-                          stickerCode={artwork.sticker}
-                          title={artwork.title}
-                        />
-                      );
-                    })}
 
                     <PaperTicket>
                       <BoxFramed>

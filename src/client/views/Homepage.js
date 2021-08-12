@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 
 import ButtonGroup from '~/client/components/ButtonGroup';
@@ -9,9 +9,8 @@ import View from '~/client/components/View';
 import translate from '~/common/services/i18n';
 import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
-import diagram from '~/client/assets/images/CultureStake-Diagram.svg';
-import InlineSVG from '~/client/components/InlineSVG';
 import { HeadingPrimaryStyle } from '~/client/styles/typography';
+import HorizontalLine from '~/client/components/HorizontalLine';
 
 const FURTHERFIELD_URL = 'https://www.furtherfield.org';
 
@@ -23,9 +22,21 @@ const Homepage = () => {
 
         <ColorSection>
           <ContainerStyle>
+            <HorizontalSpacingStyle />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.heading')}
+            </HeadingPrimaryStyle>
+
+            <HorizontalLine />
+
             <ParagraphStyle>
               {translate('Homepage.bodyIntroduction')}
             </ParagraphStyle>
+
+            <ButtonIcon to="/festivals">
+              {translate('Homepage.buttonViewFestivals')}
+            </ButtonIcon>
 
             <ParagraphStyle>
               {translate('Homepage.bodyIntroductionSecondary')}
@@ -53,97 +64,53 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroductionThird')}
             </ParagraphStyle>
 
-            <ul>
-              <li>
-                <ParagraphStyle>
-                  {translate('Homepage.bodyThirdBulletOne')}
-                </ParagraphStyle>
-              </li>
-            </ul>
+            <HorizontalLine />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.bodyThirdBulletOne')}
+            </HeadingPrimaryStyle>
+
+            <HorizontalSpacingStyle />
 
             <ParagraphStyle>
               {translate('Homepage.bodyThirdBulletOneFollowup')}
             </ParagraphStyle>
 
-            <ul>
-              <li>
-                <ParagraphStyle>
-                  {translate('Homepage.bodyThirdBulletTwo')}
-                </ParagraphStyle>
-              </li>
-            </ul>
+            <HorizontalLine />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.bodyThirdBulletTwo')}
+            </HeadingPrimaryStyle>
+
+            <HorizontalSpacingStyle />
 
             <ParagraphStyle>
               {translate('Homepage.bodyThirdBulletTwoFollowup')}
             </ParagraphStyle>
 
-            <ul>
-              <li>
-                <ParagraphStyle>
-                  {translate('Homepage.bodyThirdBulletThree')}
-                </ParagraphStyle>
-              </li>
-            </ul>
+            <HorizontalLine />
+
+            <HeadingPrimaryStyle>
+              {translate('Homepage.bodyThirdBulletThree')}
+            </HeadingPrimaryStyle>
+
+            <HorizontalSpacingStyle />
 
             <ParagraphStyle>
               {translate('Homepage.bodyThirdBulletThreeFollowup')}
             </ParagraphStyle>
 
-            <HorizontalSpacingStyle />
+            <HorizontalLine />
 
             <VideoItem />
 
-            <HorizontalSpacingStyle />
-
-            <HeadingPrimaryStyle>
-              {translate('Homepage.headingOne')}
-            </HeadingPrimaryStyle>
-
-            <HorizontalSpacingStyle />
-
-            <ParagraphStyle>
-              {translate('Homepage.bodyIntroductionFourth')}
-            </ParagraphStyle>
-
-            <ul>
-              <li>
-                <ParagraphStyle>
-                  {translate('Homepage.bodyFourthBulletOne')}
-                </ParagraphStyle>
-              </li>
-              <li>
-                <ParagraphStyle>
-                  {translate('Homepage.bodyFourthBulletTwo')}
-                </ParagraphStyle>
-              </li>
-              <li>
-                <ParagraphStyle>
-                  {translate('Homepage.bodyFourthBulletThree')}
-                </ParagraphStyle>
-              </li>
-            </ul>
-
-            <ParagraphStyle>
-              {translate('Homepage.bodyIntroductionFifth')}
-            </ParagraphStyle>
-
-            <ParagraphStyle>{translate('Homepage.bodySixth')}</ParagraphStyle>
-
-            <HorizontalSpacingStyle />
-
-            <HeadingPrimaryStyle>
-              {translate('Homepage.headingTwo')}
-            </HeadingPrimaryStyle>
-
-            <HorizontalSpacingStyle />
-
-            <ParagraphStyle>{translate('Homepage.bodySeventh')}</ParagraphStyle>
-
-            <ParagraphStyle>{translate('Homepage.bodyEighth')}</ParagraphStyle>
-
-            <ParagraphStyle>{translate('Homepage.bodyNinth')}</ParagraphStyle>
-
-            <HorizontalSpacingStyle />
+            <ButtonIcon
+              href={
+                'https://docs.google.com/document/d/1gzvD9XIg7-EhT5MZCFHiBuO9VGlPFUa0VAO7StpJAag/edit'
+              }
+            >
+              {translate('Invitations.buttonFAQ')}
+            </ButtonIcon>
 
             <HorizontalSpacingStyle />
 
@@ -174,15 +141,7 @@ const Homepage = () => {
 
             <HorizontalSpacingStyle />
 
-            <Suspense fallback={null}>
-              <Diagram />
-            </Suspense>
-
             <ButtonGroup>
-              <ButtonIcon to="/festivals">
-                {translate('Homepage.buttonViewFestivals')}
-              </ButtonIcon>
-
               <ButtonIcon href={FURTHERFIELD_URL}>
                 {translate('Homepage.buttonFurtherfield')}
               </ButtonIcon>
@@ -192,10 +151,6 @@ const Homepage = () => {
       </View>
     </Fragment>
   );
-};
-
-const Diagram = () => {
-  return <InlineSVG url={diagram} />;
 };
 
 const VideoItem = () => {

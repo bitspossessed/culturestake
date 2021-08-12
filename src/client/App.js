@@ -19,11 +19,8 @@ import {
 } from '~/client/store/ethereum/actions';
 
 // import all images used in emails so webpack will build them
-import emailImg1 from '~/client/assets/images/furtherfield-gallery.jpg'; // eslint-disable-line
-import emailImg2 from '~/client/assets/images/park-map.jpg'; // eslint-disable-line
 import emailImg3 from '~/client/assets/images/peoples-park-plinth.jpg'; // eslint-disable-line
-import emailImg4 from '~/client/assets/images/ppp-visitors-information.png'; // eslint-disable-line
-import emailImg5 from '~/client/assets/images/ppp-website-design.png'; // eslint-disable-line
+import emailImg5 from '~/client/assets/images/vote-now.jpg'; // eslint-disable-line
 
 const CHECK_FREQUENCY = 1000;
 

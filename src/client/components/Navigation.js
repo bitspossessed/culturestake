@@ -29,16 +29,6 @@ const Navigation = ({ onClickItem, isExpanded }) => {
       isAlternateColor={isAlternateColor}
       isExpanded={isExpanded}
     >
-      <ColorSection>
-        <NavigationAccessibilityStyle>
-          <HeadingSecondaryStyle>
-            {translate('Navigation.titleAccessibility')}
-          </HeadingSecondaryStyle>
-
-          <AccessibilitySettings />
-        </NavigationAccessibilityStyle>
-      </ColorSection>
-
       <ColorSection isInverted>
         <NavigationMenuStyle>
           <NavigationMenuItemStyle>
@@ -151,6 +141,16 @@ const Navigation = ({ onClickItem, isExpanded }) => {
             </NavigationMenuItemStyle>
           </NavigationMenuStyle>
         ) : null}
+      </ColorSection>
+
+      <ColorSection>
+        <NavigationAccessibilityStyle>
+          <HeadingSecondaryStyle>
+            {translate('Navigation.titleAccessibility')}
+          </HeadingSecondaryStyle>
+
+          <AccessibilitySettings />
+        </NavigationAccessibilityStyle>
       </ColorSection>
     </NavigationStyle>
   );

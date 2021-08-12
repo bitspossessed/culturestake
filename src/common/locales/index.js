@@ -204,7 +204,7 @@ const components = {
     notificationSignOutSuccess: 'Your session has ended. See you soon!',
     titleAccessibility: 'Accessibility',
     titleAdmin: 'Admin:',
-    titleFestivals: 'Festivals:',
+    titleFestivals: 'Voting Events:',
   },
   PayerBalance: {
     bodyPayerAddress: 'Address:',
@@ -233,11 +233,8 @@ const components = {
     voteCredits: 'Voice Credits',
   },
   VoteSession: {
-    bodyYourVotesRecorded: {
-      zero: 'Your votes have been recorded.',
-      one: 'Your votes have been recorded. Your top artwork is:',
-      other: 'Your votes have been recorded. Your top {count} artworks are:',
-    },
+    bodyYourVotesRecorded:
+      'Your votes have been recorded. You ranked the artworks as follows:',
     artworkSubheader:
       'You have decided this is the experience you would like to see produced at larger scale in {location}.',
     artworkSubheaderTwo: 'Let us know why it is your favourite one.',
@@ -487,10 +484,10 @@ ccc@example.org`,
     buttonBackToFestival: 'Back to festival.',
   },
   Artworks: {
-    buttonBackToFestival: 'Back to festival',
+    buttonBackToFestival: 'Back to event',
   },
   ArtworksProfile: {
-    buttonBackToFestival: 'Back to festival',
+    buttonBackToFestival: 'Back to event',
     buttonBackToFestivalArtworks: 'Back to artworks',
     buttonGoToArtistWebsite: 'Visit artist website',
     buttonGoToArtworkWebsite: 'Visit artwork website',
@@ -499,8 +496,8 @@ ccc@example.org`,
     titleArtworkDescriptionCommission: 'Artwork commission description',
   },
   FestivalsProfile: {
-    buttonGoToWebsite: 'Visit festival website',
-    buttonShowAllArtworks: 'Show festival artworks',
+    buttonGoToWebsite: 'Visit event website',
+    buttonShowAllArtworks: 'Show event artworks',
   },
   Homepage: {
     bodyIntroduction:
@@ -524,25 +521,7 @@ ccc@example.org`,
     bodyThirdBulletThree: 'For All:',
     bodyThirdBulletThreeFollowup:
       'We create data commons that widens the conversation about how art is valued by different communities around the world.',
-    headingOne:
-      'From numbers to nuanced feelings or why we used Quadratic Voting',
-    bodyIntroductionFourth:
-      'In Quadratic Voting (QV) voters receive a number of “voice credits” which they can allocate to different proposals to express their support. The quadratic function means that showing a strong preference comes at a cost. Or rather:',
-    bodyFourthBulletOne: 'The first vote costs 1 voice credit',
-    bodyFourthBulletTwo: 'The second vote costs 4 voice credits',
-    bodyFourthBulletThree: 'The third votes costs 9 voice credits etc',
-    bodyIntroductionFifth:
-      'What that means is, unlike a one person one vote system, QV voting is based on an economy of emotions where our votes express not just what we care about but how much we care!',
-    bodySixth:
-      "This matters because one person one vote systems usually don’t present the reason why someone voted the way they did. Politics have taught us not to trust the way votes are interpreted. Voters' intentions are often misrepresented and communities are polarised about the limited information. QV allows us to express the intensity of our convictions, giving us a stronger sense of agency, and providing everyone with more information on why we vote the way we do.",
-    headingTwo:
-      'From ballots to the Blockchain or why we’re using the Blockchain',
-    bodySeventh:
-      'We run all CultureStake votes on the blockchain because the blockchain is like a big indelible ledger. Once marked it cannot be erased. Not only that, but the marking of the ledger itself is protected. This means that a vote cannot be rigged and it is stored super safely.',
-    bodyEighth:
-      'This matters because by using the blockchain we can promise all voters they can trust our system and over time we can build a better picture about what matters to communities locally and around the world.',
-    bodyNinth:
-      'There is controversy over blockchain technologies and their environmental impact. We use only low impact ‘proof of stake’ blockchains. This means transactions use for example a similar amount of energy as posting on social media or streaming a song.',
+    heading: 'Welcome to Culturestake!',
     headingThree: 'More Features:',
     bodyQuestion: 'Cultural Portfolio - ',
     bodyQuestionSecond: 'Vote Weighting - ',
@@ -561,8 +540,9 @@ ccc@example.org`,
   },
   Invitations: {
     buttonSubmit: 'Begin voting',
+    buttonFAQ: 'Culturestake FAQ',
     notificationSuccess:
-      'We just sent you an unique vote link, please check your email!',
+      'We just sent you an unique magical vote token, please check your email!',
     title: 'Welcome to Culturestake!',
     locationDescription:
       'The vote page will request your location because votes are weighted by the localities they are placed from. You are free to deny location access, your vote will still be processed.',

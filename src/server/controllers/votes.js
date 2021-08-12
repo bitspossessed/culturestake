@@ -28,7 +28,7 @@ import { quadratify } from '~/common/utils/math';
 import { locationFilter } from '~/server/helpers/filters';
 import Invitation from '~/server/models/invitation';
 
-const PUBLIC_TOP_ANSWERS = 3;
+const PUBLIC_TOP_ANSWERS = 1;
 
 const answerAssociation = {
   fields: ['propertyId', 'votePower', 'voteTokens', 'votes', 'questionId'],

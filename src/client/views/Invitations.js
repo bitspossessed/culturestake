@@ -2,6 +2,8 @@ import Joi from 'joi';
 import React, { Fragment } from 'react';
 import { useDispatch } from 'react-redux';
 
+import ButtonGroup from '~/client/components/ButtonGroup';
+import ButtonIcon from '~/client/components/ButtonIcon';
 import ButtonSubmit from '~/client/components/ButtonSubmit';
 import FormInvitations from '~/client/components/FormInvitations';
 import HeaderAdmin from '~/client/components/HeaderAdmin';
@@ -80,22 +82,15 @@ const Invitations = () => {
           <ButtonSubmit>{translate('Invitations.buttonSubmit')}</ButtonSubmit>
         </Form>
 
-        <HeaderAdmin>{translate('Instructions.title')}</HeaderAdmin>
-
-        <ParagraphStyle>
-          <strong>{translate('Instructions.titleStepOne')}</strong>
-        </ParagraphStyle>
-        <ParagraphStyle>{translate('Instructions.bodyStepOne')}</ParagraphStyle>
-        <ParagraphStyle>
-          <strong>{translate('Instructions.titleStepTwo')}</strong>
-        </ParagraphStyle>
-        <ParagraphStyle>{translate('Instructions.bodyStepTwo')}</ParagraphStyle>
-        <ParagraphStyle>
-          <strong>{translate('Instructions.titleStepThree')}</strong>
-        </ParagraphStyle>
-        <ParagraphStyle>
-          {translate('Instructions.bodyStepThree')}
-        </ParagraphStyle>
+        <ButtonGroup>
+          <ButtonIcon
+            href={
+              'https://docs.google.com/document/d/1gzvD9XIg7-EhT5MZCFHiBuO9VGlPFUa0VAO7StpJAag/edit'
+            }
+          >
+            {translate('Invitations.buttonFAQ')}
+          </ButtonIcon>
+        </ButtonGroup>
       </ViewAdmin>
     </Fragment>
   );
