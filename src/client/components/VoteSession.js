@@ -312,6 +312,7 @@ const VoteSession = ({
 
   const onNextStep = () => {
     setCurrentStep(STEP_ARTWORK);
+    window.scrollTo(0, 0);
   };
 
   const onPreviousStep = () => {
