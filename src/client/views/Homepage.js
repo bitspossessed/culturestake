@@ -10,7 +10,6 @@ import translate from '~/common/services/i18n';
 import { ContainerStyle, HorizontalSpacingStyle } from '~/client/styles/layout';
 import { ParagraphStyle } from '~/client/styles/typography';
 import { HeadingPrimaryStyle } from '~/client/styles/typography';
-import HorizontalLine from '~/client/components/HorizontalLine';
 
 const FURTHERFIELD_URL = 'https://www.furtherfield.org';
 
@@ -28,7 +27,7 @@ const Homepage = () => {
               {translate('Homepage.heading')}
             </HeadingPrimaryStyle>
 
-            <HorizontalLine />
+            <HorizontalSpacingStyle />
 
             <ParagraphStyle>
               {translate('Homepage.bodyIntroduction')}
@@ -64,7 +63,7 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroductionThird')}
             </ParagraphStyle>
 
-            <HorizontalLine />
+            <HorizontalSpacingStyle />
 
             <HeadingPrimaryStyle>
               {translate('Homepage.bodyThirdBulletOne')}
@@ -76,7 +75,7 @@ const Homepage = () => {
               {translate('Homepage.bodyThirdBulletOneFollowup')}
             </ParagraphStyle>
 
-            <HorizontalLine />
+            <HorizontalSpacingStyle />
 
             <HeadingPrimaryStyle>
               {translate('Homepage.bodyThirdBulletTwo')}
@@ -88,7 +87,7 @@ const Homepage = () => {
               {translate('Homepage.bodyThirdBulletTwoFollowup')}
             </ParagraphStyle>
 
-            <HorizontalLine />
+            <HorizontalSpacingStyle />
 
             <HeadingPrimaryStyle>
               {translate('Homepage.bodyThirdBulletThree')}
@@ -100,7 +99,7 @@ const Homepage = () => {
               {translate('Homepage.bodyThirdBulletThreeFollowup')}
             </ParagraphStyle>
 
-            <HorizontalLine />
+            <HorizontalSpacingStyle />
 
             <VideoItem />
 

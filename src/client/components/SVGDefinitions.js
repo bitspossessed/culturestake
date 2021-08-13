@@ -5,7 +5,7 @@ import styles from '~/client/styles/variables';
 
 import snugglepunks from '~/client/assets/images/snugglepunks.svg';
 
-export const CLIP_PATH_DIMENSION = 500;
+export const CLIP_PATH_DIMENSION = window.screen.width <= 500 ? 300 : 500;
 export const SNUGGLEPUNKS_COUNT = 8;
 
 export const ClipPathEllipsis = () => {
@@ -43,12 +43,21 @@ export const ClipPathRectangle = () => {
 };
 
 export const ClipPathSnake = () => {
-  return (
-    <path
-      d="M1 1L200 1L200 159C132 124 93 111 85 120C72 133 129 184 117 197C109 206 70 193 1 159L1 1Z"
-      transform="translate(150, 150)"
-    />
-  );
+  if (CLIP_PATH_DIMENSION == 500) {
+    return (
+      <path
+        d="M1 1L200 1L200 159C132 124 93 111 85 120C72 133 129 184 117 197C109 206 70 193 1 159L1 1Z"
+        transform="translate(150, 150)"
+      />
+    );
+  } else {
+    return (
+      <path
+        d="M1 1L200 1L200 159C132 124 93 111 85 120C72 133 129 184 117 197C109 206 70 193 1 159L1 1Z"
+        transform="translate(50, 50)"
+      />
+    );
+  }
 };
 
 export const CLIP_PATHS = {
