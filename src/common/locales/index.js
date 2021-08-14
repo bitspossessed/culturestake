@@ -496,7 +496,7 @@ ccc@example.org`,
     titleArtworkDescriptionCommission: 'Artwork commission description',
   },
   FestivalsProfile: {
-    buttonGoToWebsite: 'Visit event website',
+    buttonGoToWebsite: 'Visit event website and register to vote',
     buttonShowAllArtworks: 'Show event artworks',
   },
   Homepage: {
