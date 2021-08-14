@@ -504,7 +504,7 @@ ccc@example.org`,
       'CultureStake connects communities, artists and organisations through collective cultural decision-making utilising Quadratic Voting.',
     bodyIntroductionSecondary: 'At Culturestake we want to:',
     bodySecondBulletOne:
-      'End elitism around the arts - by opening cultural decision making to a wider groups and providing more agency to communities.',
+      'End elitism around the arts - by opening cultural decision making to wider groups and providing more agency to communities.',
     bodySecondBulletTwo:
       'Enable people to have a stake in what cultural activities get produced in their locality',
     bodySecondBulletThree:
