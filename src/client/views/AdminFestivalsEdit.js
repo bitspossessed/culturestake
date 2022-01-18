@@ -32,7 +32,7 @@ const AdminFestivalsEditForm = () => {
   const dispatch = useDispatch();
   const { slug } = useParams();
 
-  const returnUrl = '/admin/festivals';
+  const returnUrl = '/admin/events';
 
   const { ButtonDelete, Form, isResourceLoading, resource } = useEditForm({
     fields: [

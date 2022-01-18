@@ -23,7 +23,7 @@ const AdminVoteweightsView = () => {
   const [festival, setFestival] = useState({});
   const [type, setType] = useState('location');
 
-  const returnUrl = `/admin/festivals/${slug}/edit`;
+  const returnUrl = `/admin/events/${slug}/edit`;
 
   useEffect(() => {
     const getFestival = async () => {

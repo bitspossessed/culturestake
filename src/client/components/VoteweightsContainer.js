@@ -41,7 +41,7 @@ const VoteweightsContainer = ({ festivalId }) => {
   const { slug } = useParams();
 
   const onSelect = ({ item }) => {
-    history.push(`/admin/festivals/${slug}/voteweights/${item.id}`);
+    history.push(`/admin/events/${slug}/voteweights/${item.id}`);
 
     dispatch(
       getRequest({
@@ -63,7 +63,7 @@ const VoteweightsContainer = ({ festivalId }) => {
         queryParam="festivalId"
         onSelect={onSelect}
       />
-      <ButtonIcon to={`/admin/festivals/${slug}/voteweights/new`} url={swirl}>
+      <ButtonIcon to={`/admin/events/${slug}/voteweights/new`} url={swirl}>
         {translate('VoteweightsContainer.buttonNewVoteweight')}
       </ButtonIcon>
     </VoteweightsContainerStyle>

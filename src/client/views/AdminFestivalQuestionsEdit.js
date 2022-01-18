@@ -29,7 +29,7 @@ const AdminFestivalQuestionsEdit = () => {
   const [festival, setFestival] = useState();
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const returnUrl = `/admin/festivals/${slug}/edit`;
+  const returnUrl = `/admin/events/${slug}/edit`;
 
   useEffect(() => {
     const getFestival = async () => {
@@ -117,7 +117,7 @@ const AdminFestivalQuestionsEdit = () => {
               />
 
               <ButtonIcon
-                to={`/admin/festivals/${slug}/questions/${questionId}/answers/new`}
+                to={`/admin/events/${slug}/questions/${questionId}/answers/new`}
                 url={swirl}
               >
                 {translate('AdminFestivalQuestionsEdit.buttonNewAnswer')}

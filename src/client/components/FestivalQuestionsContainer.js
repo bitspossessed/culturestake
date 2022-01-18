@@ -35,7 +35,7 @@ const FestivalQuestionsContainer = ({ festivalId }) => {
   const { slug } = useParams();
 
   const onSelect = ({ item: { id } }) => {
-    history.push(`/admin/festivals/${slug}/questions/${id}/edit`);
+    history.push(`/admin/events/${slug}/questions/${id}/edit`);
 
     dispatch(
       getRequest({
@@ -58,7 +58,7 @@ const FestivalQuestionsContainer = ({ festivalId }) => {
         onSelect={onSelect}
       />
 
-      <ButtonIcon to={`/admin/festivals/${slug}/questions/new`} url={swirl}>
+      <ButtonIcon to={`/admin/events/${slug}/questions/new`} url={swirl}>
         {translate('FestivalQuestionsContainer.buttonNew')}
       </ButtonIcon>
     </QuestionsContainerStyle>

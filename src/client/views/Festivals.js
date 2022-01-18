@@ -63,7 +63,7 @@ const FestivalsItem = ({ slug, stickerCode, images, subtitle, title }) => {
   const { scheme } = useSticker(stickerCode);
 
   return (
-    <Link to={`/festivals/${slug}`}>
+    <Link to={`/events/${slug}`}>
       <Paper scheme={scheme}>
         <Sticker code={stickerCode} imagePath={stickerImagePath} />
         <StickerHeading scheme={scheme} subtitle={subtitle} title={title} />

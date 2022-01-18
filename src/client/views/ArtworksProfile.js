@@ -197,7 +197,6 @@ const ArtworksProfile = () => {
                     <HorizontalSpacingStyle isLarge />
 
                     {properties.map((property, idx) => {
-                      console.log(property) // eslint-disable-line
                       return (
                         <PaperTicket key={property.id}>
                           <VoteResult
@@ -223,12 +222,12 @@ const ArtworksProfile = () => {
                 <ButtonGroup>
                   <ButtonIcon
                     isIconFlipped
-                    to={`/festivals/${festival.slug}/artworks`}
+                    to={`/events/${festival.slug}/artworks`}
                   >
                     {translate('ArtworksProfile.buttonBackToFestivalArtworks')}
                   </ButtonIcon>
 
-                  <ButtonIcon isIconFlipped to={`/festivals/${festival.slug}`}>
+                  <ButtonIcon isIconFlipped to={`/events/${festival.slug}`}>
                     {translate('ArtworksProfile.buttonBackToFestival')}
                   </ButtonIcon>
                 </ButtonGroup>

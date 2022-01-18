@@ -23,7 +23,7 @@ const AdminAnswersNew = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [question, setQuestion] = useState({});
 
-  const returnUrl = `/admin/festivals/${slug}/questions/${questionId}/edit`;
+  const returnUrl = `/admin/events/${slug}/questions/${questionId}/edit`;
 
   useEffect(() => {
     const getQuestion = async () => {

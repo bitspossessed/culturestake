@@ -24,7 +24,7 @@ const Admin = () => {
               {translate('Admin.linkAdminUsers')}
             </ButtonOutline>
 
-            <ButtonOutline to="/admin/festivals">
+            <ButtonOutline to="/admin/events">
               {translate('Admin.linkAdminFestivals')}
             </ButtonOutline>
 

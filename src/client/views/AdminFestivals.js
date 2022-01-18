@@ -31,7 +31,7 @@ const AdminFestivals = () => {
   const history = useHistory();
 
   const onSelect = ({ item: { slug } }) => {
-    history.push(`/admin/festivals/${slug}/edit`);
+    history.push(`/admin/events/${slug}/edit`);
   };
 
   return (
@@ -49,7 +49,7 @@ const AdminFestivals = () => {
 
       <FooterAdmin>
         <SpacingGroupStyle>
-          <ButtonIcon to="/admin/festivals/new" url={swirl}>
+          <ButtonIcon to="/admin/events/new" url={swirl}>
             {translate('AdminFestivals.buttonNewFestival')}
           </ButtonIcon>
 

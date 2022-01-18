@@ -33,7 +33,7 @@ const Homepage = () => {
               {translate('Homepage.bodyIntroduction')}
             </ParagraphStyle>
 
-            <ButtonIcon to="/festivals">
+            <ButtonIcon to="/events">
               {translate('Homepage.buttonViewFestivals')}
             </ButtonIcon>
 
