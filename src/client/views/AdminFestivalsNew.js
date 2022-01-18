@@ -16,7 +16,7 @@ import { useNewForm } from '~/client/hooks/forms';
 const AdminFestivalsNew = () => {
   const dispatch = useDispatch();
 
-  const returnUrl = '/admin/festivals';
+  const returnUrl = '/admin/events';
 
   const { Form } = useNewForm({
     fields: [

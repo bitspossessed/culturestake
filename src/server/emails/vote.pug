@@ -1,4 +1,20 @@
-p Your vote link will expire in 15 minutes. It can only be used once
+<div style="max-width: 600px !important; margin: auto;">
+
+p Here is your magical voting token. 
+
 |
 |
-a(href=process.env.BASE_PATH + '/festivals/' + festivalSlug + '/invitations/' + random) Vote Now
+a(style="background-color: #60ff91; color: black; border-radius: 20px; padding: 18px; width: 60%; margin: 20px auto 20px auto; display: block; text-align: center; font-size: 16px; text-decoration: none;" href=process.env.BASE_PATH + '/events/' + festivalSlug + '/invitations' + random) USE YOUR MAGICAL VOTING TOKEN NOW
+
+|
+|
+p This magical voting token is ONLY active for 15-minutes.
+
+|
+|
+p Missed the 15-minute voting window? Get another magical voting token 
+    a(style="color: black; text-decoration: none;" href=process.env.BASE_PATH + '/events/' + festivalSlug + '/invitations') here
+
+|
+|
+p CultureStake - It’s your culture, it’s your call!

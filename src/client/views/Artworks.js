@@ -55,10 +55,7 @@ const Artworks = () => {
                   </ButtonIcon>
                 )}
 
-                <ButtonIcon
-                  isIconFlipped
-                  to={`/festivals/${params.festivalSlug}`}
-                >
+                <ButtonIcon isIconFlipped to={`/events/${params.festivalSlug}`}>
                   {translate('Artworks.buttonBackToFestival')}
                 </ButtonIcon>
               </PaperStamp>
@@ -82,7 +79,7 @@ const ArtworksItem = ({
   const { scheme } = useSticker(stickerCode);
 
   return (
-    <Link to={`/festivals/${festivalSlug}/artworks/${slug}`}>
+    <Link to={`/events/${festivalSlug}/artworks/${slug}`}>
       <PaperStamp scheme={scheme}>
         <Sticker code={stickerCode} imagePath={stickerImagePath} />
         <StickerHeading scheme={scheme} subtitle={subtitle} title={title} />

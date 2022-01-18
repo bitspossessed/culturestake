@@ -42,7 +42,7 @@ const Navigation = ({ onClickItem, isExpanded }) => {
               return (
                 <NavigationMenuItemStyle key={festival.id}>
                   <NavigationLink
-                    to={`/festivals/${festival.slug}`}
+                    to={`/events/${festival.slug}`}
                     onClick={onClickItem}
                   >
                     <ParagraphStyle>{festival.title}</ParagraphStyle>
@@ -77,7 +77,7 @@ const Navigation = ({ onClickItem, isExpanded }) => {
             </NavigationMenuItemStyle>
 
             <NavigationMenuItemStyle>
-              <NavigationLink to="/admin/festivals" onClick={onClickItem}>
+              <NavigationLink to="/admin/events" onClick={onClickItem}>
                 <ParagraphStyle>
                   {translate('Navigation.linkAdminFestivals')}
                 </ParagraphStyle>

@@ -310,7 +310,7 @@ const views = {
     linkAdminProperties: 'Properties',
     linkAdminQuestions: 'Questions',
     linkAdminUsers: 'Users',
-    linkAdminEmails: 'Schedule Invitations',
+    linkAdminEmails: 'Send Tokens',
   },
   AdminLogin: {
     buttonSubmit: 'Login',
@@ -488,16 +488,16 @@ ccc@example.org`,
   },
   ArtworksProfile: {
     buttonBackToFestival: 'Back to event',
-    buttonBackToFestivalArtworks: 'Back to artworks',
-    buttonGoToArtistWebsite: 'Visit artist website',
-    buttonGoToArtworkWebsite: 'Visit artwork website',
-    titleArtistDescription: 'Artist bio',
-    titleArtworkDescription: 'Artwork activity description',
-    titleArtworkDescriptionCommission: 'Artwork commission description',
+    buttonBackToFestivalArtworks: 'Back to proposals',
+    buttonGoToArtistWebsite: 'Visit proposer website',
+    buttonGoToArtworkWebsite: 'Visit proposal website',
+    titleArtistDescription: 'Proposer bio',
+    titleArtworkDescription: 'Proposal description',
+    titleArtworkDescriptionCommission: 'Proposal commission description',
   },
   FestivalsProfile: {
     buttonGoToWebsite: 'Visit event website and register to vote',
-    buttonShowAllArtworks: 'Show event artworks',
+    buttonShowAllArtworks: 'Show event proposals',
   },
   Homepage: {
     bodyIntroduction:
@@ -541,6 +541,8 @@ ccc@example.org`,
   Invitations: {
     buttonSubmit: 'Begin voting',
     buttonFAQ: 'Culturestake FAQ',
+    errorMessage:
+      'No voting token found - are you sure this is the email address you registered with?',
     notificationSuccess:
       'We just sent you an unique magical vote token, please check your email!',
     title: 'Welcome to Culturestake!',

@@ -120,10 +120,7 @@ const VoteSession = ({
       setLongitude(position.coords.longitude);
     }
     function getLocation() {
-      console.log(navigator.geolocation) // eslint-disable-line
-      console.log(data) // eslint-disable-line
       if (navigator.geolocation && data && data.online) {
-        console.log('have all') // eslint-disable-line
         navigator.geolocation.getCurrentPosition(showPosition);
       }
     }
@@ -409,7 +406,7 @@ const VoteSession = ({
                   </ButtonIcon>
                 ) : null}
 
-                <ButtonIcon to={`/festivals/${data.slug}`}>
+                <ButtonIcon to={`/events/${data.slug}`}>
                   {translate('VoteSession.buttonVoteResults')}
                 </ButtonIcon>
 

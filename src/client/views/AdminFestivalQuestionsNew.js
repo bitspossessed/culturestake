@@ -22,7 +22,7 @@ const AdminFestivalQuestionsNew = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [festival, setFestival] = useState();
 
-  const returnUrl = `/admin/festivals/${slug}/edit`;
+  const returnUrl = `/admin/events/${slug}/edit`;
 
   useEffect(() => {
     const getFestival = async () => {

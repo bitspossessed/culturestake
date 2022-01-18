@@ -53,7 +53,7 @@ const Invitations = () => {
     onError: () => {
       dispatch(
         notify({
-          text: translate('default.errorMessage'),
+          text: translate('Invitations.errorMessage'),
           type: NotificationsTypes.ERROR,
         }),
       );

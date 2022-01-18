@@ -104,32 +104,32 @@ const Routes = () => (
     <PublicRoute
       component={Festivals}
       exact
-      path="/festivals"
+      path="/events"
     />
     <PublicRoute
       component={FestivalsProfile}
       exact
-      path="/festivals/:slug"
+      path="/events/:slug"
     />
     <PublicRoute
       component={Artworks}
       exact
-      path="/festivals/:festivalSlug/artworks"
+      path="/events/:festivalSlug/artworks"
     />
     <PublicRoute
       component={Invitations}
       exact
-      path="/festivals/:festivalSlug/invitations"
+      path="/events/:festivalSlug/invitations"
     />
     <PublicRoute
       component={RemoteVote}
       exact
-      path="/festivals/:festivalSlug/invitations/:token"
+      path="/events/:festivalSlug/invitations/:token"
     />
     <PublicRoute
       component={ArtworksProfile}
       exact
-      path="/festivals/:festivalSlug/artworks/:artworkSlug"
+      path="/events/:festivalSlug/artworks/:artworkSlug"
     />
     <PublicRoute
       component={Vote}
@@ -179,37 +179,37 @@ const Routes = () => (
     <AuthenticatedRoute
       component={AdminFestivals}
       exact
-      path="/admin/festivals"
+      path="/admin/events"
     />
     <AuthenticatedRoute
       component={AdminFestivalsNew}
       exact
-      path="/admin/festivals/new"
+      path="/admin/events/new"
     />
     <AuthenticatedRoute
       component={AdminFestivalsEdit}
       exact
-      path="/admin/festivals/:slug/edit"
+      path="/admin/events/:slug/edit"
     />
     <AuthenticatedRoute
       component={AdminVoteweightsNew}
       exact
-      path="/admin/festivals/:slug/voteweights/new"
+      path="/admin/events/:slug/voteweights/new"
     />
     <AuthenticatedRoute
       component={AdminVoteweightsView}
       exact
-      path="/admin/festivals/:slug/voteweights/:voteweightId"
+      path="/admin/events/:slug/voteweights/:voteweightId"
     />
     <AuthenticatedRoute
       component={AdminFestivalQuestionsNew}
       exact
-      path="/admin/festivals/:slug/questions/new"
+      path="/admin/events/:slug/questions/new"
     />
     <AuthenticatedRoute
       component={AdminFestivalQuestionsEdit}
       exact
-      path="/admin/festivals/:slug/questions/:questionId/edit"
+      path="/admin/events/:slug/questions/:questionId/edit"
     />
     <AuthenticatedRoute
       component={AdminQuestions}
@@ -229,12 +229,12 @@ const Routes = () => (
     <AuthenticatedRoute
       component={AdminFestivalAnswersNew}
       exact
-      path="/admin/festivals/:slug/questions/:questionId/answers/new"
+      path="/admin/events/:slug/questions/:questionId/answers/new"
     />
     <AuthenticatedRoute
       component={AdminFestivalAnswersEdit}
       exact
-      path="/admin/festivals/:slug/questions/:questionId/answers/:answerId/edit"
+      path="/admin/events/:slug/questions/:questionId/answers/:answerId/edit"
     />
     <AuthenticatedRoute
       component={AdminAnswersNew}

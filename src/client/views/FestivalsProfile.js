@@ -154,7 +154,7 @@ const FestivalsProfile = () => {
 
                 <HorizontalSpacingStyle />
 
-                <ButtonIcon to={`/festivals/${festival.slug}/artworks`}>
+                <ButtonIcon to={`/events/${festival.slug}/artworks`}>
                   {translate('FestivalsProfile.buttonShowAllArtworks')}
                 </ButtonIcon>
               </PaperTicket>

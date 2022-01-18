@@ -128,6 +128,7 @@ function findTopThreeVotePowers(answers) {
 
 function topThreeFilter(req, data) {
   const { graphData, user } = req.locals;
+  const question = data;
 
   // Combine graph data with postgres data, mapping chainId : id
   const answers = combineAnswers(
@@ -143,7 +144,13 @@ function topThreeFilter(req, data) {
   const answersFiltered = answers.map((answer) => {
     // If the user is authenticated, pass them to the normal
     // filterResponseFieldsAll since they can see everything
-    if (topThreeVotePowers.includes(answer.get('votePower')) || user) {
+    // also pass the unfiltered answers if the question is an "artwork question"
+    // meaning the answers are properties
+    if (
+      topThreeVotePowers.includes(answer.get('votePower')) ||
+      user ||
+      question.artworkId != null
+    ) {
       // Override the options and allow the protected fields to be seen
       return filterResponseFields(req, answer, {
         ...answerAssociation,

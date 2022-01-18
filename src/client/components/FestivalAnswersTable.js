@@ -46,7 +46,7 @@ const AnswersTable = ({ isArtworkQuestion, isInitialized }) => {
 
   const onSelect = ({ item: { id } }) => {
     history.push(
-      `/admin/festivals/${slug}/questions/${questionId}/answers/${id}/edit`,
+      `/admin/events/${slug}/questions/${questionId}/answers/${id}/edit`,
     );
   };
 

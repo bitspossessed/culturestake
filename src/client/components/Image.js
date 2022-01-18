@@ -1,24 +1,27 @@
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { useScheme } from '~/client/hooks/scheme';
+//import { useScheme } from '~/client/hooks/scheme';
 
 const Image = (props) => {
-  const [href, setHref] = useState(props.src);
-  const { scheme } = useScheme(props.scheme);
+  //const [href, setHref] = useState(props.src);
 
-  const onToggle = () => {
-    setHref((value) => (value === props.src ? props.srcOriginal : props.src));
-  };
+  //code for stylized image filters, not currently used
 
-  const filter = href === props.src ? `url(#filter-${scheme})` : null;
+  //const { scheme } = useScheme(props.scheme);
+
+  // const onToggle = () => {
+  //   setHref((value) => (value === props.src ? props.srcOriginal : props.src));
+  // };
+
+  //const filter = href === props.src ? `url(#filter-${scheme})` : null;
 
   return (
-    <ImageStyle onClick={onToggle}>
+    <ImageStyle>
       <ImageInnerStyle
-        filter={filter}
-        href={href}
+        filter={null}
+        href={props.srcOriginal}
         preserveAspectRatio="xMidYMid slice"
       />
     </ImageStyle>

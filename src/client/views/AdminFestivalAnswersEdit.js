@@ -15,7 +15,7 @@ const AdminAnswersEdit = () => {
   const { slug, questionId, answerId } = useParams();
   const [isDeactivated, setIsDeactivated] = useState(false);
 
-  const returnUrl = `/admin/festivals/${slug}/questions/${questionId}/edit`;
+  const returnUrl = `/admin/events/${slug}/questions/${questionId}/edit`;
 
   const { Form, isResourceLoading, resource, ButtonDelete } = useEditForm({
     fields: ['questionId', 'artworkId', 'propertyId'],
