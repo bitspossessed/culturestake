@@ -179,7 +179,7 @@ const components = {
     title: 'How to Vote',
     titleStepOne: 'Step 1',
     bodyStepOne:
-      'Tell us how you feel about each of the artworks by sliding the sliders. You’ll notice that your voice credits get low as you vote. If you want more voice credits, you’ll need to take a few votes off an existing selection.',
+      'Tell us how you feel about each of the artworks by sliding the sliders. You’ll notice that your vibe credits get low as you vote. If you want more vibe credits, you’ll need to take a few votes off an existing selection.',
     titleStepTwo: 'Step 2',
     bodyStepTwo:
       'Submit your choices and follow the same steps to tell us a bit more about how you felt about the experience you liked the most.',
@@ -230,7 +230,7 @@ const components = {
     buttonInitializeAnswer: 'Initialize',
   },
   VoteCreditsBar: {
-    voteCredits: 'Voice Credits',
+    voteCredits: 'Vibe Credits',
   },
   VoteSession: {
     bodyYourVotesRecorded:

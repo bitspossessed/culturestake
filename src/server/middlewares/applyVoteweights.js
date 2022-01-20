@@ -5,7 +5,7 @@ import logger from '~/server/helpers/logger';
 import Voteweight from '~/server/models/voteweight';
 import db from '~/server/database';
 
-async function applyWeight(vote, multiplier) {
+export async function applyWeight(vote, multiplier) {
   vote.festivalVoteTokens = vote.festivalVoteTokens.map((tokens) => {
     return Math.floor(tokens * multiplier);
   });
@@ -14,7 +14,7 @@ async function applyWeight(vote, multiplier) {
   });
 }
 
-function accumulate(weights) {
+export function accumulate(weights) {
   const sum = weights.reduce((a, b) => a * b, 1);
   return sum;
 }
