@@ -6,8 +6,12 @@ import { getFestival } from '~/common/services/contracts/festivals';
 import APIError from '~/server/helpers/errors';
 import Artwork from '~/server/models/artwork';
 import Festival from '~/server/models/festival';
+import Voteweight from '~/server/models/voteweight';
 import Vote from '~/server/models/vote';
+import Answer from '~/server/models/answer';
 import Question from '~/server/models/question';
+import { accumulate } from '~/server/middlewares/applyVoteweights';
+import { quadratify } from '~/common/utils/math';
 import logger from '~/server/helpers/logger';
 import baseController from '~/server/controllers';
 import {
@@ -219,21 +223,59 @@ async function getVotes(req, res, next) {
     try {
       const question = await Question.findOne({
         rejectOnEmpty: true,
-        where: { festivalId: resource.id },
+        where: { festivalId: resource.id, artworkId: null },
+        include: [
+          {
+            model: Answer,
+            as: 'answers',
+            include: [
+              {
+                model: Artwork,
+              },
+            ],
+          },
+        ],
       });
 
       const votes = await Vote.findAll({
         rejectOnEmpty: true,
         where: { festivalQuestionChainId: question.chainId },
+        include: [
+          {
+            model: Voteweight,
+            as: 'voteweights',
+          },
+        ],
       });
 
       res.header('Content-Type', 'text/csv');
       res.attachment(`votes-${slug}.csv`);
 
-      stringify(
-        (votes || []).map((instance) => instance.get({ plain: true })),
-        { header: true },
-      ).pipe(res);
+      const parsedVotes = votes.map((vote) => {
+        const parsed = {
+          senderAddress: vote.senderAddress,
+          location: vote.location,
+          question: question.title,
+          voteweights:
+            vote.voteweights.length > 0
+              ? vote.voteweights.map((weight) => `${weight.name}, `)
+              : '',
+        };
+        vote.festivalAnswerChainIds.map((answer, index) => {
+          const answerTitle = question.answers[index].artwork.title;
+          parsed[`${answerTitle} - vibe credits`] =
+            vote.festivalVoteTokens[index];
+          const weight = accumulate(
+            vote.voteweights.map((weight) => weight.multiplier),
+          );
+          parsed[`${answerTitle} - votes`] = quadratify(
+            vote.festivalVoteTokens[index] * weight,
+          );
+        });
+        return parsed;
+      });
+
+      stringify(parsedVotes || [], { header: true }).pipe(res);
     } catch (error) {
       if (error instanceof EmptyResultError) {
         next(new APIError(httpStatus.NOT_FOUND));

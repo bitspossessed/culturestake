@@ -5,6 +5,12 @@ import stringify from 'csv-stringify';
 import APIError from '~/server/helpers/errors';
 import Question from '~/server/models/question';
 import Vote from '~/server/models/vote';
+import Artwork from '~/server/models/artwork';
+import Property from '~/server/models/property';
+import Voteweight from '~/server/models/voteweight';
+import Answer from '~/server/models/answer';
+import { accumulate } from '~/server/middlewares/applyVoteweights';
+import { quadratify } from '~/common/utils/math';
 import baseController from '~/server/controllers';
 import {
   QuestionHasManyAnswers,
@@ -80,6 +86,25 @@ async function getVotes(req, res, next) {
   if (req.get('Content-Type') === 'text/csv') {
     const { resource: question } = req.locals;
 
+    const fullQuestion = await Question.findOne({
+      rejectOnEmpty: true,
+      where: { id: question.id },
+      include: [
+        {
+          model: Answer,
+          as: 'answers',
+          include: [
+            {
+              model: Artwork,
+            },
+            {
+              model: Property,
+            },
+          ],
+        },
+      ],
+    });
+
     try {
       const votes = await Vote.findAll({
         rejectOnEmpty: true,
@@ -91,15 +116,49 @@ async function getVotes(req, res, next) {
             ? { artworkQuestionChainId: question.chainId }
             : undefined),
         },
+        include: [
+          {
+            model: Voteweight,
+            as: 'voteweights',
+          },
+        ],
+      });
+
+      const type = question.type === 'festival' ? 'artwork' : 'property';
+      const answerName =
+        type === 'property'
+          ? 'artworkAnswerChainIds'
+          : 'festivalAnswerChainIds';
+      const voteTokenName =
+        type === 'property' ? 'artworkVoteTokens' : 'festivalVoteTokens';
+
+      const parsedVotes = votes.map((vote) => {
+        const parsed = {
+          senderAddress: vote.senderAddress,
+          location: vote.location,
+          question: question.title,
+          voteweights:
+            vote.voteweights.length > 0
+              ? vote.voteweights.map((weight) => `${weight.name}, `)
+              : '',
+        };
+        vote[answerName].map((answer, index) => {
+          const answerTitle = fullQuestion.answers[index][type].title;
+          parsed[`${answerTitle} - vibe credits`] = vote[voteTokenName][index];
+          const weight = accumulate(
+            vote.voteweights.map((weight) => weight.multiplier),
+          );
+          parsed[`${answerTitle} - votes`] = quadratify(
+            vote[voteTokenName][index] * weight,
+          );
+        });
+        return parsed;
       });
 
       res.header('Content-Type', 'text/csv');
       res.attachment(`votes-${question.slug}.csv`);
 
-      stringify(
-        (votes || []).map((instance) => instance.get({ plain: true })),
-        { header: true },
-      ).pipe(res);
+      stringify(parsedVotes || [], { header: true }).pipe(res);
     } catch (error) {
       if (error instanceof EmptyResultError) {
         next(new APIError(httpStatus.NOT_FOUND));
