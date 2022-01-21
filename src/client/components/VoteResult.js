@@ -10,7 +10,7 @@ import { useSticker, useStickerImage } from '~/client/hooks/sticker';
 const SNUGGLEPUNK_SIZE = 10;
 
 const VoteResult = ({
-  //rank,
+  rank,
   total,
   subtitle,
   title,
@@ -35,14 +35,10 @@ const VoteResult = ({
   return (
     <FestivalVoteResultStyle scheme={scheme}>
       <FestivalVoteResultHeaderStyle>
+        <FestivalVoteResultRankStyle>{rank}</FestivalVoteResultRankStyle>
         <SnuggleStyle>
           <use xlinkHref={`#snugglepunk-${snuggleness}`} />
         </SnuggleStyle>
-
-        <FestivalVoteResultVotesLayout>
-          <FestivalVoteResultVotesStyle>{credit}</FestivalVoteResultVotesStyle>
-          Votes
-        </FestivalVoteResultVotesLayout>
       </FestivalVoteResultHeaderStyle>
 
       {stickerImagePath && type === 'artwork' ? (
@@ -88,27 +84,27 @@ const FestivalVoteResultFooterStyle = styled.div`
 //   font-family: ${styles.typography.familyHeading}, sans-serif;
 // `;
 
-const FestivalVoteResultVotesLayout = styled.div`
-  display: flex;
+// const FestivalVoteResultVotesLayout = styled.div`
+//   display: flex;
 
-  align-items: center;
-  flex-direction: column;
-`;
-
-const FestivalVoteResultVotesStyle = styled.span`
-  display: flex;
-
-  font-size: 4em !important;
-  font-family: ${styles.typography.familyHeading}, sans-serif;
-
-  flex-direction: column;
-  justify-content: space-between;
-`;
-
-// const FestivalVoteResultRankStyle = styled.span`
-//   font-size: 6em !important;
-//   font-family: ${styles.typography.familyHeading}, sans-serif;
+//   align-items: center;
+//   flex-direction: column;
 // `;
+
+// const FestivalVoteResultVotesStyle = styled.span`
+//   display: flex;
+
+//   font-size: 4em !important;
+//   font-family: ${styles.typography.familyHeading}, sans-serif;
+
+//   flex-direction: column;
+//   justify-content: space-between;
+// `;
+
+const FestivalVoteResultRankStyle = styled.span`
+  font-size: 6em !important;
+  font-family: ${styles.typography.familyHeading}, sans-serif;
+`;
 
 const FestivalVoteResultHeadingStyle = styled.p`
   margin-bottom: 1rem;

@@ -444,25 +444,6 @@ const VoteSession = ({
                           {festivalQuestionData.title}
                         </HeadingSecondaryStyle>
                       </BoxFramed>
-                      {data.online ? (
-                        <Fragment>
-                          <HorizontalSpacingStyle />
-                          <ParagraphStyle>
-                            {translate('VoteSession.festivalLinkPrompt')}
-                          </ParagraphStyle>
-                          <ButtonIcon href={data.url}>
-                            {translate('VoteSession.buttonFestivalLink')}
-                          </ButtonIcon>
-                        </Fragment>
-                      ) : null}
-                    </PaperTicket>
-
-                    <PaperTicket>
-                      <BoxFramed>
-                        <HeadingSecondaryStyle>
-                          {translate('VoteSession.vote')}
-                        </HeadingSecondaryStyle>
-                      </BoxFramed>
                     </PaperTicket>
 
                     {artworks.map((artwork) => {
