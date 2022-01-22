@@ -208,21 +208,23 @@ const VoteSession = ({
       return question.id === festivalQuestionId;
     });
 
-    return answers
-      .sort(({ id: itemA }, { id: itemB }) => {
-        // Sort by id to be consisent with the order of things
-        return itemA - itemB;
-      })
-      .reduce((acc, answer) => {
-        if (answer.artwork && festivalAnswerIds.includes(answer.id)) {
-          acc.push({
-            ...answer.artwork,
-            answerId: answer.id,
-          });
-        }
+    return (
+      answers
+        // .sort(({ id: itemA }, { id: itemB }) => {
+        //   // Sort by id to be consisent with the order of things
+        //   return itemA - itemB;
+        // })
+        .reduce((acc, answer) => {
+          if (answer.artwork && festivalAnswerIds.includes(answer.id)) {
+            acc.push({
+              ...answer.artwork,
+              answerId: answer.id,
+            });
+          }
 
-        return acc;
-      }, []);
+          return acc;
+        }, [])
+    );
   }, [data, festivalQuestionId, festivalAnswerIds]);
 
   // Filter properties for second question
@@ -231,21 +233,20 @@ const VoteSession = ({
       return [];
     }
 
-    return artworkQuestionData.answers
-      .reduce((acc, answer) => {
-        if (answer.property) {
-          acc.push({
-            ...answer.property,
-            answerId: answer.id,
-          });
-        }
+    return artworkQuestionData.answers.reduce((acc, answer) => {
+      if (answer.property) {
+        acc.push({
+          ...answer.property,
+          answerId: answer.id,
+        });
+      }
 
-        return acc;
-      }, [])
-      .sort(({ id: itemA }, { id: itemB }) => {
-        // Sort by id to be consisent with the order of things
-        return itemA - itemB;
-      });
+      return acc;
+    }, []);
+    // .sort(({ id: itemA }, { id: itemB }) => {
+    //   // Sort by id to be consisent with the order of things
+    //   return itemA - itemB;
+    // });
   }, [artworkQuestionData]);
 
   const onCreditChange = ({ stepName, id, credit }) => {
