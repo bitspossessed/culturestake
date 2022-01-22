@@ -309,6 +309,7 @@ export default async function validateVoteMiddleware(req, res, next) {
     logger.verbose(error);
 
     if (process.env.NODE_ENV === 'production') {
+      console.log(error.message)
       next(new APIError(httpStatus.UNPROCESSABLE_ENTITY));
     } else {
       next(new APIError(httpStatus.UNPROCESSABLE_ENTITY, error.message));

@@ -330,10 +330,14 @@ async function getFestivalQuestion(req) {
     where.festivalId = req.locals.resource.id;
     where.type = 'festival';
 
+    console.log(where)
+
     const data = await Question.findAll({
       rejectOnEmpty: true,
       where,
     });
+
+    console.log(data)
 
     if (data.length > 1) {
       throw new Error();
@@ -341,6 +345,7 @@ async function getFestivalQuestion(req) {
 
     return data[0];
   } catch (error) {
+    console.log(error)
     logger.error(
       `Found abnormal question data for festival ${req.locals.resource.id}`,
     );
