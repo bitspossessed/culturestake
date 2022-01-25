@@ -62,7 +62,7 @@ const RemoteVote = () => {
         {isVoteReady && !isInvitationLoading && !isError ? (
           <VoteSession
             boothSignature={vote.boothSignature}
-            festivalAnswerIds={vote.festivalAnswerIds}
+            festivalAnswerIds={vote.festivalAnswerIds.sort()}
             festivalQuestionId={vote.festivalQuestionId}
             nonce={vote.nonce}
             senderAddress={vote.address}
