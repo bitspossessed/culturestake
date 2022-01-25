@@ -86,8 +86,6 @@ const VoteSession = ({
     [STEP_ARTWORK]: {},
   });
 
-  console.log(credits) // eslint-disable-line
-
   // Which answer of the first question had the most vote tokens?
   const [winnerArtworkId, setWinnerArtworkId] = useState(null);
 
@@ -449,7 +447,6 @@ const VoteSession = ({
                     </PaperTicket>
 
                     {artworks.map((artwork) => {
-                      console.log(artwork) // eslint-disable-line
                       return (
                         <VoteSessionArtwork
                           answerId={artwork.answerId}
