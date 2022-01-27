@@ -44,7 +44,7 @@ export const voteInvitationEmail = (to = 'me@example.org', data = {}) => {
   return submitJob(mailing, `${to}#voteInvitation`, {
     subject:
       templateName === 'vote'
-        ? 'Get Your Magical Voting Token From Culturestake'
+        ? 'We fixed it! Get Your Magical Voting Token From Culturestake'
         : customTemplates[templateName].subject,
     template: `${templateName}-invitation`,
     to,
@@ -59,7 +59,7 @@ export const voteEmail = (to = 'me@example.org', data = {}) => {
   submitJob(mailing, `${to}#vote`, {
     subject:
       templateName === 'vote'
-        ? 'Use Your Magical Voting Token Now'
+        ? 'We fixed it! Use Your Magical Voting Token Now'
         : customTemplates[templateName].subjectInvitation,
     template: `${templateName}`,
     to,
