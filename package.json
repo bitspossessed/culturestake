@@ -141,7 +141,7 @@
     "sharp": "^0.26.0",
     "styled-components": "^5.1.1",
     "styled-normalize": "^8.0.7",
-    "three": "^0.125.0",
+    "three": "^0.137.0",
     "web3": "^1.2.11",
     "winston": "^3.3.3"
   }
