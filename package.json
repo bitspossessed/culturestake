@@ -138,7 +138,7 @@
     "redux-thunk": "^2.3.0",
     "sequelize": "^6.3.4",
     "sequelize-slugify": "^0.9.1",
-    "sharp": "^0.26.0",
+    "sharp": "^0.30.5",
     "styled-components": "^5.1.1",
     "styled-normalize": "^8.0.7",
     "three": "^0.125.0",
